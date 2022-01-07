@@ -18,21 +18,21 @@ to startup
 end
 
 to setup
- import-pcolors "dis.20102014.winter.crangon_all.png"
+ import-pcolors "../figures/dis.20102014.winter.crangon_all.png"
   ask patches [set crangon-all pcolor]
- import-pcolors "dis.20102014.winter.merlangus_max.png"
+ import-pcolors "../figures/dis.20102014.winter.merlangus_max.png"
   ask patches [set merlangus-max pcolor]
- import-pcolors "dis.20102014.winter.merlangus_min.png"
+ import-pcolors "../figures/dis.20102014.winter.merlangus_min.png"
   ask patches [set merlangus-min pcolor]
- import-pcolors "dis.20102014.winter.platessa_max.png"
+ import-pcolors "../figures/dis.20102014.winter.platessa_max.png"
   ask patches [set platessa-max pcolor]
- import-pcolors "dis.20102014.winter.platessa_min.png"
+ import-pcolors "../figures/dis.20102014.winter.platessa_min.png"
   ask patches [set platessa-min pcolor]
- import-pcolors "dis.20102014.winter.solea_max.png"
+ import-pcolors "../figures/dis.20102014.winter.solea_max.png"
   ask patches [set solea-max pcolor]
- import-pcolors "dis.20102014.winter.solea_min.png"
+ import-pcolors "../figures/dis.20102014.winter.solea_min.png"
   ask patches [set solea-min pcolor]
- import-pcolors "dis.20102014.winter.sprattus_all.png"
+ import-pcolors "../figures/dis.20102014.winter.sprattus_all.png"
   ask patches [set sprattus-all pcolor]
 end
 
