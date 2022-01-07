@@ -17,7 +17,14 @@ to startup
   setup
 end
 
+to go
+  every 1 [update]
+  tick
+end
+
 to setup
+  clear-all
+
  import-pcolors "../figures/dis.20102014.winter.crangon_all.png"
   ask patches [set crangon-all pcolor]
  import-pcolors "../figures/dis.20102014.winter.merlangus_max.png"
@@ -34,6 +41,8 @@ to setup
   ask patches [set solea-min pcolor]
  import-pcolors "../figures/dis.20102014.winter.sprattus_all.png"
   ask patches [set sprattus-all pcolor]
+
+  reset-ticks
 end
 
 to update
@@ -75,10 +84,10 @@ ticks
 30.0
 
 BUTTON
-48
-44
-111
-77
+26
+20
+89
+53
 NIL
 setup
 NIL
@@ -99,16 +108,16 @@ CHOOSER
 Species
 Species
 "crangon" "merlangus_max" "merlangus_min" "platessa_max" "platessa_min" "solea_max" "solea_min" "sprattus"
-4
+0
 
 BUTTON
-127
-43
-198
-76
+97
+21
+160
+54
 NIL
-update
-NIL
+go
+T
 1
 T
 OBSERVER
@@ -116,7 +125,7 @@ NIL
 NIL
 NIL
 NIL
-1
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
