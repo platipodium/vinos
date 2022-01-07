@@ -26,43 +26,55 @@ end
 to setup
   clear-all
 
- import-pcolors "../figures/dis.20102014.winter.crangon_all.png"
-  ask patches [set crangon-all pcolor]
- import-pcolors "../figures/dis.20102014.winter.merlangus_max.png"
-  ask patches [set merlangus-max pcolor]
- import-pcolors "../figures/dis.20102014.winter.merlangus_min.png"
-  ask patches [set merlangus-min pcolor]
- import-pcolors "../figures/dis.20102014.winter.platessa_max.png"
-  ask patches [set platessa-max pcolor]
- import-pcolors "../figures/dis.20102014.winter.platessa_min.png"
-  ask patches [set platessa-min pcolor]
- import-pcolors "../figures/dis.20102014.winter.solea_max.png"
-  ask patches [set solea-max pcolor]
- import-pcolors "../figures/dis.20102014.winter.solea_min.png"
-  ask patches [set solea-min pcolor]
- import-pcolors "../figures/dis.20102014.winter.sprattus_all.png"
-  ask patches [set sprattus-all pcolor]
+  import-pcolors "../figures/dis.20102014.winter.crangon_all.png"
+  ask patches [set crangon-all grayscale pcolor]
+
+  import-pcolors "../figures/dis.20102014.winter.merlangus_max.png"
+  ask patches [set merlangus-max grayscale pcolor]
+
+  import-pcolors "../figures/dis.20102014.winter.merlangus_min.png"
+  ask patches [set merlangus-min grayscale pcolor]
+
+  import-pcolors "../figures/dis.20102014.winter.platessa_max.png"
+  ask patches [set platessa-max grayscale pcolor]
+
+  import-pcolors "../figures/dis.20102014.winter.platessa_min.png"
+  ask patches [set platessa-min grayscale pcolor]
+
+  import-pcolors "../figures/dis.20102014.winter.solea_max.png"
+  ask patches [set solea-max grayscale pcolor]
+
+  import-pcolors "../figures/dis.20102014.winter.solea_min.png"
+  ask patches [set solea-min grayscale pcolor]
+
+  import-pcolors "../figures/dis.20102014.winter.sprattus_all.png"
+  ask patches [set sprattus-all grayscale pcolor]
+
 
   calc-pollution
   reset-ticks
 end
 
 to update
-  if Species = "crangon" [ask patches [set pcolor crangon-all]]
-  if Species = "merlangus_max" [ask patches [set pcolor merlangus-max]]
-  if Species = "merlangus_min" [ask patches [set pcolor merlangus-min]]
-  if Species = "platessa_max" [ask patches [set pcolor platessa-max]]
-  if Species = "platessa_min" [ask patches [set pcolor platessa-min]]
-  if Species = "solea_max" [ask patches [set pcolor solea-max]]
-  if Species = "solea_min" [ask patches [set pcolor solea-min]]
-  if Species = "sprattus" [ask patches [set pcolor sprattus-all]]
-  if Species = "pollution" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
+  if Species = "Crangon"  [ ask patches [ set pcolor scale-color orange crangon-all 0 10  ] ]
+  if Species = "Solea (max)"  [ ask patches [ set pcolor scale-color green solea-max 0 10  ] ]
+  if Species = "Solea (min)"  [ ask patches [ set pcolor scale-color green solea-min 0 10  ] ]
+  if Species = "Platessa (max)"  [ ask patches [ set pcolor scale-color cyan platessa-max 0 10  ] ]
+  if Species = "Platessa (min)"  [ ask patches [ set pcolor scale-color cyan platessa-min 0 10  ] ]
+  if Species = "Merlangus (max)"  [ ask patches [ set pcolor scale-color brown merlangus-max 0 10  ] ]
+  if Species = "Merlangus (min)"  [ ask patches [ set pcolor scale-color brown merlangus-min 0 10  ] ]
+  if Species = "Sprattus"  [ ask patches [ set pcolor scale-color blue sprattus-all 0 10 ] ]
+  if Species = "Pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
 end
 
 to calc-pollution
 
   ask n-of 100 patches with [platessa-max > 0] [set pollution-exceedance random-float 2.0]
 
+end
+
+to-report grayscale [x]
+  report (round (10 * (x mod 10))) / 10
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -112,12 +124,12 @@ NIL
 CHOOSER
 34
 115
-172
+198
 160
 Species
 Species
-"crangon" "merlangus_max" "merlangus_min" "platessa_max" "platessa_min" "solea_max" "solea_min" "sprattus" "pollution"
-8
+"Crangon" "Merlangus (max)" "Merlangus (min)" "Platessa (max)" "Platessa (min)" "Solea (max)" "Solea (min)" "Sprattus" "Pollution (random)"
+5
 
 BUTTON
 97
@@ -149,7 +161,6 @@ xmax=10
 ymax=56
 projection=+proj=longlat +datum=WGS84 +no_defs
 ```
-
 @#$#@#$#@
 default
 true
