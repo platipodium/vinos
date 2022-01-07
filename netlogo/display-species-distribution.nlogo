@@ -11,6 +11,7 @@ patches-own [
   solea-max
   solea-min
   sprattus-all
+  pollution-exceedance
 ]
 
 to startup
@@ -42,6 +43,7 @@ to setup
  import-pcolors "../figures/dis.20102014.winter.sprattus_all.png"
   ask patches [set sprattus-all pcolor]
 
+  calc-pollution
   reset-ticks
 end
 
@@ -54,6 +56,13 @@ to update
   if Species = "solea_max" [ask patches [set pcolor solea-max]]
   if Species = "solea_min" [ask patches [set pcolor solea-min]]
   if Species = "sprattus" [ask patches [set pcolor sprattus-all]]
+  if Species = "pollution" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
+end
+
+to calc-pollution
+
+  ask n-of 100 patches with [platessa-max > 0] [set pollution-exceedance random-float 2.0]
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -107,8 +116,8 @@ CHOOSER
 160
 Species
 Species
-"crangon" "merlangus_max" "merlangus_min" "platessa_max" "platessa_min" "solea_max" "solea_min" "sprattus"
-0
+"crangon" "merlangus_max" "merlangus_min" "platessa_max" "platessa_min" "solea_max" "solea_min" "sprattus" "pollution"
+8
 
 BUTTON
 97
@@ -128,41 +137,19 @@ NIL
 0
 
 @#$#@#$#@
-## WHAT IS IT?
+## Georeference
 
-(a general understanding of what the model is trying to show or explain)
+```
+[georeference]
+nrows=120
+ncols=180
+xmin=2
+ymin=53
+xmax=10
+ymax=56
+projection=+proj=longlat +datum=WGS84 +no_defs
+```
 
-## HOW IT WORKS
-
-(what rules the agents use to create the overall behavior of the model)
-
-## HOW TO USE IT
-
-(how to use the model, including a description of each of the items in the Interface tab)
-
-## THINGS TO NOTICE
-
-(suggested things for the user to notice while running the model)
-
-## THINGS TO TRY
-
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
-
-## EXTENDING THE MODEL
-
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
-
-## NETLOGO FEATURES
-
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
-
-## RELATED MODELS
-
-(models in the NetLogo Models Library and elsewhere which are of related interest)
-
-## CREDITS AND REFERENCES
-
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
 @#$#@#$#@
 default
 true
