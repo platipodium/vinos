@@ -12,6 +12,7 @@ patches-own [
   solea-min
   sprattus-all
   pollution-exceedance
+  depth
 ]
 
 to startup
@@ -25,6 +26,15 @@ end
 
 to setup
   clear-all
+
+  no-display
+
+  ; Bathymetry ranges from -82 to 0 m, this needs to be retreived from the
+  ; 8-bit color scale (255)
+  import-pcolors-rgb "../figures/gebco_2021_n56.0_s53.0_w2.0_e10.0_180x120.png"
+  ask patches [
+    set depth 82 - (item 0 pcolor) * 82 / 255
+  ]
 
   import-pcolors "../figures/dis.20102014.winter.crangon_all.png"
   ask patches [set crangon-all grayscale pcolor]
@@ -50,21 +60,26 @@ to setup
   import-pcolors "../figures/dis.20102014.winter.sprattus_all.png"
   ask patches [set sprattus-all grayscale pcolor]
 
-
   calc-pollution
+
+  set View "Bathymetry"
+  update
+  display
+
   reset-ticks
 end
 
 to update
-  if Species = "Crangon"  [ ask patches [ set pcolor scale-color orange crangon-all 0 10  ] ]
-  if Species = "Solea (max)"  [ ask patches [ set pcolor scale-color green solea-max 0 10  ] ]
-  if Species = "Solea (min)"  [ ask patches [ set pcolor scale-color green solea-min 0 10  ] ]
-  if Species = "Platessa (max)"  [ ask patches [ set pcolor scale-color cyan platessa-max 0 10  ] ]
-  if Species = "Platessa (min)"  [ ask patches [ set pcolor scale-color cyan platessa-min 0 10  ] ]
-  if Species = "Merlangus (max)"  [ ask patches [ set pcolor scale-color brown merlangus-max 0 10  ] ]
-  if Species = "Merlangus (min)"  [ ask patches [ set pcolor scale-color brown merlangus-min 0 10  ] ]
-  if Species = "Sprattus"  [ ask patches [ set pcolor scale-color blue sprattus-all 0 10 ] ]
-  if Species = "Pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
+  if View = "Crangon"  [ ask patches [ set pcolor scale-color orange crangon-all 0 10  ] ]
+  if View = "Solea (max)"  [ ask patches [ set pcolor scale-color green solea-max 0 10  ] ]
+  if View = "Solea (min)"  [ ask patches [ set pcolor scale-color green solea-min 0 10  ] ]
+  if View = "Platessa (max)"  [ ask patches [ set pcolor scale-color cyan platessa-max 0 10  ] ]
+  if View = "Platessa (min)"  [ ask patches [ set pcolor scale-color cyan platessa-min 0 10  ] ]
+  if View = "Merlangus (max)"  [ ask patches [ set pcolor scale-color brown merlangus-max 0 10  ] ]
+  if View = "Merlangus (min)"  [ ask patches [ set pcolor scale-color brown merlangus-min 0 10  ] ]
+  if View = "Sprattus"  [ ask patches [ set pcolor scale-color blue sprattus-all 0 10 ] ]
+  if View = "Pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
+  if View = "Bathymetry" [ask patches [set pcolor scale-color blue depth 0 82 ]]
 end
 
 to calc-pollution
@@ -98,8 +113,8 @@ GRAPHICS-WINDOW
 179
 0
 119
-0
-0
+1
+1
 1
 ticks
 30.0
@@ -122,14 +137,14 @@ NIL
 1
 
 CHOOSER
-34
-115
-198
-160
-Species
-Species
-"Crangon" "Merlangus (max)" "Merlangus (min)" "Platessa (max)" "Platessa (min)" "Solea (max)" "Solea (min)" "Sprattus" "Pollution (random)"
-5
+26
+85
+190
+130
+View
+View
+"Crangon" "Merlangus (max)" "Merlangus (min)" "Platessa (max)" "Platessa (min)" "Solea (max)" "Solea (min)" "Sprattus" "Pollution (random)" "Bathymetry"
+9
 
 BUTTON
 97
@@ -148,6 +163,23 @@ NIL
 NIL
 0
 
+BUTTON
+26
+138
+100
+171
+NIL
+update
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
 @#$#@#$#@
 ## Georeference
 
@@ -161,6 +193,18 @@ xmax=10
 ymax=56
 projection=+proj=longlat +datum=WGS84 +no_defs
 ```
+
+## Data sources
+
+### Species probability presences
+
+The data was obtained from Nik Probst, based on Random Forest species distribution modeling for Merlangus, Platessa, Solea, Crangon and Sprattus. Please do not distribute this unpublished data.  
+
+### Bathymetry
+
+Bathymetry data was obtained 2022-01-07 from GEBCO Compilation Group (2021) GEBCO 2021 Grid (https://doi.org/10.5285/c6612cbe-50b3-0cff-e053-6c86abc09f8f).
+
+You can go to https://download.gebco.net to download the data as NetCDF, GeoTIFF, PNG and Esri ASCII.  From the NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` and further processed via `.pnm` to yield a `.png`.  The resulting file was then resampled to 180 x 120 pixels.
 @#$#@#$#@
 default
 true
