@@ -205,6 +205,12 @@ The data was obtained from Nik Probst, based on Random Forest species distributi
 Bathymetry data was obtained 2022-01-07 from GEBCO Compilation Group (2021) GEBCO 2021 Grid (https://doi.org/10.5285/c6612cbe-50b3-0cff-e053-6c86abc09f8f).
 
 You can go to https://download.gebco.net to download the data as NetCDF, GeoTIFF, PNG and Esri ASCII.  From the NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` and further processed via `.pnm` to yield a `.png`.  The resulting file was then resampled to 180 x 120 pixels.
+
+### License 
+
+copyright: Universität Hamburg and Hereon, 
+Authors: Carsten Lemmen, Sascha Hokamp
+License: Apache 2.0
 @#$#@#$#@
 default
 true
