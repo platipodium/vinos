@@ -5,7 +5,7 @@ __includes [
 ]
 
 globals [
-  dataset
+  owf-dataset
 ]
 
 patches-own [
@@ -119,7 +119,7 @@ CHOOSER
 View
 View
 "Crangon" "Merlangus (max)" "Merlangus (min)" "Platessa (max)" "Platessa (min)" "Solea (max)" "Solea (min)" "Sprattus" "Pollution (random)" "Bathymetry"
-0
+2
 
 BUTTON
 97
