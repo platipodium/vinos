@@ -1,0 +1,80 @@
+to import-asc
+  
+  no-display
+
+  let bathymetry-dataset gis:load-dataset "../data/gebco_2021_n56.0_s53.0_w2.0_e10.0.asc"
+  let crangon-dataset gis:load-dataset "../data/dis.20102014.winter.crangon_all.asc"
+  let platessa-min-dataset gis:load-dataset "../data/dis.20102014.winter.platessa_min.asc"
+  let platessa-max-dataset gis:load-dataset "../data/dis.20102014.winter.platessa_max.asc"
+  let solea-min-dataset gis:load-dataset "../data/dis.20102014.winter.solea_min.asc"
+  let solea-max-dataset gis:load-dataset "../data/dis.20102014.winter.solea_max.asc"
+  let merlangus-min-dataset gis:load-dataset "../data/dis.20102014.winter.merlangus_min.asc"
+  let merlangus-max-dataset gis:load-dataset "../data/dis.20102014.winter.merlangus_max.asc"
+  let sprattus-dataset gis:load-dataset "../data/dis.20102014.winter.crangon_all.asc"
+
+  ; Set the world envelope to the union of all of our dataset's envelopes
+  gis:set-world-envelope (gis:envelope-union-of (gis:envelope-of bathymetry-dataset)
+                                                (gis:envelope-of crangon-dataset)
+                                                (gis:envelope-of sprattus-dataset)
+                                                (gis:envelope-of platessa-min-dataset)
+                                                (gis:envelope-of platessa-max-dataset)
+                                                (gis:envelope-of merlangus-min-dataset)
+                                                (gis:envelope-of merlangus-max-dataset)
+                                                (gis:envelope-of solea-min-dataset)
+                                                (gis:envelope-of solea-max-dataset))
+
+
+  gis:apply-raster bathymetry-dataset depth
+  
+  ; The following removes NaN values which are not allowed
+  ask patches with [not (depth < 0 or depth > -1) ] [ set depth 9999 ]
+  
+  ; Convert from bathymetry to depth
+  ask patches [ set depth ( - depth)]
+  
+  gis:apply-raster crangon-dataset crangon-all
+  ask patches with [not (crangon-all < 0 or crangon-all > -1) ] [ set crangon-all -9999 ]
+
+  gis:apply-raster sprattus-dataset sprattus-all
+  ask patches with [not (sprattus-all < 0 or sprattus-all > -1) ] [ set sprattus-all -9999 ]
+
+  gis:apply-raster solea-min-dataset solea-min
+  ask patches with [not (solea-min < 0 or solea-min > -1) ] [ set solea-min -9999 ]
+
+  gis:apply-raster solea-max-dataset solea-max
+  ask patches with [not (solea-max < 0 or solea-max > -1) ] [ set solea-max -9999 ]
+
+  gis:apply-raster merlangus-min-dataset merlangus-min
+  ask patches with [not (merlangus-min < 0 or merlangus-min > -1) ] [ set merlangus-min -9999 ]
+
+  gis:apply-raster merlangus-max-dataset merlangus-max
+  ask patches with [not (merlangus-max < 0 or merlangus-max > -1) ] [ set merlangus-max -9999 ]
+
+  gis:apply-raster platessa-min-dataset platessa-min
+  ask patches with [not (platessa-min < 0 or platessa-min > -1) ] [ set platessa-min -9999 ]
+
+  gis:apply-raster platessa-max-dataset platessa-max
+  ask patches with [not (platessa-max < 0 or platessa-max > -1) ] [ set platessa-max -9999 ]
+ 
+  display
+
+end
+;
+;
+;; WMS stands for web mapping service, and it is a protocol that allows clients to ask
+;; a server for image of a section of a larger map image.
+;;
+;; The `import-wms-drawing` primitive asks a server (in this case one run by
+;; terrestris.de, a german GIS company that offers a WMS for the public)
+;; for the section of the map within the current world envelope
+;; and then draws it to the screen.
+;;
+;; In addition to the url of the WMS server, you must also supply the EPSG code
+;; for the projection you want to use and the name of the layer you want to grab
+;; from that server as well as a transparency parameter from 0 to 255.
+;; If you do not know what EPSG code to use, 4326, the code for WGS84, should
+;; provide good-enough results.
+to download-background-image
+  gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 0
+end
+

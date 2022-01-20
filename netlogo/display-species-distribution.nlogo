@@ -1,5 +1,13 @@
+extensions [ gis ]
+
+__includes [
+  "import-png.nls"
+  "import-asc.nls"
+]
+
+
 globals [
-dataset
+  dataset
 ]
 
 patches-own [
@@ -27,39 +35,7 @@ end
 to setup
   clear-all
 
-  no-display
-
-  ; Bathymetry ranges from -82 to 0 m, this needs to be retreived from the
-  ; 8-bit color scale (255)
-  import-pcolors-rgb "../figures/gebco_2021_n56.0_s53.0_w2.0_e10.0_180x120.png"
-  ask patches [
-    set depth 82 - (item 0 pcolor) * 82 / 255
-  ]
-
-  import-pcolors "../figures/dis.20102014.winter.crangon_all.png"
-  ask patches [set crangon-all grayscale pcolor]
-
-  import-pcolors "../figures/dis.20102014.winter.merlangus_max.png"
-  ask patches [set merlangus-max grayscale pcolor]
-
-  import-pcolors "../figures/dis.20102014.winter.merlangus_min.png"
-  ask patches [set merlangus-min grayscale pcolor]
-
-  import-pcolors "../figures/dis.20102014.winter.platessa_max.png"
-  ask patches [set platessa-max grayscale pcolor]
-
-  import-pcolors "../figures/dis.20102014.winter.platessa_min.png"
-  ask patches [set platessa-min grayscale pcolor]
-
-  import-pcolors "../figures/dis.20102014.winter.solea_max.png"
-  ask patches [set solea-max grayscale pcolor]
-
-  import-pcolors "../figures/dis.20102014.winter.solea_min.png"
-  ask patches [set solea-min grayscale pcolor]
-
-  import-pcolors "../figures/dis.20102014.winter.sprattus_all.png"
-  ask patches [set sprattus-all grayscale pcolor]
-
+  import-asc ;; replaced import-png
   calc-pollution
 
   set View "Bathymetry"
@@ -68,6 +44,7 @@ to setup
 
   reset-ticks
 end
+
 
 to update
   if View = "Crangon"  [ ask patches [ set pcolor scale-color orange crangon-all 0 10  ] ]
