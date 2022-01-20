@@ -7,8 +7,8 @@ library(raster)
 library(sp)
 library(rgdal)
 
-dname <- '/Users/Lemmen/projects/mossco/2022/fish-netlogo/R'
-fname <- '/Users/Lemmen/projects/mossco/2022/fish-netlogo/R/dis.20102014.winter.grd'
+dname <- '/Users/Lemmen/projects/mossco/tex/2022/netlogo-northsea-species/R/'
+fname <- '/Users/Lemmen/projects/mossco/tex/2022/netlogo-northsea-species/R/dis.20102014.winter.grd'
 
 df_crangon_all = raster(fname, band=1)
 df_merlangus_min = raster(fname, band=2)
@@ -26,10 +26,16 @@ writeRaster(df_platessa_min,paste(dname,'dis.20102014.winter.platessa_min.tiff',
 writeRaster(df_platessa_max,paste(dname,'dis.20102014.winter.platessa_max.tiff',sep='/'), overwrite=TRUE)
 writeRaster(df_solea_min,paste(dname,'dis.20102014.winter.solea_min.tiff',sep='/'), overwrite=TRUE)
 writeRaster(df_solea_max,paste(dname,'dis.20102014.winter.solea_max.tiff',sep='/'), overwrite=TRUE)
-writeRaster(df_sprattus_all,paste(dname,'dis.20102014.winter.sprattus_tiff.asc',sep='/'), overwrite=TRUE)
+writeRaster(df_sprattus_all,paste(dname,'dis.20102014.winter.sprattus_all.tiff',sep='/'), overwrite=TRUE)
 
-rgdal::writeGDAL(as(Converted.proj, "SpatialGridDataFrame"), 
-                 paste(dname,'dis.20102014.winter.sprattus_tiff.asc',sep='/'), 
-                 drivername = "AAIGrid")
+# Create a new raster with equal resolution in x and y
+square <- raster(nrow=120, ncol=320, xmn=2, xmx=10, ymn=53, ymx=56)
 
-
+writeRaster(resample(df_platessa_max, square, 'bilinear'),paste(dname,'dis.20102014.winter.platessa_max.asc',sep='/'), overwrite=TRUE)
+writeRaster(resample(df_platessa_min, square, 'bilinear'),paste(dname,'dis.20102014.winter.platessa_mix.asc',sep='/'), overwrite=TRUE)
+writeRaster(resample(df_merlangus_max, square, 'bilinear'),paste(dname,'dis.20102014.winter.merlangus_max.asc',sep='/'), overwrite=TRUE)
+writeRaster(resample(df_merlangus_min, square, 'bilinear'),paste(dname,'dis.20102014.winter.merlangus_min.asc',sep='/'), overwrite=TRUE)
+writeRaster(resample(df_solea_max, square, 'bilinear'),paste(dname,'dis.20102014.winter.solea_max.asc',sep='/'), overwrite=TRUE)
+writeRaster(resample(df_solea_min, square, 'bilinear'),paste(dname,'dis.20102014.winter.solea_min.asc',sep='/'), overwrite=TRUE)
+writeRaster(resample(df_sprattus_all, square, 'bilinear'),paste(dname,'dis.20102014.winter.sprattus_all.asc',sep='/'), overwrite=TRUE)
+writeRaster(resample(df_crangon_all, square, 'bilinear'),paste(dname,'dis.20102014.winter.crangon_all.asc',sep='/'), overwrite=TRUE)
