@@ -56,14 +56,11 @@ to import-asc
   gis:apply-raster platessa-max-dataset platessa-max
   ask patches with [not (platessa-max < 0 or platessa-max > -1) ] [ set platessa-max -9999 ]
  
+  download-background-image
   display
 
 end
-;
-;
-;; WMS stands for web mapping service, and it is a protocol that allows clients to ask
-;; a server for image of a section of a larger map image.
-;;
+
 ;; The `import-wms-drawing` primitive asks a server (in this case one run by
 ;; terrestris.de, a german GIS company that offers a WMS for the public)
 ;; for the section of the map within the current world envelope
@@ -75,6 +72,6 @@ end
 ;; If you do not know what EPSG code to use, 4326, the code for WGS84, should
 ;; provide good-enough results.
 to download-background-image
-  gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 0
+  gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 200
 end
 

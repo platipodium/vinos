@@ -47,16 +47,16 @@ end
 
 
 to update
-  if View = "Crangon"  [ ask patches [ set pcolor scale-color orange crangon-all 0 10  ] ]
-  if View = "Solea (max)"  [ ask patches [ set pcolor scale-color green solea-max 0 10  ] ]
-  if View = "Solea (min)"  [ ask patches [ set pcolor scale-color green solea-min 0 10  ] ]
-  if View = "Platessa (max)"  [ ask patches [ set pcolor scale-color cyan platessa-max 0 10  ] ]
-  if View = "Platessa (min)"  [ ask patches [ set pcolor scale-color cyan platessa-min 0 10  ] ]
-  if View = "Merlangus (max)"  [ ask patches [ set pcolor scale-color brown merlangus-max 0 10  ] ]
-  if View = "Merlangus (min)"  [ ask patches [ set pcolor scale-color brown merlangus-min 0 10  ] ]
-  if View = "Sprattus"  [ ask patches [ set pcolor scale-color blue sprattus-all 0 10 ] ]
+  if View = "Crangon"  [ ask patches [ set pcolor scale-color orange crangon-all 0 1  ] ]
+  if View = "Solea (max)"  [ ask patches [ set pcolor scale-color green solea-max 0 1  ] ]
+  if View = "Solea (min)"  [ ask patches [ set pcolor scale-color green solea-min 0 1  ] ]
+  if View = "Platessa (max)"  [ ask patches [ set pcolor scale-color cyan platessa-max 0 1  ] ]
+  if View = "Platessa (min)"  [ ask patches [ set pcolor scale-color cyan platessa-min 0 1  ] ]
+  if View = "Merlangus (max)"  [ ask patches [ set pcolor scale-color brown merlangus-max 0 1  ] ]
+  if View = "Merlangus (min)"  [ ask patches [ set pcolor scale-color brown merlangus-min 0 1  ] ]
+  if View = "Sprattus"  [ ask patches [ set pcolor scale-color blue sprattus-all 0 1 ] ]
   if View = "Pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
-  if View = "Bathymetry" [ask patches [set pcolor scale-color blue depth 0 82 ]]
+  if View = "Bathymetry" [ask patches [set pcolor scale-color blue depth 80 0 ]]
 end
 
 to calc-pollution
@@ -72,11 +72,11 @@ end
 GRAPHICS-WINDOW
 210
 10
-938
-499
+1178
+379
 -1
 -1
-4.0
+3.0
 1
 10
 1
@@ -87,7 +87,7 @@ GRAPHICS-WINDOW
 0
 1
 0
-179
+319
 0
 119
 1
@@ -158,18 +158,6 @@ NIL
 1
 
 @#$#@#$#@
-## Georeference
-
-```
-[georeference]
-nrows=120
-ncols=180
-xmin=2
-ymin=53
-xmax=10
-ymax=56
-projection=+proj=longlat +datum=WGS84 +no_defs
-```
 
 ## Data sources
 
@@ -181,11 +169,31 @@ The data was obtained from Nik Probst, based on Random Forest species distributi
 
 Bathymetry data was obtained 2022-01-07 from GEBCO Compilation Group (2021) GEBCO 2021 Grid (https://doi.org/10.5285/c6612cbe-50b3-0cff-e053-6c86abc09f8f).
 
-You can go to https://download.gebco.net to download the data as NetCDF, GeoTIFF, PNG and Esri ASCII.  From the NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` and further processed via `.pnm` to yield a `.png`.  The resulting file was then resampled to 180 x 120 pixels.
+You can go to https://download.gebco.net to download the data as NetCDF, GeoTIFF, PNG and Esri ASCII.  
+
+#### Image-based processing 
+
+Portable Network Graphics (png) images were used with the following projection information: 
+
+```
+nrows=120
+ncols=180
+xmin=2
+ymin=53
+xmax=10
+ymax=56
+projection=+proj=longlat +datum=WGS84 +no_defs
+```
+
+From the NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` and further processed via `.pnm` to yield a `.png`.  The resulting file was then resampled to 180 x 120 pixels.
+
+#### Georeferenced processing
+
+The ESRII ASCII file was directly used (see code in `import-asc.nls`)
 
 ### License 
 
-copyright: Universität Hamburg and Hereon, 
+Copyright: Universität Hamburg and Helmholtz-Zentrum Hereon, 
 Authors: Carsten Lemmen, Sascha Hokamp
 License: Apache 2.0
 @#$#@#$#@
