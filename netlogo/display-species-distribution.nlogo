@@ -1,10 +1,8 @@
 extensions [ gis ]
 
 __includes [
-  "import-png.nls"
   "import-asc.nls"
 ]
-
 
 globals [
   dataset
@@ -35,7 +33,7 @@ end
 to setup
   clear-all
 
-  import-asc ;; replaced import-png
+  import-asc
   calc-pollution
 
   set View "Bathymetry"
@@ -121,7 +119,7 @@ CHOOSER
 View
 View
 "Crangon" "Merlangus (max)" "Merlangus (min)" "Platessa (max)" "Platessa (min)" "Solea (max)" "Solea (min)" "Sprattus" "Pollution (random)" "Bathymetry"
-9
+6
 
 BUTTON
 97
