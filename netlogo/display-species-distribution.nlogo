@@ -119,7 +119,7 @@ CHOOSER
 View
 View
 "Crangon" "Merlangus (max)" "Merlangus (min)" "Platessa (max)" "Platessa (min)" "Solea (max)" "Solea (min)" "Sprattus" "Pollution (random)" "Bathymetry"
-6
+0
 
 BUTTON
 97
@@ -194,6 +194,8 @@ The ESRII ASCII file was directly used (see code in `import-asc.nls`)
 Copyright: Universität Hamburg and Helmholtz-Zentrum Hereon, 
 Authors: Carsten Lemmen, Sascha Hokamp
 License: Apache 2.0
+
+We use cartographic data provided by Openstreetmap @copyright OpenStreetmap Contributors.
 @#$#@#$#@
 default
 true

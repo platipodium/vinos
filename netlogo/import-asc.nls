@@ -72,6 +72,11 @@ end
 ;; If you do not know what EPSG code to use, 4326, the code for WGS84, should
 ;; provide good-enough results.
 to download-background-image
+  
   gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 200
+  ;gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "TOPO-WMS" 200
+  ;gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "TOPO-OSM-WMS" 200
+  ;gis:import-wms-drawing "https://www.geoseaportal.de/wss/service/Seevermessung_DeutscheSeegrenzen/guest?" "EPSG:4326" "AWZ" 200
+  
 end
 
