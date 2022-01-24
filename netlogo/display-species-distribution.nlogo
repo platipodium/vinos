@@ -5,6 +5,13 @@ __includes [
   "calendar.nls"
 ]
 
+breed [boats boat]
+
+boats-own [
+  home-port
+  time-at-sea
+]
+
 globals [
   owf-dataset
 
@@ -34,6 +41,7 @@ end
 to go
   every 1 [update]
   advance-calendar
+  ask boats [ move ]
   tick
 end
 
@@ -48,9 +56,23 @@ to setup
   update
   display
 
+  setup-boats
+
   reset-ticks
 end
 
+;---------------------------------
+
+to setup-boats
+  create-boats 20 [
+    set shape "flag"
+    move-to one-of patches with [ (depth > 5) and (depth < 7)]
+    set size 10
+    set home-port patch-here
+    set time-at-sea 0
+  ]
+
+end
 
 to update
   if View = "Crangon"  [ ask patches [ set pcolor scale-color orange crangon-all 0 1  ] ]
@@ -75,9 +97,22 @@ to-report grayscale [x]
   report (round (10 * (x mod 10))) / 10
 end
 
-to-report datetime
-  report sentence year month
+; turtle procedure
+to move
+  ifelse (time-at-sea > 300) [
+    pen-up
+    move-to home-port
+    set time-at-sea 0
+    pen-down
+  ][
+    let target-patch one-of neighbors with [ depth > 3]
+    ifelse target-patch = nobody [ die ][ face target-patch]
+  ]
+  set time-at-sea time-at-sea + 1
+  fd 1
 end
+
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -171,12 +206,12 @@ MONITOR
 1033
 324
 1167
-369
+361
 Date
-datestring
+datetime
 17
 1
-11
+9
 
 @#$#@#$#@
 ## Data sources
@@ -410,6 +445,22 @@ Polygon -7500403 true true 165 180 165 210 225 180 255 120 210 135
 Polygon -7500403 true true 135 105 90 60 45 45 75 105 135 135
 Polygon -7500403 true true 165 105 165 135 225 105 255 45 210 60
 Polygon -7500403 true true 135 90 120 45 150 15 180 45 165 90
+
+sailboat side
+false
+0
+Line -16777216 false 0 240 120 210
+Polygon -7500403 true true 0 239 270 254 270 269 240 284 225 299 60 299 15 254
+Polygon -1 true false 15 240 30 195 75 120 105 90 105 225
+Polygon -1 true false 135 75 165 180 150 240 255 240 285 225 255 150 210 105
+Line -16777216 false 105 90 120 60
+Line -16777216 false 120 45 120 240
+Line -16777216 false 150 240 120 240
+Line -16777216 false 135 75 120 60
+Polygon -7500403 true true 120 60 75 45 120 30
+Polygon -16777216 false false 105 90 75 120 30 195 15 240 105 225
+Polygon -16777216 false false 135 75 165 180 150 240 255 240 285 225 255 150 210 105
+Polygon -16777216 false false 0 239 60 299 225 299 240 284 270 269 270 254
 
 sheep
 false
