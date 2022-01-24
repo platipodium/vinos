@@ -1,0 +1,70 @@
+; Simple calendar implementation
+
+;
+; @author Carsten Lemmen
+; @license CC0
+; @copyright Carsten Lemmen
+;
+;----------------------------
+
+; Reset the calendar to a default date
+to reset-calendar
+
+  set days-in-months (list 31 28 31 30 31 30 31 31 30 31 30 31 )
+
+  set year 2020
+  set month 2
+  set day 27
+  set day-of-year 58
+  set day-of-week 1 ; @todo fix this later
+
+end
+
+; Advance the calendar by one day
+to advance-calendar
+
+  set day-of-year day-of-year + 1
+  set day day + 1
+
+  let critical-day item (month - 1) days-in-months
+  ; February is longer in leap-years
+  if month = 2 [
+    set critical-day critical-day + leap-year
+  ]
+
+  ; if condition for number of days in months
+  ; at end of month, we reset the days
+  ; take care that lists are zero-based
+  if day > critical-day [
+
+    set day 1
+    set month month + 1
+  ]
+
+  ; if condition for end of year
+  ; at the end of a year, reset month and day and day of year
+  ;if day-of-year > 365 + leap-year [
+  if month > 12 [
+    set year year + 1
+    set month 1
+    set day 1
+    set day-of-year 1
+  ]
+
+end
+
+
+to-report leap-year
+  ; any year not divisible by 4 is not a leap year
+  ; year mod 4 > 0 means there is a remainder on integer division
+  ; at a report statement, the function is terminated and returns the value
+  if ( year mod 4 > 0 )   [ report 0 ]
+  if ( year mod 400 = 0 ) [ report 1 ]
+  if ( year mod 100 = 0 ) [ report 0 ]
+  report 1
+end
+
+
+to-report datetime
+  report (word year "-" month "-" day " (" day-of-year ")")
+end

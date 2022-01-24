@@ -2,10 +2,15 @@ extensions [ gis ]
 
 __includes [
   "import-asc.nls"
+  "calendar.nls"
 ]
 
 globals [
   owf-dataset
+
+  year month day
+  day-of-year day-of-week
+  days-in-months
 ]
 
 patches-own [
@@ -28,11 +33,13 @@ end
 
 to go
   every 1 [update]
+  advance-calendar
   tick
 end
 
 to setup
   clear-all
+  reset-calendar
 
   import-asc
   calc-pollution
@@ -66,6 +73,10 @@ end
 
 to-report grayscale [x]
   report (round (10 * (x mod 10))) / 10
+end
+
+to-report datetime
+  report sentence year month
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -156,8 +167,18 @@ NIL
 NIL
 1
 
-@#$#@#$#@
+MONITOR
+1033
+324
+1167
+369
+Date
+datestring
+17
+1
+11
 
+@#$#@#$#@
 ## Data sources
 
 ### Species probability presences
