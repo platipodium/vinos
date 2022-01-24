@@ -87,7 +87,13 @@ end
 to show-windfarms
   
   set owf-dataset gis:load-dataset "../data/EMODnet_HA_WindFarms_pg_20211210.shp"
+  
+  ;foreach gis:feature-list-of owf-dataset [     
+  ;  this-owf-vector-feature -> gis:set-property-value this-owf-vector-feature "POWER_MW" read-from-string gis:property-value this-owf-vector-feature "POWER_MW" 
+  ;]
 
   gis:set-drawing-color red
   gis:draw owf-dataset 1
+  
+
 end

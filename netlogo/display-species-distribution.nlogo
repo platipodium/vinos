@@ -19,6 +19,7 @@ patches-own [
   sprattus-all
   pollution-exceedance
   depth
+  owf-fraction
 ]
 
 to startup
@@ -119,7 +120,7 @@ CHOOSER
 View
 View
 "Crangon" "Merlangus (max)" "Merlangus (min)" "Platessa (max)" "Platessa (min)" "Solea (max)" "Solea (min)" "Sprattus" "Pollution (random)" "Bathymetry"
-2
+9
 
 BUTTON
 97
