@@ -1,4 +1,5 @@
-extensions [ gis ]
+extensions [ gis
+             csv]
 
 __includes [
   "import-asc.nls"
@@ -6,6 +7,14 @@ __includes [
 ]
 
 breed [boats boat]
+breed [ports port]
+
+ports-own
+;;,"fav_lan","t_intv_min","tot_euros","tot_kgs","LE_EURO_SOL","LE_EURO_CSH","LE_EURO_PLE","LE_KG_SOL","LE_KG_CSH","LE_KG_PLE","VE_REF","t_intv_day","t_intv_h","ISO3_Country_Code","full_name","Coordinates","Latitude","Longitude","EU_Fish_Port","Port"
+[ name
+  latitude
+  longitude
+  sole-landings]
 
 boats-own [
   home-port
@@ -55,13 +64,38 @@ to setup
   set View "Bathymetry"
   update
   display
-
+  setup-fleet
   setup-boats
 
   reset-ticks
 end
 
 ;---------------------------------
+
+
+to setup-fleet
+  file-open "../data/220126-one_year-landings-per_port-home.csv"
+  ;;gis:set-coordinate-system 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]'
+  let row csv:from-row file-read-line
+  set-default-shape ports "house"
+;;set result csv:from-row file-read-line
+  while [ not file-at-end? ] [
+    set row csv:from-row file-read-line
+    create-ports 1
+   [set name item 15 row
+      set latitude item 17 row
+      set longitude item 18 row
+      ;;let xy gis:project-lat-lon latitude longitude
+      ;;setxy item 0 xy item 1 xy
+     ;; set size 10
+    ]
+    ;; set result (map [ [ [col-total new-val] -> col-total + new-val] result row)
+  show row]
+  file-close
+ ;; report result
+
+
+end
 
 to setup-boats
   create-boats 20 [
@@ -111,7 +145,6 @@ to move
   set time-at-sea time-at-sea + 1
   fd 1
 end
-
 
 @#$#@#$#@
 GRAPHICS-WINDOW
