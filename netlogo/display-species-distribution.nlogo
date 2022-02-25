@@ -100,6 +100,8 @@ end
 to setup-boats
   create-boats 20 [
     set shape "flag"
+
+    ;; todo add here the landing ports/home ports information from Serra
     move-to one-of patches with [ (depth > 5) and (depth < 7)]
     set size 10
     set home-port patch-here
@@ -258,6 +260,22 @@ The data was obtained from Nik Probst, based on Random Forest species distributi
 Bathymetry data was obtained 2022-01-07 from GEBCO Compilation Group (2021) GEBCO 2021 Grid (https://doi.org/10.5285/c6612cbe-50b3-0cff-e053-6c86abc09f8f).
 
 You can go to https://download.gebco.net to download the data as NetCDF, GeoTIFF, PNG and Esri ASCII.  
+
+### Offshore wind farms
+
+EmodNet provides human activities at https://www.emodnet-humanactivities.eu/download-data.php. After providing your country and sector, the wind farm polygon areas are freely available. 
+
+#### Todo
+- exclude boats from entering areas
+- classify areas to restrict during certain years
+
+### Swept-area ratio
+
+This is a todo item.  The first goal of ours simulation environment would be to explain the SAR map from our simulation
+
+### Waves
+
+This is a todo item. Likely not relevant for spatial pattern, as the storminess is a global phenomenon and not a local one.   
 
 #### Image-based processing 
 
