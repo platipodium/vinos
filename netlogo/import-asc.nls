@@ -23,6 +23,7 @@ to import-asc
                                                 (gis:envelope-of solea-min-dataset)
                                                 (gis:envelope-of solea-max-dataset))
 
+  ;gis:set-world-envelope (list 6.7 8.0 53.2 56.5)
 
   gis:apply-raster bathymetry-dataset depth
   
@@ -74,7 +75,9 @@ end
 ; provide good-enough results.
 to download-background-image
   
-  gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 200
+  carefully [
+    gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 200
+  ][]
   ;gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "TOPO-WMS" 200
   ;gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "TOPO-OSM-WMS" 200
   ;gis:import-wms-drawing "https://www.geoseaportal.de/wss/service/Seevermessung_DeutscheSeegrenzen/guest?" "EPSG:4326" "AWZ" 200

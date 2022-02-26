@@ -50,6 +50,7 @@ end
 to go
   every 1 [update]
   advance-calendar
+  ask ports [ifelse Ports? [set label ""][set label name]]
   ask boats [ move ]
   tick
 end
@@ -75,26 +76,30 @@ end
 
 to setup-fleet
   file-open "../data/220126-one_year-landings-per_port-home.csv"
-  ;;gis:set-coordinate-system 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]'
+  gis:load-coordinate-system "../data/wgs1984.prj"
+
+  ; skip the first row
   let row csv:from-row file-read-line
   set-default-shape ports "house"
-;;set result csv:from-row file-read-line
+
   while [ not file-at-end? ] [
     set row csv:from-row file-read-line
-    create-ports 1
-   [set name item 15 row
+    create-ports 1 [
+      set name item 15 row
       set latitude item 17 row
       set longitude item 18 row
-      ;;let xy gis:project-lat-lon latitude longitude
-      ;;setxy item 0 xy item 1 xy
-     ;; set size 10
+      let xy gis:project-lat-lon latitude longitude
+      ifelse length xy = 0 [
+        show word name " is not within the map"
+      ][
+        setxy item 0 xy item 1 xy
+        set size 3
+        set label name
+        set label-color black
+      ]
     ]
-    ;; set result (map [ [ [col-total new-val] -> col-total + new-val] result row)
-  show row]
+  ]
   file-close
- ;; report result
-
-
 end
 
 to setup-boats
@@ -147,7 +152,6 @@ to move
   set time-at-sea time-at-sea + 1
   fd 1
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -201,7 +205,7 @@ CHOOSER
 View
 View
 "Crangon" "Merlangus (max)" "Merlangus (min)" "Platessa (max)" "Platessa (min)" "Solea (max)" "Solea (min)" "Sprattus" "Pollution (random)" "Bathymetry"
-9
+1
 
 BUTTON
 97
@@ -247,6 +251,17 @@ datetime
 17
 1
 9
+
+SWITCH
+24
+194
+127
+227
+Ports?
+Ports?
+0
+1
+-1000
 
 @#$#@#$#@
 ## Data sources
