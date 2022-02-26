@@ -57,33 +57,11 @@ to import-asc
   gis:apply-raster platessa-max-dataset platessa-max
   ask patches with [not (platessa-max < 0 or platessa-max > -1) ] [ set platessa-max -9999 ]
  
-  download-background-image
+  draw-background "SAR"
   show-windfarms
   display
 
 end
-
-; The `import-wms-drawing` primitive asks a server (in this case one run by
-; terrestris.de, a german GIS company that offers a WMS for the public)
-; for the section of the map within the current world envelope
-; and then draws it to the screen.
-;
-; In addition to the url of the WMS server, you must also supply the EPSG code
-; for the projection you want to use and the name of the layer you want to grab
-; from that server as well as a transparency parameter from 0 to 255.
-; If you do not know what EPSG code to use, 4326, the code for WGS84, should
-; provide good-enough results.
-to download-background-image
-  
-  carefully [
-    gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 200
-  ][]
-  ;gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "TOPO-WMS" 200
-  ;gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "TOPO-OSM-WMS" 200
-  ;gis:import-wms-drawing "https://www.geoseaportal.de/wss/service/Seevermessung_DeutscheSeegrenzen/guest?" "EPSG:4326" "AWZ" 200
-  
-end
-
 
 ; EmodNet provides human activities at https://www.emodnet-humanactivities.eu/download-data.php. 
 ; After providing your country and sector, the wind farm polygon areas are freely available. 
@@ -100,13 +78,27 @@ to show-windfarms
   
 end
 
-to draw-swept-area-ratio
-  
-  ; This query does not work, @todo consult with Marie on the correct call to the WMS Service.  
+; The `import-wms-drawing` primitive asks a server (in this case one run by
+; terrestris.de, a german GIS company that offers a WMS for the public)
+; for the section of the map within the current world envelope
+; and then draws it to the screen.
+;
+; In addition to the url of the WMS server, you must also supply the EPSG code
+; for the projection you want to use and the name of the layer you want to grab
+; from that server as well as a transparency parameter from 0 to 255.
+; If you do not know what EPSG code to use, 4326, the code for WGS84, should
+; provide good-enough results.
+to draw-background [X]
+
+  if member? X  (list "OSM" "SAR" "CHL") [ clear-drawing]
   
   carefully [
-    gis:import-wms-drawing "http://coastmap.hzg.de/server/services/NOAH_geoDB/TI_SARnested/MapServer/WMSServer?" "EPSG:4326" "Sswept Area Ratio" 200
-  ][]
+    if X = "OSM" [gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 200]
+    if X = "SAR" [gis:import-wms-drawing "http://coastmap.hzg.de/server/services/NOAH_geoDB/TI_SARnested/MapServer/WMSServer?" "EPSG:4326" "0" 200]
+    if X = "CHL" [gis:import-wms-drawing "https://coastmap.hzg.de/server/services/MOSSCO/MOSSCO_chlorophyll/MapServer/WmsServer?" "EPSG:4326" "0" 200]
+  ][ 
+    show word "Could not load " X
+  ]
   
 end
 
