@@ -98,5 +98,15 @@ to show-windfarms
   gis:set-drawing-color red
   gis:draw owf-dataset 1
   
-
 end
+
+to draw-swept-area-ratio
+  
+  ; This query does not work, @todo consult with Marie on the correct call to the WMS Service.  
+  
+  carefully [
+    gis:import-wms-drawing "http://coastmap.hzg.de/server/services/NOAH_geoDB/TI_SARnested/MapServer/WMSServer?" "EPSG:4326" "Sswept Area Ratio" 200
+  ][]
+  
+end
+
