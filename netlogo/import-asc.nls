@@ -3,25 +3,21 @@ to import-asc
   no-display
 
   let bathymetry-dataset gis:load-dataset "../data/gebco_2021_n56.0_s53.0_w2.0_e10.0.asc"
-  let crangon-dataset gis:load-dataset "../data/dis.20102014.winter.crangon_all.asc"
-  let platessa-min-dataset gis:load-dataset "../data/dis.20102014.winter.platessa_min.asc"
-  let platessa-max-dataset gis:load-dataset "../data/dis.20102014.winter.platessa_max.asc"
-  let solea-min-dataset gis:load-dataset "../data/dis.20102014.winter.solea_min.asc"
-  let solea-max-dataset gis:load-dataset "../data/dis.20102014.winter.solea_max.asc"
-  let merlangus-min-dataset gis:load-dataset "../data/dis.20102014.winter.merlangus_min.asc"
-  let merlangus-max-dataset gis:load-dataset "../data/dis.20102014.winter.merlangus_max.asc"
-  let sprattus-dataset gis:load-dataset "../data/dis.20102014.winter.crangon_all.asc"
-
+  let platessa-summer-dataset gis:load-dataset "../data/dist_ran.forest_pleuronectes.platessa_summer.asc"
+  let platessa-winter-dataset gis:load-dataset "../data/dist_ran.forest_pleuronectes.platessa_winter.asc"
+  let crangon-summer-dataset gis:load-dataset "../data/dist_ran.forest_crangon.crangon_summer.asc"
+  let crangon-winter-dataset gis:load-dataset "../data/dist_ran.forest_crangon.crangon_winter.asc"
+  let solea-summer-dataset gis:load-dataset "../data/dist_ran.forest_solea.solea_summer.asc"
+  let solea-winter-dataset gis:load-dataset "../data/dist_ran.forest_solea.solea_winter.asc"
+  
   ; Set the world envelope to the union of all of our dataset's envelopes
   gis:set-world-envelope (gis:envelope-union-of (gis:envelope-of bathymetry-dataset)
-                                                (gis:envelope-of crangon-dataset)
-                                                (gis:envelope-of sprattus-dataset)
-                                                (gis:envelope-of platessa-min-dataset)
-                                                (gis:envelope-of platessa-max-dataset)
-                                                (gis:envelope-of merlangus-min-dataset)
-                                                (gis:envelope-of merlangus-max-dataset)
-                                                (gis:envelope-of solea-min-dataset)
-                                                (gis:envelope-of solea-max-dataset))
+                                                (gis:envelope-of crangon-summer-dataset)
+                                                (gis:envelope-of crangon-winter-dataset)
+                                                (gis:envelope-of platessa-summer-dataset)
+                                                (gis:envelope-of platessa-winter-dataset)
+                                                (gis:envelope-of solea-summer-dataset)
+                                                (gis:envelope-of solea-winter-dataset))
 
   ;gis:set-world-envelope (list 6.7 8.0 53.2 56.5)
 
@@ -33,30 +29,24 @@ to import-asc
   ; Convert from bathymetry to depth
   ask patches [ set depth ( - depth)]
   
-  gis:apply-raster crangon-dataset crangon-all
-  ask patches with [not (crangon-all < 0 or crangon-all > -1) ] [ set crangon-all -9999 ]
+  gis:apply-raster crangon-summer-dataset crangon-summer
+  ask patches with [not (crangon-summer < 0 or crangon-summer > -1) ] [ set crangon-summer -9999 ]
 
-  gis:apply-raster sprattus-dataset sprattus-all
-  ask patches with [not (sprattus-all < 0 or sprattus-all > -1) ] [ set sprattus-all -9999 ]
+  gis:apply-raster crangon-winter-dataset crangon-winter
+  ask patches with [not (crangon-winter < 0 or crangon-winter > -1) ] [ set crangon-winter -9999 ]
 
-  gis:apply-raster solea-min-dataset solea-min
-  ask patches with [not (solea-min < 0 or solea-min > -1) ] [ set solea-min -9999 ]
+  gis:apply-raster solea-summer-dataset solea-summer
+  ask patches with [not (solea-summer < 0 or solea-summer > -1) ] [ set solea-summer -9999 ]
 
-  gis:apply-raster solea-max-dataset solea-max
-  ask patches with [not (solea-max < 0 or solea-max > -1) ] [ set solea-max -9999 ]
+  gis:apply-raster solea-winter-dataset solea-winter
+  ask patches with [not (solea-winter < 0 or solea-winter > -1) ] [ set solea-winter -9999 ]
 
-  gis:apply-raster merlangus-min-dataset merlangus-min
-  ask patches with [not (merlangus-min < 0 or merlangus-min > -1) ] [ set merlangus-min -9999 ]
+  gis:apply-raster platessa-summer-dataset platessa-summer
+  ask patches with [not (platessa-summer < 0 or platessa-summer > -1) ] [ set platessa-summer -9999 ]
 
-  gis:apply-raster merlangus-max-dataset merlangus-max
-  ask patches with [not (merlangus-max < 0 or merlangus-max > -1) ] [ set merlangus-max -9999 ]
+  gis:apply-raster platessa-winter-dataset platessa-winter
+  ask patches with [not (platessa-winter < 0 or platessa-winter > -1) ] [ set platessa-winter -9999 ]
 
-  gis:apply-raster platessa-min-dataset platessa-min
-  ask patches with [not (platessa-min < 0 or platessa-min > -1) ] [ set platessa-min -9999 ]
-
-  gis:apply-raster platessa-max-dataset platessa-max
-  ask patches with [not (platessa-max < 0 or platessa-max > -1) ] [ set platessa-max -9999 ]
- 
   draw-background "SAR"
   show-windfarms
   display
@@ -94,7 +84,7 @@ to draw-background [X]
   
   carefully [
     if X = "OSM" [gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 200]
-    if X = "SAR" [gis:import-wms-drawing "http://coastmap.hzg.de/server/services/NOAH_geoDB/TI_SARnested/MapServer/WMSServer?" "EPSG:4326" "0" 200]
+    if X = "SAR" [gis:import-wms-drawing "http://coastmap.hzg.de/server/services/NOAH_geoDB/TI_SARnested/MapServer/WMSServer?" "EPSG:4326" "0" 100]
     if X = "CHL" [gis:import-wms-drawing "https://coastmap.hzg.de/server/services/MOSSCO/MOSSCO_chlorophyll/MapServer/WmsServer?" "EPSG:4326" "0" 200]
   ][ 
     show word "Could not load " X

@@ -30,14 +30,12 @@ globals [
 ]
 
 patches-own [
-  crangon-all
-  merlangus-max
-  merlangus-min
-  platessa-max
-  platessa-min
-  solea-max
-  solea-min
-  sprattus-all
+  crangon-summer
+  crangon-winter
+  platessa-summer
+  platessa-winter
+  solea-summer
+  solea-winter
   pollution-exceedance
   depth
   owf-fraction
@@ -122,22 +120,21 @@ to setup-boats
 end
 
 to update
-  if View = "Crangon"  [ ask patches [ set pcolor scale-color orange crangon-all 0 1  ] ]
-  if View = "Solea (max)"  [ ask patches [ set pcolor scale-color green solea-max 0 1  ] ]
-  if View = "Solea (min)"  [ ask patches [ set pcolor scale-color green solea-min 0 1  ] ]
-  if View = "Platessa (max)"  [ ask patches [ set pcolor scale-color cyan platessa-max 0 1  ] ]
-  if View = "Platessa (min)"  [ ask patches [ set pcolor scale-color cyan platessa-min 0 1  ] ]
-  if View = "Merlangus (max)"  [ ask patches [ set pcolor scale-color brown merlangus-max 0 1  ] ]
-  if View = "Merlangus (min)"  [ ask patches [ set pcolor scale-color brown merlangus-min 0 1  ] ]
-  if View = "Sprattus"  [ ask patches [ set pcolor scale-color blue sprattus-all 0 1 ] ]
+  if View = "Crangon"  [ ask patches [ set pcolor scale-color orange crangon 0 1  ] ]
+  if View = "Solea"  [ ask patches [ set pcolor scale-color green solea 0 1  ] ]
+  ;if View = "Solea (min)"  [ ask patches [ set pcolor scale-color green solea-min 0 1  ] ]
+  if View = "Platessa"  [ ask patches [ set pcolor scale-color cyan platessa 0 1  ] ]
+  ;if View = "Platessa (min)"  [ ask patches [ set pcolor scale-color cyan platessa-min 0 1  ] ]
+  ;if View = "Merlangus (max)"  [ ask patches [ set pcolor scale-color brown merlangus-max 0 1  ] ]
+  ;if View = "Merlangus (min)"  [ ask patches [ set pcolor scale-color brown merlangus-min 0 1  ] ]
+  ;if View = "Sprattus"  [ ask patches [ set pcolor scale-color blue sprattus-all 0 1 ] ]
   if View = "Pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   if View = "Bathymetry" [ask patches [set pcolor scale-color blue depth 80 0 ]]
 end
 
+; This is a dummy procedure and needs to be replace by actual pollution data.
 to calc-pollution
-
-  ask n-of 100 patches with [platessa-max > 0] [set pollution-exceedance random-float 2.0]
-
+  ask n-of 100 patches with [platessa > 0] [set pollution-exceedance random-float 2.0]
 end
 
 to-report grayscale [x]
@@ -157,6 +154,18 @@ to move
   ]
   set time-at-sea time-at-sea + 1
   fd 1
+end
+
+; Patch procedure
+; these need to be adjusted to report the correct transition between summer and winter
+to-report crangon
+  report 0.5 * crangon-winter + 0.5 * crangon-summer
+end
+to-report solea
+  report 0.5 * solea-winter + 0.5 * solea-summer
+end
+to-report platessa
+  report 0.5 * platessa-winter + 0.5 * platessa-summer
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -210,8 +219,8 @@ CHOOSER
 130
 View
 View
-"Crangon" "Merlangus (max)" "Merlangus (min)" "Platessa (max)" "Platessa (min)" "Solea (max)" "Solea (min)" "Sprattus" "Pollution (random)" "Bathymetry"
-9
+"Crangon" "Platessa" "Solea" "Pollution (random)" "Bathymetry"
+4
 
 BUTTON
 97
@@ -265,7 +274,7 @@ SWITCH
 227
 Ports?
 Ports?
-1
+0
 1
 -1000
 
