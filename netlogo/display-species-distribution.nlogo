@@ -84,18 +84,24 @@ to setup-fleet
 
   while [ not file-at-end? ] [
     set row csv:from-row file-read-line
-    create-ports 1 [
-      set name item 15 row
-      set latitude item 17 row
-      set longitude item 18 row
-      let xy gis:project-lat-lon latitude longitude
-      ifelse length xy = 0 [
-        show word name " is not within the map"
-      ][
-        setxy item 0 xy item 1 xy
-        set size 3
-        set label name
-        set label-color black
+
+    if  (item 18 row) < 9.16 [
+      ; In rows 17 and 18 there are decimal coordinates
+      let xy gis:project-lat-lon (item 17 row) (item 18 row)
+      show xy
+
+      ; Create ports only if on current map (list is not empty) and not Baltic (lon > 9.16)
+      if not (length xy = 0) [
+        create-ports 1 [
+          set name item 15 row
+          set latitude item 17 row
+          set longitude item 18 row
+          set size 4
+          set label name
+          set label-color black
+          setxy (item 0 xy)  (item 1 xy)
+
+        ]
       ]
     ]
   ]
@@ -205,7 +211,7 @@ CHOOSER
 View
 View
 "Crangon" "Merlangus (max)" "Merlangus (min)" "Platessa (max)" "Platessa (min)" "Solea (max)" "Solea (min)" "Sprattus" "Pollution (random)" "Bathymetry"
-1
+9
 
 BUTTON
 97
@@ -259,7 +265,7 @@ SWITCH
 227
 Ports?
 Ports?
-0
+1
 1
 -1000
 
