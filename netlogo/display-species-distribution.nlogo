@@ -14,7 +14,11 @@ ports-own
 [ name
   latitude
   longitude
-  sole-landings]
+  sole-landings
+  platessa-landings
+  crangon-landings
+  start-patch
+]
 
 boats-own [
   home-port
@@ -63,7 +67,7 @@ to setup
   set View "Bathymetry"
   update
   display
-  setup-fleet
+  setup-ports
   setup-boats
 
   reset-ticks
@@ -72,7 +76,7 @@ end
 ;---------------------------------
 
 
-to setup-fleet
+to setup-ports
   file-open "../data/220126-one_year-landings-per_port-home.csv"
   gis:load-coordinate-system "../data/wgs1984.prj"
 
@@ -86,7 +90,6 @@ to setup-fleet
     if  (item 18 row) < 9.16 [
       ; In rows 17 and 18 there are decimal coordinates
       let xy gis:project-lat-lon (item 17 row) (item 18 row)
-      show xy
 
       ; Create ports only if on current map (list is not empty) and not Baltic (lon > 9.16)
       if not (length xy = 0) [
@@ -99,6 +102,8 @@ to setup-fleet
           set label-color black
           setxy (item 0 xy)  (item 1 xy)
 
+          set start-patch min-one-of patches with [depth > 5] [distance myself]
+
         ]
       ]
     ]
@@ -109,11 +114,11 @@ end
 to setup-boats
   create-boats 20 [
     set shape "flag"
-
-    ;; todo add here the landing ports/home ports information from Serra
-    move-to one-of patches with [ (depth > 5) and (depth < 7)]
     set size 10
-    set home-port patch-here
+    set home-port (one-of ports)
+    create-link-with home-port
+    move-to [start-patch] of home-port
+
     set time-at-sea 0
   ]
 
@@ -122,12 +127,7 @@ end
 to update
   if View = "Crangon"  [ ask patches [ set pcolor scale-color orange crangon 0 1  ] ]
   if View = "Solea"  [ ask patches [ set pcolor scale-color green solea 0 1  ] ]
-  ;if View = "Solea (min)"  [ ask patches [ set pcolor scale-color green solea-min 0 1  ] ]
   if View = "Platessa"  [ ask patches [ set pcolor scale-color cyan platessa 0 1  ] ]
-  ;if View = "Platessa (min)"  [ ask patches [ set pcolor scale-color cyan platessa-min 0 1  ] ]
-  ;if View = "Merlangus (max)"  [ ask patches [ set pcolor scale-color brown merlangus-max 0 1  ] ]
-  ;if View = "Merlangus (min)"  [ ask patches [ set pcolor scale-color brown merlangus-min 0 1  ] ]
-  ;if View = "Sprattus"  [ ask patches [ set pcolor scale-color blue sprattus-all 0 1 ] ]
   if View = "Pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   if View = "Bathymetry" [ask patches [set pcolor scale-color blue depth 80 0 ]]
 end
@@ -145,11 +145,11 @@ end
 to move
   ifelse (time-at-sea > 300) [
     pen-up
-    move-to home-port
+    move-to [start-patch] of home-port
     set time-at-sea 0
     pen-down
   ][
-    let target-patch one-of neighbors with [ depth > 3]
+    let target-patch one-of neighbors with [ depth > 5]
     ifelse target-patch = nobody [ die ][ face target-patch]
   ]
   set time-at-sea time-at-sea + 1
