@@ -12,12 +12,13 @@ to import-asc
   
   ; Set the world envelope to the union of all of our dataset's envelopes
   gis:set-world-envelope (gis:envelope-union-of (gis:envelope-of bathymetry-dataset)
-                                                (gis:envelope-of crangon-summer-dataset)
-                                                (gis:envelope-of crangon-winter-dataset)
-                                                (gis:envelope-of platessa-summer-dataset)
-                                                (gis:envelope-of platessa-winter-dataset)
-                                                (gis:envelope-of solea-summer-dataset)
-                                                (gis:envelope-of solea-winter-dataset))
+;                                                (gis:envelope-of crangon-summer-dataset)
+;                                               (gis:envelope-of crangon-winter-dataset)
+;                                                (gis:envelope-of platessa-summer-dataset)
+;                                                (gis:envelope-of platessa-winter-dataset)
+;                                                (gis:envelope-of solea-summer-dataset)
+;                                                (gis:envelope-of solea-winter-dataset)
+  )
 
   ;gis:set-world-envelope (list 6.7 8.0 53.2 56.5)
 

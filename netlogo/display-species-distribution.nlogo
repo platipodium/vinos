@@ -1,5 +1,7 @@
-extensions [ gis
-             csv]
+extensions [
+  gis
+  csv
+]
 
 __includes [
   "import-asc.nls"
