@@ -99,6 +99,9 @@ to setup-ports
           set name item 15 row
           set latitude item 17 row
           set longitude item 18 row
+          set sole-landings item 5 row
+          set crangon-landings item 6 row
+          set platessa-landings item 7 row
           set size 4
           set label name
           set label-color black
@@ -222,7 +225,7 @@ CHOOSER
 View
 View
 "Crangon" "Platessa" "Solea" "Pollution (random)" "Bathymetry"
-4
+0
 
 BUTTON
 97
