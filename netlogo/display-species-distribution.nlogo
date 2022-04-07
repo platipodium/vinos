@@ -406,15 +406,15 @@ NIL
 HORIZONTAL
 
 SLIDER
-30
-249
-202
-282
+9
+251
+181
+284
 memory-size
 memory-size
 0
 100
-50.0
+49.0
 1
 1
 NIL
