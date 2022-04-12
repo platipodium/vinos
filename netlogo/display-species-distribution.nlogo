@@ -10,76 +10,108 @@ __includes [
 
 breed [boats boat]
 breed [ports port]
+breed [home-ports home-port]
+breed [favorite-landing-ports favorite-landing-port]
 breed [actions action]
 
 actions-own
-[target              ; targetted patch id
- revenue             ; revenue
- costs               ;
- gain
- priority
- marginal-benefit
+[target                      ; targetted patch id
+ actions-target-species      ; primarily targetted species (solea, platessa, crangon)
+ revenue                     ; revenue for the fishing trip of the boat
+ costs                       ; costs for the fishing trip of the boat
+ gain                        ; gain for the fishing trip of the boat
+ priority                    ; priority for the pathway
+ marginal-priority           ; expected change of the priority for the pathway
 ]
 
 ports-own
 ;;,"fav_lan","t_intv_min","tot_euros","tot_kgs","LE_EURO_SOL","LE_EURO_CSH","LE_EURO_PLE","LE_KG_SOL","LE_KG_CSH","LE_KG_PLE","VE_REF","t_intv_day","t_intv_h","ISO3_Country_Code","full_name","Coordinates","Latitude","Longitude","EU_Fish_Port","Port"
-[ name                     ; Name of the Port 'full name' info from UN_LOCODE.csv
+[ kind                     ; home-port (which includes also the landings as favorite port) or favorite-landing-port
+  name                     ; Name of the Port 'full name' info from UN_LOCODE.csv
   country                  ; Name of the Country 'ISO3_Country_Code' info from UN_LOCODE.csv
   latitude                 ; Latitude of the Port 'Latitude'
   longitude                ; Longitude of the Port 'longitude'
-  sole-landings-euro       ; LE_EURO_SOL in EURO 2015
+  start-patch              ; starting patch for boats
+  landing-patch            ; landing patch for boats
+  solea-landings-euro       ; LE_EURO_SOL in EURO 2015
   platessa-landings-euro   ; LE_EURO_PLE in EURO 2015
   crangon-landings-euro    ; LE_EURO_CSH in EURO 2015
   other-landings-euro      ; other landings in EURO 2015, e.g. bycatch or other targetted species
   total-landings-euro      ; total landings in EURO 2015
-  sole-landings-kg         ; LE_KG_SOL in kilogramm
+  solea-landings-kg         ; LE_KG_SOL in kilogramm
   platessa-landings-kg     ; LE_KG_PLE in kilogramm
   crangon-landings-kg      ; LE_KG_CSH in kilogramm
   other-landings-kg        ; other landings in kilogramm, e.g. bycatch or other targetted species
   total-landings-kg        ; total landings in kilogramm
-  start-patch              ; starting patch for boats
-  platessa-price
-]
+  solea-price              ; price for one kg solea in EUR 2015
+  platessa-price           ; price for one kg platessa in EUR 2015
+  crangon-price            ; price for one kg crangon in EUR 2015
+  other-species-price      ; average price for one kg other species in EUR 2015
+  fp-solea-landings-euro       ; LE_EURO_SOL in EURO 2015
+  fp-platessa-landings-euro   ; LE_EURO_PLE in EURO 2015
+  fp-crangon-landings-euro    ; LE_EURO_CSH in EURO 2015
+  fp-other-landings-euro      ; other landings in EURO 2015, e.g. bycatch or other targetted species
+  fp-total-landings-euro      ; total landings in EURO 2015
+  fp-solea-landings-kg         ; LE_KG_SOL in kilogramm
+  fp-platessa-landings-kg     ; LE_KG_PLE in kilogramm
+  fp-crangon-landings-kg      ; LE_KG_CSH in kilogramm
+  fp-other-landings-kg        ; other landings in kilogramm, e.g. bycatch or other targetted species
+  fp-total-landings-kg        ; total landings in kilogramm
+  fp-solea-price              ; price for one kg solea in EUR 2015
+  fp-platessa-price           ; price for one kg platessa in EUR 2015
+  fp-crangon-price            ; price for one kg crangon in EUR 2015
+  fp-other-species-price      ; average price for one kg other species in EUR 2015
+  port-transportation-costs; average transportation costs as percentage of the total landings in EUR 2015
+  port-operation-costs     ; averagre operating costs as percetage of the total landings in EUR 2015
+  port-average-trip-length ; average trip length
+  port-average-fishing-effort-in-days    ; t_intv_day
+  port-average-fishing-effort-in-hours   ; t_intv_h
+  vessels-per-port         ; number of individual vessels per home port
+  ]
 
 boats-own [
-  sole-catch-kg
-  sole-catch-euro
-  platessa-catch-kg
-  platessa-catch-euro
-  platessa-catch-kg
-  crangon-catch-euro
-  crangon-catch-kg
-  other-catch-euro
-  other-catch-kg
-  vessel-size
-  transportation-costs
-  operating-costs
-  catch-efficiency
-  gear
-  home-port
-  landing-port
-  time-at-sea
-  pathways
+  solea-catch-kg          ; catch of solea in kg for a fishing trip
+  solea-catch-euro        ; catch of solea in EUR 2015 for a fishing trip
+  platessa-catch-kg       ; catch of platessa in kg for a fishing trip
+  platessa-catch-euro     ; catch of platessa in EUR 2015 for a fishing trip
+  crangon-catch-kg        ; catch of crangon in kg for a fishing trip
+  crangon-catch-euro      ; catch of crangon in EUR 2015 for a fishing trip
+  other-catch-kg          ; other catch in kg for a fishing trip
+  other-catch-euro        ; other catch in EUR 2015 for a fishing trip
+  transportation-costs    ; costs for one km of the fishing trip
+                          ; comment: mainly driven by oil price, approx 10-20 percent of the revenue for crangon, up to 30 percent for solea and platessa according to press relesease March 2022 going up to 50 percent
+  operating-costs         ; cost for opertating the vessel,
+                          ; comment: approximately 50 percent of the revenue
+  catch-efficiency        ; how much fish is effectively catched
+  target-species          ; species primarily tragetted (solea, platessa, crangon)
+  home-port-of-boat               ; Home Port (in the current state only German ports are considered
+  favorite-landing-port-of-boat   ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
+  time-at-sea             ; time at sea which is needed to calculate the costs
+  pathways                ; possible pathways which boats learn
 ]
 
 globals [
-  ports-total-landings-kg
-  ports-other-landings-kg
-  percentage-landings-kg
-  sum-landings-crangon-euro    ; overall sum of of landings of crangon per period
-  sum-landings-platessa-euro   ; overall sum of of landings of platessa per period
-  sum-landings-solea-euro      ; overall sum of of landings of solea per period
+  sum-ports-total-landings-kg        ; overall sum of total landings per period
+  sum-ports-other-landings-kg        ; overall sum of other landings per period
+  percentage-landings-kg             ; percentage of other landing over total landings per period
+  sum-ports-crangon-landings-euro    ; overall sum of landings of crangon per period in EUR 2015
+  sum-ports-platessa-landings-euro   ; overall sum of landings of platessa per period in EUR 2015
+  sum-ports-solea-landings-euro      ; overall sum of landings of solea per period in EUR 2015
+  sum-ports-crangon-landings-kg      ; overall sum of landings of crangon per period in kg
+  sum-ports-platessa-landings-kg     ; overall sum of landings of platessa per period in kg
+  sum-ports-solea-landings-kg        ; overall sum of landings of solea per period in kg
+  sum-vessels                        ; overall vessels of all ports
 
 
-  owf-dataset
+  owf-dataset                        ; Off-shore wind farms
 
-  year month day
+  year month day                     ; time frame
   day-of-year day-of-week
   days-in-months
 ]
 
 patches-own [
-  crangon-summer
+  crangon-summer                    ; data from TI
   crangon-winter
   platessa-summer
   platessa-winter
@@ -91,7 +123,7 @@ patches-own [
 ]
 
 to startup
-  setup
+   setup
 end
 
 to go
@@ -99,14 +131,24 @@ to go
   advance-calendar
   ask ports [ifelse Ports? [set label ""][set label name]]
   ask boats [ move ]
-  calculus
+  calc-sum-landings
   tick
 end
 
-to calculus
-  set ports-total-landings-kg sum [total-landings-kg] of ports
-  set ports-other-landings-kg sum [other-landings-kg] of ports
-  set percentage-landings-kg (sum [other-landings-kg] of ports) / (sum [total-landings-kg] of ports)
+to calc-initial-values
+  set sum-vessels sum [vessels-per-port] of ports
+end
+
+to calc-sum-landings
+  set sum-ports-total-landings-kg sum [total-landings-kg] of ports
+  set sum-ports-other-landings-kg sum [other-landings-kg] of ports
+  set percentage-landings-kg (sum-ports-other-landings-kg) / (sum-ports-total-landings-kg)
+  set sum-ports-crangon-landings-euro sum [crangon-landings-euro] of ports
+  set sum-ports-platessa-landings-euro sum [platessa-landings-euro] of ports
+  set sum-ports-solea-landings-euro sum [solea-landings-euro] of ports
+  set sum-ports-crangon-landings-kg sum [crangon-landings-kg] of ports
+  set sum-ports-platessa-landings-kg sum [platessa-landings-kg] of ports
+  set sum-ports-solea-landings-kg sum [solea-landings-kg] of ports
 end
 
 to setup
@@ -116,26 +158,30 @@ to setup
   import-asc
   calc-pollution
 
+
   set View "Bathymetry"
   update
   display
   setup-ports
+  calc-initial-values
   setup-boats
-
+  calc-sum-landings
   reset-ticks
 end
 
 ;---------------------------------
 
-
 to setup-ports
-  ;file-open "../data/220126-one_year-landings-per_port-home.csv"
-  file-open "../data/220126-one_year-landings-per_port-favorite.csv"
+  file-open "../data/220126-one_year-landings-per_port-home.csv"       ; Data of German fleet per home port
+  ;file-open "../data/220126-one_year-landings-per_port-favorite.csv"  ; Data of German fleet per favorite landing port
   gis:load-coordinate-system "../data/wgs1984.prj"
 
   ; skip the first row
   let row csv:from-row file-read-line
+
   set-default-shape ports "house"
+
+  ; create home-ports
 
   while [ not file-at-end? ] [
     set row csv:from-row file-read-line
@@ -147,30 +193,55 @@ to setup-ports
       ; Create ports only if on current map (list is not empty) and not Baltic (lon > 9.16)
       if not (length xy = 0) [
         create-ports 1 [
+          set kind "home-port"
           set name item 15 row
           set country item 14 row
           set latitude item 17 row
           set longitude item 18 row
-          set sole-landings-euro item 5 row
+          set solea-landings-euro item 5 row
           set platessa-landings-euro item 7 row
           set crangon-landings-euro item 6 row
           set total-landings-euro item 3 row
-          set other-landings-euro total-landings-euro - (sole-landings-euro + crangon-landings-euro + platessa-landings-euro)
-          set sole-landings-kg item 8 row
+          set other-landings-euro total-landings-euro - (solea-landings-euro + crangon-landings-euro + platessa-landings-euro)
+          set solea-landings-kg item 8 row
           set platessa-landings-kg item 10 row
           set crangon-landings-kg item 9 row
           set total-landings-kg item 4 row
-          set other-landings-kg total-landings-kg - (sole-landings-kg + crangon-landings-kg + platessa-landings-kg)
+          set other-landings-kg total-landings-kg - (solea-landings-kg + crangon-landings-kg + platessa-landings-kg)
           ifelse platessa-landings-kg > 0 [
             set platessa-price platessa-landings-euro / platessa-landings-kg
           ][
             set platessa-price 0
           ]
+          ifelse solea-landings-kg > 0 [
+            set solea-price solea-landings-euro / solea-landings-kg
+          ][
+            set solea-price 0
+          ]
+          ifelse crangon-landings-kg > 0 [
+            set crangon-price crangon-landings-euro / crangon-landings-kg
+          ][
+            set crangon-price 0
+          ]
+          ifelse other-landings-kg > 0 [
+            set other-species-price other-landings-euro / other-landings-kg
+          ][
+            set other-species-price 0
+          ]
+
+          ifelse total-landings-euro > 0 [
+          set port-transportation-costs  total-landings-euro * percentage-transportation-costs
+          ][
+            set port-transportation-costs -999     ;  dummy variable: why transportation costs can  be zero?
+          ]
+          set port-average-fishing-effort-in-days item 12 row
+          set port-average-fishing-effort-in-hours item 13 row
+          set port-average-trip-length  port-average-fishing-effort-in-hours * 15 ; assumption: set average speed of a vessel to 15 km per h
+          set vessels-per-port item 11 row
           set size 4
           set label name
           set label-color black
           setxy (item 0 xy)  (item 1 xy)
-
           set start-patch min-one-of patches with [depth > 5] [distance myself]
 
         ]
@@ -178,16 +249,131 @@ to setup-ports
     ]
   ]
   file-close
+
+  file-open "../data/220126-one_year-landings-per_port-favorite.csv"
+  gis:load-coordinate-system "../data/wgs1984.prj"
+
+  ; skip the first row
+  let row-f csv:from-row file-read-line
+  set-default-shape ports "house"
+
+  while [ not file-at-end? ] [
+    set row-f csv:from-row file-read-line
+
+    if  (item 18 row-f) < 9.16 [
+      ; In rows 17 and 18 there are decimal coordinates
+      let xy gis:project-lat-lon (item 17 row-f) (item 18 row-f)
+
+      ; Create ports only if on current map (list is not empty) and not Baltic (lon > 9.16)
+      if not (length xy = 0) [
+
+    if (item 15 row-f ) != [name] of ports [
+
+      create-ports 1  [
+      set kind "favorite-landing-ports"      ; these ports are not in Germany
+      set name item 15 row-f
+      set country item 14 row-f
+      set latitude item 17 row-f
+      set longitude item 18 row-f
+      set fp-solea-landings-euro item 5 row-f
+      set fp-platessa-landings-euro item 7 row-f
+      set fp-crangon-landings-euro item 6 row-f
+      set fp-total-landings-euro item 3 row-f
+      set fp-other-landings-euro fp-total-landings-euro - (fp-solea-landings-euro + fp-crangon-landings-euro + fp-platessa-landings-euro)
+      set fp-solea-landings-kg item 8 row-f
+      set fp-platessa-landings-kg item 10 row-f
+      set fp-crangon-landings-kg item 9 row-f
+      set fp-total-landings-kg item 4 row-f
+      set fp-other-landings-kg fp-total-landings-kg - (fp-solea-landings-kg + fp-crangon-landings-kg + fp-platessa-landings-kg)
+      ifelse fp-platessa-landings-kg > 0 [
+            set fp-platessa-price fp-platessa-landings-euro / fp-platessa-landings-kg
+          ][
+            set fp-platessa-price 0
+          ]
+      ifelse fp-solea-landings-kg > 0 [
+            set fp-solea-price fp-solea-landings-euro / fp-solea-landings-kg
+          ][
+            set fp-solea-price 0
+          ]
+      ifelse fp-crangon-landings-kg > 0 [
+            set fp-crangon-price fp-crangon-landings-euro / fp-crangon-landings-kg
+          ][
+            set fp-crangon-price 0
+          ]
+          ifelse fp-other-landings-kg > 0 [
+            set fp-other-species-price fp-other-landings-euro / fp-other-landings-kg
+          ][
+            set fp-other-species-price 0
+          ]
+      set size 4
+      set label name
+      set size 4
+      set label name
+      set label-color black
+      setxy (item 0 xy)  (item 1 xy)
+
+      set landing-patch min-one-of patches with [depth > 5] [distance myself]
+      set start-patch landing-patch
+          ]
+        ]
+      ]
+     ]
+    ]
+  file-close
+  ask  home-ports [
+
+      set fp-solea-landings-euro item 5 row-f
+      set fp-platessa-landings-euro item 7 row-f
+      set fp-crangon-landings-euro item 6 row-f
+      set fp-total-landings-euro item 3 row-f
+      set fp-other-landings-euro fp-total-landings-euro - (fp-solea-landings-euro + fp-crangon-landings-euro + fp-platessa-landings-euro)
+      set fp-solea-landings-kg item 8 row-f
+      set fp-platessa-landings-kg item 10 row-f
+      set fp-crangon-landings-kg item 9 row-f
+      set fp-total-landings-kg item 4 row-f
+      set fp-other-landings-kg fp-total-landings-kg - (fp-solea-landings-kg + fp-crangon-landings-kg + fp-platessa-landings-kg)
+      ifelse fp-platessa-landings-kg > 0 [
+            set fp-platessa-price fp-platessa-landings-euro / fp-platessa-landings-kg
+          ][
+            set fp-platessa-price 0
+          ]
+      ifelse fp-solea-landings-kg > 0 [
+            set fp-solea-price fp-solea-landings-euro / fp-solea-landings-kg
+          ][
+            set fp-solea-price 0
+          ]
+      ifelse fp-crangon-landings-kg > 0 [
+            set fp-crangon-price fp-crangon-landings-euro / fp-crangon-landings-kg
+          ][
+            set fp-crangon-price 0
+          ]
+          ifelse fp-other-landings-kg > 0 [
+            set fp-other-species-price fp-other-landings-euro / fp-other-landings-kg
+          ][
+            set fp-other-species-price 0
+          ]
+       ]
 end
 
 to setup-boats
-  create-boats number-of-boats [
+
+    create-boats sum-vessels [
     set shape "flag"
     set size 10
-    set home-port (one-of ports)
-    create-link-with home-port
-    move-to [start-patch] of home-port
+    set home-port-of-boat (one-of ports)
+    create-link-with home-port-of-boat
+    move-to [start-patch] of home-port-of-boat
+    ifelse [port-average-trip-length] of home-port-of-boat != 0 [
+      set transportation-costs [port-transportation-costs] of home-port-of-boat / [port-average-trip-length] of home-port-of-boat
+    ][
+      set transportation-costs [port-transportation-costs] of home-port-of-boat / 1
+    ]
+    set operating-costs [port-operation-costs] of home-port-of-boat / 365
+    ifelse ([port-transportation-costs] of home-port-of-boat + [port-operation-costs] of home-port-of-boat) != 0[
 
+      set catch-efficiency [total-landings-kg] of home-port-of-boat / ([port-transportation-costs] of home-port-of-boat + [port-operation-costs] of home-port-of-boat)
+      ][
+      set catch-efficiency [total-landings-kg] of home-port-of-boat / 1 ]
     ; create actions
     ; assemble these actions in a list
     ; save this as agent-set
@@ -196,6 +382,7 @@ to setup-boats
     set pathways link-neighbors
 
     set time-at-sea 0
+
   ]
 
 end
@@ -222,7 +409,7 @@ end
 to learn
   let my-patch one-of patches with [depth > 5]
   let my-costs transportation-costs * distance my-patch
-  let my-revenue catch-efficiency * ([platessa-price] of home-port * [platessa-summer] of my-patch + [solea-summer] of my-patch + [crangon-summer] of my-patch)
+  let my-revenue catch-efficiency * ([platessa-price] of home-port-of-boat * [platessa-summer] of my-patch + [solea-price] of home-port-of-boat * [solea-summer] of my-patch + [crangon-price] of home-port-of-boat * [crangon-summer] of my-patch)
   let my-gain my-revenue - my-costs
   let my-pathway one-of link-neighbors with [breed = actions and gain < my-gain]
   if my-pathway != nobody [ask my-pathway [
@@ -230,8 +417,11 @@ to learn
     set gain my-gain
     set revenue my-revenue
     set costs my-costs
-  ]]
+   ]
+  ]
 end
+
+
 
 
 to-report grayscale [x]
@@ -242,7 +432,7 @@ end
 to move
   ifelse (time-at-sea > 300) [
     pen-up
-    move-to [start-patch] of home-port
+    move-to [start-patch] of home-port-of-boat
     set time-at-sea 0
     pen-down
   ][
@@ -266,13 +456,13 @@ to-report platessa
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+214
 10
-1178
-379
+1185
+380
 -1
 -1
-3.0
+3.01
 1
 10
 1
@@ -353,17 +543,6 @@ NIL
 NIL
 1
 
-MONITOR
-1033
-324
-1167
-361
-Date
-datetime
-17
-1
-9
-
 SWITCH
 24
 194
@@ -377,30 +556,15 @@ Ports?
 
 SLIDER
 10
-309
+285
 182
-342
+318
 Adaption
 Adaption
 0
 1
-0.5
+0.49
 0.001
-1
-NIL
-HORIZONTAL
-
-SLIDER
-11
-367
-183
-400
-number-of-boats
-number-of-boats
-0
-200
-20.0
-1
 1
 NIL
 HORIZONTAL
@@ -410,12 +574,53 @@ SLIDER
 251
 181
 284
-memory-size
-memory-size
+Memory-size
+Memory-size
 0
 100
 49.0
 1
+1
+NIL
+HORIZONTAL
+
+MONITOR
+1033
+324
+1167
+361
+Date
+datetime
+17
+1
+9
+
+SLIDER
+11
+388
+258
+421
+Percentage-Transportation-Costs
+Percentage-Transportation-Costs
+0
+1
+0.198
+0.001
+1
+NIL
+HORIZONTAL
+
+SLIDER
+12
+353
+205
+386
+Operating-Costs-of-Boats
+Operating-Costs-of-Boats
+0
+1
+0.2
+0.001
 1
 NIL
 HORIZONTAL
