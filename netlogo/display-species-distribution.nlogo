@@ -6,6 +6,7 @@ extensions [
 __includes [
   "import-asc.nls"
   "calendar.nls"
+  "read-in-data.nls"
 ]
 
 breed [boats boat]
@@ -362,10 +363,11 @@ end
 
 to setup-boats
 
-    create-boats sum-vessels [
+    ask home-ports [
+    hatch-boats sum-vessels [
     set shape "flag"
     set size 10
-    set home-port-of-boat (one-of ports)
+    set home-port-of-boat (myself)
     create-link-with home-port-of-boat
     move-to [start-patch] of home-port-of-boat
     set transportation-costs [port-transportation-costs] of home-port-of-boat / [port-average-trip-length] of home-port-of-boat
@@ -383,7 +385,7 @@ to setup-boats
     set pathways link-neighbors
 
     set time-at-sea 0
-
+    ]
   ]
 
 end
