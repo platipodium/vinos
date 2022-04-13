@@ -363,13 +363,15 @@ end
 
 to setup-boats
 
-    ask home-ports [
-    hatch-boats sum-vessels [
+   ; ask home-ports [
+   ;hatch-boats vessels-per-port [
+    create-boats sum-vessels [
     set shape "flag"
     set size 10
-    set home-port-of-boat (myself)
+    set home-port-of-boat (one-of home-ports)
     create-link-with home-port-of-boat
     move-to [start-patch] of home-port-of-boat
+    set crangon-catch-kg 1 ; default value
     set transportation-costs [port-transportation-costs] of home-port-of-boat / [port-average-trip-length] of home-port-of-boat
     set operating-costs [port-operation-costs] of home-port-of-boat / 365
     ifelse ([port-transportation-costs] of home-port-of-boat + [port-operation-costs] of home-port-of-boat) != 0[
@@ -385,7 +387,6 @@ to setup-boats
     set pathways link-neighbors
 
     set time-at-sea 0
-    ]
   ]
 
 end
