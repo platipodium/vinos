@@ -129,9 +129,10 @@ end
 to go
   every 1 [update]
   advance-calendar
+
   ask ports [ifelse Ports? [set label ""][set label name]]
   ask boats [ move ]
-  calc-sum-landings
+
   tick
 end
 
@@ -140,15 +141,15 @@ to calc-initial-values
 end
 
 to calc-sum-landings
-  set sum-ports-total-landings-kg sum [total-landings-kg] of ports
-  set sum-ports-other-landings-kg sum [other-landings-kg] of ports
+  set sum-ports-total-landings-kg sum [total-landings-kg] of home-ports
+  set sum-ports-other-landings-kg sum [other-landings-kg] of home-ports
   set percentage-landings-kg (sum-ports-other-landings-kg) / (sum-ports-total-landings-kg)
-  set sum-ports-crangon-landings-euro sum [crangon-landings-euro] of ports
-  set sum-ports-platessa-landings-euro sum [platessa-landings-euro] of ports
-  set sum-ports-solea-landings-euro sum [solea-landings-euro] of ports
-  set sum-ports-crangon-landings-kg sum [crangon-landings-kg] of ports
-  set sum-ports-platessa-landings-kg sum [platessa-landings-kg] of ports
-  set sum-ports-solea-landings-kg sum [solea-landings-kg] of ports
+  set sum-ports-crangon-landings-euro sum [crangon-landings-euro] of home-ports
+  set sum-ports-platessa-landings-euro sum [platessa-landings-euro] of home-ports
+  set sum-ports-solea-landings-euro sum [solea-landings-euro] of home-ports
+  set sum-ports-crangon-landings-kg sum [crangon-landings-kg] of home-ports
+  set sum-ports-platessa-landings-kg sum [platessa-landings-kg] of home-ports
+  set sum-ports-solea-landings-kg sum [solea-landings-kg] of home-ports
 end
 
 to setup
@@ -211,22 +212,22 @@ to setup-ports
           ifelse platessa-landings-kg > 0 [
             set platessa-price platessa-landings-euro / platessa-landings-kg
           ][
-            set platessa-price 0
+            set platessa-price 0   ; default option when there are no landings of platessa
           ]
           ifelse solea-landings-kg > 0 [
             set solea-price solea-landings-euro / solea-landings-kg
           ][
-            set solea-price 0
+            set solea-price 0    ; default option when there are no landings of solea
           ]
           ifelse crangon-landings-kg > 0 [
             set crangon-price crangon-landings-euro / crangon-landings-kg
           ][
-            set crangon-price 0
+            set crangon-price 0  ; default option when there are no landings of crangon
           ]
           ifelse other-landings-kg > 0 [
             set other-species-price other-landings-euro / other-landings-kg
           ][
-            set other-species-price 0
+            set other-species-price 0 ; default option when there are no landings of other species
           ]
 
           ifelse total-landings-euro > 0 [
@@ -234,6 +235,7 @@ to setup-ports
           ][
             set port-transportation-costs -999     ;  dummy variable: why transportation costs can  be zero?
           ]
+          set port-operation-costs total-landings-euro * operating-costs-of-boats
           set port-average-fishing-effort-in-days item 12 row
           set port-average-fishing-effort-in-hours item 13 row
           set port-average-trip-length  port-average-fishing-effort-in-hours * 15 ; assumption: set average speed of a vessel to 15 km per h
@@ -243,7 +245,7 @@ to setup-ports
           set label-color black
           setxy (item 0 xy)  (item 1 xy)
           set start-patch min-one-of patches with [depth > 5] [distance myself]
-
+          set landing-patch start-patch
         ]
       ]
     ]
@@ -266,8 +268,6 @@ to setup-ports
 
       ; Create ports only if on current map (list is not empty) and not Baltic (lon > 9.16)
       if not (length xy = 0) [
-
-    if (item 15 row-f ) != [name] of ports [
 
       create-ports 1  [
       set kind "favorite-landing-ports"      ; these ports are not in Germany
@@ -305,8 +305,15 @@ to setup-ports
           ][
             set fp-other-species-price 0
           ]
-      set size 4
-      set label name
+         ifelse total-landings-euro > 0 [
+            set port-transportation-costs fp-total-landings-euro * percentage-transportation-costs
+          ][
+            set port-transportation-costs -999     ;  dummy variable: why transportation costs can  be zero?
+          ]
+          set port-operation-costs fp-total-landings-euro * operating-costs-of-boats
+          set port-average-fishing-effort-in-days item 12 row-f
+          set port-average-fishing-effort-in-hours item 13 row-f
+          set port-average-trip-length  port-average-fishing-effort-in-hours * 15 ; assumption: set average speed of a vessel to 15 km per h
       set size 4
       set label name
       set label-color black
@@ -318,10 +325,8 @@ to setup-ports
         ]
       ]
      ]
-    ]
   file-close
   ask  home-ports [
-
       set fp-solea-landings-euro item 5 row-f
       set fp-platessa-landings-euro item 7 row-f
       set fp-crangon-landings-euro item 6 row-f
@@ -363,11 +368,7 @@ to setup-boats
     set home-port-of-boat (one-of ports)
     create-link-with home-port-of-boat
     move-to [start-patch] of home-port-of-boat
-    ifelse [port-average-trip-length] of home-port-of-boat != 0 [
-      set transportation-costs [port-transportation-costs] of home-port-of-boat / [port-average-trip-length] of home-port-of-boat
-    ][
-      set transportation-costs [port-transportation-costs] of home-port-of-boat / 1
-    ]
+    set transportation-costs [port-transportation-costs] of home-port-of-boat / [port-average-trip-length] of home-port-of-boat
     set operating-costs [port-operation-costs] of home-port-of-boat / 365
     ifelse ([port-transportation-costs] of home-port-of-boat + [port-operation-costs] of home-port-of-boat) != 0[
 
