@@ -452,16 +452,29 @@ to move
   fd 1
 end
 
-; Patch procedure
-; these need to be adjusted to report the correct transition between summer and winter
+; Patch procedures crangon, solea, and platessa report the seasonally-weighted
+; area concentration of the three species calculated from their winter and summer
+; values and weighted by day of year
 to-report crangon
-  report 0.5 * crangon-winter + 0.5 * crangon-summer
+  report summer-weight * crangon-summer + (1 - summer-weight) * crangon-winter
 end
 to-report solea
-  report 0.5 * solea-winter + 0.5 * solea-summer
+  report summer-weight * solea-summer +  (1 - summer-weight) * solea-winter
 end
 to-report platessa
-  report 0.5 * platessa-winter + 0.5 * platessa-summer
+  report summer-weight * platessa-summer +  (1 - summer-weight) * platessa-winter
+end
+
+to-report summer-weight
+  let seasonal-mean-weight 0.5
+  let seasonal-weight-range 1
+  let day-variation-range 0
+
+  ;; Define seasonal signal with 120 day shift
+  ;; (i.e. maximum on 1 August, minium 1 Feb)
+  report seasonal-mean-weight + sin ( ( day-of-year - 129 + random day-variation-range )
+    * 360.0 / (365 + leap-year) ) * seasonal-weight-range / 2.0
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
