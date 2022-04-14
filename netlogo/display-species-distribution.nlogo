@@ -11,8 +11,6 @@ __includes [
 
 breed [boats boat]
 breed [ports port]
-breed [home-ports home-port]
-breed [favorite-landing-ports favorite-landing-port]
 breed [actions action]
 
 actions-own
@@ -109,6 +107,9 @@ globals [
   year month day                     ; time frame
   day-of-year day-of-week
   days-in-months
+
+  home-ports                 ; agentset of breed ports
+  favorite-landing-ports    ; agentset of breed ports
 ]
 
 patches-own [
@@ -271,7 +272,7 @@ to setup-ports
       if not (length xy = 0) [
 
       create-ports 1  [
-      set kind "favorite-landing-ports"      ; these ports are not in Germany
+      set kind "favorite-landing-port"      ; these ports are not in Germany
       set name item 15 row-f
       set country item 14 row-f
       set latitude item 17 row-f
@@ -327,6 +328,12 @@ to setup-ports
       ]
      ]
   file-close
+
+  ; separate the ports into two sets
+  set home-ports ports with [ kind = "home-port"]
+  set favorite-landing-ports ports with [kind = "favorite-landing-port" ]
+
+  ; the code below cannot work as row-f keeps an outdated value @todo
   ask  home-ports [
       set fp-solea-landings-euro item 5 row-f
       set fp-platessa-landings-euro item 7 row-f
@@ -424,9 +431,6 @@ to learn
    ]
   ]
 end
-
-
-
 
 to-report grayscale [x]
   report (round (10 * (x mod 10))) / 10
