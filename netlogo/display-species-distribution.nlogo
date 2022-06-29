@@ -1,3 +1,13 @@
+; NetLogo implementation of a North Sea fisheries model assessing the viability of the German fishing fleet
+; facing different scenarios of climate change (=> fish availability), fuel price, and area closures (OWF)
+;
+; @copyright: Universität Hamburg 2021-2022
+; @copyright: Helmholtz-Zentrum Hereon 2021-2022 
+; @author: Carsten Lemmen <carsten.lemmen@hereon.de>
+; @author: Sascha Hokamp
+; @license: Apache 2.0
+
+
 extensions [
   gis
   csv
