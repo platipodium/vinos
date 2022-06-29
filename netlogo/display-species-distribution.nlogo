@@ -476,6 +476,18 @@ to-report summer-weight
     * 360.0 / (365 + leap-year) ) * seasonal-weight-range / 2.0
 
 end
+
+to test-target
+  let s-patch one-of patches with [depth > 25 ]
+  let t-patch one-of patches with [depth > 25 and distance s-patch < 30]
+
+  while [s-patch != t-patch] [
+    ask s-patch[
+      set pcolor pink
+      set s-patch one-of neighbors with [distance myself + distance t-patch < 30]
+  ]]
+
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 214
