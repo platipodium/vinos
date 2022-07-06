@@ -191,12 +191,12 @@ to setup-boats
      [
       create-link-with myself
       move-to [start-patch] of one-of link-neighbors
-      set  fish-catch-boat         n-values number-of-species [?1 -> ?1 ]    ; vector, 4 entries for sole, plaice, crangon and other species
-      set  catch-efficiency-boat   n-values number-of-species [?1 -> ?1 ]
-      set  revenue-boat           n-values number-of-species  [?1 -> ?1 ]    ; revenue for the fishing trip of the boat
-      set  costs-boat             n-values number-of-species  [?1 -> ?1 ]    ; costs for the fishing trip of the boat
-      set  gain-boat              n-values number-of-species  [?1 -> ?1 ]    ; gain for the fishing trip of the boat
-      set  priority-boat          n-values number-of-species  [?1 -> ?1 ]    ; priority for the pathway
+      set  fish-catch-boat         n-values number-of-species [?1 -> 0 ]    ; vector, 4 entries for sole, plaice, crangon and other species
+      set  catch-efficiency-boat   n-values number-of-species [?1 -> 0.25 ]
+      set  revenue-boat           n-values number-of-species  [?1 -> 0 ]    ; revenue for the fishing trip of the boat
+      set  costs-boat             n-values number-of-species  [?1 -> 0 ]    ; costs for the fishing trip of the boat
+      set  gain-boat              n-values number-of-species  [?1 -> 0 ]    ; gain for the fishing trip of the boat
+      set  priority-boat          n-values number-of-species  [?1 -> 0.25 ]    ; priority for the pathway
       set  transportation-costs  1                            ; to do, default value
       set  operating-costs 5                                  ; to do, default value
 
@@ -318,13 +318,13 @@ to-report summer-weight
 
 end
 to test-target
-  ask one-of boats[
+  ask one-of boats [
   ;; patches where a boat can navigate
   let navigable-patches patches with [depth > navigable-depth]
 
   ;; trip length (to-do will be calculated based on econmic values, for the moment fixed),
   ;; NOTE: multiply by 4.2 (0.5* 1.4 * 6) to get km, assume boates move with approx 18 km/h speed => divide by 4 to get time at sea in h
-  let trip-length 500
+  let trip-length 50
   set time-at-sea trip-length / 4
 
   let s-patch [start-patch] of one-of link-neighbors    ; starting patch of the boat
@@ -332,25 +332,39 @@ to test-target
   let t-patch one-of navigable-patches with [distance s-patch < trip-length / 2 ] ; selecting a target patch, this could be also a harbour
 
   ; procedure for the boat to navigate in the terrain, go somewhere in the terrain, currently the decision for the next patch is random
+    pen-down
   while [s-patch != t-patch] [
+      move-to s-patch
+      catch-fish
     ask s-patch[
-      set pcolor black
+      ;;set pcolor black
       let my-neighbors neighbors with [depth > navigable-depth and distance myself + distance t-patch < trip-length / 2]
         ifelse any? my-neighbors [
           set s-patch one-of my-neighbors][
           set s-patch t-patch] ; default option if no neighbor exists, @todo need to revise
+
   ]]
    ; procedure for the boat to navigate back to a harbor (this could be the home port)
     while [s-patch != l-patch] [
+      move-to s-patch
+        catch-fish
    ask s-patch[
-    set pcolor black
+   ;; set pcolor black
         set s-patch one-of neighbors with [distance myself + distance  l-patch < trip-length / 2 ]
 
    ]]
+
+    pen-up
   ]
 end
 
 
+to catch-fish
+  ;  sum priority * catch-effiency * biomass
+  let new-catch ((item 0 fish-catch-boat) + (item 0 priority-boat) * (item 0 catch-efficiency-boat) * [solea-summer] of patch-here)
+  set fish-catch-boat replace-item 0 fish-catch-boat new-catch
+  print fish-catch-boat
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 214
