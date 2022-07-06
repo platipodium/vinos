@@ -1,0 +1,85 @@
+to read-landings [port-type]
+  ifelse port-type = "home" [
+    file-open "../data/220126-one_year-landings-per_port-home.csv"      ; Data of German fleet per home port
+  ][
+  file-open "../data/220126-one_year-landings-per_port-favorite.csv"  ; Data of German fleet per favorite landing port
+  ] 
+  gis:load-coordinate-system "../data/wgs1984.prj"
+
+  ; skip the first row
+  let row csv:from-row file-read-line
+
+  set-default-shape ports "house"
+
+  ; create home-ports
+
+  while [ not file-at-end? ] [
+    set row csv:from-row file-read-line
+
+    if  (item 18 row) < 9.16 [
+      ; In rows 17 and 18 there are decimal coordinates
+      let xy gis:project-lat-lon (item 17 row) (item 18 row)
+
+      ; Create ports only if on current map (list is not empty) and not Baltic (lon > 9.16)
+      if not (length xy = 0) [
+        create-ports 1 [
+          set kind port-type
+          set name item 15 row
+          set country item 14 row
+          set latitude item 17 row
+          set longitude item 18 row
+          set solea-landings-euro item 5 row
+          set platessa-landings-euro item 7 row
+          set crangon-landings-euro item 6 row
+          set total-landings-euro item 3 row
+          set other-landings-euro total-landings-euro - (solea-landings-euro + crangon-landings-euro + platessa-landings-euro)
+          set solea-landings-kg item 8 row
+          set platessa-landings-kg item 10 row
+          set crangon-landings-kg item 9 row
+          set total-landings-kg item 4 row
+          set other-landings-kg total-landings-kg - (solea-landings-kg + crangon-landings-kg + platessa-landings-kg)
+          ifelse platessa-landings-kg > 0 [
+            set platessa-price platessa-landings-euro / platessa-landings-kg
+          ][
+            set platessa-price 0   ; default option when there are no landings of platessa
+          ]
+          ifelse solea-landings-kg > 0 [
+            set solea-price solea-landings-euro / solea-landings-kg
+          ][
+            set solea-price 0    ; default option when there are no landings of solea
+          ]
+          ifelse crangon-landings-kg > 0 [
+            set crangon-price crangon-landings-euro / crangon-landings-kg
+          ][
+            set crangon-price 0  ; default option when there are no landings of crangon
+          ]
+          ifelse other-landings-kg > 0 [
+            set other-species-price other-landings-euro / other-landings-kg
+          ][
+            set other-species-price 0 ; default option when there are no landings of other species
+          ]
+
+          ifelse total-landings-euro > 0 [
+          set port-transportation-costs  total-landings-euro * percentage-transportation-costs
+          ][
+            set port-transportation-costs -999     ;  dummy variable: why transportation costs can  be zero?
+          ]
+          set port-operation-costs total-landings-euro * operating-costs-of-boats
+          set port-average-fishing-effort-in-days item 12 row
+          set port-average-fishing-effort-in-hours item 13 row
+          set port-average-trip-length  port-average-fishing-effort-in-hours * 18 ; assumption: set average speed of a vessel to 18 km per h
+          set vessels-per-port item 11 row
+          set size 4
+          set label name
+          set label-color black
+          setxy (item 0 xy)  (item 1 xy)
+          set start-patch min-one-of patches with [depth > navigable-depth] [distance myself]
+          set landing-patch start-patch
+        ]
+      ]
+    ]
+  ]
+  file-close
+  
+  
+end
