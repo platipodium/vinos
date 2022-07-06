@@ -72,8 +72,8 @@ boats-own [
   operating-costs         ; cost for opertating the vessel, not known, work with a parameter
                           ; comment: approximately 50 percent of the revenue
   target-species          ; species primarily tragetted (solea, platessa, crangon)
-  home-port-boat               ; Home Port (in the current state only German home ports are considered
-  favorite-landing-port-of-boat   ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
+  ;home-port-boat               ; Home Port (in the current state only German home ports are considered
+  ;favorite-landing-port-of-boat   ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
   time-at-sea             ; time at sea which is needed to calculate the costs
   pathways                ; possible pathways which boats learn
 
@@ -128,7 +128,7 @@ to go
   every 1 [update]
   advance-calendar
 
-  ask ports [ifelse Ports? [set label ""][set label name]]
+  ask ports [ifelse ports? [set label ""][set label name]]
   ask boats [ move ]
 
   tick
@@ -160,7 +160,7 @@ to setup
   calc-pollution
 
 
-  set View "Bathymetry"
+  set view "bathymetry"
   update
   display
   setup-ports
@@ -239,11 +239,11 @@ to setup-boats
 end
 
 to update
-  if View = "Crangon"  [ ask patches [ set pcolor scale-color orange crangon 0 1  ] ]
-  if View = "Solea"  [ ask patches [ set pcolor scale-color green solea 0 1  ] ]
-  if View = "Platessa"  [ ask patches [ set pcolor scale-color cyan platessa 0 1  ] ]
-  if View = "Pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
-  if View = "Bathymetry" [ask patches [set pcolor scale-color blue depth 80 0 ]]
+  if view = "crangon"  [ ask patches [ set pcolor scale-color orange crangon 0 1  ] ]
+  if view = "solea"  [ ask patches [ set pcolor scale-color green solea 0 1  ] ]
+  if view = "platessa"  [ ask patches [ set pcolor scale-color cyan platessa 0 1  ] ]
+  if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
+  if view = "bathymetry" [ask patches [set pcolor scale-color blue depth 80 0 ]]
 end
 
 ; This is a dummy procedure and needs to be replace by actual pollution data.
@@ -258,6 +258,7 @@ to train
 end
 
 to learn
+  let home-port-boat one-of link-neighbors
   let my-patch one-of patches with [depth > navigable-depth]
   let my-costs transportation-costs * distance my-patch
   let my-revenue catch-efficiency-boat * ([item 2 price] of home-port-boat * [platessa-summer] of my-patch + [item 0 price] of home-port-boat * [solea-summer] of my-patch + [item 1 price] of home-port-boat * [crangon-summer] of my-patch)
@@ -280,7 +281,7 @@ end
 to move
   ifelse (time-at-sea > 300) [
     pen-up
-    move-to [landing-patch] of home-port-boat
+    move-to [landing-patch] of one-of link-neighbors
     set time-at-sea 0
     pen-down
   ] [
@@ -326,25 +327,25 @@ to test-target
   let trip-length 500
   set time-at-sea trip-length / 4
 
-  let s-patch [start-patch] of home-port-boat   ; starting patch of the boat
-  let l-patch [landing-patch] of home-port-boat ; landing patch of the boat
+  let s-patch [start-patch] of one-of link-neighbors    ; starting patch of the boat
+  let l-patch [landing-patch] of one-of link-neighbors  ; landing patch of the boat
   let t-patch one-of navigable-patches with [distance s-patch < trip-length / 2 ] ; selecting a target patch, this could be also a harbour
 
   ; procedure for the boat to navigate in the terrain, go somewhere in the terrain, currently the decision for the next patch is random
   while [s-patch != t-patch] [
     ask s-patch[
       set pcolor black
-      set s-patch one-of neighbors with [depth > navigable-depth and distance myself + distance t-patch < trip-length / 2]
-
+      let my-neighbors neighbors with [depth > navigable-depth and distance myself + distance t-patch < trip-length / 2]
+        ifelse any? my-neighbors [
+          set s-patch one-of my-neighbors][
+          set s-patch t-patch] ; default option if no neighbor exists, @todo need to revise
   ]]
    ; procedure for the boat to navigate back to a harbor (this could be the home port)
-    let a 0
     while [s-patch != l-patch] [
    ask s-patch[
     set pcolor black
         set s-patch one-of neighbors with [distance myself + distance  l-patch < trip-length / 2 ]
-        set a a + 1
-        show "a"
+
    ]]
   ]
 end
@@ -400,9 +401,9 @@ CHOOSER
 85
 190
 130
-View
-View
-"Crangon" "Platessa" "Solea" "Pollution (random)" "Bathymetry"
+view
+view
+"crangon" "platessa" "solea" "pollution (random)" "bathymetry"
 4
 
 BUTTON
@@ -444,8 +445,8 @@ SWITCH
 194
 127
 227
-Ports?
-Ports?
+ports?
+ports?
 0
 1
 -1000
@@ -470,8 +471,8 @@ SLIDER
 251
 181
 284
-Memory-size
-Memory-size
+memory-size
+memory-size
 0
 100
 47.0
@@ -509,13 +510,13 @@ HORIZONTAL
 SLIDER
 12
 353
-205
+212
 386
-Operating-Costs-of-Boats
-Operating-Costs-of-Boats
+operating-costs-of-boats
+operating-costs-of-boats
 0
 1
-0.201
+0.203
 0.001
 1
 NIL
