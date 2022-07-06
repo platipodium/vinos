@@ -103,6 +103,7 @@ boats-own [
 ]
 
 globals [
+  number-of-species                  ; number-of-species plus one for other
   navigable-depth                    ; minimum depth where a boat can navigate
 
   sum-ports-total-landings-kg        ; overall sum of total landings per period
@@ -176,6 +177,7 @@ to setup
   reset-calendar
 
   set navigable-depth 5
+  set number-of-species 4
 
   import-asc
   calc-pollution
@@ -392,27 +394,21 @@ to setup-boats
   set-default-shape ports "flag"
 
   ask home-ports [
-    let home-port "home-port"
-    let number-of-vessels 0
-    while [number-of-vessels != vessels-per-port]
-    [ create-boats 1
-      [
-      set home-port-boat home-port
-      create-link-with home-port-boat
-      move-to [start-patch] of home-port-boat
-      set fish-catch-boat         n-values 4 [?1 -> ?1 ]    ; vector, 4 entries for sole, plaice, crangon and other species
-      set catch-efficiency-boat   n-values 4 [?1 -> ?1 ]
-      set  revenue-boat           n-values 4  [?1 -> ?1 ]    ; revenue for the fishing trip of the boat
-      set  costs-boat             n-values 4  [?1 -> ?1 ]    ; costs for the fishing trip of the boat
-      set  gain-boat              n-values 4  [?1 -> ?1 ]    ; gain for the fishing trip of the boat
-      set  priority-boat          n-values 4  [?1 -> ?1 ]    ; priority for the pathway
+     hatch-boats vessels-per-port
+     [
+      create-link-with myself
+      move-to [start-patch] of one-of my-links
+      set  fish-catch-boat         n-values number-of-species [?1 -> ?1 ]    ; vector, 4 entries for sole, plaice, crangon and other species
+      set  catch-efficiency-boat   n-values number-of-species [?1 -> ?1 ]
+      set  revenue-boat           n-values number-of-species  [?1 -> ?1 ]    ; revenue for the fishing trip of the boat
+      set  costs-boat             n-values number-of-species  [?1 -> ?1 ]    ; costs for the fishing trip of the boat
+      set  gain-boat              n-values number-of-species  [?1 -> ?1 ]    ; gain for the fishing trip of the boat
+      set  priority-boat          n-values number-of-species  [?1 -> ?1 ]    ; priority for the pathway
       set  transportation-costs  1                            ; to do, default value
       set  operating-costs 5                                  ; to do, default value
 
       set time-at-sea 0
 
-      set number-of-vessels number-of-vessels + 1
-      ]
     ]
 
 
@@ -559,7 +555,6 @@ to test-target
    ]]
   ]
 end
-
 
 
 
