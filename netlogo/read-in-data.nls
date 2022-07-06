@@ -28,6 +28,12 @@ to read-landings [port-type]
           set country item 14 row
           set latitude item 17 row
           set longitude item 18 row
+          
+          set landings-euro n-values (number-of-species - 1) [ i -> item (5 + i) row ]
+          set landings-euro lput (item 3 row - (reduce + landings-euro)) landings-euro
+          set landings-kg n-values (number-of-species - 1) [ i -> item (8 + i) row ]
+          
+            
           set solea-landings-euro item 5 row
           set platessa-landings-euro item 7 row
           set crangon-landings-euro item 6 row

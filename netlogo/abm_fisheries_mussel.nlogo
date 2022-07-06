@@ -34,6 +34,10 @@ ports-own
   landing-patch            ; landing patch for boats
   fish-catch-kg            ; vektor of fish catches
 
+  landings-euro            ; vector of landings with number-of-species in EURO 2015
+  landings-kg              ; vector of landings with number-of-species in Kg
+  price                    ; vector of prices with number-of-species in EURO 2015
+
   solea-landings-euro       ; LE_EURO_SOL in EURO 2015
   platessa-landings-euro   ; LE_EURO_PLE in EURO 2015
   crangon-landings-euro    ; LE_EURO_CSH in EURO 2015
@@ -48,6 +52,8 @@ ports-own
   platessa-price           ; price for one kg platessa in EUR 2015
   crangon-price            ; price for one kg crangon in EUR 2015
   other-species-price      ; average price for one kg other species in EUR 2015
+
+
   port-transportation-costs; average transportation costs as percentage of the total landings in EUR 2015
   port-operation-costs     ; averagre operating costs as percetage of the total landings in EUR 2015
   port-average-trip-length ; average trip length
@@ -90,6 +96,7 @@ boats-own [
 
 globals [
   number-of-species                  ; number-of-species plus one for other
+  species-names                      ; names of the species
   navigable-depth                    ; minimum depth where a boat can navigate
 
   sum-ports-total-landings-kg        ; overall sum of total landings per period
@@ -164,6 +171,7 @@ to setup
 
   set navigable-depth 5
   set number-of-species 4
+  set species-names (list "solea" "crangon" "platessa" "other") ; order of the species in the excel file
 
   import-asc
   calc-pollution
@@ -199,7 +207,7 @@ to setup-boats
      hatch-boats vessels-per-port
      [
       create-link-with myself
-      move-to [start-patch] of one-of my-links
+      move-to [start-patch] of one-of link-neighbors
       set  fish-catch-boat         n-values number-of-species [?1 -> ?1 ]    ; vector, 4 entries for sole, plaice, crangon and other species
       set  catch-efficiency-boat   n-values number-of-species [?1 -> ?1 ]
       set  revenue-boat           n-values number-of-species  [?1 -> ?1 ]    ; revenue for the fishing trip of the boat
@@ -357,7 +365,6 @@ to test-target
    ]]
   ]
 end
-
 
 
 @#$#@#$#@
