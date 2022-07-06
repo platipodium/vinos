@@ -38,21 +38,6 @@ ports-own
   landings-kg              ; vector of landings with number-of-species in Kg
   price                    ; vector of prices with number-of-species in EURO 2015
 
-  solea-landings-euro       ; LE_EURO_SOL in EURO 2015
-  platessa-landings-euro   ; LE_EURO_PLE in EURO 2015
-  crangon-landings-euro    ; LE_EURO_CSH in EURO 2015
-  other-landings-euro      ; other landings in EURO 2015, e.g. bycatch or other targetted species
-  total-landings-euro      ; total landings in EURO 2015
-  solea-landings-kg         ; LE_KG_SOL in kilogramm
-  platessa-landings-kg     ; LE_KG_PLE in kilogramm
-  crangon-landings-kg      ; LE_KG_CSH in kilogramm
-  other-landings-kg        ; other landings in kilogramm, e.g. bycatch or other targetted species
-  total-landings-kg        ; total landings in kilogramm
-  solea-price              ; price for one kg solea in EUR 2015
-  platessa-price           ; price for one kg platessa in EUR 2015
-  crangon-price            ; price for one kg crangon in EUR 2015
-  other-species-price      ; average price for one kg other species in EUR 2015
-
 
   port-transportation-costs; average transportation costs as percentage of the total landings in EUR 2015
   port-operation-costs     ; averagre operating costs as percetage of the total landings in EUR 2015
@@ -153,16 +138,14 @@ to calc-initial-values
   set sum-vessels sum [vessels-per-port] of ports
 end
 
-to calc-sum-landings
-  set sum-ports-total-landings-kg sum [total-landings-kg] of home-ports
-  set sum-ports-other-landings-kg sum [other-landings-kg] of home-ports
-  set percentage-landings-kg (sum-ports-other-landings-kg) / (sum-ports-total-landings-kg)
-  set sum-ports-crangon-landings-euro sum [crangon-landings-euro] of home-ports
-  set sum-ports-platessa-landings-euro sum [platessa-landings-euro] of home-ports
-  set sum-ports-solea-landings-euro sum [solea-landings-euro] of home-ports
-  set sum-ports-crangon-landings-kg sum [crangon-landings-kg] of home-ports
-  set sum-ports-platessa-landings-kg sum [platessa-landings-kg] of home-ports
-  set sum-ports-solea-landings-kg sum [solea-landings-kg] of home-ports
+
+to-report sum-of-landings [species unit port-type]
+  let index position species species-names
+  ifelse unit = "euro" [
+    report sum [item index landings-euro] of ports with [kind = port-type]
+  ][
+    report sum [item index landings-kg] of ports with [kind = port-type]
+  ]
 end
 
 to setup
@@ -183,7 +166,7 @@ to setup
   setup-ports
   calc-initial-values
   setup-boats
-  calc-sum-landings
+
   reset-ticks
 end
 
@@ -277,7 +260,7 @@ end
 to learn
   let my-patch one-of patches with [depth > navigable-depth]
   let my-costs transportation-costs * distance my-patch
-  let my-revenue catch-efficiency-boat * ([platessa-price] of home-port-boat * [platessa-summer] of my-patch + [solea-price] of home-port-boat * [solea-summer] of my-patch + [crangon-price] of home-port-boat * [crangon-summer] of my-patch)
+  let my-revenue catch-efficiency-boat * ([item 2 price] of home-port-boat * [platessa-summer] of my-patch + [item 0 price] of home-port-boat * [solea-summer] of my-patch + [item 1 price] of home-port-boat * [crangon-summer] of my-patch)
   let my-gain my-revenue - my-costs
   let my-pathway one-of link-neighbors with [breed = actions and gain < my-gain]
   if my-pathway != nobody [ask my-pathway [
@@ -513,8 +496,8 @@ SLIDER
 388
 258
 421
-Percentage-Transportation-Costs
-Percentage-Transportation-Costs
+fraction-transportation-costs
+fraction-transportation-costs
 0
 1
 0.198
