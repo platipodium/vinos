@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (hereon)#
+# SPDX-License-Identifier: CC-BY-4.0
+# Author: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+stages:
+  - run
+
+run:
+  image: comses/netlogo # see https://github.com/comses/docker-netlogo
+  stage: run
+  before_script:
+    - echo "Nothing done here yet"
+  script:
+    - echo "Also nothing here, netlogo can be run from /opt/netlogo"
