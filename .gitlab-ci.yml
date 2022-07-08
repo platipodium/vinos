@@ -14,4 +14,4 @@ run:
     - echo "Trying to run in working directory and headless mode"
     - echo "Java HOME is ${JAVA_HOME}"
     - cd ${CI_PROJECT_DIR}/netlogo
-    - bash /opt/netlogo/netlogo-headless.sh --model ./display-species-distribution.nlogo --experiment "test" --table -
+    - bash /opt/netlogo/netlogo-headless.sh --model ./abm_fisheries_mussel.nlogo --experiment "Default" --table -
