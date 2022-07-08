@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (hereon)
 # SPDX-License-Identifier: CC0-1.0
-# Author: Carsten Lemmen <carsten.lemmen@hereon.de
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de
 
 [tool.poetry]
 name = "Agent-based model of North Sea fisheries"

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2022 Thuenen Institut
+# SPDX-License-Identifier: unknown
+# SPDX-FileContributor: Nik Probst
 
 # Grids to be projected on
 prd.grd.low<-raster(nrow=48,ncol=104,xmn=-3,xmx=10,ymn=51,ymx=57)
