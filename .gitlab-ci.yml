@@ -4,8 +4,20 @@
 
 stages:
   - run
+  - lint
 
-run:
+license-compliance:
+    image: python:3.9
+    stage: lint
+    before_script:
+        - pip install --upgrade pip
+        - pip install poetry
+        - poetry install
+    script:
+        - poetry run reuse lint
+    allow_failure: true
+
+test-target:
   image: comses/netlogo # see https://github.com/comses/docker-netlogo
   stage: run
   before_script:
@@ -15,3 +27,4 @@ run:
     - echo "Java HOME is ${JAVA_HOME}"
     - cd ${CI_PROJECT_DIR}/netlogo
     - bash /opt/netlogo/netlogo-headless.sh --model ./abm_fisheries_mussel.nlogo --experiment "Default" --table -
+  
