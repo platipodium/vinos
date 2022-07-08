@@ -9,6 +9,9 @@ run:
   image: comses/netlogo # see https://github.com/comses/docker-netlogo
   stage: run
   before_script:
-    - echo "Nothing done here yet"
+    - echo "Nothing done here."
   script:
-    - echo "Also nothing here, netlogo can be run from /opt/netlogo"
+    - echo "Trying to run in working directory and headless mode"
+    - echo "Java HOME is ${JAVA_HOME}"
+    - cd ${CI_PROJECT_DIR}/netlogo
+    - bash /opt/netlogo/netlogo-headless.sh --model ./display-species-distribution.nlogo --experiment "test" --table -
