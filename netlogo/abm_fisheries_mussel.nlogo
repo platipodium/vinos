@@ -317,6 +317,7 @@ to-report summer-weight
     * 360.0 / (365 + leap-year) ) * seasonal-weight-range / 2.0
 
 end
+
 to test-target
   ask one-of boats [
   ;; patches where a boat can navigate
@@ -332,7 +333,7 @@ to test-target
   let t-patch one-of navigable-patches with [distance s-patch < trip-length / 2 ] ; selecting a target patch, this could be also a harbour
 
   ; procedure for the boat to navigate in the terrain, go somewhere in the terrain, currently the decision for the next patch is random
-    pen-down
+  pen-down
   while [s-patch != t-patch] [
       move-to s-patch
       catch-fish
@@ -933,6 +934,35 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="Default" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>test-target</go>
+    <timeLimit steps="1000"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="view">
+      <value value="&quot;bathymetry&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="ports?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Oil-Price">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="operating-costs-of-boats">
+      <value value="0.203"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="memory-size">
+      <value value="47"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Adaptation">
+      <value value="0.489"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fraction-transportation-costs">
+      <value value="0.198"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
