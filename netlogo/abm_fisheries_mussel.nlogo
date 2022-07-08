@@ -19,19 +19,19 @@ breed [boats boat]
 breed [ports port]
 breed [actions action]
 
-actions-own
-[target                      ; targetted patch id
- actions-target-species      ; primarily targetted species (solea, platessa, crangon)
- revenue                     ; revenue for the fishing trip of the boat
- costs                       ; costs for the fishing trip of the boat
- gain                        ; gain for the fishing trip of the boat
- priority                    ; priority for the pathway
- marginal-priority           ; expected change of the priority for the pathway
+actions-own [
+  target                      ; targetted patch id
+  actions-target-species      ; primarily targetted species (solea, platessa, crangon)
+  revenue                     ; revenue for the fishing trip of the boat
+  costs                       ; costs for the fishing trip of the boat
+  gain                        ; gain for the fishing trip of the boat
+  priority                    ; priority for the pathway
+  marginal-priority           ; expected change of the priority for the pathway
 ]
 
-ports-own
+ports-own [
 ;;,"fav_lan","t_intv_min","tot_euros","tot_kgs","LE_EURO_SOL","LE_EURO_CSH","LE_EURO_PLE","LE_KG_SOL","LE_KG_CSH","LE_KG_PLE","VE_REF","t_intv_day","t_intv_h","ISO3_Country_Code","full_name","Coordinates","Latitude","Longitude","EU_Fish_Port","Port"
-[ kind                     ; home-port (which includes also the landings as favorite port) or favorite-landing-port
+  kind                     ; home-port (which includes also the landings as favorite port) or favorite-landing-port
   name                     ; Name of the Port 'full name' info from UN_LOCODE.csv
   country                  ; Name of the Country 'ISO3_Country_Code' info from UN_LOCODE.csv
   latitude                 ; Latitude of the Port 'Latitude'
@@ -44,14 +44,13 @@ ports-own
   landings-kg              ; vector of landings with number-of-species in Kg
   price                    ; vector of prices with number-of-species in EURO 2015
 
-
   port-transportation-costs; average transportation costs as percentage of the total landings in EUR 2015
   port-operation-costs     ; averagre operating costs as percetage of the total landings in EUR 2015
   port-average-trip-length ; average trip length
   port-average-fishing-effort-in-days    ; t_intv_day
   port-average-fishing-effort-in-hours   ; t_intv_h
   vessels-per-port         ; number of individual vessels per home port
-  ]
+]
 
 boats-own [
   my-id                        ; id of the boat
@@ -101,7 +100,6 @@ globals [
   sum-ports-solea-landings-kg        ; overall sum of landings of solea per period in kg
   sum-vessels                        ; overall vessels of all ports
 
-
   owf-dataset                        ; Off-shore wind farms
 
   year month day                     ; time frame
@@ -131,7 +129,8 @@ to startup
 end
 
 to go
-  every 1 [update]
+
+  every 1 [update] ; update the view every 1 second in case it changed
   advance-calendar
 
   ask ports [ifelse ports? [set label ""][set label name]]
@@ -143,7 +142,6 @@ end
 to calc-initial-values
   set sum-vessels sum [vessels-per-port] of ports
 end
-
 
 to-report sum-of-landings [species unit port-type]
   let index position species species-names
@@ -172,6 +170,7 @@ to setup
   setup-ports
   calc-initial-values
   setup-boats
+
 
   reset-ticks
 end
@@ -325,43 +324,68 @@ to-report summer-weight
 end
 
 to test-target
-  ask one-of boats [
+  let my-boat one-of boats
+
+  watch my-boat
+  ask my-boat [
+    set size 20
   ;; patches where a boat can navigate
   let navigable-patches patches with [depth > navigable-depth]
 
   ;; trip length (to-do will be calculated based on econmic values, for the moment fixed),
   ;; NOTE: multiply by 4.2 (0.5* 1.4 * 6) to get km, assume boates move with approx 18 km/h speed => divide by 4 to get time at sea in h
-  let trip-length 50
-  set time-at-sea trip-length / 4
+  let trip-length 200
+  set time-at-sea 0
 
   let s-patch [start-patch] of one-of link-neighbors    ; starting patch of the boat
   let l-patch [landing-patch] of one-of link-neighbors  ; landing patch of the boat
   let t-patch one-of navigable-patches with [distance s-patch < trip-length / 2 ] ; selecting a target patch, this could be also a harbour
 
   ; procedure for the boat to navigate in the terrain, go somewhere in the terrain, currently the decision for the next patch is random
+  move-to s-patch
   pen-down
-  while [s-patch != t-patch] [
-      move-to s-patch
-      catch-fish
+
+  while [time-at-sea < trip-length / 2] [
+    move-to s-patch
+    let trip-length-left trip-length - time-at-sea
+
+    ;catch-fish
     ask s-patch[
-      ;;set pcolor black
-      let my-neighbors neighbors with [depth > navigable-depth and distance myself + distance t-patch < trip-length / 2]
-        ifelse any? my-neighbors [
-          set s-patch one-of my-neighbors][
-          set s-patch t-patch] ; default option if no neighbor exists, @todo need to revise
+      let my-neighbors neighbors with [depth > navigable-depth and distance t-patch < trip-length-left / 2 and distance l-patch < trip-length / 2 ]
+      ifelse any? my-neighbors [
+        set s-patch one-of my-neighbors
+      ][
+        set s-patch t-patch
+        ;print (list who " found no suitable patch to navigate to")
+      ] ; default option if no neighbor exists, @todo need to revise
+      print (list " from " s-patch " via " t-patch " to " l-patch trip-length-left)
+     ]
+   set time-at-sea time-at-sea + 1
+   ]
+   print "Reached interim target, turning back ..."
 
-  ]]
-   ; procedure for the boat to navigate back to a harbor (this could be the home port)
-    while [s-patch != l-patch] [
-      move-to s-patch
-        catch-fish
-   ask s-patch[
-   ;; set pcolor black
-        set s-patch one-of neighbors with [distance myself + distance  l-patch < trip-length / 2 ]
+    ; procedure for the boat to navigate back to a harbor (this could be the home port)
+   while [time-at-sea < trip-length ] [
+    move-to s-patch
+    let trip-length-left trip-length - time-at-sea
 
-   ]]
+    ;catch-fish
+    ask s-patch[
+      let my-neighbors neighbors with [depth > navigable-depth and distance l-patch < trip-length-left ]
+      ifelse any? my-neighbors [
+        set s-patch one-of my-neighbors
+      ][
+        set s-patch l-patch
+        ;print (list who " found no suitable patch to navigate to")
+      ] ; default option if no neighbor exists, @todo need to revise
+      print (list " from " s-patch " via " t-patch " to " l-patch trip-length-left)
+     ]
+   set time-at-sea time-at-sea + 1
+   ]
+   print "Reached landing site."
 
     pen-up
+    set size 1
   ]
 end
 
@@ -403,7 +427,7 @@ ticks
 BUTTON
 22
 105
-85
+88
 138
 NIL
 setup
@@ -412,7 +436,7 @@ NIL
 T
 OBSERVER
 NIL
-NIL
+S
 NIL
 NIL
 1
@@ -439,7 +463,7 @@ T
 T
 OBSERVER
 NIL
-NIL
+G
 NIL
 NIL
 0
@@ -456,7 +480,7 @@ NIL
 T
 OBSERVER
 NIL
-NIL
+U
 NIL
 NIL
 1
@@ -468,7 +492,7 @@ SWITCH
 321
 ports?
 ports?
-0
+1
 1
 -1000
 
@@ -587,6 +611,23 @@ Change the background information here and hit \"update\"
 11
 0.0
 1
+
+BUTTON
+484
+454
+654
+542
+NIL
+test-target
+NIL
+1
+T
+OBSERVER
+NIL
+T
+NIL
+NIL
+0
 
 @#$#@#$#@
 ## Data sources
