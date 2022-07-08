@@ -368,10 +368,10 @@ to catch-fish
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-214
-10
-1185
-380
+262
+59
+1233
+429
 -1
 -1
 3.01
@@ -395,10 +395,10 @@ ticks
 30.0
 
 BUTTON
-26
-20
-89
-53
+22
+105
+85
+138
 NIL
 setup
 NIL
@@ -412,20 +412,20 @@ NIL
 1
 
 CHOOSER
-26
-85
-190
-130
+21
+201
+113
+246
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry"
 4
 
 BUTTON
-97
-21
-160
-54
+93
+106
+156
+139
 NIL
 go
 T
@@ -439,10 +439,10 @@ NIL
 0
 
 BUTTON
-26
-138
-100
-171
+119
+202
+182
+246
 NIL
 update
 NIL
@@ -456,10 +456,10 @@ NIL
 1
 
 SWITCH
-24
-194
-127
-227
+20
+288
+123
+321
 ports?
 ports?
 0
@@ -467,10 +467,10 @@ ports?
 -1000
 
 SLIDER
-10
-285
-182
-318
+21
+368
+193
+401
 Adaptation
 Adaptation
 0
@@ -482,10 +482,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-9
-251
-181
-284
+21
+327
+193
+360
 memory-size
 memory-size
 0
@@ -497,10 +497,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1033
-324
-1167
-361
+1087
+383
+1221
+420
 Date
 datetime
 17
@@ -508,10 +508,10 @@ datetime
 9
 
 SLIDER
-11
-388
-258
-421
+7
+482
+254
+515
 fraction-transportation-costs
 fraction-transportation-costs
 0
@@ -523,10 +523,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-12
-353
-212
-386
+8
+447
+208
+480
 operating-costs-of-boats
 operating-costs-of-boats
 0
@@ -538,10 +538,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-281
-392
-453
-425
+258
+483
+430
+516
 Oil-Price
 Oil-Price
 0
@@ -551,6 +551,36 @@ Oil-Price
 1
 NIL
 HORIZONTAL
+
+TEXTBOX
+27
+15
+822
+49
+Agent-based model of North Sea fisheries (MuSSeL)
+28
+0.0
+1
+
+TEXTBOX
+24
+58
+174
+100
+To operate the model, wait until the map is loaded and then click on \"go\". 
+11
+0.0
+1
+
+TEXTBOX
+24
+154
+187
+196
+Change the background information here and hit \"update\"
+11
+0.0
+1
 
 @#$#@#$#@
 ## Data sources
