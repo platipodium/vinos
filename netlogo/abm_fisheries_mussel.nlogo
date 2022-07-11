@@ -119,6 +119,9 @@ patches-own [
   platessa-winter
   solea-summer
   solea-winter
+
+  fish-abundance
+
   pollution-exceedance
   depth
   owf-fraction
@@ -132,7 +135,6 @@ to go
 
   every 1 [update] ; update the view every 1 second in case it changed
   advance-calendar
-
   ask ports [ifelse ports? [set label ""][set label name]]
   ask boats [ move ]
 
@@ -162,7 +164,7 @@ to setup
 
   import-asc
   calc-pollution
-
+  calc-fish
 
   set view "bathymetry"
   update
@@ -196,7 +198,7 @@ to setup-boats
      [
       create-link-with myself
       move-to [start-patch] of one-of link-neighbors
-      set  fish-catch-boat         n-values number-of-species [?1 -> 0 ]    ; vector, 4 entries for sole, plaice, crangon and other species
+      set  fish-catch-boat         n-values number-of-species [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
       set  catch-efficiency-boat   n-values number-of-species [?1 -> 0.25 ]
       set  revenue-boat           n-values number-of-species  [?1 -> 0 ]    ; revenue for the fishing trip of the boat
       set  costs-boat             n-values number-of-species  [?1 -> 0 ]    ; costs for the fishing trip of the boat
@@ -320,7 +322,13 @@ to-report summer-weight
   ;; (i.e. maximum on 1 August, minium 1 Feb)
   report seasonal-mean-weight + sin ( ( day-of-year - 129 + random day-variation-range )
     * 360.0 / (365 + leap-year) ) * seasonal-weight-range / 2.0
+end
 
+to calc-fish
+  ask patches [
+    set fish-abundance (list solea-summer platessa-summer crangon-summer 0)
+    set fish-biomass (list 100 200 300 400) ; default values needs to be adjusted when data available
+  ]
 end
 
 to test-target
@@ -374,6 +382,7 @@ to test-target
       let my-neighbors neighbors with [depth > navigable-depth and distance l-patch < trip-length-left ]
       ifelse any? my-neighbors [
         set s-patch one-of my-neighbors
+
       ][
         set s-patch l-patch
         ;print (list who " found no suitable patch to navigate to")
@@ -390,11 +399,14 @@ to test-target
 end
 
 
-to catch-fish
-  ;  sum priority * catch-effiency * biomass
-  let new-catch ((item 0 fish-catch-boat) + (item 0 priority-boat) * (item 0 catch-efficiency-boat) * [solea-summer] of patch-here)
-  set fish-catch-boat replace-item 0 fish-catch-boat new-catch
-  print fish-catch-boat
+to catch-species [species]
+  ; calculate the values for each patch and every target species (solea, platessa and crangon), i.e. biomass cath in KG
+  ;let new-catch ((item 0 fish-catch-boat) + (item 0 priority-boat) * (item 0 catch-efficiency-boat) * [solea-summer] of patch-here)
+  ;set fish-catch-boat replace-item 0 fish-catch-boat new-catch
+  ;print fish-catch-boat
+  let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat)  ]
+  set fish-catch-boat fish-catch-boat + new-catch
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -449,7 +461,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry"
-4
+0
 
 BUTTON
 93
