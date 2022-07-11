@@ -60,7 +60,9 @@ boats-own [
 
   revenue-boat             ; revenue for the fishing trip of the boat
   costs-boat               ; costs for the fishing trip of the boat
+  delta-gain-boat          ; change in gain
   gain-boat                ; gain for the fishing trip of the boat
+  delta-priority-boat      ; change in priority
   priority-boat            ; priority for the pathway
 
   solea-catch-kg          ; catch of solea in kg for a fishing trip
@@ -76,6 +78,7 @@ boats-own [
                           ; comment: mainly driven by oil price, approx 10-20 percent of the revenue for crangon, up to 30 percent for solea and platessa according to press relesease March 2022 going up to 50 percent
   operating-costs         ; cost for opertating the vessel, not known, work with a parameter
                           ; comment: approximately 50 percent of the revenue
+  wage                    ;  wage                               ; wage
   target-species          ; species primarily tragetted (solea, platessa, crangon)
   ;home-port-boat               ; Home Port (in the current state only German home ports are considered
   ;favorite-landing-port-of-boat   ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
@@ -88,6 +91,7 @@ globals [
   number-of-species                  ; number-of-species plus one for other
   species-names                      ; names of the species
   navigable-depth                    ; minimum depth where a boat can navigate
+
 
   sum-ports-total-landings-kg        ; overall sum of total landings per period
   sum-ports-other-landings-kg        ; overall sum of other landings per period
@@ -136,8 +140,8 @@ to go
   every 1 [update] ; update the view every 1 second in case it changed
   advance-calendar
   ask ports [ifelse ports? [set label ""][set label name]]
-  ask boats [ move ]
-
+  ask boats [ move]
+  calc-fish
   tick
 end
 
@@ -200,14 +204,15 @@ to setup-boats
       move-to [start-patch] of one-of link-neighbors
       set  fish-catch-boat         n-values number-of-species [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
       set  catch-efficiency-boat   n-values number-of-species [?1 -> 0.25 ]
-      set  revenue-boat           n-values number-of-species  [?1 -> 0 ]    ; revenue for the fishing trip of the boat
-      set  costs-boat             n-values number-of-species  [?1 -> 0 ]    ; costs for the fishing trip of the boat
-      set  gain-boat              n-values number-of-species  [?1 -> 0 ]    ; gain for the fishing trip of the boat
-      set  priority-boat          n-values number-of-species  [?1 -> 0.25 ]    ; priority for the pathway
-      set  transportation-costs  1                            ; to do, default value
-      set  operating-costs 5                                  ; to do, default value
-
-      set time-at-sea 0
+      set  revenue-boat            n-values number-of-species  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
+      set  costs-boat              n-values number-of-species  [?1 -> 0 ]    ; costs for the fishing trip of the boat
+      set  gain-boat               n-values number-of-species  [?1 -> 0 ]    ; gain for the fishing trip of the boat
+      set  delta-priority-boat     n-values number-of-species  [?1 -> 0 ]    ; change of priority for the pathway
+      set  priority-boat           n-values number-of-species  [?1 -> 0.25 ]    ; priority for the pathway
+      set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
+      set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
+      set  wage  100                                          ; @todo default value
+      set  time-at-sea 0
 
     ]
 
@@ -357,7 +362,7 @@ to test-target
     move-to s-patch
     let trip-length-left trip-length - time-at-sea
 
-    ;catch-fish
+    catch-species
     ask s-patch[
       let my-neighbors neighbors with [depth > navigable-depth and distance t-patch < trip-length-left / 2 and distance l-patch < trip-length / 2 ]
       ifelse any? my-neighbors [
@@ -391,10 +396,20 @@ to test-target
      ]
    set time-at-sea time-at-sea + 1
    ]
+
    print "Reached landing site."
 
     pen-up
     set size 1
+    ;calculate costs, revenue and profit
+    set transportation-costs fuel-efficiency * oil-price * trip-length
+    set operating-costs wage * time-at-sea
+    set costs-boat n-values (number-of-species - 1) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
+    set revenue-boat n-values (number-of-species - 1)[i -> (item i fish-catch-boat * item i price)] ; @todo needs to be solved, price is related to home-port
+    set delta-gain-boat n-values (number-of-species - 1) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
+    set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
+    set delta-priority-boat n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i priority-boat)]
+    set priority-boat n-values (number-of-species - 1) [i -> item i priority-boat - item i delta-priority-boat]
   ]
 end
 
@@ -553,8 +568,8 @@ SLIDER
 482
 254
 515
-fraction-transportation-costs
-fraction-transportation-costs
+fuel-efficiency
+fuel-efficiency
 0
 1
 0.198
@@ -639,6 +654,21 @@ T
 NIL
 NIL
 0
+
+SLIDER
+7
+515
+217
+548
+fraction-transportation-costs
+fraction-transportation-costs
+0
+1
+0.19
+0.01
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## Data sources
