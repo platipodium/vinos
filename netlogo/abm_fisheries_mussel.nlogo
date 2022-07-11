@@ -377,8 +377,8 @@ to test-target
     move-to s-patch
     let trip-length-left trip-length - time-at-sea
 
-    ;catch-fish
-    ask s-patch[
+    catch-species
+      ask s-patch[
       let my-neighbors neighbors with [depth > navigable-depth and distance l-patch < trip-length-left ]
       ifelse any? my-neighbors [
         set s-patch one-of my-neighbors
@@ -398,15 +398,14 @@ to test-target
   ]
 end
 
-
-to catch-species [species]
+to catch-species
   ; calculate the values for each patch and every target species (solea, platessa and crangon), i.e. biomass cath in KG
-  ;let new-catch ((item 0 fish-catch-boat) + (item 0 priority-boat) * (item 0 catch-efficiency-boat) * [solea-summer] of patch-here)
-  ;set fish-catch-boat replace-item 0 fish-catch-boat new-catch
-  ;print fish-catch-boat
-  let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat)  ]
-  set fish-catch-boat fish-catch-boat + new-catch
-
+  ; @todo: negative values possible for fish-biomass, needs to be fixed
+  let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat) * (item i fish-abundance) * (item i fish-biomass)]
+  set fish-catch-boat n-values (number-of-species - 1) [i -> (item i fish-catch-boat + item i new-catch)]
+  set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)]
+  print (list fish-catch-boat)
+  ;print (list fish-biomass)
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -461,7 +460,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry"
-0
+4
 
 BUTTON
 93
@@ -513,8 +512,8 @@ SLIDER
 368
 193
 401
-Adaptation
-Adaptation
+adaptation
+adaptation
 0
 1
 0.489
@@ -584,8 +583,8 @@ SLIDER
 483
 430
 516
-Oil-Price
-Oil-Price
+oil-price
+oil-price
 0
 100
 50.0
