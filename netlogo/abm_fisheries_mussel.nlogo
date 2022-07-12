@@ -172,7 +172,7 @@ to setup
   reset-calendar
 
   set min-fresh-catch 1000
-  set navigable-depth 5
+  set navigable-depth 15
   set number-of-species 4
   set species-names (list "solea" "crangon" "platessa" "other") ; order of the species in the excel file
   ;set harbor-stage (list "stay" "go")
@@ -506,7 +506,7 @@ to go-on-fishing-trip
       print "Cannot find navigable patches ahead, going home"
       set need-to-go-home? true
     ][
-      print (list "Deploying gear in direction" heading)
+      ;print (list "Deploying gear in direction" heading)
     ]
 
     ; Deploy the gear for haul-time and go in a straight direction,
@@ -555,8 +555,8 @@ to go-on-fishing-trip
     ; for now, we choose a  neighbor patch, later we have to implement
     ; a procedure to find a patch approx 20 km away
     ; @todo check units
-    if (false) [
-    ;if (item 1 new-catch < min-fresh-catch) [
+    ;if (false) [
+    if (item 1 new-catch < min-fresh-catch) [
       let my-neighbors neighbors with [depth > navigable-depth and distance l-patch < distance-left ]
       ifelse any? my-neighbors [
         set s-patch one-of my-neighbors
@@ -572,7 +572,7 @@ to go-on-fishing-trip
       set time-left time-left - distance s-patch / steaming-speed
     ]
 
-    print (list "Boat" who need-to-go-home? time-at-sea time-left (distance l-patch) distance-at-sea distance-left (item 1 fish-catch-boat) )
+    print (list "Boat" who heading time-at-sea time-left (distance l-patch) distance-at-sea distance-left (item 1 fish-catch-boat) )
     ;print (list who ([depth] of patch-here))
   ]
 
@@ -823,7 +823,7 @@ BUTTON
 654
 542
 Test
-;test-target\n\nlet my-boats n-of 1 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
+;test-target\n\nlet my-boats  n-of 10 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
 NIL
 1
 T
