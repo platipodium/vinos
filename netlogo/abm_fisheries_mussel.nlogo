@@ -430,18 +430,17 @@ to test-target
 end
 
 to-report catch-species
-  ; calculate the values for each patch and every target species (solea, platessa and crangon), i.e. biomass cath in KG
-  ; @todo: negative values possible for fish-biomass, needs to be fixed
+  ; calculate the values for each patch and every target species
+  ;(solea, platessa and crangon), i.e. biomass cath in KG
+  ; @todo: negative values possible for fish-biomass
   let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat) * (item i fish-biomass) * (boolean2int (item i fish-biomass > 0) )]
   set fish-catch-boat n-values (number-of-species - 1) [i -> (item i fish-catch-boat + item i new-catch)]
-
 
   set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
   ;print (list fish-catch-boat)
   ;print (list fish-biomass)
   report new-catch
 end
-
 
 ; This is a boat procedure
 to-report should-go-fishing?
@@ -476,21 +475,36 @@ to go-on-fishing-trip
 
   print (list "Boat" who "leaves from" s-patch "with depth" ([depth] of s-patch))
 
-  ; Move the boat to the starting patch and assume it steams there
+  ; Move the boat to the starting patch and assume it steams there,
+  ; thereby adding to trip time/length and subtracting from time and
+  ; distance left
+  move-to home-port
   pen-down
+  set distance-at-sea distance-at-sea + distance s-patch
+  set distance-left distance-left - distance s-patch
+  set time-at-sea time-at-sea + distance s-patch / steaming-speed
+  set time-left time-left - distance s-patch / steaming-speed
   move-to s-patch
-  set distance-at-sea distance-at-sea + distance l-patch
-  set time-at-sea time-at-sea + distance l-patch / steaming-speed
 
   while [not need-to-go-home?] [
 
-    ; Determine a straight path to go from here without hitting land
-    repeat 10 [
+    let found? false
+    let counter 0
+
+    while [not found?] [
       set heading random 360
-      if [depth] of patch-ahead fishing-speed * time-step > 0 [stop]
+      set counter counter + 1
+      let t-patch patch-ahead (fishing-speed * time-step)
+      if (t-patch != nobody) [
+        if ([depth] of t-patch > 0) [set found? true]
+      ]
+      if counter > 20 [set found? true]
     ]
-    ifelse [depth] of patch-ahead fishing-speed * time-step < 0 [
-      print "Cannot find navigable patches ahead"
+
+    let t-patch patch-ahead (fishing-speed * time-step)
+    ifelse (t-patch = nobody or [depth] of t-patch < 0) [
+      print "Cannot find navigable patches ahead, going home"
+      set need-to-go-home? true
     ][
       print (list "Deploying gear in direction" heading)
     ]
@@ -506,7 +520,7 @@ to go-on-fishing-trip
       forward fishing-speed * time-step
     ]
     set time-left time-left - haul-time
-    set distance-left distance-left - steaming-speed * time-left
+    set distance-left distance-left - steaming-speed * haul-time
     set time-at-sea time-at-sea  + haul-time
     set distance-at-sea distance-at-sea + time-at-sea * fishing-speed
 
@@ -522,63 +536,65 @@ to go-on-fishing-trip
     ]
 
     ; Evaluate whether to go home based on different criteria, i.e.
-    ; capacity exceeded, too far from hom port, or
+    ; capacity exceeded, too far from home port, or
 
-    ifelse (item 1 fish-catch-boat > vessel-size) [
+    if (item 1 fish-catch-boat > vessel-size) [
       print (list "Boat" who "full. Needs to go back to port")
       set need-to-go-home? true
-    ][
-      ifelse (distance l-patch > distance-left) [
-        print (list "Boat" who "went far enough, needs to go home to reach port")
-        set need-to-go-home? true
-      ][
-        if (time-left < distance l-patch / steaming-speed) [
-          print (list "Boat" who "is running out of time, needs to go home to reach port")
-          set need-to-go-home? true
-        ]
-      ]
     ]
-    ; I debugged until here @todo
+    if (distance l-patch > distance-left) [
+      print (list "Boat" who "went far enough, needs to go home to reach port")
+      set need-to-go-home? true
+    ]
+    if (time-left < distance l-patch / steaming-speed) [
+      print (list "Boat" who "is running out of time, needs to go home to reach port")
+      set need-to-go-home? true
+    ]
 
-    ifelse (new-catch > min-fresh-catch)[
-      set heading heading  - 90 + random 180
-    ][
-      let my-neighbors neighbors with [depth > navigable-depth and distance l-patch < distance-left ] ; select a neighbor patch @todo later we have to implement a procedure to find a patch approx 20 km away, we have to check units
+    ; in case of a bad haul, select a different patch.
+    ; for now, we choose a  neighbor patch, later we have to implement
+    ; a procedure to find a patch approx 20 km away
+    ; @todo check units
+    if (false) [
+    ;if (item 1 new-catch < min-fresh-catch) [
+      let my-neighbors neighbors with [depth > navigable-depth and distance l-patch < distance-left ]
       ifelse any? my-neighbors [
         set s-patch one-of my-neighbors
+        print (list "Boat" who "start a new haul at a different patch with depth" ([depth] of s-patch))
       ][
-        print "Could not find any navigable water"
+        print (list "Boat" who "could not find any navigable water, going home")
         set need-to-go-home? true
       ]
-    set distance-at-sea distance-at-sea + distance s-patch
-    set time-at-sea time-at-sea + distance s-patch / steaming-speed
-    move-to s-patch
+      move-to s-patch
+      set distance-at-sea distance-at-sea + distance s-patch
+      set distance-left distance-left - distance s-patch
+      set time-at-sea time-at-sea + distance s-patch / steaming-speed
+      set time-left time-left - distance s-patch / steaming-speed
     ]
 
-    ;print (list need-to-go-home? time-at-sea time-left distance-at-sea distance-left (item 1 fish-catch-boat) )
-    print (list who ([depth] of patch-here))
+    print (list "Boat" who need-to-go-home? time-at-sea time-left (distance l-patch) distance-at-sea distance-left (item 1 fish-catch-boat) )
+    ;print (list who ([depth] of patch-here))
   ]
 
-   print "Returning to harbor..."
+  print "Returning to harbor..."
 
-   set distance-at-sea distance-at-sea + distance l-patch
-   set time-at-sea time-at-sea + distance l-patch / steaming-speed
-   move-to l-patch
+  set distance-at-sea distance-at-sea + distance l-patch
+  set time-at-sea time-at-sea + distance l-patch / steaming-speed   move-to l-patch
 
-   ; @todo temporarily give this a price, needs to be a global property later
-   let price-species  3 ; EUR kg-1
+  ; @todo temporarily give this a price, needs to be a global property later
+  let price-species  3 ; EUR kg-1
 
-    pen-up
-    set size 1
-    ;calculate costs, revenue and profit
-    set transportation-costs fuel-efficiency * oil-price * distance-at-sea
-    set operating-costs wage * time-at-sea
-    ;set costs-boat n-values (number-of-species - 1) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
-    ;set revenue-boat n-values (number-of-species - 1)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
-    ;set delta-gain-boat n-values (number-of-species - 1) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
-    ;set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
-    ;set delta-priority-boat n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i priority-boat)]
-    ;set priority-boat n-values (number-of-species - 1) [i -> item i priority-boat - item i delta-priority-boat]
+  pen-up
+  set size 1
+  ;calculate costs, revenue and profit
+  set transportation-costs fuel-efficiency * oil-price * distance-at-sea
+  set operating-costs wage * time-at-sea
+  ;set costs-boat n-values (number-of-species - 1) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
+  ;set revenue-boat n-values (number-of-species - 1)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
+  ;set delta-gain-boat n-values (number-of-species - 1) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
+  ;set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
+  ;set delta-priority-boat n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i priority-boat)]
+  ;set priority-boat n-values (number-of-species - 1) [i -> item i priority-boat - item i delta-priority-boat]
   print (list "Boat" who " has cost of " (transportation-costs + operating-costs) )
 end
 
@@ -807,7 +823,7 @@ BUTTON
 654
 542
 Test
-;test-target\n\nask n-of 5 boats [go-on-fishing-trip]
+;test-target\n\nlet my-boats n-of 1 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
 NIL
 1
 T
