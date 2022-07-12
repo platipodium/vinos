@@ -45,7 +45,7 @@ ports-own [
   price                    ; vector of prices with number-of-species in EURO 2015
 
   port-transportation-costs; average transportation costs as percentage of the total landings in EUR 2015
-  port-operation-costs     ; averagre operating costs as percetage of the total landings in EUR 2015
+  port-operation-costs     ; average operating costs as percentage of the total landings in EUR 2015
   port-average-trip-length ; average trip length
   port-average-fishing-effort-in-days    ; t_intv_day
   port-average-fishing-effort-in-hours   ; t_intv_h
@@ -331,8 +331,8 @@ end
 
 to calc-fish
   ask patches [
-    set fish-abundance (list solea-summer platessa-summer crangon-summer 0)
-    set fish-biomass (list 100 200 300 400) ; default values needs to be adjusted when data available
+    set fish-biomass (list solea-summer platessa-summer crangon-summer 0)
+    ;set fish-abundance (list 100 200 300 400) ; default values needs to be adjusted when data available
   ]
 end
 
@@ -416,7 +416,7 @@ end
 to catch-species
   ; calculate the values for each patch and every target species (solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for fish-biomass, needs to be fixed
-  let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat) * (item i fish-abundance) * (item i fish-biomass)]
+  let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat) * (item i fish-biomass)]
   set fish-catch-boat n-values (number-of-species - 1) [i -> (item i fish-catch-boat + item i new-catch)]
   set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)]
   print (list fish-catch-boat)
