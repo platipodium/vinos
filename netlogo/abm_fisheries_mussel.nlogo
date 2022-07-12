@@ -90,7 +90,6 @@ boats-own [
   target-species          ; species primarily tragetted (solea, platessa, crangon)
   ;home-port-boat               ; Home Port (in the current state only German home ports are considered
   ;favorite-landing-port-of-boat   ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
-  time-at-sea             ; time at sea which is needed to calculate the costs
   pathways                ; possible pathways which boats learn
 
 ]
@@ -150,7 +149,7 @@ to go
   every 1 [update] ; update the view every 1 second in case it changed
   advance-calendar
   ask ports [ifelse ports? [set label ""][set label name]]
-  ask boats [ move]
+  ;ask boats [ move]
   calc-fish
   tick
 end
@@ -225,7 +224,6 @@ to setup-boats
       set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set  wage  100                                          ; @todo default value
-      set  time-at-sea 0
       set  fishing-speed 2                                    ; range 2 kn to 4 kn,
       set  steaming-speed 10                                  ; range 10  to 12
       set  engine-power 2000                                      ; kw
@@ -306,20 +304,20 @@ to-report grayscale [x]
 end
 
 ; turtle procedure
-to move
-  ifelse (time-at-sea > 300) [
-    pen-up
-    move-to [landing-patch] of one-of link-neighbors
-    set time-at-sea 0
-    pen-down
-  ] [
-   let target-patch one-of neighbors with [ depth > navigable-depth]
-    ifelse target-patch = nobody [ die ][ face target-patch]
-   ]
-
-  set time-at-sea time-at-sea + 1
-  fd 1
-end
+;to move
+;  ifelse (time-at-sea > 300) [
+;    pen-up
+;    move-to [landing-patch] of one-of link-neighbors
+;    set time-at-sea 0
+;    pen-down
+;  ] [
+;   let target-patch one-of neighbors with [ depth > navigable-depth]
+;    ifelse target-patch = nobody [ die ][ face target-patch]
+;   ]
+;
+;  set time-at-sea time-at-sea + 1
+;  fd 1
+;end
 
 ; Patch procedures crangon, solea, and platessa report the seasonally-weighted
 ; area concentration of the three species calculated from their winter and summer
@@ -364,7 +362,7 @@ to test-target
   ;; trip length (to-do will be calculated based on econmic values, for the moment fixed),
   ;; NOTE: multiply by 4.2 (0.5* 1.4 * 6) to get km, assume boates move with approx 18 km/h speed => divide by 4 to get time at sea in h
   let trip-length 200
-  set time-at-sea 0
+  let time-at-sea 0
 
   let s-patch [start-patch] of one-of link-neighbors    ; starting patch of the boat
   let l-patch [landing-patch] of one-of link-neighbors  ; landing patch of the boat
@@ -453,16 +451,15 @@ to go-on-fishing-trip
 
   let navigable-patches patches with [depth > navigable-depth]
 
-
   let time-step 0.1 ; in hours  (let's say 6 min)
-  let time-left 72
-  let distance-left steaming-speed * time-left
-  let new-catch 2000
+  let time-left 72  ; a maximum of three days
+  let distance-left steaming-speed * time-left ; at typical speed of 10 km / h this is 720 km
+  let new-catch 2000 ; a temporary fix for the catch procedure
 
   ;; trip length (to-do will be calculated based on econmic values, for the moment fixed),
   ;; NOTE: multiply by 4.2 (0.5* 1.4 * 6) to get km, assume boates move with approx 18 km/h speed => divide by 4 to get time at sea in h
   ;set trip-length 200
-  set time-at-sea 0
+  let time-at-sea 0
   let distance-at-sea 0
 
   let home-port one-of link-neighbors       ; home-port of boats
@@ -669,7 +666,7 @@ SWITCH
 321
 ports?
 ports?
-1
+0
 1
 -1000
 
