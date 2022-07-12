@@ -189,6 +189,7 @@ to setup
   calc-initial-values
   setup-boats
 
+  ask ports [set hidden? true]
 
   reset-ticks
 end
@@ -228,6 +229,7 @@ to setup-boats
       set  steaming-speed 10                                  ; range 10  to 12
       set  engine-power 2000                                      ; kw
       set  vessel-size 100000                                  ; kg of storage
+      set label ""
     ]
 
 
@@ -457,19 +459,21 @@ to go-on-fishing-trip
 
   let navigable-patches patches with [depth > navigable-depth]
   let time-step 0.1 ; in hours  (let's say 6 min)
+  let time-at-sea 0 ; continuously record the time spent
   let time-left 72  ; a maximum of three days
+  let distance-at-sea 0 ; continuously record the distance travelled
   let distance-left steaming-speed * time-left ; at typical speed of 10 km / h this is 720 km
   let new-catch 2000 ; a temporary fix for the catch procedure
 
-  ;; trip length (to-do will be calculated based on econmic values, for the moment fixed),
   ;; NOTE: multiply by 4.2 (0.5* 1.4 * 6) to get km, assume boates move with approx 18 km/h speed => divide by 4 to get time at sea in h
-  ;set trip-length 200
-  let time-at-sea 0
-  let distance-at-sea 0
 
-  let home-port one-of link-neighbors       ; home-port of boats
+  let home-port one-of link-neighbors  ; home-port of boats
   let s-patch [start-patch] of home-port    ; starting patch of the boat
   let l-patch [landing-patch] of home-port  ; landing patch of the boat
+
+  print (list "Boat" who "leaves from" s-patch "with depth" ([depth] of s-patch))
+
+  stop
   ;let t-patch one-of navigable-patches with [distance s-patch < time-at-sea < trip-length / time-at-sea < trip-length / time-at-sea < trip-length / time-at-sea < trip-length / 2 / 2 ] ; selecting a target patch, this could be also a harbour
 
   ; procedure for the boat to navigate in the terrain, go somewhere in the terrain, currently the decision for the next patch is random
