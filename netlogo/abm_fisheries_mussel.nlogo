@@ -47,9 +47,12 @@ ports-own [
   port-transportation-costs; average transportation costs as percentage of the total landings in EUR 2015
   port-operation-costs     ; average operating costs as percentage of the total landings in EUR 2015
   port-average-trip-length ; average trip length
-  port-average-fishing-effort-in-days    ; t_intv_day
+
+
+  port-average-fishing-effort-in-days
   port-average-fishing-effort-in-hours   ; t_intv_h
   vessels-per-port         ; number of individual vessels per home port
+  weather
 ]
 
 boats-own [
@@ -57,6 +60,8 @@ boats-own [
   fish-catch-boat              ; for each boat a vector of fish catches (per patch or tick)
   harvest-boat                 ; for each boat a vector of total harvest of the fish species
   catch-efficiency-boat        ; how much fish is effectively catched
+  vessel-size                  ; size of the vessel
+  engine-power                  ; power of the engine
 
   revenue-boat             ; revenue for the fishing trip of the boat
   costs-boat               ; costs for the fishing trip of the boat
@@ -64,6 +69,9 @@ boats-own [
   gain-boat                ; gain for the fishing trip of the boat
   delta-priority-boat      ; change in priority
   priority-boat            ; priority for the pathway
+
+  fishing-speed            ; speed when fishing
+  steaming-speed           ; speed when steaming
 
   solea-catch-kg          ; catch of solea in kg for a fishing trip
   solea-catch-euro        ; catch of solea in EUR 2015 for a fishing trip
@@ -91,7 +99,7 @@ globals [
   number-of-species                  ; number-of-species plus one for other
   species-names                      ; names of the species
   navigable-depth                    ; minimum depth where a boat can navigate
-
+  min-fresh-catch                    ; wether the boat decides to go back to harbor
 
   sum-ports-total-landings-kg        ; overall sum of total landings per period
   sum-ports-other-landings-kg        ; overall sum of other landings per period
@@ -117,6 +125,8 @@ globals [
 patches-own [
   fish-biomass                    ; vektor of biomass of the fish species
 
+
+  fishing-effort-hours                   ; fishing effort in hours
   crangon-summer                    ; data from TI
   crangon-winter
   platessa-summer
@@ -162,9 +172,12 @@ to setup
   clear-all
   reset-calendar
 
+  set min-fresh-catch 1000
   set navigable-depth 5
   set number-of-species 4
   set species-names (list "solea" "crangon" "platessa" "other") ; order of the species in the excel file
+  ;set harbor-stage (list "stay" "go")
+  ;set weather-stage (list "good" "bad")
 
   import-asc
   calc-pollution
@@ -213,7 +226,10 @@ to setup-boats
       set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set  wage  100                                          ; @todo default value
       set  time-at-sea 0
-
+      set  fishing-speed 2                                    ; range 2 kn to 4 kn,
+      set  steaming-speed 10                                  ; range 10  to 12
+      set  engine-power 2000                                      ; kw
+      set  vessel-size 100000                                  ; kg of storage
     ]
 
 
@@ -242,7 +258,7 @@ to setup-boats
     ;  hatch-actions memory-size [
 
     ;    create-link-with myself]
-    ;  set pathways link-neighbors
+    ;  set pathways link-neighborstime-at-sea < trip-length / 2
 
     ;  set time-at-sea 0
     ;]
@@ -418,9 +434,108 @@ to catch-species
   ; @todo: negative values possible for fish-biomass, needs to be fixed
   let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat) * (item i fish-biomass)]
   set fish-catch-boat n-values (number-of-species - 1) [i -> (item i fish-catch-boat + item i new-catch)]
-  set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)]
+
+
+  set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
   print (list fish-catch-boat)
   ;print (list fish-biomass)
+end
+
+to go-on-fishing-trip
+
+  ; boat procedure
+  ;; patches where a boat can navigate
+
+  ; select crangon gear and species
+  ; plan time-at-sea
+  ; access weather before go fishing
+
+
+  let navigable-patches patches with [depth > navigable-depth]
+  let time-step 0.1 ; in hours  (let's say 6 min)
+  let time-left 72
+  let distance-left steaming-speed * time-left
+  let new-catch 2000
+
+  ;; trip length (to-do will be calculated based on econmic values, for the moment fixed),
+  ;; NOTE: multiply by 4.2 (0.5* 1.4 * 6) to get km, assume boates move with approx 18 km/h speed => divide by 4 to get time at sea in h
+  ;set trip-length 200
+  set time-at-sea 0
+  let distance-at-sea 0
+
+  let home-port one-of link-neighbors       ; home-port of boats
+  let s-patch [start-patch] of home-port    ; starting patch of the boat
+  let l-patch [landing-patch] of home-port  ; landing patch of the boat
+  ;let t-patch one-of navigable-patches with [distance s-patch < time-at-sea < trip-length / time-at-sea < trip-length / time-at-sea < trip-length / time-at-sea < trip-length / 2 / 2 ] ; selecting a target patch, this could be also a harbour
+
+  ; procedure for the boat to navigate in the terrain, go somewhere in the terrain, currently the decision for the next patch is random
+  move-to s-patch
+  pen-down
+
+  let need-to-go-home? false
+
+ ; while [time-at-sea < trip-length / 2] [
+  while [not need-to-go-home?] [
+    repeat (2 / time-step) [
+      catch-species
+      ask patch-here [
+        set fishing-effort-hours fishing-effort-hours + time-step
+      ]
+      forward fishing-speed * time-step
+    ]
+    set time-left time-left - 2
+    set distance-left steaming-speed * time-left
+    if (fish-catch-boat > vessel-size) [
+      ; return-to-harbor stop
+      set need-to-go-home? true
+    ]
+    if (fish-catch-boat < min-fresh-catch)[
+      set time-left 24
+      set distance-left steaming-speed * time-left
+    ]
+     set time-at-sea time-at-sea  + 2
+     set distance-at-sea distance-at-sea + time-at-sea * fishing-speed
+
+    ifelse (new-catch > min-fresh-catch)[
+      set heading heading  - 90 + random 180
+    ][
+      let my-neighbors neighbors with [depth > navigable-depth and distance l-patch < distance-left ] ; select a neighbor patch @todo later we have to implement a procedure to find a patch approx 20 km away, we have to check units
+      ifelse any? my-neighbors [
+        set s-patch one-of my-neighbors
+      ][
+       ; return-to-harbor stop
+        set need-to-go-home? true
+      ]
+   ]
+    set distance-at-sea distance-at-sea + distance s-patch
+    set time-at-sea time-at-sea + distance s-patch / steaming-speed
+    move-to s-patch
+  ]
+
+   print "Return to harbor."
+   return-to-harbor
+   set distance-at-sea distance-at-sea + distance l-patch
+   set time-at-sea time-at-sea + distance l-patch / steaming-speed
+   move-to l-patch
+
+    pen-up
+    set size 1
+    ;calculate costs, revenue and profit
+    set transportation-costs fuel-efficiency * oil-price * distance-at-sea
+    set operating-costs wage * time-at-sea
+    set costs-boat n-values (number-of-species - 1) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
+    set revenue-boat n-values (number-of-species - 1)[i -> (item i fish-catch-boat * item i price)] ; @todo needs to be solved, price is related to home-port
+    set delta-gain-boat n-values (number-of-species - 1) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
+    set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
+    set delta-priority-boat n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i priority-boat)]
+    set priority-boat n-values (number-of-species - 1) [i -> item i priority-boat - item i delta-priority-boat]
+   set time-at-sea time-at-sea + distance s-patch / steaming-speed
+
+
+end
+
+to return-to-harbor
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
