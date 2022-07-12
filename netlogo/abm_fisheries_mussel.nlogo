@@ -432,12 +432,12 @@ end
 to catch-species
   ; calculate the values for each patch and every target species (solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for fish-biomass, needs to be fixed
-  let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat) * (item i fish-biomass)]
+  let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat) * (item i fish-biomass) * (boolean2int (item i fish-biomass > 0) )]
   set fish-catch-boat n-values (number-of-species - 1) [i -> (item i fish-catch-boat + item i new-catch)]
 
 
   set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
-  print (list fish-catch-boat)
+  ;print (list fish-catch-boat)
   ;print (list fish-biomass)
 end
 
@@ -485,13 +485,17 @@ to go-on-fishing-trip
     ]
     set time-left time-left - 2
     set distance-left steaming-speed * time-left
-    if (fish-catch-boat > vessel-size) [
-      ; return-to-harbor stop
+
+    if (item 1 fish-catch-boat > vessel-size) [
+      print "Capacity of boat exceeded"
       set need-to-go-home? true
     ]
-    if (fish-catch-boat < min-fresh-catch)[
+
+
+
+    if (new-catch < min-fresh-catch)[
       set time-left 24
-      set distance-left steaming-speed * time-left
+      set distance-left distance-left - steaming-speed * time-left
     ]
      set time-at-sea time-at-sea  + 2
      set distance-at-sea distance-at-sea + time-at-sea * fishing-speed
@@ -503,17 +507,25 @@ to go-on-fishing-trip
       ifelse any? my-neighbors [
         set s-patch one-of my-neighbors
       ][
-       ; return-to-harbor stop
+        print "Could not find any navigable water"
         set need-to-go-home? true
       ]
-   ]
-    set distance-at-sea distance-at-sea + distance s-patch
+   set distance-at-sea distance-at-sea + distance s-patch
     set time-at-sea time-at-sea + distance s-patch / steaming-speed
     move-to s-patch
+    ]
+
+    if (distance l-patch > distance-left) [
+      print "Need to go home to be able to reach port with available fuel"
+      set need-to-go-home? true
+    ]
+    if (time-left < distance l-patch / steaming-speed) [set need-to-go-home? true]
+
+    print (list need-to-go-home? time-at-sea time-left distance-at-sea distance-left (item 1 fish-catch-boat) )
   ]
 
-   print "Return to harbor."
-   return-to-harbor
+   print "Returning to harbor..."
+
    set distance-at-sea distance-at-sea + distance l-patch
    set time-at-sea time-at-sea + distance l-patch / steaming-speed
    move-to l-patch
@@ -530,12 +542,10 @@ to go-on-fishing-trip
     set delta-priority-boat n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i priority-boat)]
     set priority-boat n-values (number-of-species - 1) [i -> item i priority-boat - item i delta-priority-boat]
    set time-at-sea time-at-sea + distance s-patch / steaming-speed
-
-
 end
 
-to return-to-harbor
-
+to-report boolean2int [x]
+  ifelse x [report 1][report 0]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -758,8 +768,8 @@ BUTTON
 454
 654
 542
-NIL
-test-target
+Test
+;test-target\n\nask one-of boats [go-on-fishing-trip]
 NIL
 1
 T
