@@ -378,7 +378,7 @@ to test-target
     move-to s-patch
     let trip-length-left trip-length - time-at-sea
 
-    catch-species
+    ;catch-species
     ask s-patch[
       let my-neighbors neighbors with [depth > navigable-depth and distance t-patch < trip-length-left / 2 and distance l-patch < trip-length / 2 ]
       ifelse any? my-neighbors [
@@ -398,7 +398,7 @@ to test-target
     move-to s-patch
     let trip-length-left trip-length - time-at-sea
 
-    catch-species
+    ;catch-species
       ask s-patch[
       let my-neighbors neighbors with [depth > navigable-depth and distance l-patch < trip-length-left ]
       ifelse any? my-neighbors [
@@ -429,7 +429,7 @@ to test-target
   ]
 end
 
-to catch-species
+to-report catch-species
   ; calculate the values for each patch and every target species (solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for fish-biomass, needs to be fixed
   let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat) * (item i fish-biomass) * (boolean2int (item i fish-biomass > 0) )]
@@ -439,6 +439,7 @@ to catch-species
   set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
   ;print (list fish-catch-boat)
   ;print (list fish-biomass)
+  report new-catch
 end
 
 
@@ -461,72 +462,83 @@ to go-on-fishing-trip
   let time-step 0.1 ; in hours  (let's say 6 min)
   let time-at-sea 0 ; continuously record the time spent
   let time-left 72  ; a maximum of three days
+  let haul-time 2   ; 2 hours for a typical haul time without change of direction
   let distance-at-sea 0 ; continuously record the distance travelled
   let distance-left steaming-speed * time-left ; at typical speed of 10 km / h this is 720 km
-  let new-catch 2000 ; a temporary fix for the catch procedure
+  let new-catch n-values (number-of-species - 1) [i -> 0]
 
   ;; NOTE: multiply by 4.2 (0.5* 1.4 * 6) to get km, assume boates move with approx 18 km/h speed => divide by 4 to get time at sea in h
 
   let home-port one-of link-neighbors  ; home-port of boats
   let s-patch [start-patch] of home-port    ; starting patch of the boat
   let l-patch [landing-patch] of home-port  ; landing patch of the boat
+  let need-to-go-home? false
 
   print (list "Boat" who "leaves from" s-patch "with depth" ([depth] of s-patch))
 
-  stop
-  ;let t-patch one-of navigable-patches with [distance s-patch < time-at-sea < trip-length / time-at-sea < trip-length / time-at-sea < trip-length / time-at-sea < trip-length / 2 / 2 ] ; selecting a target patch, this could be also a harbour
-
-  ; procedure for the boat to navigate in the terrain, go somewhere in the terrain, currently the decision for the next patch is random
-
-  ;set s-patch min-one-of navigable-patches [distance myself]
-  ;set l-patch min-one-of navigable-patches [distance myself]
-
- ; let s-patch one-of navigable-patches with [distance myself < 40]
- ; let l-patch s-patch
-
-  ;print [depth] of s-patch
-  ;inspect s-patch
-
-  move-to s-patch
+  ; Move the boat to the starting patch and assume it steams there
   pen-down
+  move-to s-patch
+  set distance-at-sea distance-at-sea + distance l-patch
+  set time-at-sea time-at-sea + distance l-patch / steaming-speed
 
-  let need-to-go-home? false
-
- ; while [time-at-sea < trip-length / 2] [
   while [not need-to-go-home?] [
 
+    ; Determine a straight path to go from here without hitting land
     repeat 10 [
       set heading random 360
       if [depth] of patch-ahead fishing-speed * time-step > 0 [stop]
     ]
-
-    if [depth] of patch-ahead fishing-speed * time-step < 0 [
+    ifelse [depth] of patch-ahead fishing-speed * time-step < 0 [
       print "Cannot find navigable patches ahead"
+    ][
+      print (list "Deploying gear in direction" heading)
     ]
 
-    repeat (2 / time-step) [
-      catch-species
+    ; Deploy the gear for haul-time and go in a straight direction,
+    ; observing every time step a possible change in the patch the
+    ; boat is on
+    repeat (haul-time / time-step) [
+      set new-catch catch-species
       ask patch-here [
         set fishing-effort-hours fishing-effort-hours + time-step
       ]
       forward fishing-speed * time-step
-
     ]
-    set time-left time-left - 2
-    set distance-left steaming-speed * time-left
+    set time-left time-left - haul-time
+    set distance-left distance-left - steaming-speed * time-left
+    set time-at-sea time-at-sea  + haul-time
+    set distance-at-sea distance-at-sea + time-at-sea * fishing-speed
 
-    if (item 1 fish-catch-boat > vessel-size) [
-      print "Capacity of boat exceeded"
-      set need-to-go-home? true
-    ]
-
-
-    if (new-catch < min-fresh-catch)[
+    ; If the catch is not worth keeping it, discard it entirely and
+    ; reset the time left.  But if the catch is successful, then make
+    ; sure that the timeout is maximum 24 hours
+    ; @todo this is not properly implemented yet
+    if (item 1 new-catch < min-fresh-catch and time-left < 24)[
       set time-left 24
-      set distance-left distance-left - steaming-speed * time-left
     ]
-     set time-at-sea time-at-sea  + 2
-     set distance-at-sea distance-at-sea + time-at-sea * fishing-speed
+    if (item 1 new-catch > min-fresh-catch and time-left > 24)[
+      set time-left 24
+    ]
+
+    ; Evaluate whether to go home based on different criteria, i.e.
+    ; capacity exceeded, too far from hom port, or
+
+    ifelse (item 1 fish-catch-boat > vessel-size) [
+      print (list "Boat" who "full. Needs to go back to port")
+      set need-to-go-home? true
+    ][
+      ifelse (distance l-patch > distance-left) [
+        print (list "Boat" who "went far enough, needs to go home to reach port")
+        set need-to-go-home? true
+      ][
+        if (time-left < distance l-patch / steaming-speed) [
+          print (list "Boat" who "is running out of time, needs to go home to reach port")
+          set need-to-go-home? true
+        ]
+      ]
+    ]
+    ; I debugged until here @todo
 
     ifelse (new-catch > min-fresh-catch)[
       set heading heading  - 90 + random 180
@@ -538,16 +550,10 @@ to go-on-fishing-trip
         print "Could not find any navigable water"
         set need-to-go-home? true
       ]
-   set distance-at-sea distance-at-sea + distance s-patch
+    set distance-at-sea distance-at-sea + distance s-patch
     set time-at-sea time-at-sea + distance s-patch / steaming-speed
     move-to s-patch
     ]
-
-    if (distance l-patch > distance-left) [
-      print "Need to go home to be able to reach port with available fuel"
-      set need-to-go-home? true
-    ]
-    if (time-left < distance l-patch / steaming-speed) [set need-to-go-home? true]
 
     ;print (list need-to-go-home? time-at-sea time-left distance-at-sea distance-left (item 1 fish-catch-boat) )
     print (list who ([depth] of patch-here))
