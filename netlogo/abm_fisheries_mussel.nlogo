@@ -52,7 +52,8 @@ ports-own [
   port-average-fishing-effort-in-days
   port-average-fishing-effort-in-hours   ; t_intv_h
   vessels-per-port         ; number of individual vessels per home port
-  weather
+  weather                  ; status of the weather "bad" -> stay in harbor, "good" -> maybe leave harbor
+  prob-bad-weather         ; probability that the weather is too bad to leave harbor
 ]
 
 boats-own [
@@ -126,7 +127,7 @@ patches-own [
 
 
   fishing-effort-hours                   ; fishing effort in hours
-  crangon-summer                    ; data from TI
+  crangon-summer                         ; data from TI
   crangon-winter
   platessa-summer
   platessa-winter
@@ -229,7 +230,7 @@ to setup-boats
       set  steaming-speed 10                                  ; range 10  to 12
       set  engine-power 2000                                      ; kw
       set  vessel-size 100000                                  ; kg of storage
-      set label ""
+      set label ""                                             ; ????
     ]
 
 
@@ -448,7 +449,11 @@ to-report should-go-fishing?
   ; if this month's harvest is not sufficent
   ; a boat decides to go on a fishing trip.
 
-  report true
+  set prob-bad-weather random-float 1.00
+  if random-float 1.00 < prob-bad-weather
+    [ if gain-boat < 1.000 [
+      report true]
+  ]
 end
 
 ; This is a boat procedure
@@ -471,7 +476,7 @@ to go-on-fishing-trip
   let home-port one-of link-neighbors  ; home-port of boats
   let s-patch [start-patch] of home-port    ; starting patch of the boat
   let l-patch [landing-patch] of home-port  ; landing patch of the boat
-  let need-to-go-home? false
+  let need-to-go-to-port? false ;
 
   print (list "Boat" who "leaves from" s-patch "with depth" ([depth] of s-patch))
 
@@ -486,7 +491,7 @@ to go-on-fishing-trip
   set time-left time-left - distance s-patch / steaming-speed
   move-to s-patch
 
-  while [not need-to-go-home?] [
+  while [not need-to-go-to-port?] [
 
     let found? false
     let counter 0
@@ -504,7 +509,7 @@ to go-on-fishing-trip
     let t-patch patch-ahead (fishing-speed * time-step)
     ifelse (t-patch = nobody or [depth] of t-patch < 0) [
       print "Cannot find navigable patches ahead, going home"
-      set need-to-go-home? true
+      set need-to-go-to-port? true ; Is there the need to go to port? E.g. time is running out, catch is higher than capacity of the vessel
     ][
       ;print (list "Deploying gear in direction" heading)
     ]
@@ -540,15 +545,15 @@ to go-on-fishing-trip
 
     if (item 1 fish-catch-boat > vessel-size) [
       print (list "Boat" who "full. Needs to go back to port")
-      set need-to-go-home? true
+      set need-to-go-to-port? true
     ]
     if (distance l-patch > distance-left) [
       print (list "Boat" who "went far enough, needs to go home to reach port")
-      set need-to-go-home? true
+      set need-to-go-to-port? true
     ]
     if (time-left < distance l-patch / steaming-speed) [
       print (list "Boat" who "is running out of time, needs to go home to reach port")
-      set need-to-go-home? true
+      set need-to-go-to-port? true
     ]
 
     ; in case of a bad haul, select a different patch.
@@ -563,7 +568,7 @@ to go-on-fishing-trip
         print (list "Boat" who "start a new haul at a different patch with depth" ([depth] of s-patch))
       ][
         print (list "Boat" who "could not find any navigable water, going home")
-        set need-to-go-home? true
+        set need-to-go-to-port? true
       ]
       move-to s-patch
       set distance-at-sea distance-at-sea + distance s-patch
