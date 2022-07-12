@@ -439,18 +439,23 @@ to catch-species
   ;print (list fish-biomass)
 end
 
+
+; This is a boat procedure
+to-report should-go-fishing?
+  ; if the weather is good and
+  ; if this month's harvest is not sufficent
+  ; a boat decides to go on a fishing trip.
+
+  report true
+end
+
+; This is a boat procedure
+; it describes a detailed single fishing trip starting and ending in the
+; port.  It is implemented first for crangon only but should be extensible
+; to other species.
 to go-on-fishing-trip
 
-  ; boat procedure
-  ;; patches where a boat can navigate
-
-  ; select crangon gear and species
-  ; plan time-at-sea
-  ; access weather before go fishing
-
-
   let navigable-patches patches with [depth > navigable-depth]
-
   let time-step 0.1 ; in hours  (let's say 6 min)
   let time-left 72  ; a maximum of three days
   let distance-left steaming-speed * time-left ; at typical speed of 10 km / h this is 720 km
