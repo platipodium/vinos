@@ -5,6 +5,10 @@ date: "7/13/2022"
 output: html_document
 ---
 
+SPDX-FileCopyrightText: 2022 Hochschule Bremerhaven
+SPDX-License-Identifier: Apache-2.0
+
+
 ```{r setup, include=F}
 #check Rversion:
 R.version.string
