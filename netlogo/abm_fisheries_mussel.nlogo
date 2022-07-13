@@ -552,9 +552,9 @@ to create-effort-map
     set fishing-effort-hours 0
   ]
   let my-boats boats
-  repeat 16 [
+  ;repeat 16 [
     ask my-boats [go-on-fishing-trip]
-  ]
+  ;]
 
   ; data storage
 
@@ -626,7 +626,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?"
-6
+4
 
 BUTTON
 93
@@ -1238,7 +1238,7 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="effort-map" repetitions="1" runMetricsEveryStep="true">
+  <experiment name="effort-map" repetitions="16" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>create-effort-map</go>
     <timeLimit steps="1000"/>
