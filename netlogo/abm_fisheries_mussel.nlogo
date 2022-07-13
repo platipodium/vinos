@@ -828,7 +828,7 @@ BUTTON
 654
 542
 Test
-;test-target\n\nlet my-boats n-of 10 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
+;test-target\n\nlet my-boats  n-of 10 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
 NIL
 1
 T
