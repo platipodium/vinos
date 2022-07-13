@@ -418,13 +418,14 @@ to go-on-fishing-trip
   ; Move the boat to the starting patch and assume it steams there,
   ; thereby adding to trip time/length and subtracting from time and
   ; distance left
+  pen-up
   move-to home-port
-  pen-down
   set distance-at-sea distance-at-sea + gis-distance s-patch
   set distance-left distance-left - gis-distance s-patch
   set time-at-sea time-at-sea + gis-distance s-patch / steaming-speed
   set time-left time-left - gis-distance s-patch / steaming-speed
   move-to s-patch
+  pen-down
 
   while [not need-to-go-to-port?] [
 
@@ -518,13 +519,15 @@ to go-on-fishing-trip
 
   print "Returning to harbor..."
 
+  pen-up
+
   set distance-at-sea distance-at-sea + gis-distance l-patch
-  set time-at-sea time-at-sea + gis-distance l-patch / steaming-speed   move-to l-patch
+  set time-at-sea time-at-sea + gis-distance l-patch / steaming-speed
+  move-to l-patch
 
   ; @todo temporarily give this a price, needs to be a global property later
   let price-species  3 ; EUR kg-1
 
-  pen-up
   set size 1
   ;calculate costs, revenue and profit
   set transportation-costs fuel-efficiency * oil-price * distance-at-sea
