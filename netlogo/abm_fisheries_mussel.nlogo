@@ -454,7 +454,7 @@ to go-on-fishing-trip
     ; observing every time step a possible change in the patch the
     ; boat is on
     repeat (haul-time / time-step) [
-      set new-catch catch-species time-step * fishing-speed
+      set new-catch catch-species (time-step * fishing-speed)
       ask patch-here [
         set fishing-effort-hours fishing-effort-hours + time-step
       ]
