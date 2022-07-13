@@ -556,7 +556,7 @@ to create-effort-map
   ask patches [
     set fishing-effort-hours 0
   ]
-  let my-boats n-of 3 boats
+  let my-boats boats
   ;repeat 16 [
     ask my-boats [go-on-fishing-trip]
   ;]
