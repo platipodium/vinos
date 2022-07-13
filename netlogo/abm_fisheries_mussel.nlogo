@@ -556,7 +556,7 @@ to create-effort-map
   ask patches [
     set fishing-effort-hours 0
   ]
-  let my-boats boats
+  let my-boats n-of 3 boats
   ;repeat 16 [
     ask my-boats [go-on-fishing-trip]
   ;]
@@ -564,7 +564,7 @@ to create-effort-map
   ; data storage
 
   let dataset gis:patch-dataset fishing-effort-hours
-  gis:store-dataset dataset "./results/effort"
+  gis:store-dataset dataset "results/effort"
 
 end
 
