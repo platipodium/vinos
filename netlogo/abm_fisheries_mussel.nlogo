@@ -273,6 +273,7 @@ to update
   if view = "platessa"  [ ask patches [ set pcolor scale-color cyan platessa 0 1  ] ]
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   if view = "bathymetry" [ask patches [set pcolor scale-color blue depth 80 0 ]]
+  if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours 200 0 ]]
 end
 
 ; This is a dummy procedure and needs to be replace by actual pollution data.
@@ -584,8 +585,8 @@ CHOOSER
 246
 view
 view
-"crangon" "platessa" "solea" "pollution (random)" "bathymetry"
-4
+"crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)"
+3
 
 BUTTON
 93
@@ -779,6 +780,23 @@ fraction-transportation-costs
 1
 NIL
 HORIZONTAL
+
+BUTTON
+752
+475
+816
+508
+Effort
+;test-target\nclear-drawing\n\nask patches [\nset fishing-effort-hours 0\n]\nlet my-boats boats\nrepeat 16 [\nask my-boats [go-on-fishing-trip] \n]\nset view \"effort (h)\" \nupdate\n
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## Data sources
