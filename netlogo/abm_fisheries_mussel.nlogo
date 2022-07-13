@@ -139,8 +139,12 @@ patches-own [
   pollution-exceedance
   depth
   owf-fraction
+  accessible?             ; false if not accessible to fishery, i.e. close to port, too shallow, restricted area
+
 ]
 
+; The startup procedure is called when the model is opened by NetLogo.  This automates
+; the execution of setup
 to startup
    setup
 end
@@ -172,16 +176,20 @@ to setup
   clear-all
   reset-calendar
 
+
   set min-fresh-catch 10
-  set navigable-depth 20
   set number-of-species 4
   set species-names (list "solea" "crangon" "platessa" "other") ; order of the species in the excel file
   ;set harbor-stage (list "stay" "go")
   ;set weather-stage (list "good" "bad")
 
   import-asc
+
+  set navigable-depth 5
   calc-pollution
   calc-fish
+  calc-accessibility
+
 
   set view "bathymetry"
   update
@@ -274,6 +282,7 @@ to update
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   if view = "bathymetry" [ask patches [set pcolor scale-color blue depth 80 0 ]]
   if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours 50 0 ]]
+  if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
 end
 
 ; This is a dummy procedure and needs to be replace by actual pollution data.
@@ -289,7 +298,7 @@ end
 
 to learn
   let home-port-boat one-of link-neighbors
-  let my-patch one-of patches with [depth > navigable-depth]
+  let my-patch one-of patches with [accessible?]
   let my-costs transportation-costs * distance my-patch
   let my-revenue catch-efficiency-boat * ([item 2 price] of home-port-boat * [platessa-summer] of my-patch + [item 0 price] of home-port-boat * [solea-summer] of my-patch + [item 1 price] of home-port-boat * [crangon-summer] of my-patch)
   let my-gain my-revenue - my-costs
@@ -389,7 +398,7 @@ end
 ; to other species.
 to go-on-fishing-trip
 
-  let navigable-patches patches with [depth > navigable-depth]
+  let navigable-patches patches with [accessible?]
   let time-step 0.1 ; in hours  (let's say 6 min)
   let time-at-sea 0 ; continuously record the time spent
   let time-left 72  ; a maximum of three days
@@ -433,7 +442,7 @@ to go-on-fishing-trip
     ]
 
     let t-patch patch-ahead (fishing-speed * time-step)
-    ifelse (t-patch = nobody or [depth] of t-patch < 0) [
+    ifelse (t-patch = nobody or [not accessible?] of t-patch) [
       print "Cannot find navigable patches ahead, going home"
       set need-to-go-to-port? true ; Is there the need to go to port? E.g. time is running out, catch is higher than capacity of the vessel
     ][
@@ -488,7 +497,7 @@ to go-on-fishing-trip
     ; @todo check units
     ;if (false) [
     if (item 1 new-catch < min-fresh-catch) [
-      let my-neighbors navigable-patches  with [gis-distance l-patch < distance-left and gis-distance myself < distance-to-alternative-patch and gis-distance home-port > 5 ] ; @todo: currently set to 20, revise with respect to memorx
+      let my-neighbors patches  with [accessible? and gis-distance l-patch < distance-left and gis-distance myself < distance-to-alternative-patch and gis-distance home-port > 5 ] ; @todo: currently set to 20, revise with respect to memorx
       ifelse any? my-neighbors [
         set s-patch one-of my-neighbors
         print (list "Boat" who "start a new haul at a different patch with depth" ([depth] of s-patch))
@@ -553,6 +562,17 @@ to create-effort-map
   gis:store-dataset dataset "effort"
 
 end
+
+to calc-accessibility
+  ask patches [set accessible? true]
+
+  ask patches with [depth < navigable-depth] [set accessible? false]
+  ask ports [
+    ask patches with [distance myself < 5]  [set accessible? false]
+  ]
+  ask patches with [owf-fraction > 0.5] [set accessible? false]
+
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -605,8 +625,8 @@ CHOOSER
 246
 view
 view
-"crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)"
-4
+"crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?"
+6
 
 BUTTON
 93
