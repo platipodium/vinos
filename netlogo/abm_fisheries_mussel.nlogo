@@ -173,7 +173,7 @@ to setup
   reset-calendar
 
   set min-fresh-catch 10
-  set navigable-depth 15
+  set navigable-depth 20
   set number-of-species 4
   set species-names (list "solea" "crangon" "platessa" "other") ; order of the species in the excel file
   ;set harbor-stage (list "stay" "go")
@@ -393,7 +393,7 @@ to go-on-fishing-trip
   let distance-at-sea 0 ; continuously record the distance travelled
   let distance-left steaming-speed * time-left ; at typical speed of 19 km / h this is 1368 km
   let new-catch n-values (number-of-species - 1) [i -> 0]
-  let distance-to-alternative-patch 20 ;
+  let distance-to-alternative-patch 40 ;
 
   let home-port one-of link-neighbors  ; home-port of boats
   let s-patch [start-patch] of home-port    ; starting patch of the boat
@@ -484,7 +484,7 @@ to go-on-fishing-trip
     ; @todo check units
     ;if (false) [
     if (item 1 new-catch < min-fresh-catch) [
-      let my-neighbors navigable-patches  with [gis-distance l-patch < distance-left and gis-distance myself < distance-to-alternative-patch ] ; @todo: currently set to 20, revise with respect to memorx
+      let my-neighbors navigable-patches  with [gis-distance l-patch < distance-left and gis-distance myself < distance-to-alternative-patch and gis-distance home-port > 5 ] ; @todo: currently set to 20, revise with respect to memorx
       ifelse any? my-neighbors [
         set s-patch one-of my-neighbors
         print (list "Boat" who "start a new haul at a different patch with depth" ([depth] of s-patch))
@@ -712,7 +712,7 @@ oil-price
 oil-price
 0
 100
-44.0
+43.0
 1
 1
 NIL
@@ -754,7 +754,7 @@ BUTTON
 654
 542
 Test
-;test-target\n\nlet my-boats n-of 10 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
+;test-target\nclear-drawing\n\nlet my-boats n-of 10 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
 NIL
 1
 T
