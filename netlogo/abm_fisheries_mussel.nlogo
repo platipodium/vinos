@@ -226,8 +226,8 @@ to setup-boats
       set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set  wage  100                                          ; @todo default value
-      set  fishing-speed 2                                    ; range 2 kn to 4 kn,
-      set  steaming-speed 10                                  ; range 10  to 12
+      set  fishing-speed 4                                   ; range 2 kn to 4 kn to get km multiply by 1.852
+      set  steaming-speed 19                                  ; range 10  to 12
       set  engine-power 2000                                      ; kw
       set  vessel-size 100000                                  ; kg of storage
       set label ""                                             ; ????
@@ -391,10 +391,9 @@ to go-on-fishing-trip
   let time-left 72  ; a maximum of three days
   let haul-time 2   ; 2 hours for a typical haul time without change of direction
   let distance-at-sea 0 ; continuously record the distance travelled
-  let distance-left steaming-speed * time-left ; at typical speed of 10 km / h this is 720 km
+  let distance-left steaming-speed * time-left ; at typical speed of 19 km / h this is 1368 km
   let new-catch n-values (number-of-species - 1) [i -> 0]
-
-  ;; NOTE: multiply by 4.2 (0.5* 1.4 * 6) to get km, assume boates move with approx 18 km/h speed => divide by 4 to get time at sea in h
+  let distance-to-alternative-patch 20 ;
 
   let home-port one-of link-neighbors  ; home-port of boats
   let s-patch [start-patch] of home-port    ; starting patch of the boat
@@ -408,10 +407,10 @@ to go-on-fishing-trip
   ; distance left
   move-to home-port
   pen-down
-  set distance-at-sea distance-at-sea + distance s-patch
-  set distance-left distance-left - distance s-patch
-  set time-at-sea time-at-sea + distance s-patch / steaming-speed
-  set time-left time-left - distance s-patch / steaming-speed
+  set distance-at-sea distance-at-sea + gis-distance s-patch
+  set distance-left distance-left - gis-distance s-patch
+  set time-at-sea time-at-sea + gis-distance s-patch / steaming-speed
+  set time-left time-left - gis-distance s-patch / steaming-speed
   move-to s-patch
 
   while [not need-to-go-to-port?] [
@@ -470,11 +469,11 @@ to go-on-fishing-trip
       print (list "Boat" who "full. Needs to go back to port")
       set need-to-go-to-port? true
     ]
-    if (distance l-patch > distance-left) [
+    if (gis-distance l-patch > distance-left) [
       print (list "Boat" who "went far enough, needs to go home to reach port")
       set need-to-go-to-port? true
     ]
-    if (time-left < distance l-patch / steaming-speed) [
+    if (time-left < gis-distance l-patch / steaming-speed) [
       print (list "Boat" who "is running out of time, needs to go home to reach port")
       set need-to-go-to-port? true
     ]
@@ -485,7 +484,7 @@ to go-on-fishing-trip
     ; @todo check units
     ;if (false) [
     if (item 1 new-catch < min-fresh-catch) [
-      let my-neighbors navigable-patches  with [distance l-patch < distance-left and distance myself < 20 ]
+      let my-neighbors navigable-patches  with [gis-distance l-patch < distance-left and gis-distance myself < distance-to-alternative-patch ] ; @todo: currently set to 20, revise with respect to memorx
       ifelse any? my-neighbors [
         set s-patch one-of my-neighbors
         print (list "Boat" who "start a new haul at a different patch with depth" ([depth] of s-patch))
@@ -494,20 +493,20 @@ to go-on-fishing-trip
         set need-to-go-to-port? true
       ]
       move-to s-patch
-      set distance-at-sea distance-at-sea + distance s-patch
-      set distance-left distance-left - distance s-patch
-      set time-at-sea time-at-sea + distance s-patch / steaming-speed
-      set time-left time-left - distance s-patch / steaming-speed
+      set distance-at-sea distance-at-sea + gis-distance s-patch
+      set distance-left distance-left - gis-distance s-patch
+      set time-at-sea time-at-sea + gis-distance s-patch / steaming-speed
+      set time-left time-left - gis-distance s-patch / steaming-speed
     ]
 
-    print (list "Boat" who heading time-at-sea time-left (distance l-patch) distance-at-sea distance-left (item 1 fish-catch-boat) )
+    print (list "Boat" who heading time-at-sea time-left (gis-distance l-patch) distance-at-sea distance-left (item 1 fish-catch-boat) )
     ;print (list who ([depth] of patch-here))
   ]
 
   print "Returning to harbor..."
 
-  set distance-at-sea distance-at-sea + distance l-patch
-  set time-at-sea time-at-sea + distance l-patch / steaming-speed   move-to l-patch
+  set distance-at-sea distance-at-sea + gis-distance l-patch
+  set time-at-sea time-at-sea + gis-distance l-patch / steaming-speed   move-to l-patch
 
   ; @todo temporarily give this a price, needs to be a global property later
   let price-species  3 ; EUR kg-1
@@ -528,6 +527,10 @@ end
 
 to-report boolean2int [x]
   ifelse x [report 1][report 0]
+end
+
+to-report gis-distance [x]
+  report 4.5 * distance x ; one patch equals given 0.05° and therefore we need to muliply by 4.5 km  = 2.43 nm .... @todo needs to be adjusted
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
