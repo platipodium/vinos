@@ -99,7 +99,7 @@ globals [
   number-of-species                  ; number-of-species plus one for other
   species-names                      ; names of the species
   navigable-depth                    ; minimum depth where a boat can navigate
-  min-fresh-catch                    ; wether the boat decides to go back to harbor
+  min-fresh-catch                    ; wether the boat decides to go back to harbor, maybe change name
 
   sum-ports-total-landings-kg        ; overall sum of total landings per period
   sum-ports-other-landings-kg        ; overall sum of other landings per period
@@ -172,7 +172,7 @@ to setup
   clear-all
   reset-calendar
 
-  set min-fresh-catch 1000
+  set min-fresh-catch 10
   set navigable-depth 15
   set number-of-species 4
   set species-names (list "solea" "crangon" "platessa" "other") ; order of the species in the excel file
@@ -485,7 +485,7 @@ to go-on-fishing-trip
     ; @todo check units
     ;if (false) [
     if (item 1 new-catch < min-fresh-catch) [
-      let my-neighbors neighbors with [depth > navigable-depth and distance l-patch < distance-left ]
+      let my-neighbors navigable-patches  with [distance l-patch < distance-left and distance myself < 20 ]
       ifelse any? my-neighbors [
         set s-patch one-of my-neighbors
         print (list "Boat" who "start a new haul at a different patch with depth" ([depth] of s-patch))
@@ -694,7 +694,7 @@ operating-costs-of-boats
 operating-costs-of-boats
 0
 1
-0.203
+0.196
 0.001
 1
 NIL
@@ -709,7 +709,7 @@ oil-price
 oil-price
 0
 100
-50.0
+44.0
 1
 1
 NIL
