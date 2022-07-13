@@ -533,6 +533,23 @@ end
 to-report gis-distance [x]
   report 4.5 * distance x ; one patch equals given 0.05° and therefore we need to muliply by 4.5 km  = 2.43 nm .... @todo needs to be adjusted
 end
+
+to create-effort-map
+
+  ask patches [
+    set fishing-effort-hours 0
+  ]
+  let my-boats boats
+  repeat 16 [
+    ask my-boats [go-on-fishing-trip]
+  ]
+
+  ; data storage
+
+  let dataset gis:patch-dataset fishing-effort-hours
+  gis:store-dataset dataset "effort"
+
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -586,7 +603,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)"
-3
+5
 
 BUTTON
 93
@@ -780,6 +797,23 @@ fraction-transportation-costs
 1
 NIL
 HORIZONTAL
+
+BUTTON
+870
+467
+965
+500
+save-effort
+let dataset gis:patch-dataset fishing-effort-hours\ngis:store-dataset dataset \"effort\"
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 BUTTON
 752
