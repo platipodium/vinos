@@ -3,8 +3,9 @@
 # Author: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 stages:
-  - run
   - lint
+  - run
+  - deploy
 
 license-compliance:
     image: python:3.9
@@ -37,7 +38,7 @@ create-map:
 pages: # predefined name by GitLab
     stage: deploy
     dependencies: 
-        - run
+        - create-map
     script:
         - mkdir -p public # required by GitLab
         - mv ./results/*.png public/
