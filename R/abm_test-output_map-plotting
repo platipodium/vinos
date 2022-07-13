@@ -20,29 +20,13 @@ knitr::opts_knit$set(root.dir = "~/R//")
 #housekeeping
 ##packages####
 require(sf)
-#require(sp)
-#require(rgdal)       # links to the GDAL library (something fishy in warnings in new version)
 
-require(lubridate)
 require(viridis)
-#require(adehabitatHR)
 
-require(cowplot)
 require(RColorBrewer)
 require(tidyverse)
 
 require(raster)      # working with rasters in R #it masks dplyr::select() funtion TAKE CARE! #tidyr::extract #MASS::area/select also with rowSums (tidyverse?)
-#require(rasterVis)   # raster visualization
-#require(marmap)      # access global topography data
-
-#require(moveVis)
-#require(move)
-#require(chron)
-#require("factoextra") #visualization with clustering and pca
-#require(maps)
-#require("metR") 
-#require("fasterize") #install.packages('fasterize')
-#require("geosphere") #install.packages('geosphere')
 
 library("ggspatial")
 library(rnaturalearth)
@@ -61,7 +45,7 @@ data_out<-paste0("M:/01_Projects/",my_project,"/data_out")
 
 #parameters####
 prj<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #map projection
-#proj4string = CRS(prj)
+
  
 #PARAMETERS:
 # set map limits smaller (ALL CRANGON FLEET)
@@ -70,13 +54,6 @@ limla = c(53, 56)
 
 zoomlo = c(5, 7.5)
 zoomla = c(53, 54)
-
-#POI: PORT OF INTEREST
-# # German harbours only
-#poi <- c("DEBUM", "DECUX", "DEGRE", "DENOE","DEHUS", 
-#          "DEACC", "DEEIK", "DENHS", "DEDIT", "DEBEN")
-
-t_today=format(Sys.time(), '%y%m%d')
 
 ```
 
