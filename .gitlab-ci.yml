@@ -28,3 +28,24 @@ create-map:
     - cd ${CI_PROJECT_DIR}/netlogo
     - bash /opt/netlogo/netlogo-headless.sh --model ./abm_fisheries_mussel.nlogo --experiment "effort-map" --table -
   
+  # Preserve resulting files
+  artifacts:
+    paths: 
+      - ./results/
+
+
+pages: # predefined name by GitLab
+    stage: deploy
+    dependencies: 
+        - run
+    script:
+        - mkdir -p public # required by GitLab
+        - mv ./results/*.png public/
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    artifacts:
+        paths:
+            - public/
+
+
+  
