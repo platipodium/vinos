@@ -550,6 +550,7 @@ to-report gis-distance [x]
   report 4.5 * distance x ; one patch equals given 0.05° and therefore we need to muliply by 4.5 km  = 2.43 nm .... @todo needs to be adjusted
 end
 
+; This routine is to be called by CI
 to create-effort-map
 
   ask patches [
@@ -563,7 +564,7 @@ to create-effort-map
   ; data storage
 
   let dataset gis:patch-dataset fishing-effort-hours
-  gis:store-dataset dataset "effort"
+  gis:store-dataset dataset "./results/effort"
 
 end
 
