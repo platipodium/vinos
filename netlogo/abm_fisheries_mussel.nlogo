@@ -283,6 +283,7 @@ to update
   if view = "bathymetry" [ask patches [set pcolor scale-color blue depth 80 0 ]]
   if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours 50 0 ]]
   if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
+  if view = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
 end
 
 ; This is a dummy procedure and needs to be replace by actual pollution data.
@@ -628,7 +629,7 @@ CHOOSER
 246
 view
 view
-"crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?"
+"crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf"
 4
 
 BUTTON
@@ -798,7 +799,7 @@ BUTTON
 654
 542
 Test
-;test-target\nclear-drawing\n\nlet my-boats n-of 10 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
+;test-target\n;clear-drawing\n\nlet my-boats n-of 10 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
 NIL
 1
 T

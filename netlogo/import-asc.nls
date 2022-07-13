@@ -70,6 +70,9 @@ to show-windfarms
   ;  this-owf-vector-feature -> gis:set-property-value this-owf-vector-feature "POWER_MW" read-from-string gis:property-value this-owf-vector-feature "POWER_MW" 
   ;]
 
+  gis:apply-coverage owf-dataset "POWER_MW" owf-fraction
+  ask patches with [not (owf-fraction < 0 or owf-fraction > -1) ] [ set owf-fraction 0 ]
+
   gis:set-drawing-color red
   gis:draw owf-dataset 1
   
