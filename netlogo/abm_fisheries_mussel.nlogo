@@ -603,7 +603,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)"
-5
+4
 
 BUTTON
 93
@@ -715,7 +715,7 @@ operating-costs-of-boats
 operating-costs-of-boats
 0
 1
-0.196
+0.203
 0.001
 1
 NIL
@@ -730,7 +730,7 @@ oil-price
 oil-price
 0
 100
-43.0
+50.0
 1
 1
 NIL
@@ -792,7 +792,7 @@ fraction-transportation-costs
 fraction-transportation-costs
 0
 1
-0.19
+0.198
 0.01
 1
 NIL
@@ -1215,9 +1215,9 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="Default" repetitions="1" runMetricsEveryStep="true">
+  <experiment name="effort-map" repetitions="1" runMetricsEveryStep="true">
     <setup>setup</setup>
-    <go>test-target</go>
+    <go>create-effort-map</go>
     <timeLimit steps="1000"/>
     <metric>count turtles</metric>
     <enumeratedValueSet variable="view">
