@@ -1,0 +1,141 @@
+---
+title: "abm_test-output_map-plotting"
+author: "serraorey"
+date: "7/13/2022"
+output: html_document
+---
+
+```{r setup, include=F}
+#check Rversion:
+R.version.string
+#important for rmarkdown
+knitr::opts_chunk$set(echo = T, eval = T, fig.keep="all",cache = T) #DEFAULT:echo = T, eval = T,
+knitr::opts_knit$set(root.dir = "~/R//")
+#getwd()
+
+#housekeeping
+##packages####
+require(sf)
+#require(sp)
+#require(rgdal)       # links to the GDAL library (something fishy in warnings in new version)
+
+require(lubridate)
+require(viridis)
+#require(adehabitatHR)
+
+require(cowplot)
+require(RColorBrewer)
+require(tidyverse)
+
+require(raster)      # working with rasters in R #it masks dplyr::select() funtion TAKE CARE! #tidyr::extract #MASS::area/select also with rowSums (tidyverse?)
+#require(rasterVis)   # raster visualization
+#require(marmap)      # access global topography data
+
+#require(moveVis)
+#require(move)
+#require(chron)
+#require("factoextra") #visualization with clustering and pca
+#require(maps)
+#require("metR") 
+#require("fasterize") #install.packages('fasterize')
+#require("geosphere") #install.packages('geosphere')
+
+library("ggspatial")
+library(rnaturalearth)
+```
+
+Paths, parameters...
+  
+```{r paths_parameters, include=F}
+
+my_project<-"220713-abm_test_meeting"
+
+#paths####
+data_main<- "~/shared_vmsdata/"; #for all the 
+data_in<- paste0("M:/01_Projects/",my_project,"/data_in")
+data_out<-paste0("M:/01_Projects/",my_project,"/data_out")
+
+#parameters####
+prj<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #map projection
+#proj4string = CRS(prj)
+ 
+#PARAMETERS:
+# set map limits smaller (ALL CRANGON FLEET)
+limlo = c(2, 9.4)
+limla = c(53, 56)
+
+zoomlo = c(5, 7.5)
+zoomla = c(53, 54)
+
+#POI: PORT OF INTEREST
+# # German harbours only
+#poi <- c("DEBUM", "DECUX", "DEGRE", "DENOE","DEHUS", 
+#          "DEACC", "DEEIK", "DENHS", "DEDIT", "DEBEN")
+
+t_today=format(Sys.time(), '%y%m%d')
+
+```
+
+
+
+```{r load_data}
+
+abm <- raster(paste0(data_in,"/220713-effort.asc"))
+
+eez_v11= st_read(dsn="M:/03_Data/shape/eez_boundaries_v11.shp")
+eez_12nm_v3= st_read(dsn="M:/03_Data/shape/eez_12nm_v3.shp")
+
+#COUNTRY DATA: # get regional polygons
+# Some EU Contries
+some.eu.countries <- c( "Germany","Belgium", "Netherlands", "Denmark")
+# Retrieve the map data ggplot data
+coastline <- ne_countries(scale = "large", returnclass = "sf",country = some.eu.countries)
+
+
+```
+
+```{r filter-countries}
+eez_v11<-eez_v11 %>% dplyr::filter(TERRITORY1%in%some.eu.countries)
+eez_12nm_v3<-eez_12nm_v3 %>% dplyr::filter(TERRITORY1%in%some.eu.countries)
+
+```
+
+
+```{r}
+
+#convert to data.frame
+abm_df <-
+  as.data.frame(abm, xy = TRUE) %>%
+  #remove cells with NA for any of the layers  
+  mutate_all(funs(replace_na(.,0))) 
+
+#take a look
+head(abm_df)
+
+my_breaks <- c(1,5,10,50,100,200)
+
+ggplot() +
+  geom_raster(data = abm_df,aes(x = x, y = y, fill = `X220713.effort`),alpha=0.8) +
+  scale_fill_fermenter(breaks=my_breaks,palette = "RdYlBu")+
+  
+  geom_sf(data = coastline, 
+               fill = alpha("gray",1), color = "black", size=0.1)+
+  geom_sf(data = eez_v11, 
+               fill = NA, color = "black", size=1,alpha=0.5,linetype="solid")+
+  geom_sf(data = eez_12nm_v3, 
+               fill = NA, color = "black", size=1,alpha=0.5,linetype="solid")+
+
+  coord_sf(xlim = limlo,ylim=limla,expand = F,crs = prj)+
+  labs(x =NA,y=NA,fill = "Effort")+
+  theme_light() +
+  theme(legend.position = "right",axis.title = element_blank() )+
+  annotation_scale(location = "bl", width_hint = 0.25) +
+  annotation_north_arrow(location = "bl", which_north = "true", 
+                         height = unit(0.3, "in"), width = unit(0.3, "in"),
+                         pad_x = unit(0.2, "in"), pad_y = unit(0.3, "in"),
+                         style = north_arrow_orienteering)
+
+```
+
+
+
