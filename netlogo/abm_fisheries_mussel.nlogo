@@ -273,7 +273,7 @@ to update
   if view = "platessa"  [ ask patches [ set pcolor scale-color cyan platessa 0 1  ] ]
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   if view = "bathymetry" [ask patches [set pcolor scale-color blue depth 80 0 ]]
-  if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours 200 0 ]]
+  if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours 50 0 ]]
 end
 
 ; This is a dummy procedure and needs to be replace by actual pollution data.
@@ -354,11 +354,14 @@ to calc-fish
   ]
 end
 
-to-report catch-species
+to-report catch-species [haul-length]
   ; calculate the values for each patch and every target species
   ;(solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for fish-biomass
-  let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat) * (item i fish-biomass) * (boolean2int (item i fish-biomass > 0) )]
+
+  let gear-width 0.017 ; unit km, this is only for crangon, is needed for other species
+
+  let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat) * (item i fish-biomass) * (gear-width * haul-length) * (boolean2int (item i fish-biomass > 0) )]
   set fish-catch-boat n-values (number-of-species - 1) [i -> (item i fish-catch-boat + item i new-catch)]
 
   set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
@@ -441,7 +444,7 @@ to go-on-fishing-trip
     ; observing every time step a possible change in the patch the
     ; boat is on
     repeat (haul-time / time-step) [
-      set new-catch catch-species
+      set new-catch catch-species time-step * fishing-speed
       ask patch-here [
         set fishing-effort-hours fishing-effort-hours + time-step
       ]
