@@ -185,11 +185,10 @@ to setup
 
   import-asc
 
-  set navigable-depth 5
+  set navigable-depth 2
   calc-pollution
   calc-fish
   calc-accessibility
-
 
   set view "bathymetry"
   update
@@ -569,13 +568,50 @@ to create-effort-map
 end
 
 to calc-accessibility
-  ask patches [set accessible? true]
 
-  ask patches with [depth < navigable-depth] [set accessible? false]
-  ask ports [
-    ask patches with [distance myself < 5]  [set accessible? false]
+  ; By default, all patches are inaccessible
+  ask patches [set accessible? false]
+
+  ; Creep-fill from maximum depth, assumed in the North Sea
+  let new-patches nobody
+  let my-patches max-one-of patches [depth]
+  ask my-patches [set accessible? true]
+
+  repeat max-pxcor * 2 [
+    ask my-patches [
+      set new-patches neighbors4 with [depth > 0.1 and not accessible?]
+      ask new-patches [set accessible? true]
+    ]
+    set my-patches patches with [accessible? and (count neighbors4 with [accessible?]) < 4]
+    ;ask  patches with [accessible?] [set pcolor black]
+    ;ask my-patches [set pcolor blue]
   ]
+  ;let creep-count count
+
+
+  ; By default, all patches are accessible
+  ;ask patches [set accessible? true]
+
+  ; We exclude all patches that are below navigable depth
+  ;ask patches with [depth < navigable-depth] [set accessible? false]
+
+  ; We excluede all patches east of the easternmost port
+  ;ask patches with [pxcor >  max [pxcor] of ports] [set accessible? false]
+
+  ;ask patches with [ all? neighbors [not accessible?] ] [set accessible? false]
+
+
+  ; Also, fishing is not allowed nearby ports
+  ; @todo find the correct legal distance from ports in grid space
+  ; @todo ships still need to navigate through this channel?
+  ;ask ports [
+  ;  ask patches with [distance myself < 5]  [set accessible? false]
+  ;]
+
+  ; Vessels are not allowed within OWF areas
   ask patches with [owf-fraction > 0.5] [set accessible? false]
+
+  ; @todo add nature protection, mining etc areas.
 
 end
 @#$#@#$#@
@@ -631,7 +667,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf"
-4
+5
 
 BUTTON
 93

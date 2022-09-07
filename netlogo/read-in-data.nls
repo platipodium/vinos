@@ -52,7 +52,7 @@ to read-landings [port-type]
           set label-color black
           setxy (item 0 xy)  (item 1 xy)
           ; find a starting patch at least 3 nm from port away
-          set start-patch min-one-of patches with [depth > navigable-depth and gis-distance myself > 5] [gis-distance myself] 
+          set start-patch min-one-of patches with [depth > navigable-depth and gis-distance myself > 5 and accessible?] [gis-distance myself] 
           set landing-patch start-patch
         ]
       ]
