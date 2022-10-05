@@ -225,12 +225,12 @@ to setup-boats
      [
       create-link-with myself
       move-to [start-patch] of one-of link-neighbors
-      set  fish-catch-boat         n-values number-of-species [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
-      set  catch-efficiency-boat   n-values number-of-species [?1 -> 0.25 ]
-      set  revenue-boat            n-values number-of-species  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
-      set  costs-boat              n-values number-of-species  [?1 -> 0 ]    ; costs for the fishing trip of the boat
-      set  gain-boat               n-values number-of-species  [?1 -> 0 ]    ; gain for the fishing trip of the boat
-      set  boat-delta-priorities     n-values number-of-species  [?1 -> 0 ]    ; change of priority for the pathway
+      set  fish-catch-boat         n-values number-of-gears [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
+      set  catch-efficiency-boat   n-values number-of-gears [?1 -> 0.25 ]
+      set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
+      set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
+      set  gain-boat               n-values number-of-gears  [?1 -> 0 ]    ; gain for the fishing trip of the boat
+      set  boat-delta-priorities     n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
       set  boat-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
       set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
@@ -371,10 +371,14 @@ to-report catch-species [haul-length haul-width]
   ;(solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for fish-biomass
 
-  let new-catch n-values (number-of-species - 1) [ i -> ( item i boat-priorities ) * (item i catch-efficiency-boat) * (item i fish-biomass) * (haul-width * haul-length) * (boolean2int (item i fish-biomass > 0) )]
-  set fish-catch-boat n-values (number-of-species - 1) [i -> (item i fish-catch-boat + item i new-catch)]
+  let my-species "crangon"
+  let index-species position my-species species-names
 
-  set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
+  let new-catch n-values (number-of-gears) [ i -> ( item i boat-priorities ) * (item i catch-efficiency-boat) * (item index-species fish-biomass) * (haul-width * haul-length) * (boolean2int (item i fish-biomass > 0) )]
+  ;set fish-catch-boat n-values (number-of-gears) [i -> (item i fish-catch-boat + item i new-catch)]
+
+  ; @todo summarize over all species with this gear
+  ;set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
   ;print (list fish-catch-boat)
   ;print (list fish-biomass)
   report new-catch
@@ -430,6 +434,8 @@ to go-on-fishing-trip
 
   let haul-width [gear-width] of item (index-max-one-of boat-priorities) boat-gears
 
+  ;let fish-catch-boat n-values (number-of-gears) [i -> 0]
+
   while [not need-to-go-to-port?] [
 
     let found? false
@@ -462,6 +468,8 @@ to go-on-fishing-trip
         set fishing-effort-hours fishing-effort-hours + time-step
       ]
       forward fishing-speed * time-step
+       set fish-catch-boat n-values (number-of-gears) [i -> (item i fish-catch-boat + item i new-catch)]
+
     ]
     set time-left time-left - haul-time
     set distance-left distance-left - steaming-speed * haul-time
@@ -539,12 +547,12 @@ to go-on-fishing-trip
 
   set transportation-costs fuel-efficiency * oil-price * distance-at-sea
   set operating-costs wage * time-at-sea
-  ;set costs-boat n-values (number-of-gears) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
-  ;set revenue-boat n-values (number-of-species - 1)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
-  ;set delta-gain-boat n-values (number-of-species - 1) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
-  ;set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
-  ;set delta-boat-priorities n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i boat-priorities)]
-  ;set boat-priorities n-values (number-of-species - 1) [i -> item i boat-priorities - item i delta-boat-priorities]
+  set costs-boat n-values (number-of-gears) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
+  set revenue-boat n-values (number-of-gears)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
+  set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
+  set gain-boat n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
+  set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i delta-gain-boat) / (item i boat-priorities)]
+  set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities - item i boat-delta-priorities]
 
   ; old implemenation for species
   ;set costs-boat n-values (number-of-species - 1) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
