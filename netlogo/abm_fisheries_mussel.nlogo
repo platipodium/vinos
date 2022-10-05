@@ -13,6 +13,7 @@ __includes [
   "import-asc.nls"
   "calendar.nls"
   "read-in-data.nls"
+  "gear.nls"
 ]
 
 breed [boats boat]
@@ -68,8 +69,8 @@ boats-own [
   costs-boat               ; costs for the fishing trip of the boat
   delta-gain-boat          ; change in gain
   gain-boat                ; gain for the fishing trip of the boat
-  delta-priority-boat      ; change in priority
-  priority-boat            ; priority for the pathway
+  boat-delta-priorities      ; change in priority
+  boat-priorities            ; priority for the pathway
 
   fishing-speed            ; speed when fishing
   steaming-speed           ; speed when steaming
@@ -92,6 +93,7 @@ boats-own [
   ;home-port-boat               ; Home Port (in the current state only German home ports are considered
   ;favorite-landing-port-of-boat   ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
   pathways                ; possible pathways which boats learn
+  boat-gears              ; set of available gears on this boat
 
 ]
 
@@ -176,10 +178,10 @@ to setup
   clear-all
   reset-calendar
 
-
+  setup-gears
   set min-fresh-catch 10
-  set number-of-species 4
   set species-names (list "solea" "crangon" "platessa" "other") ; order of the species in the excel file
+  set number-of-species length species-names
   ;set harbor-stage (list "stay" "go")
   ;set weather-stage (list "good" "bad")
 
@@ -228,8 +230,8 @@ to setup-boats
       set  revenue-boat            n-values number-of-species  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
       set  costs-boat              n-values number-of-species  [?1 -> 0 ]    ; costs for the fishing trip of the boat
       set  gain-boat               n-values number-of-species  [?1 -> 0 ]    ; gain for the fishing trip of the boat
-      set  delta-priority-boat     n-values number-of-species  [?1 -> 0 ]    ; change of priority for the pathway
-      set  priority-boat           n-values number-of-species  [?1 -> 0.25 ]    ; priority for the pathway
+      set  boat-delta-priorities     n-values number-of-species  [?1 -> 0 ]    ; change of priority for the pathway
+      set  boat-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
       set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set  wage  100                                          ; @todo default value
@@ -238,6 +240,7 @@ to setup-boats
       set  engine-power 2000                                      ; kw
       set  vessel-size 100000                                  ; kg of storage
       set label ""                                             ; ????
+      set boat-gears [self] of gears ; save a list of gears available to this boat, currently all of them
     ]
 
 
@@ -363,14 +366,12 @@ to calc-fish
   ]
 end
 
-to-report catch-species [haul-length]
+to-report catch-species [haul-length haul-width]
   ; calculate the values for each patch and every target species
   ;(solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for fish-biomass
 
-  let gear-width 0.017 ; unit km, this is only for crangon, is needed for other species
-
-  let new-catch n-values (number-of-species - 1) [ i -> ( item i priority-boat ) * (item i catch-efficiency-boat) * (item i fish-biomass) * (gear-width * haul-length) * (boolean2int (item i fish-biomass > 0) )]
+  let new-catch n-values (number-of-species - 1) [ i -> ( item i boat-priorities ) * (item i catch-efficiency-boat) * (item i fish-biomass) * (haul-width * haul-length) * (boolean2int (item i fish-biomass > 0) )]
   set fish-catch-boat n-values (number-of-species - 1) [i -> (item i fish-catch-boat + item i new-catch)]
 
   set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
@@ -427,6 +428,8 @@ to go-on-fishing-trip
   move-to s-patch
   pen-down
 
+  let haul-width [gear-width] of item (index-max-one-of boat-priorities) boat-gears
+
   while [not need-to-go-to-port?] [
 
     let found? false
@@ -454,7 +457,7 @@ to go-on-fishing-trip
     ; observing every time step a possible change in the patch the
     ; boat is on
     repeat (haul-time / time-step) [
-      set new-catch catch-species (time-step * fishing-speed)
+      set new-catch catch-species (time-step * fishing-speed) haul-width
       ask patch-here [
         set fishing-effort-hours fishing-effort-hours + time-step
       ]
@@ -530,14 +533,26 @@ to go-on-fishing-trip
 
   set size 1
   ;calculate costs, revenue and profit
+
+  ; for all gears, we calculate the value
+
+
   set transportation-costs fuel-efficiency * oil-price * distance-at-sea
   set operating-costs wage * time-at-sea
+  ;set costs-boat n-values (number-of-gears) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
+  ;set revenue-boat n-values (number-of-species - 1)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
+  ;set delta-gain-boat n-values (number-of-species - 1) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
+  ;set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
+  ;set delta-boat-priorities n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i boat-priorities)]
+  ;set boat-priorities n-values (number-of-species - 1) [i -> item i boat-priorities - item i delta-boat-priorities]
+
+  ; old implemenation for species
   ;set costs-boat n-values (number-of-species - 1) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
   ;set revenue-boat n-values (number-of-species - 1)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
   ;set delta-gain-boat n-values (number-of-species - 1) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
   ;set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
-  ;set delta-priority-boat n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i priority-boat)]
-  ;set priority-boat n-values (number-of-species - 1) [i -> item i priority-boat - item i delta-priority-boat]
+  ;set delta-boat-priorities n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i boat-priorities)]
+  ;set boat-priorities n-values (number-of-species - 1) [i -> item i boat-priorities - item i delta-boat-priorities]
   print (list "Boat" who " has cost of " (transportation-costs + operating-costs) )
 end
 
@@ -614,6 +629,12 @@ to calc-accessibility
   ; @todo add nature protection, mining etc areas.
 
 end
+
+to-report index-max-one-of [my-list]
+
+  let max-value max my-list
+  report position max-value my-list
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -667,7 +688,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf"
-5
+4
 
 BUTTON
 93
@@ -944,6 +965,20 @@ From the NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` 
 #### Georeferenced processing
 
 The ESRII ASCII file was directly used (see code in `import-asc.nls`)
+
+#### Viable implementation
+
+1. we need two points in time with information
+2. for each point in time we come up with a value
+3. calculate change in value
+4. agent shifts towards action pathways according to best value change
+
+- Agent ist das Boot.  
+- Action pathway ist gear selection (later target species)
+- gear hat Eigenschaft: gear-width => influences catch, gear-drag => influences fuel cost
+- after two trips, we compare the value (income - cost)*value_factor between two trips 
+
+
 
 ### License 
 

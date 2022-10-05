@@ -1,0 +1,48 @@
+breed [gears gear]
+
+gears-own [
+  gear-name
+  gear-species
+  gear-width
+  gear-drag
+  gear-installation-cost
+  gear-purchase-cost
+]
+
+globals [
+  number-of-gears
+  gear-names
+]
+
+; We define here a constant and predefined number of gears
+to setup-gears
+  ask gears [die]
+  
+  create-gears 1 [
+    set gear-name "Crangon-small"
+    set gear-species "crangon"
+    set gear-width .013 ; width of beam in km
+    set gear-drag 13 ; some number ... need more realism and unit
+    set gear-installation-cost 1000 ; EUR for changing to this gear
+    set gear-purchase-cost 25000 ; 
+  ]
+  create-gears 1 [
+    set gear-name "Crangon-medium"
+    set gear-species "crangon"
+    set gear-width .017 ; width of beam in km
+    set gear-drag 20 ; some number ... need more realism and unit
+    set gear-installation-cost 1000 ; EUR for changing to this gear
+    set gear-purchase-cost 35000 ; EUR
+  ]
+  create-gears 1 [
+    set gear-name "Crangon-large"
+    set gear-species "crangon"
+    set gear-width .027 ; width of beam in km
+    set gear-drag 30 ; some number ... need more realism and unit
+    set gear-installation-cost 2000 ; EUR for changing to this gear
+    set gear-purchase-cost 50000 ; EUR
+  ]
+  
+  set number-of-gears count gears
+  
+end
