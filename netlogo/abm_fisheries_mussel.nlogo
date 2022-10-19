@@ -218,6 +218,16 @@ end
 
 to setup-boats
 
+  ;faking a slider (equal distribution)
+
+  let wage-min 100 ; value from Sascha
+  let wage-max 1000; value from Sascha
+
+  ; faking a slider (normal distribution)
+
+  let fishing-speed-mean 3
+  let fishing-speed-sdev 0.5
+
   set-default-shape ports "flag"
 
   ask home-ports [
@@ -234,8 +244,8 @@ to setup-boats
       set  boat-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
       set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
-      set  wage  100                                          ; @todo default value
-      set  fishing-speed 4                                   ; range 2 kn to 4 kn to get km multiply by 1.852
+      set  wage  wage-min + random-float (wage-max - wage-min)                                       ; @todo default value
+      set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852
       set  steaming-speed 19                                  ; range 10  to 12
       set  engine-power 2000                                      ; kw
       set  vessel-size 100000                                  ; kg of storage
