@@ -588,15 +588,30 @@ to create-effort-map
   ask patches [
     set fishing-effort-hours 0
   ]
-  let my-boats boats
+
+  ; @todo this should be the full list of boats, but for testing have it reduced...
+  let my-boats n-of 20 boats
   ;repeat 16 [
     ask my-boats [go-on-fishing-trip]
   ;]
 
   ; data storage
+  let prefix  (word "results/effort-" substring date-and-time 0 12)
+
+  set view "effort (h)"
+  update
+  clear-drawing
+  ask links [set hidden? true]
+  ask boats [set hidden? true]
+
+  export-view (word prefix ".png")
+
+  ask links [set hidden? false]
+  ask boats [set hidden? false]
+
 
   let dataset gis:patch-dataset fishing-effort-hours
-  gis:store-dataset dataset "results/effort"
+  gis:store-dataset dataset prefix
 
 end
 
@@ -706,7 +721,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf"
-4
+5
 
 BUTTON
 93
@@ -749,7 +764,7 @@ SWITCH
 321
 ports?
 ports?
-0
+1
 1
 -1000
 
@@ -1332,16 +1347,16 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="effort-map" repetitions="16" runMetricsEveryStep="true">
+  <experiment name="effort-map" repetitions="1" sequentialRunOrder="false" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>create-effort-map</go>
     <timeLimit steps="1000"/>
     <metric>count turtles</metric>
     <enumeratedValueSet variable="view">
-      <value value="&quot;bathymetry&quot;"/>
+      <value value="&quot;effort (h)&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="ports?">
-      <value value="true"/>
+      <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Oil-Price">
       <value value="50"/>
