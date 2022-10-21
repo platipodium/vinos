@@ -17,5 +17,8 @@ License: Unlicensed
 
 Files: data/gebco*
 Copyright: 2022 GEBCO
-License: Unlicensed
+License: PDDL-1.0
 
+Files: figureds/gebco*
+Copyright: 2022 GEBCO
+License: PDDL-1.0
