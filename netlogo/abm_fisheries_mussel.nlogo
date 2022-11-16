@@ -10,10 +10,11 @@ extensions [
 ]
 
 __includes [
-  "import-asc.nls"
-  "calendar.nls"
-  "read-in-data.nls"
-  "gear.nls"
+  "include/import-asc.nls"
+  "include/calendar.nls"
+  "include/read-in-data.nls"
+  "include/gear.nls"
+  "include/plot.nls"
 ]
 
 breed [boats boat]
@@ -737,7 +738,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf"
-5
+4
 
 BUTTON
 93
@@ -901,10 +902,10 @@ Change the background information here and hit \"update\"
 1
 
 BUTTON
-484
-454
-654
-542
+26
+559
+196
+647
 Test
 ;test-target\n;clear-drawing\n\nlet my-boats n-of 10 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
 NIL
@@ -933,10 +934,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-870
-467
-965
-500
+412
+572
+507
+605
 save-effort
 let dataset gis:patch-dataset fishing-effort-hours\ngis:store-dataset dataset \"effort\"
 NIL
@@ -950,10 +951,10 @@ NIL
 1
 
 BUTTON
-752
-475
-816
-508
+294
+580
+358
+613
 Effort
 ;test-target\nclear-drawing\n\nask patches [\nset fishing-effort-hours 0\n]\nlet my-boats boats\nrepeat 16 [\nask my-boats [go-on-fishing-trip] \n]\nset view \"effort (h)\" \nupdate\n
 NIL
@@ -967,10 +968,10 @@ NIL
 1
 
 PLOT
-1374
-127
-1574
-277
+740
+446
+940
+596
 catch-by-species
 time
 catch
@@ -987,10 +988,10 @@ PENS
 "pen-2" 1.0 0 -2674135 true "" "plotxy ticks sum [item 2 fish-catch-boat] of boats"
 
 PLOT
-1375
-299
-1575
-449
+1035
+443
+1235
+593
 costs
 time
 euro
@@ -1007,7 +1008,16 @@ PENS
 "pen-2" 1.0 0 -2674135 true "" "plotxy ticks sum [item 2 costs-boat] of boats"
 
 @#$#@#$#@
+# TODO
+
+- Feedback on resource by fishery
+- Oil price effect on costs
+- Add sole and plaice
+- Add vessel trait distribution from Serra's data
+- Schollenbox
+
 ## Data sources
+
 
 ### Species probability presences
 
@@ -1024,7 +1034,6 @@ You can go to https://download.gebco.net to download the data as NetCDF, GeoTIFF
 EmodNet provides human activities at https://www.emodnet-humanactivities.eu/download-data.php. After providing your country and sector, the wind farm polygon areas are freely available. 
 
 #### Todo
-- exclude boats from entering areas
 - classify areas to restrict during certain years
 
 ### Swept-area ratio
