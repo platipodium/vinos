@@ -1,0 +1,63 @@
+; SPDX-FileCopyrightText: 2022 Universität Hamburg (UHH)
+; SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (hereon)
+; SPDX-License-Identifier: Apache-2.0
+; Author: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
+; Author: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+; Plotting routines
+
+
+to plot-setup-catch-by-species
+  set-current-plot "catch-by-species"
+  set-plot-background-color white 
+  
+  foreach range 3 [ [i] ->
+    let pen-name  item i species-names
+    if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
+    set-current-plot-pen pen-name
+    set-plot-pen-color 135 - 10 * i
+    set-plot-pen-interval 1 
+    auto-plot-on
+    set-plot-pen-mode 0 ; line
+  ]
+end
+
+
+to plot-setup-cost-by-species
+  set-current-plot "cost-by-species"
+  set-plot-background-color white 
+  
+  foreach range 3 [ [i] ->
+    let pen-name  item i species-names
+    if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
+    set-current-plot-pen pen-name
+    set-plot-pen-color 135 - 10 * i
+    set-plot-pen-interval 1 
+    auto-plot-on
+    set-plot-pen-mode 0 ; line
+  ]
+end
+
+
+to plot-update-cost-by-species
+  set-current-plot "cost-by-species"
+  ; foreach species-names [0 1 2] [[s i] ->
+  foreach range 3 [[i] ->
+    let pen-name  item i species-names
+    set-current-plot-pen pen-name
+    ;set-plot-x-range 0 max
+    plotxy ticks sum [item i fish-catch-boat] of boats
+  ]
+end
+
+
+to plot-update-catch-by-species
+  set-current-plot "catch-by-species"
+  ; foreach species-names [0 1 2] [[s i] ->
+  foreach range 3 [[i] ->
+    let pen-name  item i species-names
+    set-current-plot-pen pen-name
+    ;set-plot-x-range 0 max
+    plotxy ticks sum [item i fish-catch-boat] of boats
+  ]
+end

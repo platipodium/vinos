@@ -161,6 +161,7 @@ to go
   calc-fish
   let my-boats n-of 10 boats
   ask my-boats [go-on-fishing-trip]
+  update-plots
   tick
 end
 
@@ -203,6 +204,7 @@ to setup
   setup-boats
 
   ask ports [set hidden? true]
+  setup-plots
 
   reset-ticks
 end
@@ -387,8 +389,8 @@ to-report catch-species [haul-length haul-width]
   let my-species "crangon"
   let index-species position my-species species-names
 
+  ; @todo replace with max
   let new-catch n-values (number-of-gears) [ i -> ( item i boat-priorities ) * (item i catch-efficiency-boat) * (item index-species fish-biomass) * (haul-width * haul-length) * (boolean2int (item i fish-biomass > 0) )]
-
 
   ;set fish-catch-boat n-values (number-of-gears) [i -> (item i fish-catch-boat + item i new-catch)]
 
@@ -396,7 +398,7 @@ to-report catch-species [haul-length haul-width]
   ;set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
   ;print (list fish-catch-boat)
   ;print (list fish-biomass)
-  print new-catch
+  ;print new-catch
   report  new-catch
 end
 
@@ -674,16 +676,6 @@ to-report index-max-one-of [my-list]
 
   let max-value max my-list
   report position max-value my-list
-end
-
-to plot-catch-by-species
-  set-current-plot "catch-by-species"
- ; foreach species-names [0 1 2] [[s i] ->
-     foreach [0 1 2] [[i] ->
-    set-current-plot-pen (word "pen-" i)                   ; pen names 0 to 2, @todo: species names
-    plotxy ticks sum [item i fish-catch-boat] of boats
-  ]
-
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -981,11 +973,8 @@ catch
 10.0
 true
 true
-"" "plot-catch-by-species"
+"plot-setup-catch-by-species" "plot-update-catch-by-species"
 PENS
-"pen-0" 1.0 0 -16777216 true "" "plotxy ticks sum [item 0 fish-catch-boat] of boats"
-"pen-1" 1.0 0 -7500403 true "" "plotxy ticks sum [item 1 fish-catch-boat] of boats"
-"pen-2" 1.0 0 -2674135 true "" "plotxy ticks sum [item 2 fish-catch-boat] of boats"
 
 PLOT
 1035
