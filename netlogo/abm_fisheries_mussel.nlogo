@@ -302,6 +302,7 @@ to update
   if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours 50 0 ]]
   if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
   if view = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
+  if view = "plaicebox?" [ask patches [set pcolor scale-color blue boolean2int (plaicebox? and accessible?) 1 0 ]]
 end
 
 ; This is a dummy procedure and needs to be replace by actual pollution data.
@@ -733,8 +734,8 @@ CHOOSER
 246
 view
 view
-"crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf"
-4
+"crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaicebox?"
+8
 
 BUTTON
 93
