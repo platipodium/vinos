@@ -158,6 +158,8 @@ to go
   ask ports [ifelse ports? [set label ""][set label name]]
   ;ask boats [ move]
   calc-fish
+  let my-boats n-of 10 boats
+  ask my-boats [go-on-fishing-trip]
   tick
 end
 
@@ -385,13 +387,16 @@ to-report catch-species [haul-length haul-width]
   let index-species position my-species species-names
 
   let new-catch n-values (number-of-gears) [ i -> ( item i boat-priorities ) * (item i catch-efficiency-boat) * (item index-species fish-biomass) * (haul-width * haul-length) * (boolean2int (item i fish-biomass > 0) )]
+
+
   ;set fish-catch-boat n-values (number-of-gears) [i -> (item i fish-catch-boat + item i new-catch)]
 
   ; @todo summarize over all species with this gear
   ;set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
   ;print (list fish-catch-boat)
   ;print (list fish-biomass)
-  report new-catch
+  print new-catch
+  report  new-catch
 end
 
 ; This is a boat procedure
@@ -571,7 +576,8 @@ to go-on-fishing-trip
   ;set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
   ;set delta-boat-priorities n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i boat-priorities)]
   ;set boat-priorities n-values (number-of-species - 1) [i -> item i boat-priorities - item i delta-boat-priorities]
-  print (list "Boat" who " has cost of " (transportation-costs + operating-costs) )
+  ;print (list "Boat" who " has cost of " (transportation-costs + operating-costs) )
+  print (list "Boat" who " has cost of " costs-boat )
 end
 
 to-report boolean2int [x]
@@ -667,6 +673,16 @@ to-report index-max-one-of [my-list]
 
   let max-value max my-list
   report position max-value my-list
+end
+
+to plot-catch-by-species
+  set-current-plot "catch-by-species"
+ ; foreach species-names [0 1 2] [[s i] ->
+     foreach [0 1 2] [[i] ->
+    set-current-plot-pen (word "pen-" i)                   ; pen names 0 to 2, @todo: species names
+    plotxy ticks sum [item i fish-catch-boat] of boats
+  ]
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -949,6 +965,46 @@ NIL
 NIL
 NIL
 1
+
+PLOT
+1374
+127
+1574
+277
+catch-by-species
+time
+catch
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" "plot-catch-by-species"
+PENS
+"pen-0" 1.0 0 -16777216 true "" "plotxy ticks sum [item 0 fish-catch-boat] of boats"
+"pen-1" 1.0 0 -7500403 true "" "plotxy ticks sum [item 1 fish-catch-boat] of boats"
+"pen-2" 1.0 0 -2674135 true "" "plotxy ticks sum [item 2 fish-catch-boat] of boats"
+
+PLOT
+1375
+299
+1575
+449
+costs
+time
+euro
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"" 1.0 0 -16777216 true "" "plotxy ticks sum [item 0 costs-boat] of boats"
+"pen-1" 1.0 0 -7500403 true "" "plotxy ticks sum [item 1 costs-boat] of boats"
+"pen-2" 1.0 0 -2674135 true "" "plotxy ticks sum [item 2 costs-boat] of boats"
 
 @#$#@#$#@
 ## Data sources
