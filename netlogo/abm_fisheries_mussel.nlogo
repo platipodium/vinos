@@ -993,6 +993,24 @@ true
 "plot-setup-cost-by-species" "plot-update-cost-by-species"
 PENS
 
+PLOT
+562
+607
+762
+757
+catch-by-trip
+Catch / kg
+Number
+0.0
+10.0
+0.0
+10.0
+true
+true
+"plot-setup-catch-by-trip" "plot-update-catch-by-trip\nhistogram [wage] of boats"
+PENS
+"hist" 1.0 0 -7500403 true "" ""
+
 @#$#@#$#@
 # TODO
 
