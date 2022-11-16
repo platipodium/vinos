@@ -78,9 +78,9 @@ to show-windfarms
   
 end
 
-to load-plaicebox
-  let plaicebox-dataset gis:load-dataset "../data/plaicebox/DB_PlaiceBox_WGS84_vTIwi_Jan2001_G.shp"
-  ask patches gis:intersecting plaicebox-dataset [ set plaicebox? true ]  
+to load-plaice-box
+  let plaice-box-dataset gis:load-dataset "../data/plaicebox/DB_PlaiceBox_WGS84_vTIwi_Jan2001_G.shp"
+  ask patches gis:intersecting plaice-box-dataset [ set plaice-box? true ]  
 end
 
 

@@ -63,8 +63,8 @@ boats-own [
   fish-catch-boat              ; for each boat a vector of fish catches (per patch or tick)
   harvest-boat                 ; for each boat a vector of total harvest of the fish species
   catch-efficiency-boat        ; how much fish is effectively catched
-  vessel-size                  ; size of the vessel
-  engine-power                  ; power of the engine
+  boat-capacity                ; size of the vessel
+  boat-engine-power                 ; power of the engine
 
   revenue-boat             ; revenue for the fishing trip of the boat
   costs-boat               ; costs for the fishing trip of the boat
@@ -143,7 +143,7 @@ patches-own [
   depth
   owf-fraction
   accessible?             ; false if not accessible to fishery, i.e. close to port, too shallow, restricted area
-  plaicebox?
+  plaice-box?
 ]
 
 ; The startup procedure is called when the model is opened by NetLogo.  This automates
@@ -253,8 +253,8 @@ to setup-boats
       set  wage  wage-min + random-float (wage-max - wage-min)                                       ; @todo default value
       set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852
       set  steaming-speed 19                                  ; range 10  to 12
-      set  engine-power 2000                                      ; kw
-      set  vessel-size 100000                                  ; kg of storage
+      set  boat-engine-power 2000                                      ; kw
+      set  boat-capacity 100000                                  ; kg of storage
       set label ""                                             ; ????
       set boat-gears [self] of gears ; save a list of gears available to this boat, currently all of them
     ]
@@ -302,7 +302,7 @@ to update
   if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours 50 0 ]]
   if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
   if view = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
-  if view = "plaicebox?" [ask patches [set pcolor scale-color blue boolean2int (plaicebox? and accessible?) 1 0 ]]
+  if view = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
 end
 
 ; This is a dummy procedure and needs to be replace by actual pollution data.
@@ -434,13 +434,26 @@ to go-on-fishing-trip
   let distance-to-alternative-patch 40 ;
 
   let home-port one-of link-neighbors  ; home-port of boats
+  let boat-plaice-box? false
+
+  ; Determine start end end patches of fishing activity.  This is usually the start/landing
+  ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
+  ; patch outside the plaice box.
   let s-patch [start-patch] of home-port    ; starting patch of the boat
   let l-patch [landing-patch] of home-port  ; landing patch of the boat
-  let need-to-go-to-port? false ;
 
-  print (list "Boat" who "leaves from" s-patch "with depth" ([depth] of s-patch))
+  ifelse (boat-engine-power > 300 and item (index-max-one-of boat-priorities) species-names = "plaice") [
+    set boat-plaice-box? true
+    set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
+    set l-patch s-patch
+    print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
+  ][
+    print (list "Boat" who "leaves from" s-patch "with depth" ([depth] of s-patch))
+  ]
 
-  ; Move the boat to the starting patch and assume it steams there,
+  let need-to-go-to-port? false
+
+  ; Move the boat from home port to the starting patch and assume it steams there,
   ; thereby adding to trip time/length and subtracting from time and
   ; distance left
   pen-up
@@ -452,100 +465,105 @@ to go-on-fishing-trip
   move-to s-patch
   pen-down
 
+  ; A boat deploys the gear with the highest priority
   let haul-width [gear-width] of item (index-max-one-of boat-priorities) boat-gears
-
-  ;let fish-catch-boat n-values (number-of-gears) [i -> 0]
 
   while [not need-to-go-to-port?] [
 
     let found? false
     let counter 0
 
+    ; Look around for a patch that is accessible
     while [not found?] [
       set heading random 360
       set counter counter + 1
-      let t-patch patch-ahead (fishing-speed * time-step)
+      let t-patch patch-ahead (steaming-speed * time-step)
       if (t-patch != nobody) [
-        if ([depth] of t-patch > 0) [set found? true]
+        if ([accessible?] of t-patch) [set found? true]
+        if (boat-plaice-box? and [plaice-box?] of t-patch) [set found? false]
       ]
       if counter > 20 [set found? true]
     ]
 
-    let t-patch patch-ahead (fishing-speed * time-step)
-    ifelse (t-patch = nobody or [not accessible?] of t-patch) [
+    let t-patch patch-ahead (steaming-speed * time-step)
+    if (t-patch = nobody or [not accessible?] of t-patch) [
       print "Cannot find navigable patches ahead, going home"
       set need-to-go-to-port? true ; Is there the need to go to port? E.g. time is running out, catch is higher than capacity of the vessel
-    ][
-      ;print (list "Deploying gear in direction" heading)
+    ]
+    if (boat-plaice-box? and [plaice-box?] of t-patch)  [
+      print "Cannot find patches outside plaice box ahead, going home"
+      set need-to-go-to-port? true
     ]
 
-    ; Deploy the gear for haul-time and go in a straight direction,
-    ; observing every time step a possible change in the patch the
-    ; boat is on
-    repeat (haul-time / time-step) [
-      set new-catch catch-species (time-step * fishing-speed) haul-width
-      ask patch-here [
-        set fishing-effort-hours fishing-effort-hours + time-step
+    if (not need-to-go-to-port?) [
+      ; Deploy the gear for haul-time and go in a straight direction,
+      ; observing every time step a possible change in the patch the
+      ; boat is on
+      repeat (haul-time / time-step) [
+        set new-catch catch-species (time-step * fishing-speed) haul-width
+        ask patch-here [
+          set fishing-effort-hours fishing-effort-hours + time-step
+        ]
+        forward fishing-speed * time-step
+        set fish-catch-boat n-values (number-of-gears) [i -> (item i fish-catch-boat + item i new-catch)]
+
       ]
-      forward fishing-speed * time-step
-       set fish-catch-boat n-values (number-of-gears) [i -> (item i fish-catch-boat + item i new-catch)]
+      set time-left time-left - haul-time
+      set distance-left distance-left - steaming-speed * haul-time
+      set time-at-sea time-at-sea  + haul-time
+      set distance-at-sea distance-at-sea + time-at-sea * fishing-speed
 
-    ]
-    set time-left time-left - haul-time
-    set distance-left distance-left - steaming-speed * haul-time
-    set time-at-sea time-at-sea  + haul-time
-    set distance-at-sea distance-at-sea + time-at-sea * fishing-speed
+      ; If the catch is not worth keeping it, discard it entirely and
+      ; reset the time left.  But if the catch is successful, then make
+      ; sure that the timeout is maximum 24 hours
+      ; @todo this is not properly implemented yet
+      if (item 1 new-catch < min-fresh-catch and time-left < 24)[
+        set time-left 24
+      ]
+      if (item 1 new-catch > min-fresh-catch and time-left > 24)[
+        set time-left 24
+      ]
 
-    ; If the catch is not worth keeping it, discard it entirely and
-    ; reset the time left.  But if the catch is successful, then make
-    ; sure that the timeout is maximum 24 hours
-    ; @todo this is not properly implemented yet
-    if (item 1 new-catch < min-fresh-catch and time-left < 24)[
-      set time-left 24
-    ]
-    if (item 1 new-catch > min-fresh-catch and time-left > 24)[
-      set time-left 24
-    ]
+      ; Evaluate whether to go home based on different criteria, i.e.
+      ; capacity exceeded, too far from home port, or
 
-    ; Evaluate whether to go home based on different criteria, i.e.
-    ; capacity exceeded, too far from home port, or
-
-    if (item 1 fish-catch-boat > vessel-size) [
-      print (list "Boat" who "full. Needs to go back to port")
-      set need-to-go-to-port? true
-    ]
-    if (gis-distance l-patch > distance-left) [
-      print (list "Boat" who "went far enough, needs to go home to reach port")
-      set need-to-go-to-port? true
-    ]
-    if (time-left < gis-distance l-patch / steaming-speed) [
-      print (list "Boat" who "is running out of time, needs to go home to reach port")
-      set need-to-go-to-port? true
-    ]
-
-    ; in case of a bad haul, select a different patch.
-    ; for now, we choose a  neighbor patch, later we have to implement
-    ; a procedure to find a patch approx 20 km away
-    ; @todo check units
-    ;if (false) [
-    if (item 1 new-catch < min-fresh-catch) [
-      let my-neighbors patches  with [accessible? and gis-distance l-patch < distance-left and gis-distance myself < distance-to-alternative-patch and gis-distance home-port > 5 ] ; @todo: currently set to 20, revise with respect to memorx
-      ifelse any? my-neighbors [
-        set s-patch one-of my-neighbors
-        print (list "Boat" who "start a new haul at a different patch with depth" ([depth] of s-patch))
-      ][
-        print (list "Boat" who "could not find any navigable water, going home")
+      if (item 1 fish-catch-boat > boat-capacity) [
+        print (list "Boat" who "full. Needs to go back to port")
         set need-to-go-to-port? true
       ]
-      move-to s-patch
-      set distance-at-sea distance-at-sea + gis-distance s-patch
-      set distance-left distance-left - gis-distance s-patch
-      set time-at-sea time-at-sea + gis-distance s-patch / steaming-speed
-      set time-left time-left - gis-distance s-patch / steaming-speed
-    ]
+      if (gis-distance l-patch > distance-left) [
+        print (list "Boat" who "went far enough, needs to go home to reach port")
+        set need-to-go-to-port? true
+      ]
+      if (time-left < gis-distance l-patch / steaming-speed) [
+        print (list "Boat" who "is running out of time, needs to go home to reach port")
+        set need-to-go-to-port? true
+      ]
 
-    print (list "Boat" who heading time-at-sea time-left (gis-distance l-patch) distance-at-sea distance-left (item 1 fish-catch-boat) )
-    ;print (list who ([depth] of patch-here))
+      ; in case of a bad haul, select a different patch.
+      ; for now, we choose a  neighbor patch, later we have to implement
+      ; a procedure to find a patch approx 20 km away
+      ; @todo check units
+      ;if (false) [
+      if (item 1 new-catch < min-fresh-catch) [
+        let my-neighbors patches  with [accessible? and gis-distance l-patch < distance-left and gis-distance myself < distance-to-alternative-patch and gis-distance home-port > 5 ] ; @todo: currently set to 20, revise with respect to memorx
+        ifelse any? my-neighbors [
+          set s-patch one-of my-neighbors
+          print (list "Boat" who "start a new haul at a different patch with depth" ([depth] of s-patch))
+        ][
+          print (list "Boat" who "could not find any navigable water, going home")
+          set need-to-go-to-port? true
+        ]
+        move-to s-patch
+        set distance-at-sea distance-at-sea + gis-distance s-patch
+        set distance-left distance-left - gis-distance s-patch
+        set time-at-sea time-at-sea + gis-distance s-patch / steaming-speed
+        set time-left time-left - gis-distance s-patch / steaming-speed
+      ]
+
+      print (list "Boat" who heading time-at-sea time-left (gis-distance l-patch) distance-at-sea distance-left (item 1 fish-catch-boat) )
+      ;print (list who ([depth] of patch-here))
+    ]
   ]
 
   print "Returning to harbor..."
@@ -555,6 +573,9 @@ to go-on-fishing-trip
   set distance-at-sea distance-at-sea + gis-distance l-patch
   set time-at-sea time-at-sea + gis-distance l-patch / steaming-speed
   move-to l-patch
+  set distance-at-sea distance-at-sea + gis-distance home-port
+  set time-at-sea time-at-sea + gis-distance home-port / steaming-speed
+  move-to home-port
 
   ; @todo temporarily give this a price, needs to be a global property later
   let price-species  3 ; EUR kg-1
@@ -564,10 +585,12 @@ to go-on-fishing-trip
 
   ; for all gears, we calculate the value
 
-
   set transportation-costs fuel-efficiency * oil-price * distance-at-sea
   set operating-costs wage * time-at-sea
-  set costs-boat n-values (number-of-gears) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
+
+  if (sum fish-catch-boat > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
+    (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
+  ]
   set revenue-boat n-values (number-of-gears)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
   set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
   set gain-boat n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
@@ -628,8 +651,8 @@ end
 
 to calc-accessibility
 
-  ask patches [set plaicebox? false]
-  load-plaicebox
+  ask patches [set plaice-box? false]
+  load-plaice-box
 
   ; By default, all patches are inaccessible
   ask patches [set accessible? false]
@@ -734,8 +757,8 @@ CHOOSER
 246
 view
 view
-"crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaicebox?"
-8
+"crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
+4
 
 BUTTON
 93
@@ -970,8 +993,8 @@ PLOT
 940
 596
 catch-by-species
-time
-catch
+days
+catch/kg
 0.0
 10.0
 0.0
@@ -987,8 +1010,8 @@ PLOT
 1235
 593
 cost-by-species
-time
-euro
+days
+cost/k€
 0.0
 10.0
 0.0

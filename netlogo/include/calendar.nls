@@ -4,6 +4,7 @@
 
 ; Simple calendar implementation
 ; Reset the calendar to a default date
+; @todo replace the functinoality with the time extension
 
 to reset-calendar
 
@@ -60,7 +61,6 @@ to-report leap-year
   if ( year mod 100 = 0 ) [ report 0 ]
   report 1
 end
-
 
 to-report datetime
   report (word year "-" month "-" day " (" day-of-year ")")
