@@ -960,7 +960,7 @@ NIL
 1
 
 PLOT
-740
+558
 446
 940
 596
@@ -977,11 +977,11 @@ true
 PENS
 
 PLOT
-1035
+957
 443
 1235
 593
-costs
+cost-by-species
 time
 euro
 0.0
@@ -990,11 +990,8 @@ euro
 10.0
 true
 true
-"" ""
+"plot-setup-cost-by-species" "plot-update-cost-by-species"
 PENS
-"" 1.0 0 -16777216 true "" "plotxy ticks sum [item 0 costs-boat] of boats"
-"pen-1" 1.0 0 -7500403 true "" "plotxy ticks sum [item 1 costs-boat] of boats"
-"pen-2" 1.0 0 -2674135 true "" "plotxy ticks sum [item 2 costs-boat] of boats"
 
 @#$#@#$#@
 # TODO
