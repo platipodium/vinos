@@ -143,7 +143,7 @@ patches-own [
   depth
   owf-fraction
   accessible?             ; false if not accessible to fishery, i.e. close to port, too shallow, restricted area
-
+  plaicebox?
 ]
 
 ; The startup procedure is called when the model is opened by NetLogo.  This automates
@@ -199,6 +199,7 @@ to setup
   set view "bathymetry"
   update
   display
+
   setup-ports
   calc-initial-values
   setup-boats
@@ -625,6 +626,9 @@ to create-effort-map
 end
 
 to calc-accessibility
+
+  ask patches [set plaicebox? false]
+  load-plaicebox
 
   ; By default, all patches are inaccessible
   ask patches [set accessible? false]

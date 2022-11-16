@@ -78,19 +78,9 @@ to show-windfarms
   
 end
 
-to show-plaicebox
-  
+to load-plaicebox
   let plaicebox-dataset gis:load-dataset "../data/plaicebox/DB_PlaiceBox_WGS84_vTIwi_Jan2001_G.shp"
-  
-  ;foreach gis:feature-list-of owf-dataset [     
-  ;  this-owf-vector-feature -> gis:set-property-value this-owf-vector-feature "POWER_MW" read-from-string gis:property-value this-owf-vector-feature "POWER_MW" 
-  ;]
-
-  ask patches gis:intersecting plaicebox-dataset
-  [ 
-    set pcolor grey
-  ]
-  
+  ask patches gis:intersecting plaicebox-dataset [ set plaicebox? true ]  
 end
 
 
