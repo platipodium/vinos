@@ -78,6 +78,22 @@ to show-windfarms
   
 end
 
+to show-plaicebox
+  
+  let plaicebox-dataset gis:load-dataset "../data/plaicebox/DB_PlaiceBox_WGS84_vTIwi_Jan2001_G.shp"
+  
+  ;foreach gis:feature-list-of owf-dataset [     
+  ;  this-owf-vector-feature -> gis:set-property-value this-owf-vector-feature "POWER_MW" read-from-string gis:property-value this-owf-vector-feature "POWER_MW" 
+  ;]
+
+  ask patches gis:intersecting plaicebox-dataset
+  [ 
+    set pcolor grey
+  ]
+  
+end
+
+
 ; The `import-wms-drawing` primitive asks a server (in this case one run by
 ; terrestris.de, a german GIS company that offers a WMS for the public)
 ; for the section of the map within the current world envelope
