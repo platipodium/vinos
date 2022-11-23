@@ -1,0 +1,28 @@
+; This subsidiary netlogo file contains routines that access Web Mapping Services (WMS)
+; to dynamically load georeferenced data.   Given a bounding box and a projection, 
+; these WMS images are downloaded with the gis extensions's gis:import-wms-drawing procedure
+;
+; @author Carsten Lemmen
+; SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (hereon)
+; SPDX-License-Identifier: CC-BY-4.0
+
+
+to download-wms
+  
+  clear-drawing
+  query-wms "SAR"
+   ___export_drawing "SAR.png"
+  
+end
+
+
+to query-wms [X]
+  carefully [
+    if X = "OSM" [gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 200]
+    if X = "SAR" [gis:import-wms-drawing "http://coastmap.hzg.de/server/services/NOAH_geoDB/TI_SARnested/MapServer/WMSServer?" "EPSG:4326" "0" 100]
+    if X = "CHL" [gis:import-wms-drawing "https://coastmap.hzg.de/server/services/MOSSCO/MOSSCO_chlorophyll/MapServer/WmsServer?" "EPSG:4326" "0" 200]
+  ][ 
+    show word "Could not load " X
+  ]  
+end
+
