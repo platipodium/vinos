@@ -13,7 +13,7 @@ License: Unlicensed
 
 Files: data/EMODnet*
 Copyright: 2022 EMODNET
-License: PDDL-1.0
+License: LicenseRef-EMODNET-1.0
 
 Files: data/gebco*
 Copyright: 2022 GEBCO

@@ -64,7 +64,7 @@ end
 ; After providing your country and sector, the wind farm polygon areas are freely available. 
 to show-windfarms
   
-  set owf-dataset gis:load-dataset "../data/EMODnet_HA_WindFarms_pg_20211210.shp"
+  set owf-dataset gis:load-dataset "../data/EMODnet_HA_WindFarms_pg_20220324.shp"
   
   ;foreach gis:feature-list-of owf-dataset [     
   ;  this-owf-vector-feature -> gis:set-property-value this-owf-vector-feature "POWER_MW" read-from-string gis:property-value this-owf-vector-feature "POWER_MW" 
