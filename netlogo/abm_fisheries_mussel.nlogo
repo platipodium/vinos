@@ -10,7 +10,7 @@ extensions [
 ]
 
 __includes [
-  "include/import-asc.nls"
+  "include/geodata.nls"
   "include/calendar.nls"
   "include/read-in-data.nls"
   "include/gear.nls"
