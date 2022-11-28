@@ -79,10 +79,29 @@ to show-windfarms
 end
 
 to load-plaice-box
-  let plaice-box-dataset gis:load-dataset "../data/plaicebox/DB_PlaiceBox_WGS84_vTIwi_Jan2001_G.shp"
+  let plaice-box-dataset  gis:load-dataset "../data/plaicebox/DB_PlaiceBox_WGS84_vTIwi_Jan2001_G.shp"
   ask patches gis:intersecting plaice-box-dataset [ set plaice-box? true ]  
+
+  gis:set-drawing-color blue - 3
+  gis:draw plaice-box-dataset 1
 end
 
+to load-eez
+  let eez-dataset gis:load-dataset "../data/eez/eez.shp"
+  ;ask patches gis:intersecting eez-dataset [ set eez? true ]  
+  
+  gis:set-drawing-color black
+  gis:draw eez-dataset 1
+end
+
+to load-ices-rectangles
+  let ices-dataset gis:load-dataset "../data/ices/ICES_Statistical_Rectangles_Eco.shp"
+  ;ask patches gis:intersecting ices-dataset [ set plaice-box? true ]  
+  
+  gis:set-drawing-color  [0 0 0 200]
+  gis:draw ices-dataset 1
+
+end
 
 ; The `import-wms-drawing` primitive asks a server (in this case one run by
 ; terrestris.de, a german GIS company that offers a WMS for the public)
