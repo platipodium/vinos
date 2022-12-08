@@ -9,7 +9,7 @@ License: Unlicensed
 
 Files: data/dist_ran*asc
 Copyright: 2022 Thuenen Institut
-License: Unlicensed
+License: Apache-2.0
 
 Files: data/EMODnet*
 Copyright: 2022 EMODNET
