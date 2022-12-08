@@ -761,7 +761,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+8
 
 BUTTON
 93
@@ -1066,7 +1066,6 @@ PENS
 - Oil price effect on costs
 - Add sole and plaice
 - Add vessel trait distribution from Serra's data
-- Schollenbox
 
 ## Data sources
 
@@ -1114,7 +1113,7 @@ From the NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` 
 
 #### Georeferenced processing
 
-The ESRII ASCII file was directly used (see code in `import-asc.nls`)
+The ESRII ASCII file was directly used (see code in `geodata.nls`)
 
 #### Viable implementation
 
