@@ -1,3 +1,9 @@
+; SPDX-FileCopyrightText: 2022 Universität Hamburg (UHH)
+; SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (hereon)
+; SPDX-License-Identifier: Apache-2.0
+; Author: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
+; Author: Carsten Lemmen <carsten.lemmen@hereon.de>
+
 extensions [
   gis
   csv

@@ -1,3 +1,9 @@
+; SPDX-FileCopyrightText: 
+; SPDX-License-Identifier: 
+; Author: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
+; Author: Jürgen Scheffran
+
+
 globals [ L g f a b q_x q_y C x r_x r_y fishes fishers growth harv_x harv_y tot_harv c_x c_y u w1 w2 w3 w4 w5 w6 sum_w_c V K C_max
           Price u_x u_y w1_x w2_x w3_x w4_x w5_x w6_x sum_w_c_x w1_y w2_y w3_y w4_y w5_y w6_y sum_w_c_y v_x v_y rv_x rv_y sum_rv  w w_x w_y]
 

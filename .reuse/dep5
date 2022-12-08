@@ -9,7 +9,7 @@ License: Unlicensed
 
 Files: data/dist_ran*asc
 Copyright: 2022 Thuenen Institut
-License: Apache-2.0
+License: PDDL-1.0
 
 Files: data/EMODnet*
 Copyright: 2022 EMODNET
@@ -22,3 +22,17 @@ License: LicenseRef-GEBCO-1.0
 Files: figures/gebco*
 Copyright: 2022 GEBCO
 License: LicenseRef-GEBCO-1.0
+
+Files: data/eez/*
+Copyright: (unknown)
+License: PDDL-1.0
+
+Files: data/ices/*
+Copyright: 2022 ICES
+License: PDDL-1.0
+
+Files: data/plaicebox/*
+Copyright: Thünen Institute
+License: PDDL-1.0
+
+
