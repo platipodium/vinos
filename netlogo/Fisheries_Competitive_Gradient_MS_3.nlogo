@@ -1,5 +1,5 @@
 ; SPDX-FileCopyrightText: 
-; SPDX-License-Identifier: 
+; SPDX-License-Identifier:  Unlicensed
 ; Author: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
 ; Author: Jürgen Scheffran
 

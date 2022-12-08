@@ -11,6 +11,10 @@ Files: data/dist_ran*asc
 Copyright: 2022 Thuenen Institut
 License: PDDL-1.0
 
+Files: figures/dis.*.png
+Copyright: 2022 Thuenen Institut
+License: PDDL-1.0
+
 Files: data/EMODnet*
 Copyright: 2022 EMODNET
 License: LicenseRef-EMODNET-1.0
@@ -28,11 +32,14 @@ Copyright: (unknown)
 License: PDDL-1.0
 
 Files: data/ices/*
-Copyright: 2022 ICES
-License: PDDL-1.0
+Copyright: 2022 ICES Spatial Facility
+License: LicenseRef-ICES-1.0
 
 Files: data/plaicebox/*
 Copyright: Thünen Institute
 License: PDDL-1.0
 
+Files: data/wgs1984.prj
+Copyright: (unknown)
+License: CC0-1.0
 
