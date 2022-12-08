@@ -597,6 +597,8 @@ to go-on-fishing-trip
   set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i delta-gain-boat) / (item i boat-priorities)]
   set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities - item i boat-delta-priorities]
 
+
+
   ; old implemenation for species
   ;set costs-boat n-values (number-of-species - 1) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
   ;set revenue-boat n-values (number-of-species - 1)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
@@ -606,6 +608,7 @@ to go-on-fishing-trip
   ;set boat-priorities n-values (number-of-species - 1) [i -> item i boat-priorities - item i delta-boat-priorities]
   ;print (list "Boat" who " has cost of " (transportation-costs + operating-costs) )
   print (list "Boat" who " has cost of " costs-boat )
+  print (list "Boat" who " has priorities of" boat-priorities)
 end
 
 to-report boolean2int [x]
@@ -1038,6 +1041,23 @@ true
 "plot-setup-catch-by-trip" "plot-update-catch-by-trip\nhistogram [wage] of boats"
 PENS
 "hist" 1.0 0 -7500403 true "" ""
+
+PLOT
+841
+616
+1041
+766
+priorities
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"plot-setup-priorities" "plot-update-priorities"
+PENS
 
 @#$#@#$#@
 # TODO
