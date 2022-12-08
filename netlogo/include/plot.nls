@@ -91,9 +91,10 @@ to plot-setup-priorities
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
     set-plot-pen-color 135 - 10 * i
-    set-plot-pen-interval 1 
     auto-plot-on
-    set-plot-pen-mode 0 ; line
+    set-plot-x-range 0 1
+    set-histogram-num-bars 9
+    set-plot-pen-mode 1 ; box
   ]
 end
 
@@ -103,7 +104,6 @@ to plot-update-priorities
    foreach range number-of-gears [[i] ->
     let pen-name  item i gear-names
     set-current-plot-pen pen-name
-    ;set-plot-x-range 0 max
-    ;histogram [item i boat-priorities] of boats @to do problem wrong message recipient
+    histogram [item i boat-priorities] of boats ;@to do problem wrong message recipient
   ]
 end

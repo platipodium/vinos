@@ -26,6 +26,7 @@ to setup-gears
     set gear-installation-cost 1000 ; EUR for changing to this gear
     set gear-purchase-cost 25000 ; 
   ]
+  
   create-gears 1 [
     set gear-name "Crangon-medium"
     set gear-species "crangon"
@@ -44,5 +45,6 @@ to setup-gears
   ]
   
   set number-of-gears count gears
+  set gear-names [gear-name] of gears
   
 end

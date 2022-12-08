@@ -761,7 +761,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-8
+4
 
 BUTTON
 93
@@ -817,7 +817,7 @@ adaptation
 adaptation
 0
 1
-0.489
+0.551
 0.001
 1
 NIL
@@ -1043,10 +1043,10 @@ PENS
 "hist" 1.0 0 -7500403 true "" ""
 
 PLOT
-841
-616
-1041
-766
+778
+607
+1150
+757
 priorities
 NIL
 NIL
@@ -1055,7 +1055,7 @@ NIL
 0.0
 10.0
 true
-false
+true
 "plot-setup-priorities" "plot-update-priorities"
 PENS
 
