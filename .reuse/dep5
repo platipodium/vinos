@@ -28,18 +28,18 @@ Copyright: 2022 GEBCO
 License: LicenseRef-GEBCO-1.0
 
 Files: data/eez/*
-Copyright: (unknown)
-License: PDDL-1.0
+Copyright: United Nations Convention on the Law of the Sea
+License: CC0-1.0
 
 Files: data/ices/*
 Copyright: 2022 ICES Spatial Facility
 License: LicenseRef-ICES-1.0
 
 Files: data/plaicebox/*
-Copyright: Thünen Institute
-License: PDDL-1.0
+Copyright: European Commission
+License: CC0-1.0
 
 Files: data/wgs1984.prj
-Copyright: (unknown)
+Copyright: International Earth Rotation Service
 License: CC0-1.0
 
