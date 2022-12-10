@@ -719,6 +719,14 @@ to-report index-max-one-of [my-list]
   let max-value max my-list
   report position max-value my-list
 end
+
+to export-patches
+  gis:store-dataset gis:patch-dataset fishing-effort-hours "results/fishing-effort-hours"
+  gis:store-dataset gis:patch-dataset depth "results/depth"
+  gis:store-dataset gis:patch-dataset owf-fraction "results/owf-fraction"
+  gis:store-dataset gis:patch-dataset accessible? "results/accessible"
+  gis:store-dataset gis:patch-dataset plaice-box? "results/plaice-box"
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
