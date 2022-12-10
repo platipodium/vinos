@@ -459,9 +459,9 @@ to go-on-fishing-trip
   pen-up
   move-to home-port
   set distance-at-sea distance-at-sea + gis-distance s-patch
-  set distance-left distance-left - gis-distance s-patch
+  set distance-left max  (list (distance-left - gis-distance s-patch) 0 )
   set time-at-sea time-at-sea + gis-distance s-patch / steaming-speed
-  set time-left time-left - gis-distance s-patch / steaming-speed
+  set time-left  max (list (time-left - gis-distance s-patch / steaming-speed) 0 )
   move-to s-patch
   pen-down
 
@@ -508,8 +508,8 @@ to go-on-fishing-trip
         set fish-catch-boat n-values (number-of-gears) [i -> (item i fish-catch-boat + item i new-catch)]
 
       ]
-      set time-left time-left - haul-time
-      set distance-left distance-left - steaming-speed * haul-time
+      set time-left max (list (time-left - haul-time) 0 )
+      set distance-left max (list (distance-left - steaming-speed * haul-time) 0 )
       set time-at-sea time-at-sea  + haul-time
       set distance-at-sea distance-at-sea + time-at-sea * fishing-speed
 
@@ -595,8 +595,18 @@ to go-on-fishing-trip
   set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
   set gain-boat n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
   set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i delta-gain-boat) / (item i boat-priorities)]
-  set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities - item i boat-delta-priorities]
 
+  ; Correct such that sum (boat-delta-priorities = 0) ; introduced by cl as fix for negative priorities
+  if sum boat-delta-priorities != 0 [
+    set boat-delta-priorities n-values (number-of-gears) [i -> item i boat-delta-priorities / sum boat-delta-priorities ]
+    set boat-delta-priorities n-values (number-of-gears) [i -> item i boat-delta-priorities - mean boat-delta-priorities ]
+  ]
+
+  set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities - item i boat-delta-priorities]
+  ; Make sure that boat-priorities always sum to 1
+  if sum boat-priorities != 0 [
+    set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities / sum boat-priorities ]
+  ]
 
 
   ; old implemenation for species
@@ -608,7 +618,8 @@ to go-on-fishing-trip
   ;set boat-priorities n-values (number-of-species - 1) [i -> item i boat-priorities - item i delta-boat-priorities]
   ;print (list "Boat" who " has cost of " (transportation-costs + operating-costs) )
   print (list "Boat" who " has cost of " costs-boat )
-  print (list "Boat" who " has priorities of" boat-priorities)
+  ;print (list "Boat" who " has dpriorities of" boat-delta-priorities)
+  ;print (list "Boat" who " has priorities of" boat-priorities)
 end
 
 to-report boolean2int [x]
