@@ -43,3 +43,6 @@ Files: data/wgs1984.prj
 Copyright: International Earth Rotation Service
 License: CC0-1.0
 
+Files: data/nlwkn/NLP/*
+Copyright: NLWKN
+License: LicenseRef-DL-DE-BY-2.0

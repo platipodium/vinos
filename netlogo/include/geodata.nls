@@ -100,7 +100,14 @@ to load-ices-rectangles
   
   gis:set-drawing-color  [0 0 0 200]
   gis:draw ices-dataset 1
+end
 
+to load-nationalpark
+  let nationalpark-dataset gis:load-dataset "../data/nlwkn/NLP/Nationalparke_DTK25.shp"
+  ;ask patches gis:intersecting nationalpark-dataset [ set nationalpark? true ]  
+  
+  gis:set-drawing-color green
+  gis:draw nationalpark-dataset 1
 end
 
 ; The `import-wms-drawing` primitive asks a server (in this case one run by
@@ -126,4 +133,8 @@ to draw-background [X]
   ]
   
 end
+
+
+
+
 
