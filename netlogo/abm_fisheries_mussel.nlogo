@@ -1,5 +1,5 @@
 ; SPDX-FileCopyrightText: 2022 Universität Hamburg (UHH)
-; SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (hereon)
+; SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (Hereon)
 ; SPDX-License-Identifier: Apache-2.0
 ; Author: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
 ; Author: Carsten Lemmen <carsten.lemmen@hereon.de>
@@ -7,6 +7,7 @@
 extensions [
   gis
   csv
+  profiler
 ]
 
 __includes [
@@ -151,6 +152,8 @@ patches-own [
 to startup
    setup
 end
+
+
 
 to go
 
@@ -727,6 +730,19 @@ to export-patches
   gis:store-dataset gis:patch-dataset accessible? "results/accessible"
   gis:store-dataset gis:patch-dataset plaice-box? "results/plaice-box"
 end
+
+; The profile routine is called manually from the command line while we test
+; @todo profile other routines not called by go
+; @todo use profiling in CI
+to profile
+  setup
+  profiler:start
+  repeat 20 [ go ]
+  profiler:stop
+  csv:to-file "results/profiler_data.csv" profiler:data
+  profiler:reset
+end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
