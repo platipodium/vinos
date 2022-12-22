@@ -44,6 +44,10 @@ non-governmental organizations and government agencies, some are available under
 from Apache 2.0.  Please refer to the license information available for each individual file in 
 this project for details.
 
-We appreciate if you provided your feedback or bug reports and improvement 
-suggestions to us.  
+Funding for this software development was obtained by the German Federal Ministry for Education
+and Research  (BMBF) in the project Multiple Stressors on North Sea Life (MuSSeL) in the
+framework of the agenda Küstenforschung Nordsee-Ostsee (KüNO III) within the 
+ministry's Forschung für Nachhaltigkeit (FONA) program.
 
+We hope you can make good use of the software and find it useful and enjoyable. We appreciate
+your feedback, bug reports and improvement suggestions.  
