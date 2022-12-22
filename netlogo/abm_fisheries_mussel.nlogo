@@ -73,6 +73,7 @@ boats-own [
   gain-boat                ; gain for the fishing trip of the boat
   boat-delta-priorities      ; change in priority
   boat-priorities            ; priority for the pathway
+  priority-weighted-average  ; priority weighted average of gain
 
   fishing-speed            ; speed when fishing
   steaming-speed           ; speed when steaming
@@ -597,13 +598,18 @@ to go-on-fishing-trip
   set revenue-boat n-values (number-of-gears)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
   set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
   set gain-boat n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
-  set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i delta-gain-boat) / (item i boat-priorities)]
+  set priority-weighted-average sum (map * boat-priorities delta-gain-boat)
+  ifelse sum delta-gain-boat != 0 [
+    set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * item i boat-priorities * ((item i delta-gain-boat) - priority-weighted-average) / (sum delta-gain-boat)]
+  ][
+    set boat-delta-priorities n-values (number-of-gears) [i -> 0] ; nothing learned
+  ]
 
   ; Correct such that sum (boat-delta-priorities = 0) ; introduced by cl as fix for negative priorities
-  if sum boat-delta-priorities != 0 [
-    set boat-delta-priorities n-values (number-of-gears) [i -> item i boat-delta-priorities / sum boat-delta-priorities ]
-    set boat-delta-priorities n-values (number-of-gears) [i -> item i boat-delta-priorities - mean boat-delta-priorities ]
-  ]
+  ;if sum boat-delta-priorities != 0 [
+  ;  set boat-delta-priorities n-values (number-of-gears) [i -> item i boat-delta-priorities / sum boat-delta-priorities ]
+  ;  set boat-delta-priorities n-values (number-of-gears) [i -> item i boat-delta-priorities - mean boat-delta-priorities ]
+  ;]
 
   set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities - item i boat-delta-priorities]
   ; Make sure that boat-priorities always sum to 1
@@ -619,10 +625,11 @@ to go-on-fishing-trip
   ;set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
   ;set delta-boat-priorities n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i boat-priorities)]
   ;set boat-priorities n-values (number-of-species - 1) [i -> item i boat-priorities - item i delta-boat-priorities]
-  ;print (list "Boat" who " has cost of " (transportation-costs + operating-costs) )
+  print (list "Boat" who " has cost of " (transportation-costs + operating-costs) )
   print (list "Boat" who " has cost of " costs-boat )
-  ;print (list "Boat" who " has dpriorities of" boat-delta-priorities)
-  ;print (list "Boat" who " has priorities of" boat-priorities)
+  print (list "Boat" who " has dpriorities of" boat-delta-priorities)
+  print (list "Boat" who " has priorities of" boat-priorities)
+  print (list "Boat" who " has weighted average of" priority-weighted-average)
 end
 
 to-report boolean2int [x]
@@ -742,7 +749,6 @@ to profile
   csv:to-file "results/profiler_data.csv" profiler:data
   profiler:reset
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
