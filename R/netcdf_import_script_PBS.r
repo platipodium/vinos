@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2022 Thuenen Institut
-# SPDX-License-Identifier: Unlicensed
+# SPDX-License-Identifier: Apache-2.0
 # SPDX-FileContributor: Nik Probst
 
 # Grids to be projected on
