@@ -53,8 +53,8 @@ From the NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` 
 
 ## Viable implementation
 
-- Action pathway ist gear selection (later target species)
-- gear hat Eigenschaft: gear-width => influences catch, gear-drag => influences fuel cost
+- Action pathway is gear selection (later target species)
+- gear has properties: gear-width => influences catch, gear-drag => influences fuel cost
 - after two trips, we compare the value (income - cost)*value_factor between two trips
 
 ### License
