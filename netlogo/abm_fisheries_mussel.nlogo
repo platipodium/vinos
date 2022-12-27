@@ -260,7 +260,7 @@ to setup-boats
       set  boat-engine-power 2000                                      ; kw
       set  boat-capacity 100000                                  ; kg of storage
       set label ""                                             ; ????
-      set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order for all the boats
+      set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
     ]
 
 
