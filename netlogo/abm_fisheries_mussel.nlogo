@@ -260,7 +260,7 @@ to setup-boats
       set  boat-engine-power 2000                                      ; kw
       set  boat-capacity 100000                                  ; kg of storage
       set label ""                                             ; ????
-      set boat-gears [self] of gears ; save a list of gears available to this boat, currently all of them
+      set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order for all the boats
     ]
 
 
@@ -598,12 +598,15 @@ to go-on-fishing-trip
   set revenue-boat n-values (number-of-gears)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
   set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
   set gain-boat n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
-  set priority-weighted-average sum (map * boat-priorities delta-gain-boat)
-  ifelse sum delta-gain-boat != 0 [
-    set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * item i boat-priorities * ((item i delta-gain-boat) - priority-weighted-average) / (sum delta-gain-boat)]
+  let delta-adjust sum map [ i -> abs i ] delta-gain-boat ; fix minus boat priority ; in cast that the gain-boat decreases a lot, big minus values of delta-priorities make boat-priorities minus
+  ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
+  set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i delta-gain-boat) * (item i boat-priorities) / delta-adjust]
   ][
-    set boat-delta-priorities n-values (number-of-gears) [i -> 0] ; nothing learned
+    set boat-delta-priorities map [i -> 0] boat-delta-priorities
   ]
+  set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities - item i boat-delta-priorities] 
+; Make sure that boat-priorities always sum to 1
+  set boat-priorities map [i -> i / sum boat-priorities] boat-priorities
 
   ; Correct such that sum (boat-delta-priorities = 0) ; introduced by cl as fix for negative priorities
   ;if sum boat-delta-priorities != 0 [
