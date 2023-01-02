@@ -51,7 +51,6 @@ create-map:
     paths: 
       - ./netlogo/results/
 
-
 pages: # predefined name by GitLab
     stage: deploy
     dependencies: 
@@ -66,5 +65,25 @@ pages: # predefined name by GitLab
         paths:
             - public/
 
+joss-paper:
+  stage: deploy
+  image: 'openjournals/inara:latest'
+  script:
+    - inara -o pdf doc/joss/paper.md
+  environment:
+    name: draft
+  variables:
+    GIT_SHA: $CI_COMMIT_SHA
+    JOURNAL: joss
+  when: always
+  only:
+    branches:
+      - joss
+  allow_failure: false
+  artifacts:
+    paths:
+      - doc/joss/paper.pdf
+      - pdf
+  dependencies:
+  hidden: false
 
-  
