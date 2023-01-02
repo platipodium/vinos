@@ -17,6 +17,7 @@ license-compliance:
     script:
         - poetry run reuse lint
     allow_failure: true
+    needs: []
 
 create-map:
   image: comses/netlogo # see https://github.com/comses/docker-netlogo
@@ -33,6 +34,7 @@ create-map:
   artifacts:
     paths: 
       - ./netlogo/results/
+  needs: []
 
 pages: # predefined name by GitLab
     stage: deploy
@@ -47,6 +49,7 @@ pages: # predefined name by GitLab
     artifacts:
         paths:
             - public/
+    needs: []
 
 joss-paper:
   stage: deploy
@@ -67,5 +70,6 @@ joss-paper:
   dependencies:
   rules:
      - if: $CI_COMMIT_BRANCH == "joss"
+  needs: []
 
 
