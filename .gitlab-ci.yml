@@ -76,13 +76,13 @@ joss-paper:
     GIT_SHA: $CI_COMMIT_SHA
     JOURNAL: joss
   when: always
-  only:
-    branches:
-      - joss
   allow_failure: false
   artifacts:
     paths:
       - doc/joss/paper.pdf
       - pdf
   dependencies:
+  rules:
+     - if: $CI_COMMIT_BRANCH == joss
+
 
