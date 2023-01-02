@@ -68,5 +68,4 @@ joss-paper:
       - doc/joss/paper.pdf
       - pdf
   dependencies:
-  hidden: false
 
