@@ -518,12 +518,15 @@ to go-on-fishing-trip
       set distance-at-sea distance-at-sea + time-at-sea * fishing-speed
 
       ; If the catch is not worth keeping it, discard it entirely and
-      ; reset the time left.  But if the catch is successful, then make
-      ; sure that the timeout is maximum 24 hours
-      ; @todo this is not properly implemented yet
+      ; reset the time left. Fishers don't want to keep the bad haul, as this
+      ; would restrict their left time
+      ; @todo could this lead to infinite stay at sea?
       if (item 1 new-catch < min-fresh-catch and time-left < 24)[
         set time-left 24
       ]
+      ; But if the catch is successful, then make
+      ; sure that the timeout is maximum 24 hours (to keep the fish fresh)
+      ; @todo this is not properly implemented yet
       if (item 1 new-catch > min-fresh-catch and time-left > 24)[
         set time-left 24
       ]
@@ -604,7 +607,7 @@ to go-on-fishing-trip
   ][
     set boat-delta-priorities map [i -> 0] boat-delta-priorities
   ]
-  set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities - item i boat-delta-priorities] 
+  set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities - item i boat-delta-priorities]
 ; Make sure that boat-priorities always sum to 1
   set boat-priorities map [i -> i / sum boat-priorities] boat-priorities
 
