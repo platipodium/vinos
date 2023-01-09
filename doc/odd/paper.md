@@ -229,37 +229,9 @@ There are interactions between boats and the environment. However, no direct int
 1. **Sub-models**
 
 
+# Questions (those not yet moved to issues)
 
-
-# Questions
-
-
-1. Questions
-
-- Fish name: "platessa" and "plaice" are meant to be the same? If so, we need to unify the names. Otherwise, parts of the code are not working. Correct the species name of "platessa" to "plaice".
-- Gear function
-
-1) Is each gear optimized for a certain fish species? For example, in the model, the name of the gear 0 is "crangon-small". If we use the gear 1, we catch only "crangon-small"?
-
-- Fish haul
-
-1. Currently, only one fish species of crangon is used in the model.
-2. Are we going to consider different fish species (solea, plaice, and crangon) later or stick to one species of different sizes (crangon-small, crangon-medium, and crangon-large) in boat (gear) priorities? Comparison of the priorities among different sizes of crangons vs. different fish species, which one?
-3. For each trip, do we intend to use only one gear or all the gears according to its priority? In the model, boats use all the gears simultaneously because each of them has fractional fish catch depending on its priority. But the gear-width of the gear with the highest priority (defined as haul-width) is used for all the gears during the trip. If it is assumed that we use all the gears at the same time, should we consider different gear widths assigned to each gear? Otherwise, there is no difference between gears since revenue (fish catches, prices) and costs the same for all the gears.
-
-- Calculation of gains
-
-1. (Costs) At the moment, only transportation and operation costs for boats are considered. Are the costs for gear installation and purchase going to be used later? What are the port transportation and port operation costs for (not used currently)?
-2. (Prices) Prices for each species in each port are calculated using landing data but not used, is this because we don't consider all the fish species currently and are going to use it later?
-
-- Good haul and bad haul
-
-1. When the haul is good, should boats reset the time to 24 hours, even though the time left is so long, for example, 60 hours?
-2. When the haul is bad, can boats reset the time to 24 hours forever, although they could be running out of fuel?
-
-- How about we use different thresholds for good and bad haul? At the moment, the same threshold (minimum fish catch is given as 10) is used, so there might be little difference between good and bad hauls. For instance, if new fish catch is 11, it is considered good haul, but new fish catch 9 is bad haul.
-
-1. Things to be cleaned or fixed
+## Things to be cleaned or fixed
 
 - Parts not used: learning before choosing direction, action breeds (clean?)
 - Variables not used (clean?)
