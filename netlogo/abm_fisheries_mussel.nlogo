@@ -635,7 +635,7 @@ to go-on-fishing-trip
   print (list "Boat" who " has cost of " costs-boat )
   print (list "Boat" who " has dpriorities of" boat-delta-priorities)
   print (list "Boat" who " has priorities of" boat-priorities)
-  print (list "Boat" who " has weighted average of" priority-weighted-average)
+  print (list "Boat" who " has priority weighted average of" priority-weighted-average)
 end
 
 to-report boolean2int [x]
