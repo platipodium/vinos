@@ -45,8 +45,8 @@ to read-landings [port-type]
           set port-operation-costs sum landings-euro * operating-costs-of-boats
           set port-average-fishing-effort-in-days item 12 row
           set port-average-fishing-effort-in-hours item 13 row
-          set port-average-trip-length  port-average-fishing-effort-in-hours * 18 ; assumption: set average speed of a vessel to 18 km per h
-          set vessels-per-port item 11 row
+          set port-average-trip-length  port-average-fishing-effort-in-hours * 18 ; assumption: set average speed of a boat to 18 km per h
+          set boats-per-port item 11 row
           set size 4
           set label name
           set label-color black
