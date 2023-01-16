@@ -78,6 +78,7 @@ boats-own [
   fishing-speed            ; speed when fishing
   steaming-speed           ; speed when steaming
 
+  ; @todo make into a vector for the species
   solea-catch-kg          ; catch of solea in kg for a fishing trip
   solea-catch-euro        ; catch of solea in EUR 2015 for a fishing trip
   platessa-catch-kg       ; catch of platessa in kg for a fishing trip
@@ -437,6 +438,7 @@ to go-on-fishing-trip
   let new-catch n-values (number-of-species - 1) [i -> 0]
   let distance-to-alternative-patch 40 ;
 
+  ; Sascha suggests to use favorite-port instead of home-port in the next 10 lines
   let home-port one-of link-neighbors  ; home-port of boats
   let boat-plaice-box? false
 
@@ -463,6 +465,8 @@ to go-on-fishing-trip
   pen-up
   move-to home-port
   set distance-at-sea distance-at-sea + gis-distance s-patch
+  ; Suggestion to calculate distance-left based on "gis-distance min dist [ s-patch of landing-ports ]"
+  ; Carsten cautions that then boats might converge in the center (Cuxhaven) due to edge effect.
   set distance-left max  (list (distance-left - gis-distance s-patch) 0 )
   set time-at-sea time-at-sea + gis-distance s-patch / steaming-speed
   set time-left  max (list (time-left - gis-distance s-patch / steaming-speed) 0 )
