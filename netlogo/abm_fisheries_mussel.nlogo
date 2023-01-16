@@ -54,7 +54,7 @@ ports-own [
 
   port-average-fishing-effort-in-days
   port-average-fishing-effort-in-hours   ; t_intv_h
-  vessels-per-port         ; number of individual vessels per home port
+  boats-per-port         ; number of individual boats per home port
   weather                  ; status of the weather "bad" -> stay in harbor, "good" -> maybe leave harbor
   prob-bad-weather         ; probability that the weather is too bad to leave harbor
 ]
@@ -64,7 +64,7 @@ boats-own [
   fish-catch-boat              ; for each boat a vector of fish catches (per patch or tick)
   harvest-boat                 ; for each boat a vector of total harvest of the fish species
   catch-efficiency-boat        ; how much fish is effectively catched
-  boat-capacity                ; size of the vessel
+  boat-capacity                ; size of the boat
   boat-engine-power                 ; power of the engine
 
   revenue-boat             ; revenue for the fishing trip of the boat
@@ -90,7 +90,7 @@ boats-own [
 
   transportation-costs    ; costs for one km of the fishing trip, not known, work with a parameter
                           ; comment: mainly driven by oil price, approx 10-20 percent of the revenue for crangon, up to 30 percent for solea and platessa according to press relesease March 2022 going up to 50 percent
-  operating-costs         ; cost for opertating the vessel, not known, work with a parameter
+  operating-costs         ; cost for opertating the boat, not known, work with a parameter
                           ; comment: approximately 50 percent of the revenue
   wage                    ;  wage                               ; wage
   target-species          ; species primarily tragetted (solea, platessa, crangon)
@@ -116,7 +116,7 @@ globals [
   sum-ports-crangon-landings-kg      ; overall sum of landings of crangon per period in kg
   sum-ports-platessa-landings-kg     ; overall sum of landings of platessa per period in kg
   sum-ports-solea-landings-kg        ; overall sum of landings of solea per period in kg
-  sum-vessels                        ; overall vessels of all ports
+  sum-boats                        ; overall boats of all ports
 
   owf-dataset                        ; Off-shore wind farms
 
@@ -171,7 +171,7 @@ to go
 end
 
 to calc-initial-values
-  set sum-vessels sum [vessels-per-port] of ports
+  set sum-boats sum [boats-per-port] of ports
 end
 
 to-report sum-of-landings [species unit port-type]
@@ -236,13 +236,13 @@ to setup-boats
 
   ; faking a slider (normal distribution)
 
-  let fishing-speed-mean 3
-  let fishing-speed-sdev 0.5
+  let fishing-speed-mean 5.556 ; unit is km/h (= 3kn)
+  let fishing-speed-sdev 0.926 ; unit is km/h (= 0.5kn)
 
   set-default-shape ports "flag"
 
   ask home-ports [
-     hatch-boats vessels-per-port
+     hatch-boats boats-per-port
      [
       create-link-with myself
       move-to [start-patch] of one-of link-neighbors
@@ -256,7 +256,7 @@ to setup-boats
       set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set  wage  wage-min + random-float (wage-max - wage-min)                                       ; @todo default value
-      set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852
+      set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
       set  steaming-speed 19                                  ; range 10  to 12
       set  boat-engine-power 2000                                      ; kw
       set  boat-capacity 100000                                  ; kg of storage
@@ -268,8 +268,8 @@ to setup-boats
   ]
 
    ;ask home-ports [
-   ;  hatch-boats vessels-per-port [
-   ; create-boats sum-vessels [
+   ;  hatch-boats boats-per-port [
+   ; create-boats sum-boats [
    ;   set shape "flag"
    ;   set size 10
    ;   set home-port-boat (one-of home-ports)
@@ -388,7 +388,8 @@ to calc-fish
   ]
 end
 
-to-report catch-species [haul-length haul-width]
+to-report catch-species [haul-length]
+;to-report catch-species [haul-length haul-width]
   ; calculate the values for each patch and every target species
   ;(solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for fish-biomass
@@ -397,7 +398,7 @@ to-report catch-species [haul-length haul-width]
   let index-species position my-species species-names
 
   ; @todo replace with max
-  let new-catch n-values (number-of-gears) [ i -> ( item i boat-priorities ) * (item i catch-efficiency-boat) * (item index-species fish-biomass) * (haul-width * haul-length) * (boolean2int (item i fish-biomass > 0) )]
+  let new-catch n-values (number-of-gears) [ i -> ( item i boat-priorities ) * (item i catch-efficiency-boat) * (item index-species fish-biomass) * (([gear-width] of item i boat-gears) * haul-length) * (boolean2int (item i fish-biomass > 0) )] ; use 'gear-width' specific for each gear
 
   ;set fish-catch-boat n-values (number-of-gears) [i -> (item i fish-catch-boat + item i new-catch)]
 
@@ -496,7 +497,7 @@ to go-on-fishing-trip
     let t-patch patch-ahead (steaming-speed * time-step)
     if (t-patch = nobody or [not accessible?] of t-patch) [
       print "Cannot find navigable patches ahead, going home"
-      set need-to-go-to-port? true ; Is there the need to go to port? E.g. time is running out, catch is higher than capacity of the vessel
+      set need-to-go-to-port? true ; Is there the need to go to port? E.g. time is running out, catch is higher than capacity of the boat
     ]
     if (boat-plaice-box? and [plaice-box?] of t-patch)  [
       print "Cannot find patches outside plaice box ahead, going home"
@@ -508,7 +509,7 @@ to go-on-fishing-trip
       ; observing every time step a possible change in the patch the
       ; boat is on
       repeat (haul-time / time-step) [
-        set new-catch catch-species (time-step * fishing-speed) haul-width
+        set new-catch catch-species (time-step * fishing-speed) 
         ask patch-here [
           set fishing-effort-hours fishing-effort-hours + time-step
         ]
@@ -727,7 +728,7 @@ to calc-accessibility
   ;  ask patches with [distance myself < 5]  [set accessible? false]
   ;]
 
-  ; Vessels are not allowed within OWF areas
+  ; Boats are not allowed within OWF areas
   ask patches with [owf-fraction > 0.5] [set accessible? false]
 
   ; @todo add nature protection, mining etc areas.
@@ -1116,7 +1117,7 @@ PENS
 - Feedback on resource by fishery
 - Oil price effect on costs
 - Add sole and plaice
-- Add vessel trait distribution from Serra's data
+- Add boat trait distribution from Serra's data
 
 ## Data sources
 
