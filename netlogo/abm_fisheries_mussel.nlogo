@@ -16,6 +16,7 @@ __includes [
   "include/read-in-data.nls"
   "include/gear.nls"
   "include/plot.nls"
+  "include/utilities.nls"
 ]
 
 breed [boats boat]
