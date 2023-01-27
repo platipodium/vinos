@@ -1,0 +1,46 @@
+; SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+; SPDX-License-Identifier: Apache-2.0
+; Author: Carsten Lemmen <carsten.lemmen@hereon.de>
+;
+; This file contains utilities that are independent of the code around ("pure")
+; 
+
+; To get the typical five number summary (0%, 25%, 50%, 75%, 100% quartiles)
+to-report five-number-summary [numbers]
+  let sorted-numbers sort numbers
+  let median-number median sorted-numbers
+  report (list    min sorted-numbers
+                  median filter [ i -> i < median-number + 1] sorted-numbers 
+                  median-number 
+                  median filter [ i -> i > median-number - 1] sorted-numbers 
+                  max sorted-numbers
+    )
+end
+
+to-report __test_five-number-summary   
+  report five-number-summary range 101  = (list 0 25 50 75 100)
+end
+
+to-report gis-envelope-distance [agent-set]
+  report haversine-distance  (gis:envelope-of agent-set)
+end
+  
+to-report haversine-distance [coordinates]
+  ; NetLogo angles are in degree
+  let lon1 item 0 coordinates
+  let lon2 item 1 coordinates
+  let lat1 item 2 coordinates
+  let lat2 item 3 coordinates
+  
+  let earth-radius 6371
+  let dlat (lat2 - lat1)
+  let dlon (lon2 - lon1)
+  let a (sin (dlat / 2) ^ 2) + (cos lat1) * (cos lat2 ) * (sin (dlon / 2) ^ 2)
+  let c 2 * asin( sqrt(a) ) * pi / 180.0
+  report earth-radius * c 
+end
+
+to-report __test_haversine-distance
+  let d  haversine-distance (list 7.0 8.0 55.0 54.0)
+  report (precision d 1) =  128.6
+end
