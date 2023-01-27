@@ -1,8 +1,10 @@
-; SPDX-FileCopyrightText: 2022 Universität Hamburg (UHH)
-; SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (Hereon)
+; SPDX-FileCopyrightText: 2022-2023 Universität Hamburg (UHH)
+; SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
 ; SPDX-License-Identifier: Apache-2.0
-; Author: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
-; Author: Carsten Lemmen <carsten.lemmen@hereon.de>
+;
+; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
+; SPDX-FileContributor: Jieun Seo <jieun.seo@studium.uni-hamburg.de>
 
 extensions [
   gis
@@ -510,7 +512,7 @@ to go-on-fishing-trip
       ; observing every time step a possible change in the patch the
       ; boat is on
       repeat (haul-time / time-step) [
-        set new-catch catch-species (time-step * fishing-speed) 
+        set new-catch catch-species (time-step * fishing-speed)
         ask patch-here [
           set fishing-effort-hours fishing-effort-hours + time-step
         ]
@@ -648,8 +650,11 @@ to-report boolean2int [x]
   ifelse x [report 1][report 0]
 end
 
+; The geographic distance is approximated here by multiplying the NetLogo distance with
+; 4.5.  At the resolution of 0.05°, equatorial distance is 5.5 km, and 3.5 km at 50°N,
+; resulting in a mean distance of 4.5 km between patches
 to-report gis-distance [x]
-  report 4.5 * distance x ; one patch equals given 0.05° and therefore we need to muliply by 4.5 km  = 2.43 nm .... @todo needs to be adjusted
+  report 4.5 * distance x
 end
 
 ; This routine is to be called by CI
@@ -814,7 +819,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+5
 
 BUTTON
 93
