@@ -1548,12 +1548,6 @@ NetLogo 6.2.2
       <value value="0.198"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="unit-tests" repetitions="1" runMetricsEveryStep="true">
-    <setup>setup</setup>
-    <go>print __test_five-number-summary
-print __test_haversine-distance</go>
-    <timeLimit steps="1"/>
-  </experiment>
 </experiments>
 @#$#@#$#@
 @#$#@#$#@

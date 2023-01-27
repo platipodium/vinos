@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+SPDX-License-Identifier: Apache-2.0
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+-->
+<!DOCTYPE experiments SYSTEM "behaviorspace.dtd">
+<experiments>
+  <experiment name="unit-tests" repetitions="1" runMetricsEveryStep="true">
+    <setup>
+    print __test_five-number-summary
+    print __test_haversine-distance
+    </setup>
+    <go>
+    </go>
+    <timeLimit steps="1"/>
+  </experiment>
+</experiments>
