@@ -819,7 +819,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-5
+4
 
 BUTTON
 93
@@ -1547,6 +1547,12 @@ NetLogo 6.2.2
     <enumeratedValueSet variable="fraction-transportation-costs">
       <value value="0.198"/>
     </enumeratedValueSet>
+  </experiment>
+  <experiment name="unit-tests" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>print __test_five-number-summary
+print __test_haversine-distance</go>
+    <timeLimit steps="1"/>
   </experiment>
 </experiments>
 @#$#@#$#@
