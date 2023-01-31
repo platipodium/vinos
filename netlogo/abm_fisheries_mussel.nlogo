@@ -175,15 +175,15 @@ to setup
   calc-fish
   calc-accessibility
 
-  update
-  display
-
   setup-ports
   calc-initial-values
   setup-boats
 
-  ask ports [set hidden? true]
   setup-plots
+
+  update-view
+  update-drawings
+  display
 
   reset-ticks
 end
@@ -198,7 +198,6 @@ end
 
 to go
 
-  every 1 [update] ; update the view every 1 second in case it changed
   advance-calendar
   ask ports [ifelse ports? [set label ""][set label name]]
   ;ask boats [ move]
@@ -272,6 +271,7 @@ to setup-boats
       set label ""                                             ; ????
       set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
     ]
+    ask my-links [set hidden? true]
 
 
   ]
@@ -307,7 +307,7 @@ to setup-boats
 
 end
 
-to update
+to update-view
   if view = "crangon"  [ ask patches [ set pcolor scale-color orange crangon 0 1  ] ]
   if view = "solea"  [ ask patches [ set pcolor scale-color green solea 0 1  ] ]
   if view = "platessa"  [ ask patches [ set pcolor scale-color cyan platessa 0 1  ] ]
@@ -680,7 +680,7 @@ to create-effort-map
   let prefix  (word "results/effort-" substring date-and-time 0 12)
 
   set view "effort (h)"
-  update
+  update-view
   clear-drawing
   ask links [set hidden? true]
   ask boats [set hidden? true]
@@ -845,12 +845,12 @@ NIL
 0
 
 BUTTON
-119
+117
 202
-182
+172
 246
-NIL
 update
+update-view
 NIL
 1
 T
@@ -862,10 +862,10 @@ NIL
 1
 
 SWITCH
-20
-288
-123
-321
+1241
+119
+1344
+152
 ports?
 ports?
 1
@@ -873,10 +873,10 @@ ports?
 -1000
 
 SLIDER
-21
-368
-193
-401
+20
+344
+192
+377
 adaptation
 adaptation
 0
@@ -888,10 +888,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-21
-327
-193
-360
+20
+303
+192
+336
 memory-size
 memory-size
 0
@@ -1043,7 +1043,7 @@ BUTTON
 358
 613
 Effort
-;test-target\nclear-drawing\n\nask patches [\nset fishing-effort-hours 0\n]\nlet my-boats boats\nrepeat 16 [\nask my-boats [go-on-fishing-trip] \n]\nset view \"effort (h)\" \nupdate\n
+;test-target\nclear-drawing\n\nask patches [\nset fishing-effort-hours 0\n]\nlet my-boats boats\nrepeat 16 [\nask my-boats [go-on-fishing-trip] \n]\nset view \"effort (h)\" \nupdate-view\n
 NIL
 1
 T
@@ -1122,6 +1122,66 @@ true
 true
 "plot-setup-priorities" "plot-update-priorities"
 PENS
+
+TEXTBOX
+1244
+58
+1394
+114
+Select what to\nshow as \nbackground\ninformation
+11
+0.0
+1
+
+SWITCH
+1242
+159
+1344
+192
+owf?
+owf?
+0
+1
+-1000
+
+SWITCH
+1241
+201
+1344
+234
+box?
+box?
+1
+1
+-1000
+
+SWITCH
+1240
+242
+1343
+275
+sar?
+sar?
+1
+1
+-1000
+
+BUTTON
+1238
+280
+1343
+313
+update
+update-drawings
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 # TODO
