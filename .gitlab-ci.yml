@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (hereon)#
 # SPDX-License-Identifier: CC-BY-4.0
-# Author: Carsten Lemmen <carsten.lemmen@hereon.de>
+# SPDX-FieContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 stages:
   - lint
@@ -19,6 +19,19 @@ license-compliance:
     allow_failure: true
     needs: []
 
+unit-tests:
+  image: comses/netlogo # see https://github.com/comses/docker-netlogo
+  stage: run
+  script:
+    - echo "Trying to run in working directory and headless mode"
+    - echo "Java HOME is ${JAVA_HOME}"
+    - cd ${CI_PROJECT_DIR}/netlogo
+    - > 
+      bash /opt/netlogo/netlogo-headless.sh 
+      --model ./abm_fisheries_mussel.nlogo 
+      --setup-file ../behavior/unit-tests.xml
+      --experiment "unit-tests" --table -
+  
 create-map:
   image: comses/netlogo # see https://github.com/comses/docker-netlogo
   stage: run
@@ -28,7 +41,11 @@ create-map:
     - echo "Trying to run in working directory and headless mode"
     - echo "Java HOME is ${JAVA_HOME}"
     - cd ${CI_PROJECT_DIR}/netlogo
-    - bash /opt/netlogo/netlogo-headless.sh --model ./abm_fisheries_mussel.nlogo --experiment "effort-map" --table -
+    - > 
+      bash /opt/netlogo/netlogo-headless.sh 
+      --model ./abm_fisheries_mussel.nlogo 
+      --setup-file ../behavior/effort-map.xml
+      --experiment "effort-map" --table -
   
   # Preserve resulting files
   artifacts:
