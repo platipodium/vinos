@@ -1,11 +1,8 @@
 ; SPDX-FileCopyrightText: 2022 Universität Hamburg (UHH)
-; SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (hereon)
+; SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
 ; SPDX-License-Identifier: Apache-2.0
-; Author: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
-; Author: Carsten Lemmen <carsten.lemmen@hereon.de>
-
-; Plotting routines
-
+; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
+; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 to plot-setup-catch-by-species
   set-current-plot "catch-by-species"
@@ -107,3 +104,14 @@ to plot-update-priorities
     histogram [item i boat-priorities] of boats ;@to do problem wrong message recipient
   ]
 end
+
+to update-drawings
+  clear-drawing
+  ifelse ports? [ask ports [set hidden? false]][ask ports [set hidden? true]]
+  if owf? [ show-windfarms]
+  if sar? [ draw-background "SAR" ]
+  display
+end
+
+
+
