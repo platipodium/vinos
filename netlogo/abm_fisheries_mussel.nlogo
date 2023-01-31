@@ -26,7 +26,7 @@ breed [ports port]
 breed [actions action]
 
 actions-own [
-  target                      ; targetted patch id
+  target                      ; targeted patch id
   actions-target-species      ; primarily targetted species (solea, platessa, crangon)
   revenue                     ; revenue for the fishing trip of the boat
   costs                       ; costs for the fishing trip of the boat
@@ -152,13 +152,49 @@ patches-own [
   plaice-box?
 ]
 
+; ------------------------------------------------------------------------------------------
 ; The startup procedure is called when the model is opened by NetLogo.  This automates
 ; the execution of setup
 to startup
    setup
 end
 
+to setup
+  clear-all
 
+  setup-calendar
+  setup-globals
+  setup-gears
+
+  ;set harbor-stage (list "stay" "go")
+  ;set weather-stage (list "good" "bad")
+
+  setup-maps ; in "geodata.nls"
+
+  calc-pollution
+  calc-fish
+  calc-accessibility
+
+  update
+  display
+
+  setup-ports
+  calc-initial-values
+  setup-boats
+
+  ask ports [set hidden? true]
+  setup-plots
+
+  reset-ticks
+end
+
+to setup-globals
+  set min-fresh-catch 10
+  set species-names (list "solea" "crangon" "platessa" "other") ; order of the species in the excel file
+  set number-of-species length species-names
+  set navigable-depth 2
+  set view "bathymetry"
+end
 
 to go
 
@@ -186,37 +222,7 @@ to-report sum-of-landings [species unit port-type]
   ]
 end
 
-to setup
-  clear-all
-  reset-calendar
 
-  setup-gears
-  set min-fresh-catch 10
-  set species-names (list "solea" "crangon" "platessa" "other") ; order of the species in the excel file
-  set number-of-species length species-names
-  ;set harbor-stage (list "stay" "go")
-  ;set weather-stage (list "good" "bad")
-
-  import-asc
-
-  set navigable-depth 2
-  calc-pollution
-  calc-fish
-  calc-accessibility
-
-  set view "bathymetry"
-  update
-  display
-
-  setup-ports
-  calc-initial-values
-  setup-boats
-
-  ask ports [set hidden? true]
-  setup-plots
-
-  reset-ticks
-end
 
 ;---------------------------------
 

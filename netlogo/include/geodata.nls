@@ -4,7 +4,7 @@
 ; Author: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
 ; Author: Carsten Lemmen <carsten.lemmen@hereon.de>
 
-to import-asc
+to setup-maps
   
   no-display
 
