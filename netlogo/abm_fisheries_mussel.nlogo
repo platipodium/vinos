@@ -24,6 +24,7 @@ __includes [
 breed [boats boat]
 breed [ports port]
 breed [actions action]
+; the gears bread is defined in gears.nls
 
 actions-own [
   target                      ; targeted patch id
@@ -244,6 +245,7 @@ to setup-boats
 
   ; faking a slider (normal distribution)
 
+  ; @todo get th fishing speed from gear-speed
   let fishing-speed-mean 5.556 ; unit is km/h (= 3kn)
   let fishing-speed-sdev 0.926 ; unit is km/h (= 0.5kn)
 
@@ -254,12 +256,12 @@ to setup-boats
      [
       create-link-with myself
       move-to [start-patch] of one-of link-neighbors
-      set  fish-catch-boat         n-values number-of-gears [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
-      set  catch-efficiency-boat   n-values number-of-gears [?1 -> 0.25 ]
+      set  fish-catch-boat         n-values number-of-gears  [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
+      set  catch-efficiency-boat   n-values number-of-gears  [?1 -> 0.25 ]
       set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
       set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
       set  gain-boat               n-values number-of-gears  [?1 -> 0 ]    ; gain for the fishing trip of the boat
-      set  boat-delta-priorities     n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
+      set  boat-delta-priorities   n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
       set  boat-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
       set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
@@ -407,7 +409,9 @@ to-report catch-species [haul-length]
   let index-species position my-species species-names
 
   ; @todo replace with max
-  let new-catch n-values (number-of-gears) [ i -> ( item i boat-priorities ) * (item i catch-efficiency-boat) * (item index-species fish-biomass) * (([gear-width] of item i boat-gears) * haul-length) * (boolean2int (item i fish-biomass > 0) )] ; use 'gear-width' specific for each gear
+  let new-catch n-values (number-of-gears) [ i ->
+    (item i catch-efficiency-boat) * (item (position ([gear-species] of item i boat-gears) species-names) fish-biomass) * (([gear-width] of item i boat-gears) * haul-length) * (boolean2int (item 0 fish-biomass > 0) )
+  ] ; use 'gear-width' specific for each gear
 
   ;set fish-catch-boat n-values (number-of-gears) [i -> (item i fish-catch-boat + item i new-catch)]
 
