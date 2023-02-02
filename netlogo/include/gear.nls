@@ -27,10 +27,10 @@ to setup-gears
   ; On vessels <300 PS shrimp are typically caught with a 2x10m beam trawl
   ; they typically remain within 25 km of the coast
   create-gears 1 [
-    set gear-name "TBB20CSH"
+    set gear-name "TBB20CSH" ; careful, the number could be mesh size, not beam length
     set gear-species "crangon"
     set gear-width .020 ; width of beam in km
-    set gear-drag 13 ; some number ... need more realism and unit
+    set gear-drag 13 ; some number ... need more realism and unit .. maybe not relevant
     set gear-installation-cost 1000 ; EUR for changing to this gear
     set gear-purchase-cost 25000 ; 
     set gear-speed 9.26 ; 5 knots
@@ -90,6 +90,8 @@ to setup-gears
     set gear-purchase-cost 35000 ; EUR
     set gear-speed 9.26 ; 5 knots
   ]
+  
+; Add dredge for nephrops  
   
   set number-of-gears count gears
   set gear-names [gear-name] of gears

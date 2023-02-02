@@ -79,7 +79,7 @@ boats-own [
   boat-priorities            ; priority for the pathway
   priority-weighted-average  ; priority weighted average of gain
 
-  fishing-speed            ; speed when fishing
+  fishing-speed            ; speed when fishing (replaced by gear-speed later on)
   steaming-speed           ; speed when steaming
 
   ; @todo make into a vector for the species
@@ -268,9 +268,16 @@ to setup-boats
       set  wage  wage-min + random-float (wage-max - wage-min)                                       ; @todo default value
       set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
       set  steaming-speed 19                                  ; range 10  to 12
-      set  boat-engine-power 2000                                      ; kw
+      set  boat-engine-power 200                                      ; kw
       set  boat-capacity 100000                                  ; kg of storage
       set label ""                                             ; ????
+
+      ; Serra: About 160 boats of the entire fleet don't change at all, make them have available only 1 gear
+      ; there are smaller groups of boats that do different things.  Only for those allow to have multiple years available
+      ; there are some seasonal changes, but likley not at monthly or sub-monthly scale. Let's try 3 months
+      ; Also include every 3 months when gear change is deliberated the previous year's experience
+      ; Add location and fishing trip length in option pathways.
+
       set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
     ]
     ask my-links [set hidden? true]
