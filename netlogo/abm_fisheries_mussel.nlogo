@@ -138,7 +138,7 @@ to setup
 
   setup-ports
   calc-initial-values
-  setup-boats
+  setup-boats ; in "boat.nls"
 
   setup-plots
 
@@ -196,85 +196,6 @@ to setup-ports
 
 end
 
-to setup-boats
-
-  ;faking a slider (equal distribution)
-
-  let wage-min 100 ; value from Sascha
-  let wage-max 1000; value from Sascha
-
-  ; faking a slider (normal distribution)
-
-  ; @todo get th fishing speed from gear-speed
-  let fishing-speed-mean 5.556 ; unit is km/h (= 3kn)
-  let fishing-speed-sdev 0.926 ; unit is km/h (= 0.5kn)
-
-  set-default-shape ports "flag"
-
-  ask home-ports [
-     hatch-boats boats-per-port
-     [
-      create-link-with myself
-      move-to [start-patch] of one-of link-neighbors
-      set  fish-catch-boat         n-values number-of-gears  [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
-      set  catch-efficiency-boat   n-values number-of-gears  [?1 -> 0.25 ]
-      set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
-      set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
-      set  gain-boat               n-values number-of-gears  [?1 -> 0 ]    ; gain for the fishing trip of the boat
-      set  boat-delta-priorities   n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
-      set  boat-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
-      set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
-      set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
-      set  wage  wage-min + random-float (wage-max - wage-min)                                       ; @todo default value
-      set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
-      set  steaming-speed 19                                  ; range 10  to 12
-      set  boat-engine-power 200                                      ; kw
-      set  boat-capacity 100000                                  ; kg of storage
-      set label ""                                             ; ????
-
-      ; Serra: About 160 boats of the entire fleet don't change at all, make them have available only 1 gear
-      ; there are smaller groups of boats that do different things.  Only for those allow to have multiple years available
-      ; there are some seasonal changes, but likley not at monthly or sub-monthly scale. Let's try 3 months
-      ; Also include every 3 months when gear change is deliberated the previous year's experience
-      ; Add location and fishing trip length in option pathways.
-
-      set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
-    ]
-    ask my-links [set hidden? true]
-
-
-  ]
-
-   ;ask home-ports [
-   ;  hatch-boats boats-per-port [
-   ; create-boats sum-boats [
-   ;   set shape "flag"
-   ;   set size 10
-   ;   set home-port-boat (one-of home-ports)
-   ;   create-link-with home-port-boat
-  ;    move-to [start-patch] of home-port-boat
-    ;  set crangon-catch-kg 1 ; default value
-   ;   set transportation-costs [port-transportation-costs] of home-port-boat / [port-average-trip-length] of home-port-boat
-  ;    set operating-costs [port-operation-costs] of home-port-boat / 365
-   ;   ifelse ([port-transportation-costs] of home-port-boat + [port-operation-costs] of home-port-boat) != 0 [
-
-   ;     set catch-efficiency [total-landings-kg] of home-port-boat / ([port-transportation-costs] of home-port-boat + [port-operation-costs] of home-port-boat)
-    ;  ][
-   ;     set catch-efficiency [total-landings-kg] of home-port-boat / 1
-   ;   ]
-      ; create actions
-      ; assemble these actions in a list
-      ; save this as agent-set
-    ;  hatch-actions memory-size [
-
-    ;    create-link-with myself]
-    ;  set pathways link-neighborstime-at-sea < trip-length / 2
-
-    ;  set time-at-sea 0
-    ;]
- ;  ]
-
-end
 
 to update-view
   if view = "crangon"  [ ask patches [ set pcolor scale-color orange crangon 0 1  ] ]

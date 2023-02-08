@@ -10,6 +10,7 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
     <setup>
     print __test_five-number-summary
     print __test_haversine-distance
+    print __test_csv_property
     </setup>
     <go>
     </go>
