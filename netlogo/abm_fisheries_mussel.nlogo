@@ -19,12 +19,13 @@ __includes [
   "include/gear.nls"
   "include/plot.nls"
   "include/utilities.nls"
+  "include/boat.nls"
 ]
 
-breed [boats boat]
+; breed [gears gear] ; defined in gear.nls
+; breed [boats boat] ; defined in boat.nls
 breed [ports port]
 breed [actions action]
-; the gears bread is defined in gears.nls
 
 actions-own [
   target                      ; targeted patch id
@@ -63,47 +64,6 @@ ports-own [
   prob-bad-weather         ; probability that the weather is too bad to leave harbor
 ]
 
-boats-own [
-  my-id                        ; id of the boat
-  fish-catch-boat              ; for each boat a vector of fish catches (per patch or tick)
-  harvest-boat                 ; for each boat a vector of total harvest of the fish species
-  catch-efficiency-boat        ; how much fish is effectively catched
-  boat-capacity                ; size of the boat
-  boat-engine-power                 ; power of the engine
-
-  revenue-boat             ; revenue for the fishing trip of the boat
-  costs-boat               ; costs for the fishing trip of the boat
-  delta-gain-boat          ; change in gain
-  gain-boat                ; gain for the fishing trip of the boat
-  boat-delta-priorities      ; change in priority
-  boat-priorities            ; priority for the pathway
-  priority-weighted-average  ; priority weighted average of gain
-
-  fishing-speed            ; speed when fishing (replaced by gear-speed later on)
-  steaming-speed           ; speed when steaming
-
-  ; @todo make into a vector for the species
-  solea-catch-kg          ; catch of solea in kg for a fishing trip
-  solea-catch-euro        ; catch of solea in EUR 2015 for a fishing trip
-  platessa-catch-kg       ; catch of platessa in kg for a fishing trip
-  platessa-catch-euro     ; catch of platessa in EUR 2015 for a fishing trip
-  crangon-catch-kg        ; catch of crangon in kg for a fishing trip
-  crangon-catch-euro      ; catch of crangon in EUR 2015 for a fishing trip
-  other-catch-kg          ; other catch in kg for a fishing trip
-  other-catch-euro        ; other catch in EUR 2015 for a fishing trip
-
-  transportation-costs    ; costs for one km of the fishing trip, not known, work with a parameter
-                          ; comment: mainly driven by oil price, approx 10-20 percent of the revenue for crangon, up to 30 percent for solea and platessa according to press relesease March 2022 going up to 50 percent
-  operating-costs         ; cost for opertating the boat, not known, work with a parameter
-                          ; comment: approximately 50 percent of the revenue
-  wage                    ;  wage                               ; wage
-  target-species          ; species primarily tragetted (solea, platessa, crangon)
-  ;home-port-boat               ; Home Port (in the current state only German home ports are considered
-  ;favorite-landing-port-of-boat   ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
-  pathways                ; possible pathways which boats learn
-  boat-gears              ; set of available gears on this boat
-
-]
 
 globals [
   number-of-species                  ; number-of-species plus one for other
