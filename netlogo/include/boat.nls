@@ -57,6 +57,19 @@ boats-own [
   boat-max-distance
   boat-triplength
   
+  boat-time-at-sea
+  boat-distance-at-sea
+  
+  ; value encoding the state the boat is in during a fishing trip.
+  ; 0 in port not available, i.e. resting, refueling, grounded
+  ; 1 in port and available
+  ; 2 at start patch and ready to deploy gear
+  ; 3 at sea and able to go further out
+  ; 4 at sea, needing to go home
+  ; 5 at landing patch, ready to offload
+  boat-trip-phase 
+  
+  
 ]
 
 
@@ -110,8 +123,6 @@ to setup-boats
       ; Boat capacity is not relevant for shrimpers as freshness is key concern
       set  boat-capacity 100000                                  ; kg of storage
       
-      ;
-      ; set  boat-engine-power item boat-type engine-distribution            ; kW
       
       set  fish-catch-boat         n-values number-of-gears  [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
       set  catch-efficiency-boat   n-values number-of-gears  [?1 -> 0.25 ]
@@ -135,6 +146,7 @@ to setup-boats
 
       set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
           
+      set boat-trip-phase 1 ; in port and available
     ]
     ask my-links [set hidden? true]
   ]
@@ -143,12 +155,6 @@ to setup-boats
    ;ask home-ports [
    ;  hatch-boats boats-per-port [
    ; create-boats sum-boats [
-   ;   set shape "flag"
-   ;   set size 10
-   ;   set home-port-boat (one-of home-ports)
-   ;   create-link-with home-port-boat
-  ;    move-to [start-patch] of home-port-boat
-    ;  set crangon-catch-kg 1 ; default value
    ;   set transportation-costs [port-transportation-costs] of home-port-boat / [port-average-trip-length] of home-port-boat
   ;    set operating-costs [port-operation-costs] of home-port-boat / 365
    ;   ifelse ([port-transportation-costs] of home-port-boat + [port-operation-costs] of home-port-boat) != 0 [
