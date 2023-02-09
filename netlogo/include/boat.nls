@@ -55,6 +55,15 @@ boats-own [
 
 to setup-boats
 
+  ; read distribution of boat properties
+  let lpue-distribution csv-property "LPUE"
+  let power-distribution csv-property "VE_KW"
+  let distance-distribution csv-property "distance_to_port"
+  let triplength-distribution csv-property "triplength"
+  let length-distribution csv-property "VE_LEN"
+  let hours-distribution csv-property "total_fishinghours"
+  
+  
   ;faking a slider (equal distribution)
 
   let wage-min 100 ; value from Sascha
