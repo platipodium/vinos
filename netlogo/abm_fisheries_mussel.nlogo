@@ -336,7 +336,7 @@ to go-on-fishing-trip
   let time-left 72  ; a maximum of three days
   let haul-time 2   ; 2 hours for a typical haul time without change of direction
   let distance-at-sea 0 ; continuously record the distance travelled
-  let distance-left steaming-speed * time-left ; at typical speed of 19 km / h this is 1368 km
+  let distance-left boat-steaming-speed * time-left ; at typical speed of 19 km / h this is 1368 km
   let new-catch n-values (number-of-species - 1) [i -> 0]
   let distance-to-alternative-patch 40 ;
 
@@ -370,8 +370,8 @@ to go-on-fishing-trip
   ; Suggestion to calculate distance-left based on "gis-distance min dist [ s-patch of landing-ports ]"
   ; Carsten cautions that then boats might converge in the center (Cuxhaven) due to edge effect.
   set distance-left max  (list (distance-left - gis-distance s-patch) 0 )
-  set time-at-sea time-at-sea + gis-distance s-patch / steaming-speed
-  set time-left  max (list (time-left - gis-distance s-patch / steaming-speed) 0 )
+  set time-at-sea time-at-sea + gis-distance s-patch / boat-steaming-speed
+  set time-left  max (list (time-left - gis-distance s-patch / boat-steaming-speed) 0 )
   move-to s-patch
   pen-down
 
@@ -387,7 +387,7 @@ to go-on-fishing-trip
     while [not found?] [
       set heading random 360
       set counter counter + 1
-      let t-patch patch-ahead (steaming-speed * time-step)
+      let t-patch patch-ahead (boat-steaming-speed * time-step)
       if (t-patch != nobody) [
         if ([accessible?] of t-patch) [set found? true]
         if (boat-plaice-box? and [plaice-box?] of t-patch) [set found? false]
@@ -395,7 +395,7 @@ to go-on-fishing-trip
       if counter > 20 [set found? true]
     ]
 
-    let t-patch patch-ahead (steaming-speed * time-step)
+    let t-patch patch-ahead (boat-steaming-speed * time-step)
     if (t-patch = nobody or [not accessible?] of t-patch) [
       print "Cannot find navigable patches ahead, going home"
       set need-to-go-to-port? true ; Is there the need to go to port? E.g. time is running out, catch is higher than capacity of the boat
@@ -419,7 +419,7 @@ to go-on-fishing-trip
 
       ]
       set time-left max (list (time-left - haul-time) 0 )
-      set distance-left max (list (distance-left - steaming-speed * haul-time) 0 )
+      set distance-left max (list (distance-left - boat-steaming-speed * haul-time) 0 )
       set time-at-sea time-at-sea  + haul-time
       set distance-at-sea distance-at-sea + time-at-sea * fishing-speed
 
@@ -448,7 +448,7 @@ to go-on-fishing-trip
         print (list "Boat" who "went far enough, needs to go home to reach port")
         set need-to-go-to-port? true
       ]
-      if (time-left < gis-distance l-patch / steaming-speed) [
+      if (time-left < gis-distance l-patch / boat-steaming-speed) [
         print (list "Boat" who "is running out of time, needs to go home to reach port")
         set need-to-go-to-port? true
       ]
@@ -470,8 +470,8 @@ to go-on-fishing-trip
         move-to s-patch
         set distance-at-sea distance-at-sea + gis-distance s-patch
         set distance-left distance-left - gis-distance s-patch
-        set time-at-sea time-at-sea + gis-distance s-patch / steaming-speed
-        set time-left time-left - gis-distance s-patch / steaming-speed
+        set time-at-sea time-at-sea + gis-distance s-patch / boat-steaming-speed
+        set time-left time-left - gis-distance s-patch / boat-steaming-speed
       ]
 
       print (list "Boat" who heading time-at-sea time-left (gis-distance l-patch) distance-at-sea distance-left (item 1 fish-catch-boat) )
@@ -484,10 +484,10 @@ to go-on-fishing-trip
   pen-up
 
   set distance-at-sea distance-at-sea + gis-distance l-patch
-  set time-at-sea time-at-sea + gis-distance l-patch / steaming-speed
+  set time-at-sea time-at-sea + gis-distance l-patch / boat-steaming-speed
   move-to l-patch
   set distance-at-sea distance-at-sea + gis-distance home-port
-  set time-at-sea time-at-sea + gis-distance home-port / steaming-speed
+  set time-at-sea time-at-sea + gis-distance home-port / boat-steaming-speed
   move-to home-port
 
   ; @todo temporarily give this a price, needs to be a global property later
@@ -542,6 +542,24 @@ to go-on-fishing-trip
   print (list "Boat" who " has dpriorities of" boat-delta-priorities)
   print (list "Boat" who " has priorities of" boat-priorities)
   print (list "Boat" who " has priority weighted average of" priority-weighted-average)
+
+  ; Now we can make a decision, once enough experience is gained.  This could be a
+  ; seasonal decision. Something that changes strategy.
+  if (boat-type = 3 and month = 10 and day = 1) []
+  if (boat-type = 2) [
+   ; can change gear if opportune
+   ; change typical trip length (less flexible, rather they would change the frequency)
+   ; change typical trip frequency (from total_fishing_hours)
+  ]
+  if (boat-type = 4) [
+    ; change gear a lot according with trip length  and frequency
+  ]
+  ; LPUE landing-per-unit-effort (i.e per time) t/h efficient ones
+  ; know the area, this is also a fleet management harvest controle
+
+  ; Fishing hour range: Every fisher has a minimum/maximum of how much she
+  ; expects to be active. If reached, they rest, if not reached they might
+  ; work harder.
 end
 
 to-report boolean2int [x]
