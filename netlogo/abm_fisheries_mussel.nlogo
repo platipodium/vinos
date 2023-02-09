@@ -157,11 +157,11 @@ to setup-globals
   set view "bathymetry"
 end
 
-to go
 
+
+to go
   advance-calendar
   ask ports [ifelse ports? [set label ""][set label name]]
-  ;ask boats [ move]
   calc-fish
   let my-boats n-of 10 boats
   ask my-boats [go-on-fishing-trip]
@@ -242,17 +242,17 @@ end
 
 ; turtle procedure
 ;to move
-;  ifelse (time-at-sea > 300) [
+;  ifelse (boat-time-at-sea > 300) [
 ;    pen-up
 ;    move-to [landing-patch] of one-of link-neighbors
-;    set time-at-sea 0
+;    set boat-time-at-sea 0
 ;    pen-down
 ;  ] [
 ;   let target-patch one-of neighbors with [ depth > navigable-depth]
 ;    ifelse target-patch = nobody [ die ][ face target-patch]
 ;   ]
 ;
-;  set time-at-sea time-at-sea + 1
+;  set boat-time-at-sea boat-time-at-sea + 1
 ;  fd 1
 ;end
 
@@ -324,18 +324,53 @@ to-report should-go-fishing?
   ]
 end
 
+
+; This is a boat procedure initializing a new
+; fishing trip from the start patch of its associated
+; favorite port
+to leave-port
+  let home-port  one-of link-neighbors
+
+  ; Determine start end end patches of fishing activity.  This is usually the start/landing
+  ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
+  ; patch outside the plaice box.
+  let s-patch [start-patch] of home-port    ; starting patch of the boat
+  let l-patch [landing-patch] of home-port  ; landing patch of the boat
+
+  ifelse (boat-engine-power > 221 and item (index-max-one-of boat-priorities) species-names = "plaice") [
+    set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
+    set l-patch s-patch
+    print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
+  ][
+    print (list "Boat" who "leaves from" s-patch "with depth" ([depth] of s-patch))
+  ]
+
+  pen-up
+  move-to s-patch
+
+  set boat-distance-at-sea gis-distance home-port
+  set boat-time-at-sea boat-steaming-speed * boat-distance-at-sea
+  set boat-trip-phase 2 ; available at start patch
+end
+
 ; This is a boat procedure
 ; it describes a detailed single fishing trip starting and ending in the
-; port.  It is implemented first for crangon only but should be extensible
-; to other species.
+; port.
 to go-on-fishing-trip
 
+  leave-port
+
+  let s-patch patch-here
+  let l-patch patch-here
+
   let navigable-patches patches with [accessible?]
+  if (boat-engine-power > 221 and item (index-max-one-of boat-priorities) species-names = "plaice") [
+    set navigable-patches navigable-patches with [not plaice-box?]
+  ]
+
   let time-step 0.1 ; in hours  (let's say 6 min)
-  let time-at-sea 0 ; continuously record the time spent
-  let time-left 72  ; a maximum of three days
+  let time-left boat-triplength
   let haul-time 2   ; 2 hours for a typical haul time without change of direction
-  let distance-at-sea 0 ; continuously record the distance travelled
   let distance-left boat-steaming-speed * time-left ; at typical speed of 19 km / h this is 1368 km
   let new-catch n-values (number-of-species - 1) [i -> 0]
   let distance-to-alternative-patch 40 ;
@@ -344,20 +379,6 @@ to go-on-fishing-trip
   let home-port one-of link-neighbors  ; home-port of boats
   let boat-plaice-box? false
 
-  ; Determine start end end patches of fishing activity.  This is usually the start/landing
-  ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
-  ; patch outside the plaice box.
-  let s-patch [start-patch] of home-port    ; starting patch of the boat
-  let l-patch [landing-patch] of home-port  ; landing patch of the boat
-
-  ifelse (boat-engine-power > 300 and item (index-max-one-of boat-priorities) species-names = "plaice") [
-    set boat-plaice-box? true
-    set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
-    set l-patch s-patch
-    print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
-  ][
-    print (list "Boat" who "leaves from" s-patch "with depth" ([depth] of s-patch))
-  ]
 
   let need-to-go-to-port? false
 
@@ -366,11 +387,11 @@ to go-on-fishing-trip
   ; distance left
   pen-up
   move-to home-port
-  set distance-at-sea distance-at-sea + gis-distance s-patch
+  set boat-distance-at-sea boat-distance-at-sea + gis-distance s-patch
   ; Suggestion to calculate distance-left based on "gis-distance min dist [ s-patch of landing-ports ]"
   ; Carsten cautions that then boats might converge in the center (Cuxhaven) due to edge effect.
   set distance-left max  (list (distance-left - gis-distance s-patch) 0 )
-  set time-at-sea time-at-sea + gis-distance s-patch / boat-steaming-speed
+  set boat-time-at-sea boat-time-at-sea + gis-distance s-patch / boat-steaming-speed
   set time-left  max (list (time-left - gis-distance s-patch / boat-steaming-speed) 0 )
   move-to s-patch
   pen-down
@@ -420,8 +441,8 @@ to go-on-fishing-trip
       ]
       set time-left max (list (time-left - haul-time) 0 )
       set distance-left max (list (distance-left - boat-steaming-speed * haul-time) 0 )
-      set time-at-sea time-at-sea  + haul-time
-      set distance-at-sea distance-at-sea + time-at-sea * fishing-speed
+      set boat-time-at-sea boat-time-at-sea  + haul-time
+      set boat-distance-at-sea boat-distance-at-sea + boat-time-at-sea * fishing-speed
 
       ; If the catch is not worth keeping it, discard it entirely and
       ; reset the time left. Fishers don't want to keep the bad haul, as this
@@ -468,13 +489,13 @@ to go-on-fishing-trip
           set need-to-go-to-port? true
         ]
         move-to s-patch
-        set distance-at-sea distance-at-sea + gis-distance s-patch
+        set boat-distance-at-sea boat-distance-at-sea + gis-distance s-patch
         set distance-left distance-left - gis-distance s-patch
-        set time-at-sea time-at-sea + gis-distance s-patch / boat-steaming-speed
+        set boat-time-at-sea boat-time-at-sea + gis-distance s-patch / boat-steaming-speed
         set time-left time-left - gis-distance s-patch / boat-steaming-speed
       ]
 
-      print (list "Boat" who heading time-at-sea time-left (gis-distance l-patch) distance-at-sea distance-left (item 1 fish-catch-boat) )
+      print (list "Boat" who heading boat-time-at-sea time-left (gis-distance l-patch) boat-distance-at-sea distance-left (item 1 fish-catch-boat) )
       ;print (list who ([depth] of patch-here))
     ]
   ]
@@ -483,11 +504,11 @@ to go-on-fishing-trip
 
   pen-up
 
-  set distance-at-sea distance-at-sea + gis-distance l-patch
-  set time-at-sea time-at-sea + gis-distance l-patch / boat-steaming-speed
+  set boat-distance-at-sea boat-distance-at-sea + gis-distance l-patch
+  set boat-time-at-sea boat-time-at-sea + gis-distance l-patch / boat-steaming-speed
   move-to l-patch
-  set distance-at-sea distance-at-sea + gis-distance home-port
-  set time-at-sea time-at-sea + gis-distance home-port / boat-steaming-speed
+  set boat-distance-at-sea boat-distance-at-sea + gis-distance home-port
+  set boat-time-at-sea boat-time-at-sea + gis-distance home-port / boat-steaming-speed
   move-to home-port
 
   ; @todo temporarily give this a price, needs to be a global property later
@@ -498,8 +519,8 @@ to go-on-fishing-trip
 
   ; for all gears, we calculate the value
 
-  set transportation-costs fuel-efficiency * oil-price * distance-at-sea
-  set operating-costs wage * time-at-sea
+  set transportation-costs fuel-efficiency * oil-price * boat-distance-at-sea
+  set operating-costs wage * boat-time-at-sea
 
   if (sum fish-catch-boat > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
     (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
