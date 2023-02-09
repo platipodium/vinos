@@ -1,10 +1,12 @@
 ; SPDX-FileCopyrightText: 2022-2023 Universität Hamburg (UHH)
 ; SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+; SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 ; SPDX-License-Identifier: Apache-2.0
 ;
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 ; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
 ; SPDX-FileContributor: Jieun Seo <jieun.seo@studium.uni-hamburg.de>
+; SPDX-FileContributor: Serra Örey <soerey@hs-bremerhaven.de>
 
 extensions [csv]
 
