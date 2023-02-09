@@ -27,7 +27,7 @@ boats-own [
   priority-weighted-average  ; priority weighted average of gain
 
   fishing-speed            ; speed when fishing (replaced by gear-speed later on)
-  steaming-speed           ; speed when steaming
+  boat-steaming-speed           ; speed when steaming
 
   ; @todo make into a vector for the species
   solea-catch-kg          ; catch of solea in kg for a fishing trip
@@ -49,7 +49,12 @@ boats-own [
   ;favorite-landing-port-of-boat   ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
   pathways                ; possible pathways which boats learn
   boat-gears              ; set of available gears on this boat
-
+  boat-type               ; Number 1-4 of the named cluster
+  boat-length             ; length of boat in m, related (yet unknown) to capacity.
+  boat-engine
+  boat-max-distance
+  boat-triplength
+  
 ]
 
 
@@ -57,31 +62,55 @@ to setup-boats
 
   ; read distribution of boat properties
   let lpue-distribution csv-property "LPUE"
-  let power-distribution csv-property "VE_KW"
+  let engine-distribution csv-property "VE_KW"
   let distance-distribution csv-property "distance_to_port"
   let triplength-distribution csv-property "triplength"
   let length-distribution csv-property "VE_LEN"
   let hours-distribution csv-property "total_fishinghours"
   
-  
-  ;faking a slider (equal distribution)
+    ;faking a slider (equal distribution)
 
   let wage-min 100 ; value from Sascha
   let wage-max 1000; value from Sascha
-
-  ; faking a slider (normal distribution)
-
-  ; @todo get th fishing speed from gear-speed
+    ; @todo get th fishing speed from gear-speed
   let fishing-speed-mean 5.556 ; unit is km/h (= 3kn)
   let fishing-speed-sdev 0.926 ; unit is km/h (= 0.5kn)
 
-  set-default-shape ports "flag"
 
+  ; @todo recreate the ports with new information from Serra 
+  ; on the distribution of the 4 clusters in each port.
+  
+  ; @todo introduce quotas (=> Serra, asks Jonas)
   ask home-ports [
-     hatch-boats boats-per-port
-     [
+    hatch-boats boats-per-port [
       create-link-with myself
       move-to [start-patch] of one-of link-neighbors
+
+      ; The 1-based boat types are
+      ; 3: "typical" 1: "longer typical" 2: "flexible" 4: "not shrimper"
+      set boat-type random 4 ; @todo update with new info once we have it
+      
+      ; Create a boat with Gaussian distribution around mean with stdev
+      set boat-length value-from-distribution butfirst butfirst item boat-type length-distribution
+      
+      ; The engine is relevant for plaice box (only for cluster 4).  It may also 
+      ; be relevant for estimating the steaming speed, as long as there is no 
+      ; independent data. 
+      set boat-engine value-from-distribution butfirst butfirst item boat-type engine-distribution      
+      set boat-steaming-speed 1.852 * ( 6 + random-float 7 )   ; range 6 to 12 kn, i.e. 11 to 20 km/h 
+      
+      ; boat-max-distance and boat-triplength are adaptable, but
+      ; rather the fishers prefer boat-tripfrequency by budgeting
+      ; against their boat-total-fishing-hours
+      set boat-max-distance value-from-distribution butfirst butfirst item boat-type distance-distribution
+      set boat-triplength value-from-distribution butfirst butfirst item boat-type triplength-distribution
+      
+      ; Boat capacity is not relevant for shrimpers as freshness is key concern
+      set  boat-capacity 100000                                  ; kg of storage
+      
+      ;
+      ; set  boat-engine-power item boat-type engine-distribution            ; kW
+      
       set  fish-catch-boat         n-values number-of-gears  [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
       set  catch-efficiency-boat   n-values number-of-gears  [?1 -> 0.25 ]
       set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
@@ -91,11 +120,9 @@ to setup-boats
       set  boat-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
       set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
-      set  wage  wage-min + random-float (wage-max - wage-min)                                       ; @todo default value
+      set  wage wage-min + random-float (wage-max - wage-min)                                       ; @todo default value
       set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
-      set  steaming-speed 19                                  ; range 10  to 12
-      set  boat-engine-power 200                                      ; kw
-      set  boat-capacity 100000                                  ; kg of storage
+      set  boat-steaming-speed 19                                  ; range 10  to 12
       set label ""                                             ; ????
 
       ; Serra: About 160 boats of the entire fleet don't change at all, make them have available only 1 gear
@@ -105,11 +132,11 @@ to setup-boats
       ; Add location and fishing trip length in option pathways.
 
       set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
+          
     ]
     ask my-links [set hidden? true]
-
-
   ]
+  
 
    ;ask home-ports [
    ;  hatch-boats boats-per-port [
@@ -151,3 +178,9 @@ to-report __test_csv_property
   let lpue csv-property "LPUE"
   report lpue = [[1 41.33597392121994 44.29353998676394 12.592817787094033 11.456572055826198 96.83554521537783] [2 44.896109846997646 44.93153848086322 10.283125939897474 27.14061269693432 63.39053728677305] [3 52.3697708750142 54.51564668646204 15.098579547056138 27.91232373317848 111.57142350676918] [4 3.845738658502041 13.822901977235906 18.237950929313804 0.9253936126421393 60.43421042459698]]
 end
+
+
+
+
+
+

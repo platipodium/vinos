@@ -44,3 +44,29 @@ to-report __test_haversine-distance
   let d  haversine-distance (list 7.0 8.0 55.0 54.0)
   report (precision d 1) =  128.6
 end
+
+; Given a distribution mean stddev min max, draw a value from this
+; by assuming normal mean+/-stdev distribution but within the 
+; limits given by min/max
+to-report value-from-distribution [x]
+  
+  if length x != 4 [
+    user-message (word "Error: There are " length x " items in list " x ". Need exactly 4")
+    report 0
+  ]
+  
+  let value random-normal (item 0 x) (item 1 x)
+  ifelse ( value >= (item 2 x) ) and ( value <= (item 3 x) ) [
+    report value
+  ][
+    report value-from-distribution x
+  ]
+end
+
+to-report __test-value-from-distribution  
+  let distribution (list 10 5 8 12)
+  let value value-from-distribution distribution 
+  ifelse ( value < item 2 distribution or value > item 3 distribution) [
+    report false ][ report true
+  ]
+end
