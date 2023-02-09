@@ -28,7 +28,7 @@ unit-tests:
     - > 
       bash /opt/netlogo/netlogo-headless.sh 
       --model ./abm_fisheries_mussel.nlogo 
-      --setup-file ../behavior/unit-tests.xml
+      --setup-file ./behavior/unit-tests.xml
       --experiment "unit-tests" --table -
   
 create-map:
@@ -43,7 +43,7 @@ create-map:
     - > 
       bash /opt/netlogo/netlogo-headless.sh 
       --model ./abm_fisheries_mussel.nlogo 
-      --setup-file ../behavior/effort-map.xml
+      --setup-file ./behavior/effort-map.xml
       --experiment "effort-map" --table -
   
   # Preserve resulting files
