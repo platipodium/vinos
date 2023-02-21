@@ -200,7 +200,8 @@ to update-view
   let n 9
   if view = "crangon"  [
     let qv quantile-thresholds [crangon] of patches with [crangon > 0] n
-    ask patches with [crangon > 0][
+    ask patches with [crangon < 0] [set pcolor black]
+    ask patches with [crangon >= 0][
       carefully [
       set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list crangon)) 0 1
     ][]
@@ -208,6 +209,7 @@ to update-view
 
   if view = "solea"  [
     let qv quantile-thresholds [solea] of patches with [solea > 0] n
+    ask patches with [solea < 0] [set pcolor black]
     ask patches with [solea > 0][
       carefully [
       set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list solea)) 0 1
@@ -216,6 +218,7 @@ to update-view
 
   if view = "platessa"  [
     let qv quantile-thresholds [platessa] of patches with [platessa > 0] n
+    ask patches with [solea < 0] [set pcolor black]
     ask patches with [platessa > 0][
       carefully [
       set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list platessa)) 0 1
@@ -224,7 +227,8 @@ to update-view
 
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   if view = "bathymetry" [ask patches [set pcolor scale-color blue depth 80 0 ]]
-  if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours 50 0 ]]
+  set n max [ fishing-effort-hours ] of patches
+  if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours n 0 ]]
   if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
   if view = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
   if view = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
@@ -779,7 +783,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-1
+0
 
 BUTTON
 93
