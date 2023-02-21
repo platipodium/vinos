@@ -196,6 +196,10 @@ to setup-ports
 end
 
 
+to-report viewed
+  report view
+end
+
 to update-view
   let n 9
   if view = "crangon"  [
@@ -1140,6 +1144,17 @@ NIL
 NIL
 NIL
 1
+
+MONITOR
+271
+71
+379
+116
+NIL
+viewed
+17
+1
+11
 
 @#$#@#$#@
 # TODO
