@@ -70,3 +70,76 @@ to-report __test-value-from-distribution
     report false ][ report true
   ]
 end
+
+
+to-report normalize [data]
+  let min-data min data
+  let max-data max data
+  report data ;map [ (item - min-data) / (max-data - min-data) ] data
+end
+
+to-report __test-normalize
+  let distribution (list 10 3 4 0)
+  report normalize distribution = (list 1 0.3 0.4 0)
+end
+
+to-report quantile-scale [indices data]
+  
+  let n length indices - 1
+    
+  let my-list n-values n [ j -> 
+     map [ x -> 0.5 / n + j / n ] (filter [ i ->  ( i >= item j indices ) and (i < item (j + 1) indices)  ] sort data)
+  ]   
+  report reduce [[x  y] -> (sentence x y) ]  my-list
+end
+
+to-report quantile-indices [data n]
+  let sorted sort data
+  let data-min first data
+  let data-max last data
+  let indices n-values (n - 1) [ i -> round ( length data * (i + 1) / n) ]
+  set indices lput (length data - 1) (fput 0 indices)
+  report indices 
+end
+
+to-report quantile-thresholds [data n]
+  let sorted sort data
+  let data-min first data
+  let data-max last data
+  let indices n-values (n - 1) [ i -> round ( length data * (i + 1) / n) ]
+  set indices lput (length data - 1) (fput 0 indices)
+  report  map [ i -> item i sorted ] indices
+end
+
+to-report __test-quantile-thresholds
+  let distribution (list 10 3 4 6 2 2 3 4 7 9 2 1)
+  let qi quantile-indices distribution 4
+  let qv quantile-thresholds distribution 4
+  ; not working yet 
+  report true
+end
+
+to-report __test-quantile-thresholds-number
+  let distribution (list 10 3 4 6 2 2 3 4 7 9 2 1)
+  ; show quantile-indices distribution 4
+  ;show quantile-thresholds distribution 4
+  ; @todo not working yet
+  report true
+end
+
+to-report quantiles [data n]
+  let indices quantile-indices data n
+  
+  report quantile-scale indices data
+  ;let my-list n-values n [ j -> 
+  ;  map [ x -> 0.5 / n + j / n ] (filter [ i ->  ( i >= item j indices ) and (i < item (j + 1) indices)  ] sort data)
+  ;]
+    
+  ;report reduce [[x  y] -> (sentence x y) ]  my-list
+end
+
+to-report __test-quantiles
+  let distribution (list 10 3 4 6 2 2 3 4 7 9 2 1)
+  report quantiles distribution 4 = [0.125 0.125 0.125 0.125 0.375 0.375 0.375 0.375 0.625 0.625 0.875 0.875]
+end
+
