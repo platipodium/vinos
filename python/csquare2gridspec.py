@@ -83,7 +83,13 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
     df["ilon"] = np.round((df["lon"] - res/2 - ll_lon) / res).astype(int)
     df["ilat"] = np.round((df["lat"] - res/2 - ll_lat) / res).astype(int)
    
-    metiers = df["benthisMet"].unique()
+    if "metier" in str(filename):
+        metiers = df["benthisMet"].unique()
+    elif "fishing" in str(filename):
+        metiers = df["fishingCategory"].unique()
+    else:
+        metiers=["all"]
+
     years = df["Year"].unique()
 
     year = nc.createVariable('time','f8',('time'))
@@ -99,7 +105,13 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
           var.coordinates='lon lat'
           var.units='km km-1 a-1'
 
-        mdf = df[df["benthisMet"] == metier]
+        if "fishing" in str(filename):
+            mdf = df[df["fishingCategory"] == metier]
+        elif "metier" in str(filename):
+            mdf = df[df["benthisMet"] == metier]
+        else:
+            mdf = df
+
         if len(mdf) < 1: continue
         print(f"Metier {metier} with {len(mdf)} data points")
 
@@ -127,8 +139,17 @@ def main():
     else:
        filename = pathlib.Path(sys.argv[1])
 
-    df = pd.read_csv(filename, usecols = {'Year', 'lat', 'lon', 'benthisMet', 
-       'sar', 'subsar',})   
+    if 'metiers' in str(filename):
+        usecols = {'Year', 'lat', 'lon', 'benthisMet', 'sar', 'subsar',}
+    elif 'total' in str(filename):
+        usecols = {'Year', 'lat', 'lon', 'sar', 'subsar',}
+    elif 'fishing' in str(filename):
+        usecols = {'Year', 'lat', 'lon', 'fishingCategory', 'sar', 'subsar',}
+    else:
+        usecols = {}
+
+
+    df = pd.read_csv(filename, usecols = usecols)   
     create_gridspec(df, filename)
 
 if __name__ == "__main__":
