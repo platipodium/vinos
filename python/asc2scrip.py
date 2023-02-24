@@ -3,10 +3,10 @@
 # This script creates from an ESRII ASC raster data file
 # a SCRIP compliant NetCDF file.
 #
-# @copyright (C) 2021-2023 Helmholtz-Zentrum hereon GmbH
-# @copyright (C) 2014-2021 Helmholtz-Zentrum Geesthacht
-# @author Carsten Lemmen
-#
+SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+SPDX-FileCopyrightText: 2014-2021 Helmholtz-Zentrum Geesthacht
+SPDX-License-Identifier: Apache-2.0
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 """
 
 import netCDF4
