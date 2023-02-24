@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 """
 This script creates from a C-Square point data file
-a GRIDSPEC compliant NetCDF file.
+an ESRII ASCII (.asc) data file.
 
 SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
 SPDX-License-Identifier: Apache-2.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 """
 
-import netCDF4
 import sys
 import numpy as np
 import time
 import pandas as pd
 import pathlib
+import csv
 
-def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
+def create_asc(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
 
     res = 0.05
     fill_value = -9999.0
@@ -36,48 +36,21 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
     nlon = int(round((ur_lon - ll_lon) / res)) 
     nlat = int(round((ur_lat - ll_lat) / res))   
 
-    filename  =  pathlib.Path(str(filename).replace(".csv", "_gridspec.nc"))
+    header = {'NCOLS': nlon, 'NROWS': nlat, 'XLLCORNER': ll_lon, 'YLLCORNER': ll_lat, 
+              'CELLSIZE': res, 'NODATA_VALUE': fill_value}
 
-    nc=netCDF4.Dataset(filename,'w',format='NETCDF3_CLASSIC')
+    basename  =  pathlib.Path(str(filename).replace(".csv", ".asc"))
 
-    nc.createDimension('time',0)
-    nc.createDimension('bound',2)
-    nc.createDimension('lon',nlon)
-    nc.createDimension('lat',nlat)
-
-    lon = nc.createVariable('lon','f8',('lon'))
-    lon.bounds='lon_bnds'
-    lon.units='degree_east'
-    lon.long_name='longitude'
-    lon.standard_name='longitude'
-
-    lon_bnds = nc.createVariable('lon_bnds','f8',('lon','bound'))
-
-    lat = nc.createVariable('lat','f8',('lat'))
-    lat.bounds='lat_bnds'
-    lat.units='degree_north'
-    lat.long_name='latitude'
-    lat.standard_name='latitude'
-
-    lat_bnds = nc.createVariable('lat_bnds','f8',('lat','bound'))
-
-    # Meta data
-    nc.history = "Created " + time.ctime(time.time()) + " by " + sys.argv[0] #+ " from " + sys.argv[1]
-    nc.creator = "Carsten Lemmen <carsten.lemmen@hereon.de>"
-    nc.license = "Creative Commons Attribution Share-Alike (CC-BY-SA 4.0)"
-    nc.copyright = "Helmholtz-Zentrum hereon GmBH"
-    nc.Conventions = "CF-1.7"
-
-    ilon=np.array(range(0,nlon))
-    jlat=np.array(range(0,nlat))
-
-    lon[:]=ll_lon+(ilon+0.5)*res
-    lon_bnds[:,0]=lon[:]-0.5*res
-    lon_bnds[:,1]=lon[:]+0.5*res
- 
-    lat[:]=ll_lat+(jlat+0.5)*res
-    lat_bnds[:,0]=lat[:]-0.5*res
-    lat_bnds[:,1]=lat[:]+0.5*res
+    license = {'Original file': str(filename), 
+              'History': f'Created {time.ctime(time.time())}  by {sys.argv[0]}',
+              'SPDX-FileContributor': 'Carsten Lemmen <carsten.lemmen@hereon.de',
+              'SPDX-FileCopyrightText': '2023 Helmholtz-Zentrum hereon GmbH (Hereon)',
+              'SPDX-FileCopyrightText': '2021-203 International Council for the Exploration of the Seas (ICES)',
+              'SPDX-License-Identifier': 'CC-by-4.0',
+              'Units': 'km km-1 a-1',
+              'Institution-ID':  'https://ror.org/03qjp1d79', 
+              'Institution-ID':  'https://ror.org/03hg53255',
+            }
 
     # define the index
     df["ilon"] = np.round((df["lon"] - res/2 - ll_lon) / res).astype(int)
@@ -85,27 +58,18 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
    
     if "metier" in str(filename):
         metiers = df["benthisMet"].unique()
-    elif "fishing" in str(filename):
+    elif "fishing_category" in str(filename):
         metiers = df["fishingCategory"].unique()
     else:
         metiers=["all"]
 
     years = df["Year"].unique()
 
-    year = nc.createVariable('time','f8',('time'))
-    year.units=f'year CE'
-    year.standard_name='year'
-    year[:] = years
-
     for i, metier in enumerate(metiers):
 
-        for j, loc in enumerate(["sar", "subsar"]):
+        license["Metier"] = metier
 
-          var = nc.createVariable(metier.lower() + "_" + loc,'f4',('time','lat','lon'), fill_value=fill_value)
-          var.coordinates='lon lat'
-          var.units='km km-1 a-1'
-
-        if "fishing" in str(filename):
+        if "fishing_category" in str(filename):
             mdf = df[df["fishingCategory"] == metier]
         elif "metier" in str(filename):
             mdf = df[df["benthisMet"] == metier]
@@ -118,19 +82,27 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
         for y, year in enumerate(years):
             tdf = mdf[mdf["Year"] == year]
             if len(tdf) < 1: continue
+
+            license["Year"] = year
             
             print(f"... in year {year} with {len(tdf)} data points")
 
             for j, loc in enumerate(["sar", "subsar"]):
+
+                license["Location"] = loc
+
                 gvar = np.zeros((nlat, nlon)) + fill_value
                 for i in tdf.index:
                     gvar[tdf["ilat"][i],tdf["ilon"][i]] = tdf[loc][i]
-                    #print(gvar[tdf["ilat"][i],tdf["ilon"][i]])
        
-                var = nc.variables.get(f'{metier.lower()}_{loc}')
-                var[y,:,:] = gvar
-
-    nc.close()
+                filename =  pathlib.Path(str(basename).replace(".asc", f'_{metier.upper()}_{loc}_{year}.asc'))
+                with open(filename, 'w') as fid: 
+                    [fid.writelines(f'{key}\t{str(value)}\n') for key,value in header.items()]
+                    np.savetxt(fid, gvar, delimiter='\t')
+                filename =  pathlib.Path(str(basename).replace(".asc", ".asc.license"))
+                with open(filename, 'w') as fid: 
+                    [fid.writelines(f'{key}\t{str(value)}\n') for key,value in license.items()]
+                
 
 def main():
     if len(sys.argv) < 2: 
@@ -143,14 +115,14 @@ def main():
         usecols = {'Year', 'lat', 'lon', 'benthisMet', 'sar', 'subsar',}
     elif 'total' in str(filename):
         usecols = {'Year', 'lat', 'lon', 'sar', 'subsar',}
-    elif 'fishing' in str(filename):
+    elif 'fishing_category' in str(filename):
         usecols = {'Year', 'lat', 'lon', 'fishingCategory', 'sar', 'subsar',}
     else:
         usecols = {}
 
 
     df = pd.read_csv(filename, usecols = usecols)   
-    create_gridspec(df, filename)
+    create_asc(df, filename)
 
 if __name__ == "__main__":
     main()

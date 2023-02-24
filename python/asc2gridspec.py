@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-# This script creates from an ESRII ASC raster data file
-# a GRIDSPEC compliant NetCDF file.
-#
-# @copyright (C) 2021-2023 Helmholtz-Zentrum hereon GmbH
-# @copyright (C) 2014-2021 Helmholtz-Zentrum Geesthacht
-# @author Carsten Lemmen
-#
+This script creates from an ESRII ASC raster data file
+a GRIDSPEC compliant NetCDF file.
+
+SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+SPDX-FileCopyrightText: 2014-2021 Helmholtz-Zentrum Geesthacht
+SPDX-License-Identifier: Apache-2.0
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 """
 
 import netCDF4
@@ -48,12 +48,13 @@ def create_gridspec(header, data):
     lat_bnds = nc.createVariable('lat_bnds','f8',('lat','bound'))
 
     # Meta data
+    nc.Conventions = "CF-1.8"
     nc.history = "Created " + time.ctime(time.time()) + " by " + sys.argv[0] + " from " + sys.argv[1]
     nc.creator = "Carsten Lemmen <carsten.lemmen@hereon.de>"
-    nc.license = "Creative Commons Attribution Share-Alike (CC-BY-SA 4.0)"
-    nc.copyright = "Helmholtz-Zentrum hereon GmBH"
-    nc.Conventions = "CF-1.7"
-
+    nc.license = "Creative Commons Attribution (CC-BY 4.0)"
+    nc.copyright = '2023 Helmholtz-Zentrum hereon GmbH, 2021-2023 International Council for the Exploration of the Seas (ICES)'
+    nc.institution_id = 'https://ror.org/03qjp1d79, https://ror.org/03hg53255',
+  
     ilon=np.array(range(0,nlon))
     jlat=np.array(range(0,nlat))
 
