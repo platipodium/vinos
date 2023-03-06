@@ -27,6 +27,7 @@ __includes [
 ; breed [boats boat] ; defined in boat.nls
 breed [ports port]
 breed [actions action]
+breed [legends legend] ; used for defining the color bar
 
 actions-own [
   target                      ; targeted patch id
@@ -91,6 +92,9 @@ globals [
 
   home-ports                 ; agentset of breed ports
   favorite-landing-ports     ; agentset of breed ports
+
+  view-legend-n
+  view-legend-thresholds
 ]
 
 patches-own [
@@ -143,6 +147,7 @@ to setup
 
   setup-plots
 
+  set view-legend-n 9
   update-view
   update-drawings
   display
@@ -202,14 +207,16 @@ to-report viewed
 end
 
 to update-view
-  let n 9
+  let n view-legend-n
   if view = "crangon"  [
     let qv quantile-thresholds [crangon] of patches with [crangon > 0] n
+    set view-legend-thresholds qv
     ask patches with [crangon < 0] [set pcolor black]
     ask patches with [crangon >= 0][
       carefully [
       set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list crangon)) 0 1
     ][]
+
   ]]
 
   if view = "solea"  [
@@ -237,6 +244,30 @@ to update-view
   if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
   if view = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
   if view = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
+
+
+  ask patches with [pxcor >= min-pxcor + 2 and pxcor <= min-pxcor + 20
+       and pycor > max-pycor - 22 - 3 * view-legend-n and pycor < max-pycor - 20][set pcolor grey]
+    ;and pycor < max-pycor - 5][set pcolor white]
+
+  let view-legend-colors palette:scheme-colors "Sequential" "Reds" view-legend-n
+
+  if any? legends [ask legends [die]]
+  foreach range view-legend-n [ i ->
+    create-legends 1 [
+         set shape "square"
+         set size 3
+         setxy min-pxcor + 4  max-pycor - 20 - 3 * view-legend-n + 1  + 3 * i
+         set color item i view-legend-colors
+    ]
+    create-legends 1 [
+         set shape "square"
+         set size 0.1
+         setxy min-pxcor + 4 + 13 max-pycor - 20 - 3 * view-legend-n + 1 + 3 * i - 1
+         set label-color item i view-legend-colors
+         set label formatted-number (item i view-legend-thresholds) 5
+    ]
+  ]
 end
 
 
@@ -826,7 +857,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+0
 
 BUTTON
 93
