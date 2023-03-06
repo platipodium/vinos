@@ -476,8 +476,8 @@ to go-on-fishing-trip
       set time-left max (list (time-left - haul-time) 0 )
       set distance-left max (list (distance-left - boat-steaming-speed * haul-time) 0 )
       set boat-time-at-sea boat-time-at-sea  + haul-time
-      set boat-distance-at-sea boat-distance-at-sea + boat-time-at-sea * fishing-speed
-      print (sentence boat-distance-at-sea  boat-time-at-sea fishing-speed)
+      set boat-distance-at-sea boat-distance-at-sea + haul-time * fishing-speed
+      print (sentence boat-distance-at-sea boat-time-at-sea fishing-speed)
 
       ; If the catch is not worth keeping it, discard it entirely and
       ; reset the time left. Fishers don't want to keep the bad haul, as this
