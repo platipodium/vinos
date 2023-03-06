@@ -375,7 +375,7 @@ to leave-port
   set boat-distance-at-sea gis-distance home-port
   set boat-time-at-sea  boat-distance-at-sea / boat-steaming-speed
 
-  ifelse (boat-engine-power > 221 and item (index-max-one-of boat-priorities) species-names = "plaice") [
+  ifelse (boat-engine > 221 and item (index-max-one-of boat-priorities) species-names = "plaice") [
     set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
     set l-patch s-patch
     print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
@@ -398,7 +398,7 @@ to go-on-fishing-trip
   let l-patch patch-here
 
   let navigable-patches patches with [accessible?]
-  if (boat-engine-power > 221 and item (index-max-one-of boat-priorities) species-names = "plaice") [
+  if (boat-engine > 221 and item (index-max-one-of boat-priorities) species-names = "plaice") [
     set navigable-patches navigable-patches with [not plaice-box?]
   ]
 
@@ -477,7 +477,7 @@ to go-on-fishing-trip
       set distance-left max (list (distance-left - boat-steaming-speed * haul-time) 0 )
       set boat-time-at-sea boat-time-at-sea  + haul-time
       set boat-distance-at-sea boat-distance-at-sea + haul-time * fishing-speed
-      print (sentence boat-distance-at-sea boat-time-at-sea fishing-speed)
+      ;print (sentence boat-distance-at-sea boat-time-at-sea fishing-speed)
 
       ; If the catch is not worth keeping it, discard it entirely and
       ; reset the time left. Fishers don't want to keep the bad haul, as this
@@ -547,13 +547,36 @@ to go-on-fishing-trip
   set boat-time-at-sea boat-time-at-sea + gis-distance home-port / boat-steaming-speed
   move-to home-port
 
+  ; At typical trip would be to travel 48 hours, 300 km travelled
+  ; This might have to be updated for higher speeds and longer trips if such gear
+  ; becomes available
+  if boat-distance-at-sea  >  1000 [
+    print (list "ERROR: Boat" who "t=" boat-time-at-sea "t-=" time-left "dh=" (gis-distance l-patch) "d=" boat-distance-at-sea "d-=" distance-left )
+    stop
+  ]
+
   set size 1
   ;calculate costs, revenue and profit
 
   ; for all gears, we calculate the value
 
-  set transportation-costs fuel-efficiency * oil-price * boat-distance-at-sea
-  set operating-costs wage * boat-time-at-sea
+
+  ; "Eins bleibt immer gleich: Pro Stunde rechnet man pro PS mit einem Konsum von 0,21 Liter bei einem
+  ; Diesel und 0,29 Liter bei Benzin als Treibstoff.” https://www.boatsandstories.com/verbrauch_1-3-2/
+  ; At 150 PS and 48 h trip covering 300 km, the efficiency is 150*48*0,21/300 = 5 l km-1
+  ; @todo we can adjust this to boat-engine power
+  ; we scale the fuel-efficiency (0 to 1) with boat-fuel-consumption
+  let boat-fuel-consumption 48 * boat-engine *  1.35962 * 0.21 / 300 ; is typically 5 l km-1
+
+  ; Diesel for shipping is usually 0.5 € l-1
+  ; In the end tranpsortatino costs should be 15% of crangon reenvu, up to 30% for platessa/sole
+  set transportation-costs boat-fuel-consumption * oil-price * boat-distance-at-sea; typically 750 €
+
+  ; Typically there are 3 people aboard, i.e. 150 * 3 work hours per month.  Average wage is 5000+2*2000 per
+  ; gross salary per month, adding 40% costs gives 12600 EUR, i.e. 84 € h-1, there is slider wage
+  ; in the end operating costs should be around 50% of revenue
+  set operating-costs wage * boat-time-at-sea ; is typically 4000 €
+
 
   if (sum fish-catch-boat > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
     (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
@@ -567,6 +590,10 @@ to go-on-fishing-trip
 
   ; Calculate the boat revenue depending on the landed species and the port
   set revenue-boat n-values (number-of-gears)[igear -> (item igear fish-catch-boat * ([item (item igear ispecieslist) price] of boat-home-port))]
+
+  ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
+  print (sentence "R:" transportation-costs operating-costs revenue-boat)
+
 
 
   set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
@@ -855,7 +882,7 @@ adaptation
 adaptation
 0
 1
-0.551
+0.562
 0.001
 1
 NIL
@@ -888,21 +915,6 @@ datetime
 9
 
 SLIDER
-7
-482
-254
-515
-fuel-efficiency
-fuel-efficiency
-0
-1
-0.198
-0.001
-1
-NIL
-HORIZONTAL
-
-SLIDER
 8
 447
 208
@@ -911,25 +923,25 @@ operating-costs-of-boats
 operating-costs-of-boats
 0
 1
-0.203
+0.208
 0.001
 1
 NIL
 HORIZONTAL
 
 SLIDER
-258
-483
-430
-516
+268
+488
+440
+521
 oil-price
 oil-price
-0
-100
-14.0
+25
+75
+50.0
+5
 1
-1
-NIL
+ct l-1
 HORIZONTAL
 
 TEXTBOX
@@ -981,9 +993,9 @@ NIL
 
 SLIDER
 7
-515
+521
 217
-548
+554
 fraction-transportation-costs
 fraction-transportation-costs
 0
@@ -996,9 +1008,9 @@ HORIZONTAL
 
 BUTTON
 412
-572
+690
 507
-605
+723
 save-effort
 let dataset gis:patch-dataset fishing-effort-hours\ngis:store-dataset dataset \"effort\"
 NIL
@@ -1013,9 +1025,9 @@ NIL
 
 BUTTON
 294
-580
+698
 358
-613
+731
 Effort
 ;test-target\nclear-drawing\n\nask patches [\nset fishing-effort-hours 0\n]\nlet my-boats boats\nrepeat 16 [\nask my-boats [go-on-fishing-trip] \n]\nset view \"effort (h)\" \nupdate-view\n
 NIL
@@ -1167,6 +1179,41 @@ viewed
 17
 1
 11
+
+TEXTBOX
+272
+457
+464
+496
+Diesel for ships is tax-exempt and \ncosts on average 0.5 € l-1
+10
+0.0
+1
+
+TEXTBOX
+273
+543
+423
+571
+Staff costs are usually around 80 € h-1
+11
+0.0
+1
+
+SLIDER
+276
+590
+448
+623
+wage
+wage
+50
+120
+85.0
+5
+1
+€ h-1
+HORIZONTAL
 
 @#$#@#$#@
 # TODO

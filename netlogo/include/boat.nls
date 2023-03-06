@@ -18,7 +18,7 @@ boats-own [
   harvest-boat                 ; for each boat a vector of total harvest of the fish species
   catch-efficiency-boat        ; how much fish is effectively catched
   boat-capacity                ; size of the boat
-  boat-engine-power                 ; power of the engine
+  ;boat-engine-power                
 
   revenue-boat             ; revenue for the fishing trip of the boat
   costs-boat               ; costs for the fishing trip of the boat
@@ -45,7 +45,6 @@ boats-own [
                           ; comment: mainly driven by oil price, approx 10-20 percent of the revenue for crangon, up to 30 percent for solea and platessa according to press relesease March 2022 going up to 50 percent
   operating-costs         ; cost for opertating the boat, not known, work with a parameter
                           ; comment: approximately 50 percent of the revenue
-  wage                    ;  wage                               ; wage
   target-species          ; species primarily tragetted (solea, platessa, crangon)
 
   boat-landing-port       ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
@@ -54,7 +53,7 @@ boats-own [
   boat-gears              ; set of available gears on this boat
   boat-type               ; Number 1-4 of the named cluster
   boat-length             ; length of boat in m, related (yet unknown) to capacity.
-  boat-engine
+  boat-engine             ; power of the engine in kW
   boat-max-distance
   boat-triplength
   
@@ -84,11 +83,7 @@ to setup-boats
   let length-distribution csv-property "VE_LEN"
   let hours-distribution csv-property "total_fishinghours"
   
-    ;faking a slider (equal distribution)
-
-  let wage-min 100 ; value from Sascha
-  let wage-max 1000; value from Sascha
-    ; @todo get th fishing speed from gear-speed
+  ; @todo get th fishing speed from gear-speed
   let fishing-speed-mean 5.556 ; unit is km/h (= 3kn)
   let fishing-speed-sdev 0.926 ; unit is km/h (= 0.5kn)
 
@@ -134,7 +129,6 @@ to setup-boats
       set  boat-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
       set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
-      set  wage wage-min + random-float (wage-max - wage-min)                                       ; @todo default value
       set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
       set  boat-steaming-speed 19                                  ; range 10  to 12
       set label ""                                             ; ????
