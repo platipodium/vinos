@@ -47,8 +47,9 @@ boats-own [
                           ; comment: approximately 50 percent of the revenue
   wage                    ;  wage                               ; wage
   target-species          ; species primarily tragetted (solea, platessa, crangon)
-  ;home-port-boat               ; Home Port (in the current state only German home ports are considered
-  ;favorite-landing-port-of-boat   ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
+
+  boat-landing-port       ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
+  boat-home-port          ; Home Port (in the current state only German home ports are considered
   pathways                ; possible pathways which boats learn
   boat-gears              ; set of available gears on this boat
   boat-type               ; Number 1-4 of the named cluster
@@ -147,6 +148,7 @@ to setup-boats
       set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
           
       set boat-trip-phase 1 ; in port and available
+      set boat-home-port myself
     ]
     ask my-links [set hidden? true]
   ]

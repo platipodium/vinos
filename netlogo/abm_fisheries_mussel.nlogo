@@ -556,7 +556,15 @@ to go-on-fishing-trip
   if (sum fish-catch-boat > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
     (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
   ]
-  set revenue-boat n-values (number-of-gears)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
+
+  ; Find the position of the target gear-species in species-names and return the index of the species,
+  ; save this in a temporary list of size number-of-gears, resulting in the gear-species index map ispecieslist
+  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) species-names ]
+
+  ; Calculate the boat revenue depending on the landed species and the port
+  set revenue-boat n-values (number-of-gears)[igear -> (item igear fish-catch-boat * ([item (item igear ispecieslist) price] of boat-home-port))]
+
+
   set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
   set gain-boat n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
   let delta-adjust sum map [ i -> abs i ] delta-gain-boat ; fix minus boat priority ; in cast that the gain-boat decreases a lot, big minus values of delta-priorities make boat-priorities minus
@@ -787,7 +795,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-2
+4
 
 BUTTON
 93

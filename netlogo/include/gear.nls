@@ -17,8 +17,8 @@ gears-own [
 ]
 
 globals [
-  number-of-gears
   gear-names
+  number-of-gears
 ]
 
 ; We define here a constant and predefined number of gears
