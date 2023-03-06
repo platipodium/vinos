@@ -787,7 +787,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-0
+2
 
 BUTTON
 93
@@ -830,7 +830,7 @@ SWITCH
 152
 ports?
 ports?
-1
+0
 1
 -1000
 
