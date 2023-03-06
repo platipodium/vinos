@@ -162,7 +162,8 @@ to go
   advance-calendar
   ask ports [ifelse ports? [set label ""][set label name]]
   calc-fish
-  let my-boats n-of 10 boats
+;  let my-boats n-of 10 boats
+  let my-boats n-of 1 boats with [who = 80]
   ask my-boats [go-on-fishing-trip]
   update-plots
   tick
@@ -368,20 +369,22 @@ to leave-port
   let s-patch [start-patch] of home-port    ; starting patch of the boat
   let l-patch [landing-patch] of home-port  ; landing patch of the boat
 
+  pen-up
+  move-to s-patch
+
+  set boat-distance-at-sea gis-distance home-port
+  set boat-time-at-sea  boat-distance-at-sea / boat-steaming-speed
+
   ifelse (boat-engine-power > 221 and item (index-max-one-of boat-priorities) species-names = "plaice") [
     set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
     set l-patch s-patch
     print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
   ][
-    print (list "Boat" who "leaves from" s-patch "with depth" ([depth] of s-patch))
+    print (list "Boat" who "leaves from" s-patch "at depth" ([depth] of s-patch) "m " boat-distance-at-sea "km and" boat-time-at-sea "h from home" )
   ]
 
-  pen-up
-  move-to s-patch
-
-  set boat-distance-at-sea gis-distance home-port
-  set boat-time-at-sea boat-steaming-speed * boat-distance-at-sea
   set boat-trip-phase 2 ; available at start patch
+
 end
 
 ; This is a boat procedure
@@ -418,11 +421,11 @@ to go-on-fishing-trip
   ; distance left
   pen-up
   move-to home-port
-  set boat-distance-at-sea boat-distance-at-sea + gis-distance s-patch
+  set boat-distance-at-sea gis-distance s-patch
   ; Suggestion to calculate distance-left based on "gis-distance min dist [ s-patch of landing-ports ]"
   ; Carsten cautions that then boats might converge in the center (Cuxhaven) due to edge effect.
   set distance-left max  (list (distance-left - gis-distance s-patch) 0 )
-  set boat-time-at-sea boat-time-at-sea + gis-distance s-patch / boat-steaming-speed
+  set boat-time-at-sea gis-distance s-patch / boat-steaming-speed
   set time-left  max (list (time-left - gis-distance s-patch / boat-steaming-speed) 0 )
   move-to s-patch
   pen-down
@@ -474,6 +477,7 @@ to go-on-fishing-trip
       set distance-left max (list (distance-left - boat-steaming-speed * haul-time) 0 )
       set boat-time-at-sea boat-time-at-sea  + haul-time
       set boat-distance-at-sea boat-distance-at-sea + boat-time-at-sea * fishing-speed
+      print (sentence boat-distance-at-sea  boat-time-at-sea fishing-speed)
 
       ; If the catch is not worth keeping it, discard it entirely and
       ; reset the time left. Fishers don't want to keep the bad haul, as this
@@ -526,7 +530,7 @@ to go-on-fishing-trip
         set time-left time-left - gis-distance s-patch / boat-steaming-speed
       ]
 
-      print (list "Boat" who heading boat-time-at-sea time-left (gis-distance l-patch) boat-distance-at-sea distance-left (item 1 fish-catch-boat) )
+      print (list "Boat" who "t=" boat-time-at-sea "t-=" time-left "dh=" (gis-distance l-patch) "d=" boat-distance-at-sea "d-=" distance-left "c1=" (item 1 fish-catch-boat) )
       ;print (list who ([depth] of patch-here))
     ]
   ]
@@ -535,15 +539,13 @@ to go-on-fishing-trip
 
   pen-up
 
+
   set boat-distance-at-sea boat-distance-at-sea + gis-distance l-patch
   set boat-time-at-sea boat-time-at-sea + gis-distance l-patch / boat-steaming-speed
   move-to l-patch
   set boat-distance-at-sea boat-distance-at-sea + gis-distance home-port
   set boat-time-at-sea boat-time-at-sea + gis-distance home-port / boat-steaming-speed
   move-to home-port
-
-  ; @todo temporarily give this a price, needs to be a global property later
-  let price-species  3 ; EUR kg-1
 
   set size 1
   ;calculate costs, revenue and profit
@@ -559,7 +561,9 @@ to go-on-fishing-trip
 
   ; Find the position of the target gear-species in species-names and return the index of the species,
   ; save this in a temporary list of size number-of-gears, resulting in the gear-species index map ispecieslist
+  ; @todo move this to gear.nls as global
   let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) species-names ]
+
 
   ; Calculate the boat revenue depending on the landed species and the port
   set revenue-boat n-values (number-of-gears)[igear -> (item igear fish-catch-boat * ([item (item igear ispecieslist) price] of boat-home-port))]
@@ -922,7 +926,7 @@ oil-price
 oil-price
 0
 100
-50.0
+14.0
 1
 1
 NIL
