@@ -207,6 +207,8 @@ to-report viewed
 end
 
 to update-view
+
+  if any? legends [ask legends [die]]
   let n view-legend-n
   if view = "crangon"  [
     let qv quantile-thresholds [crangon] of patches with [crangon > 0] n
@@ -214,28 +216,35 @@ to update-view
     ask patches with [crangon < 0] [set pcolor black]
     ask patches with [crangon >= 0][
       carefully [
-      set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list crangon)) 0 1
-    ][]
-
-  ]]
+        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list crangon)) 0 1
+      ][]
+    ]
+    update-view-legend
+  ]
 
   if view = "solea"  [
     let qv quantile-thresholds [solea] of patches with [solea > 0] n
+    set view-legend-thresholds qv
     ask patches with [solea < 0] [set pcolor black]
     ask patches with [solea > 0][
       carefully [
-      set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list solea)) 0 1
-    ][]
-  ]]
+        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list solea)) 0 1
+      ][]
+    ]
+    update-view-legend
+   ]
 
   if view = "platessa"  [
     let qv quantile-thresholds [platessa] of patches with [platessa > 0] n
+    set view-legend-thresholds qv
     ask patches with [solea < 0] [set pcolor black]
     ask patches with [platessa > 0][
       carefully [
-      set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list platessa)) 0 1
-    ][]
-  ]]
+        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list platessa)) 0 1
+      ][]
+    ]
+    update-view-legend
+  ]
 
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   if view = "bathymetry" [ask patches [set pcolor scale-color blue depth 80 0 ]]
@@ -246,9 +255,14 @@ to update-view
   if view = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
 
 
+end
+
+
+to update-view-legend
+
+  ; Create a background for drawing the legend
   ask patches with [pxcor >= min-pxcor + 2 and pxcor <= min-pxcor + 20
        and pycor > max-pycor - 22 - 3 * view-legend-n and pycor < max-pycor - 20][set pcolor grey]
-    ;and pycor < max-pycor - 5][set pcolor white]
 
   let view-legend-colors palette:scheme-colors "Sequential" "Reds" view-legend-n
 
@@ -264,13 +278,11 @@ to update-view
          set shape "square"
          set size 0.1
          setxy min-pxcor + 4 + 13 max-pycor - 20 - 3 * view-legend-n + 1 + 3 * i - 1
-         set label-color item i view-legend-colors
+         set label-color black ; item i view-legend-colors
          set label formatted-number (item i view-legend-thresholds) 5
     ]
   ]
 end
-
-
 
 ; This is a dummy procedure and needs to be replace by actual pollution data.
 to calc-pollution
@@ -857,7 +869,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-0
+3
 
 BUTTON
 93
