@@ -21,13 +21,14 @@ __includes [
   "include/plot.nls"
   "include/utilities.nls"
   "include/boat.nls"
+  ;"include/view.nls"
 ]
 
 ; breed [gears gear] ; defined in gear.nls
 ; breed [boats boat] ; defined in boat.nls
+breed [legends legend] ; defined in view.nls
 breed [ports port]
 breed [actions action]
-breed [legends legend] ; used for defining the color bar
 
 actions-own [
   target                      ; targeted patch id
@@ -880,7 +881,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+0
 
 BUTTON
 93
