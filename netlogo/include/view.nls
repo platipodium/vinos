@@ -1,3 +1,10 @@
+; SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+; SPDX-License-Identifier: Apache-2.0
+;
+; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
+; SPDX-FileContributor: Jieun Seo <jieun.seo@studium.uni-hamburg.de>
+
 breed [legends legend]
 
 legends-own [
@@ -12,9 +19,10 @@ legends-own [
 
 breed [legend-entries legend-entry]
 
-
 to draw-legend [ colors labels]
   ask legends [ die ]
+  ask legend-entries [ die ]
+  let legend-pad 4
   create-legends 1 [
     set legend-size length colors
     set legend-colors colors
@@ -27,7 +35,7 @@ to draw-legend [ colors labels]
     set legend-items sort  legend-entries with [shape = "square"] 
     foreach range legend-size [ i ->
       ask item i legend-items [
-        setxy min-pxcor + 4  max-pycor - 20 - 3 * ( [legend-size] of myself) + 1  + 3 * i
+        setxy ( min-pxcor + legend-pad )  max-pycor - 20 - 1.5 - 3 * ( [legend-size] of myself) + 1  + 3 * i
         set color item i ( [legend-colors] of myself )
       ]  
     ]
@@ -39,11 +47,9 @@ to draw-legend [ colors labels]
     set legend-items sort legend-entries with [shape = "circle"] 
     foreach range length legend-items [ i ->
       ask item i legend-items [
-         setxy min-pxcor + 4 + 13 max-pycor - 20 - 3 *  ( [legend-size] of myself) + 1 + 3 * i - 1
-         ;set label-color item i ( [legend-colors] of myself )
+         setxy ( min-pxcor + legend-pad + 13 ) (max-pycor - 20 - 3 *  ( [legend-size] of myself + 1) + 1 + 3 * i - 1)
          set label-color black 
-         ;set label formatted-number (item i view-legend-thresholds) 5
-        set label item i [legend-items] of myself
+        set label item i [legend-labels] of myself
       ]  
     ]
     
@@ -51,8 +57,7 @@ to draw-legend [ colors labels]
   
   ; draw the background (bbox)
   ask patches with [pxcor >= min-pxcor + 2 and pxcor <= min-pxcor + 20
-       and pycor > max-pycor - 22 - 3 * ( length colors ) and pycor < max-pycor - 20][set pcolor grey]
+       and pycor > max-pycor - 20 - legend-pad - 3 * ( length labels ) and pycor < max-pycor - 20][set pcolor grey]
 
- 
 end  
   
