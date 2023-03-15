@@ -104,10 +104,14 @@ end
 
 to-report quantile-thresholds [data n]
   let sorted sort data
-  let data-min first data
-  let data-max last data
-  let indices n-values (n - 1) [ i -> round ( length data * (i + 1) / n) ]
-  set indices lput (length data - 1) (fput 0 indices)
+  if length sorted < (n + 1) [ 
+    print (sentence "Error, the data is not diverse enough for" n "categories")
+    report nobody
+  ]
+  let data-min first sorted
+  let data-max last sorted
+  let indices n-values (n - 1) [ i -> round ( length sorted * (i + 1) / n) ]
+  set indices lput (length sorted - 1) (fput 0 indices)
   report  map [ i -> item i sorted ] indices
 end
 

@@ -240,7 +240,6 @@ to update-view
   if view = "platessa"  [
     set qv quantile-thresholds [platessa] of patches with [platessa > 0] n
     set view-legend-thresholds qv
-    ask patches with [platessa < 0] [set pcolor black]
     ask patches with [platessa > 0][
       carefully [
         set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list platessa)) 0 1
@@ -266,7 +265,7 @@ to update-view
         set pcolor palette:scale-scheme  "Sequential" "Oranges" n (first quantile-scale qv  (list fishing-effort-hours)) 0 1
       ][]
     ]
-    draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
+    if qv != nobody [draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])]
   ]
 
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
@@ -894,7 +893,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+1
 
 BUTTON
 93
