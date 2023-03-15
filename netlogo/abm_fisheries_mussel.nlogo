@@ -21,12 +21,12 @@ __includes [
   "include/plot.nls"
   "include/utilities.nls"
   "include/boat.nls"
-  ;"include/view.nls"
+  "include/view.nls"
 ]
 
 ; breed [gears gear] ; defined in gear.nls
 ; breed [boats boat] ; defined in boat.nls
-breed [legends legend] ; defined in view.nls
+; breed [legends legend] ; defined in view.nls
 breed [ports port]
 breed [actions action]
 
@@ -168,8 +168,8 @@ to go
   advance-calendar
   ask ports [ifelse ports? [set label ""][set label name]]
   calc-fish
-;  let my-boats n-of 10 boats
-  let my-boats n-of 1 boats with [who = 80]
+  let my-boats n-of 10 boats
+  ;let my-boats n-of 1 boats with [who = 80]
   ask my-boats [go-on-fishing-trip]
   update-plots
   tick
@@ -210,33 +210,35 @@ end
 to update-view
 
   if any? legends [ask legends [die]]
+  if any? legend-entries [ask legend-entries [die]]
   let n view-legend-n
+  let qv nobody
+  ask patches [set pcolor grey - 2]
+  ask patches with [ accessible? = True ][set pcolor grey]
+
+
   if view = "crangon"  [
-    let qv quantile-thresholds [crangon] of patches with [crangon > 0] n
-    set view-legend-thresholds qv
-    ask patches with [crangon < 0] [set pcolor black]
+    set qv quantile-thresholds [crangon] of patches with [crangon > 0] n
     ask patches with [crangon >= 0][
       carefully [
         set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list crangon)) 0 1
       ][]
     ]
-    update-view-legend
+    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
   ]
 
   if view = "solea"  [
-    let qv quantile-thresholds [solea] of patches with [solea > 0] n
-    set view-legend-thresholds qv
-    ask patches with [solea < 0] [set pcolor black]
+    set qv quantile-thresholds [solea] of patches with [solea > 0] n
     ask patches with [solea > 0][
       carefully [
         set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list solea)) 0 1
       ][]
     ]
-    update-view-legend
+    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
    ]
 
   if view = "platessa"  [
-    let qv quantile-thresholds [platessa] of patches with [platessa > 0] n
+    set qv quantile-thresholds [platessa] of patches with [platessa > 0] n
     set view-legend-thresholds qv
     ask patches with [platessa < 0] [set pcolor black]
     ask patches with [platessa > 0][
@@ -244,28 +246,39 @@ to update-view
         set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list platessa)) 0 1
       ][]
     ]
-    update-view-legend
+    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
   ]
 
   if view = "bathymetry"  [
-    let qv quantile-thresholds [depth] of patches with [depth > 0 and depth < 80] n
-    set view-legend-thresholds qv
-    ask patches with [depth <= 0] [set pcolor grey]
+    set qv quantile-thresholds [depth] of patches with [depth > 0 and depth < 80] n
     ask patches with [depth > 0][
       carefully [
         set pcolor palette:scale-scheme  "Sequential" "Blues" n (first quantile-scale qv  (list depth)) 0 1
       ][]
     ]
-    update-view-legend
+    draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 3])
+  ]
+
+  if view = "effort (h)"  [
+    set qv quantile-thresholds [fishing-effort-hours] of patches with [fishing-effort-hours > 0] n
+    ask patches with [depth > 0][
+      carefully [
+        set pcolor palette:scale-scheme  "Sequential" "Oranges" n (first quantile-scale qv  (list fishing-effort-hours)) 0 1
+      ][]
+    ]
+    draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
   ]
 
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   set n max [ fishing-effort-hours ] of patches
-  if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours n 0 ]]
+;  if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours n 0 ]]
   if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
   if view = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
   if view = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
 
+  ;if qv != nobody [
+    ;draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
+  ;]
 
 end
 
@@ -881,7 +894,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-0
+4
 
 BUTTON
 93
