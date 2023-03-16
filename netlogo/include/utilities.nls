@@ -192,4 +192,16 @@ to-report __test-formatted-number
 end
 
 
+to-report index-max-one-of [my-list]
+  let max-value max my-list
+  report position max-value my-list
+end
+
+to-report __test-index-max-one-of
+  let my-list (list 1 3 5 7 9 8 6 5 5 5)
+  report index-max-one-of my-list = 4
+end
+
+
+
 
