@@ -96,7 +96,7 @@ to setup-gears
   ; Nephrops trawl 
   ; data based on Penny 2007 Fisheries Research Services Internal Report No. 01/07
   create-gears 1 [
-    set gear-name "OTB35NEP"
+    set gear-name "DRG35NEP"
     ;set gear-species "nephrops"
     set gear-species "other" ; as long as not implemented in data file
     set gear-width .035 ; width of beam in km
@@ -106,12 +106,14 @@ to setup-gears
     set gear-speed 5 ; 
   ]
 
-  ; Add dredge for nephrops  
+  ; Report global variables, make sure to keep the order of the gears
+  ; and the correct relation between species and gear name
   
+  let my-gear-ids sort [who] of gears
   set number-of-gears count gears
-  set gear-names [gear-name] of  gears
-  set gear-species-names [gear-species] of  gears
-  
+  set gear-names n-values number-of-gears [i -> [gear-name] of gear item i my-gear-ids]
+  set gear-species-names n-values number-of-gears [i -> [gear-species] of gear item i my-gear-ids]
+    
 end
 
 

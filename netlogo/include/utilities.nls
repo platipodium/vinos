@@ -193,8 +193,8 @@ end
 
 
 to-report index-max-one-of [my-list]
-  let max-value max my-list
-  report position max-value my-list
+  if empty? my-list [report nobody]
+  report position ( max my-list ) my-list
 end
 
 to-report __test-index-max-one-of

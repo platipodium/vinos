@@ -441,7 +441,10 @@ to leave-port
   set boat-distance-at-sea gis-distance home-port
   set boat-time-at-sea  boat-distance-at-sea / boat-steaming-speed
 
-  ifelse (boat-engine > 221 and item (index-max-one-of boat-gear-priorities) species-names = "plaice") [
+  let my-target-species item (index-max-one-of boat-gear-priorities) gear-species-names
+  if my-target-species = nobody [ set my-target-species  "other" ]
+
+  ifelse (boat-engine > 221 and my-target-species = "plaice") [
     set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
     set l-patch s-patch
     print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
@@ -464,7 +467,10 @@ to go-on-fishing-trip
   let l-patch patch-here
 
   let navigable-patches patches with [accessible?]
-  if (boat-engine > 221 and item (index-max-one-of boat-gear-priorities) species-names = "plaice") [
+
+  let my-target-species item (index-max-one-of boat-gear-priorities) gear-species-names
+  if my-target-species = nobody [ set my-target-species  "other" ]
+  if (boat-engine > 221 and my-target-species = "plaice") [
     set navigable-patches navigable-patches with [not plaice-box?]
   ]
 
@@ -886,7 +892,7 @@ CHOOSER
 view
 view
 "crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-1
+4
 
 BUTTON
 93
