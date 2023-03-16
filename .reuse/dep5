@@ -46,3 +46,7 @@ License: CC0-1.0
 Files: data/nlwkn/NLP/*
 Copyright: NLWKN
 License: LicenseRef-DL-DE-BY-2.0
+
+Files: netlogo/include/prey.csv
+Copyright: Food and Agriculture Organization of the United Nations
+License: LicenseRef-CC-BY-3.0-IGO
