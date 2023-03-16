@@ -1,6 +1,6 @@
 <!--
 SPDX-FileCopyrightText: 2011 Project Harmony
-SPDX-License-Identifier: CC-by-3.0-unported
+SPDX-License-Identifier: CC-BY-3.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
 
