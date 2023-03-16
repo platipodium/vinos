@@ -399,11 +399,11 @@ to-report catch-species [haul-length]
     (item i catch-efficiency-boat) * (item (position ([gear-species] of item i boat-gears) species-names) fish-biomass) * (([gear-width] of item i boat-gears) * haul-length) * (boolean2int (item 0 fish-biomass > 0) )
   ] ; use 'gear-width' specific for each gear
 
-  ;set fish-catch-boat n-values (number-of-gears) [i -> (item i fish-catch-boat + item i new-catch)]
+  ;set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i new-catch)]
 
   ; @todo summarize over all species with this gear
   ;set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
-  ;print (list fish-catch-boat)
+  ;print (list boat-gear-catches)
   ;print (list fish-biomass)
   ;print new-catch
   report  new-catch
@@ -441,7 +441,7 @@ to leave-port
   set boat-distance-at-sea gis-distance home-port
   set boat-time-at-sea  boat-distance-at-sea / boat-steaming-speed
 
-  ifelse (boat-engine > 221 and item (index-max-one-of boat-priorities) species-names = "plaice") [
+  ifelse (boat-engine > 221 and item (index-max-one-of boat-gear-priorities) species-names = "plaice") [
     set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
     set l-patch s-patch
     print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
@@ -464,7 +464,7 @@ to go-on-fishing-trip
   let l-patch patch-here
 
   let navigable-patches patches with [accessible?]
-  if (boat-engine > 221 and item (index-max-one-of boat-priorities) species-names = "plaice") [
+  if (boat-engine > 221 and item (index-max-one-of boat-gear-priorities) species-names = "plaice") [
     set navigable-patches navigable-patches with [not plaice-box?]
   ]
 
@@ -497,7 +497,7 @@ to go-on-fishing-trip
   pen-down
 
   ; A boat deploys the gear with the highest priority
-  let haul-width [gear-width] of item (index-max-one-of boat-priorities) boat-gears
+  let haul-width [gear-width] of item (index-max-one-of boat-gear-priorities) boat-gears
 
   while [not need-to-go-to-port?] [
 
@@ -536,7 +536,7 @@ to go-on-fishing-trip
           set fishing-effort-hours fishing-effort-hours + time-step
         ]
         forward fishing-speed * time-step
-        set fish-catch-boat n-values (number-of-gears) [i -> (item i fish-catch-boat + item i new-catch)]
+        set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i new-catch)]
 
       ]
       set time-left max (list (time-left - haul-time) 0 )
@@ -562,7 +562,7 @@ to go-on-fishing-trip
       ; Evaluate whether to go home based on different criteria, i.e.
       ; capacity exceeded, too far from home port, or
 
-      if (item 1 fish-catch-boat > boat-capacity) [
+      if (item 1 boat-gear-catches > boat-capacity) [
         print (list "Boat" who "full. Needs to go back to port")
         set need-to-go-to-port? true
       ]
@@ -596,7 +596,7 @@ to go-on-fishing-trip
         set time-left time-left - gis-distance s-patch / boat-steaming-speed
       ]
 
-      print (list "Boat" who "t=" boat-time-at-sea "t-=" time-left "dh=" (gis-distance l-patch) "d=" boat-distance-at-sea "d-=" distance-left "c1=" (item 1 fish-catch-boat) )
+      print (list "Boat" who "t=" boat-time-at-sea "t-=" time-left "dh=" (gis-distance l-patch) "d=" boat-distance-at-sea "d-=" distance-left "c1=" (item 1 boat-gear-catches) )
       ;print (list who ([depth] of patch-here))
     ]
   ]
@@ -644,8 +644,8 @@ to go-on-fishing-trip
   set operating-costs wage * boat-time-at-sea ; is typically 4000 €
 
 
-  if (sum fish-catch-boat > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
-    (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
+  if (sum boat-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
+    (transportation-costs * item i boat-gear-catches +  operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
   ]
 
   ; Find the position of the target gear-species in species-names and return the index of the species,
@@ -655,7 +655,7 @@ to go-on-fishing-trip
 
 
   ; Calculate the boat revenue depending on the landed species and the port
-  set revenue-boat n-values (number-of-gears)[igear -> (item igear fish-catch-boat * ([item (item igear ispecieslist) price] of boat-home-port))]
+  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) price] of boat-home-port))]
 
   ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
   print (sentence "R:" transportation-costs operating-costs revenue-boat)
@@ -664,15 +664,15 @@ to go-on-fishing-trip
 
   set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
   set gain-boat n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
-  let delta-adjust sum map [ i -> abs i ] delta-gain-boat ; fix minus boat priority ; in cast that the gain-boat decreases a lot, big minus values of delta-priorities make boat-priorities minus
+  let delta-adjust sum map [ i -> abs i ] delta-gain-boat ; fix minus boat priority ; in cast that the gain-boat decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
   ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
-  set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i delta-gain-boat) * (item i boat-priorities) / delta-adjust]
+  set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i delta-gain-boat) * (item i boat-gear-priorities) / delta-adjust]
   ][
     set boat-delta-priorities map [i -> 0] boat-delta-priorities
   ]
-  set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities - item i boat-delta-priorities]
-; Make sure that boat-priorities always sum to 1
-  set boat-priorities map [i -> i / sum boat-priorities] boat-priorities
+  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
+; Make sure that boat-gear-priorities always sum to 1
+  set boat-gear-priorities map [i -> i / sum boat-gear-priorities] boat-gear-priorities
 
   ; Correct such that sum (boat-delta-priorities = 0) ; introduced by cl as fix for negative priorities
   ;if sum boat-delta-priorities != 0 [
@@ -680,24 +680,24 @@ to go-on-fishing-trip
   ;  set boat-delta-priorities n-values (number-of-gears) [i -> item i boat-delta-priorities - mean boat-delta-priorities ]
   ;]
 
-  set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities - item i boat-delta-priorities]
-  ; Make sure that boat-priorities always sum to 1
-  if sum boat-priorities != 0 [
-    set boat-priorities n-values (number-of-gears) [i -> item i boat-priorities / sum boat-priorities ]
+  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
+  ; Make sure that boat-gear-priorities always sum to 1
+  if sum boat-gear-priorities != 0 [
+    set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities / sum boat-gear-priorities ]
   ]
 
 
   ; old implemenation for species
-  ;set costs-boat n-values (number-of-species - 1) [ i -> (transportation-costs * item i fish-catch-boat +  operating-costs * item i fish-catch-boat) / sum fish-catch-boat]
-  ;set revenue-boat n-values (number-of-species - 1)[i -> (item i fish-catch-boat * price-species)] ; @todo needs to be solved, price is related to home-port
+  ;set costs-boat n-values (number-of-species - 1) [ i -> (transportation-costs * item i boat-gear-catches +  operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
+  ;set revenue-boat n-values (number-of-species - 1)[i -> (item i boat-gear-catches * price-species)] ; @todo needs to be solved, price is related to home-port
   ;set delta-gain-boat n-values (number-of-species - 1) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
   ;set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
-  ;set delta-boat-priorities n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i boat-priorities)]
-  ;set boat-priorities n-values (number-of-species - 1) [i -> item i boat-priorities - item i delta-boat-priorities]
+  ;set delta-boat-gear-priorities n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i boat-gear-priorities)]
+  ;set boat-gear-priorities n-values (number-of-species - 1) [i -> item i boat-gear-priorities - item i delta-boat-gear-priorities]
   print (list "Boat" who " has cost of " (transportation-costs + operating-costs) )
   print (list "Boat" who " has cost of " costs-boat )
   print (list "Boat" who " has dpriorities of" boat-delta-priorities)
-  print (list "Boat" who " has priorities of" boat-priorities)
+  print (list "Boat" who " has priorities of" boat-gear-priorities)
   print (list "Boat" who " has priority weighted average of" priority-weighted-average)
 
   ; Now we can make a decision, once enough experience is gained.  This could be a

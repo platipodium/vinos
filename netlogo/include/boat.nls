@@ -13,8 +13,7 @@ extensions [csv]
 breed [boats boat]
 
 boats-own [
-  my-id                        ; id of the boat
-  fish-catch-boat              ; for each boat a vector of fish catches (per patch or tick)
+  boat-gear-catches              ; for each boat a vector of fish catches (per patch or tick)
   harvest-boat                 ; for each boat a vector of total harvest of the fish species
   catch-efficiency-boat        ; how much fish is effectively catched
   boat-capacity                ; size of the boat
@@ -25,7 +24,7 @@ boats-own [
   delta-gain-boat          ; change in gain
   gain-boat                ; gain for the fishing trip of the boat
   boat-delta-priorities      ; change in priority
-  boat-priorities            ; priority for the pathway
+  boat-gear-priorities            ; priority for the pathway
   priority-weighted-average  ; priority weighted average of gain
 
   fishing-speed            ; speed when fishing (replaced by gear-speed later on)
@@ -120,13 +119,13 @@ to setup-boats
       set  boat-capacity 100000                                  ; kg of storage
       
       
-      set  fish-catch-boat         n-values number-of-gears  [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
+      set  boat-gear-catches         n-values number-of-gears  [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
       set  catch-efficiency-boat   n-values number-of-gears  [?1 -> 0.25 ]
       set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
       set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
       set  gain-boat               n-values number-of-gears  [?1 -> 0 ]    ; gain for the fishing trip of the boat
       set  boat-delta-priorities   n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
-      set  boat-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
+      set  boat-gear-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
       set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h

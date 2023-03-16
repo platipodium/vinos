@@ -18,13 +18,14 @@ gears-own [
 
 globals [
   gear-names
+  gear-species-names
   number-of-gears
 ]
 
 ; We define here a constant and predefined number of gears
 to setup-gears
   ask gears [die]
-  
+    
   ; On vessels <300 PS shrimp are typically caught with a 2x10m beam trawl
   ; they typically remain within 25 km of the coast
   create-gears 1 [
@@ -108,7 +109,8 @@ to setup-gears
   ; Add dredge for nephrops  
   
   set number-of-gears count gears
-  set gear-names [gear-name] of gears
+  set gear-names [gear-name] of  gears
+  set gear-species-names [gear-species] of  gears
   
 end
 
