@@ -16,20 +16,21 @@ extensions [
 __includes [
   "include/geodata.nls"
   "include/calendar.nls"
-  "include/read-in-data.nls"
   "include/gear.nls"
   "include/plot.nls"
   "include/utilities.nls"
   "include/boat.nls"
   "include/view.nls"
   "include/prey.nls"
+  "include/port.nls"
 ]
 
 ; breed [gears gear] ; defined in gear.nls
 ; breed [boats boat] ; defined in boat.nls
 ; breed [legends legend] ; defined in view.nls
 ; breed [preys prey] ; defined in prey.nls
-breed [ports port]
+; breed [ports port] ; defined in port.nls
+
 breed [actions action]
 
 actions-own [
@@ -41,34 +42,6 @@ actions-own [
   priority                    ; priority for the pathway
   marginal-priority           ; expected change of the priority for the pathway
 ]
-
-ports-own [
-;;,"fav_lan","t_intv_min","tot_euros","tot_kgs","LE_EURO_SOL","LE_EURO_CSH","LE_EURO_PLE","LE_KG_SOL","LE_KG_CSH","LE_KG_PLE","VE_REF","t_intv_day","t_intv_h","ISO3_Country_Code","full_name","Coordinates","Latitude","Longitude","EU_Fish_Port","Port"
-  kind                     ; home-port (which includes also the landings as favorite port) or favorite-landing-port
-  name                     ; Name of the Port 'full name' info from UN_LOCODE.csv
-  country                  ; Name of the Country 'ISO3_Country_Code' info from UN_LOCODE.csv
-  latitude                 ; Latitude of the Port 'Latitude'
-  longitude                ; Longitude of the Port 'longitude'
-  start-patch              ; starting patch for boats
-  landing-patch            ; landing patch for boats
-  fish-catch-kg            ; vektor of fish catches
-
-  landings-euro            ; vector of landings with number-of-species in EURO 2015
-  landings-kg              ; vector of landings with number-of-species in Kg
-  price                    ; vector of prices with number-of-species in EURO 2015
-
-  port-transportation-costs; average transportation costs as percentage of the total landings in EUR 2015
-  port-operation-costs     ; average operating costs as percentage of the total landings in EUR 2015
-  port-average-trip-length ; average trip length
-
-
-  port-average-fishing-effort-in-days
-  port-average-fishing-effort-in-hours   ; t_intv_h
-  boats-per-port         ; number of individual boats per home port
-  weather                  ; status of the weather "bad" -> stay in harbor, "good" -> maybe leave harbor
-  prob-bad-weather         ; probability that the weather is too bad to leave harbor
-]
-
 
 globals [
   number-of-species                  ; number-of-species plus one for other
@@ -168,7 +141,7 @@ end
 
 to go
   advance-calendar
-  ask ports [ifelse ports? [set label ""][set label name]]
+  ask ports [ifelse ports? [set label ""][set label port-name]]
   calc-fish
   let my-boats n-of 10 boats
   ;let my-boats n-of 1 boats with [who = 80]
@@ -178,31 +151,21 @@ to go
 end
 
 to calc-initial-values
-  set sum-boats sum [boats-per-port] of ports
+  set sum-boats sum [port-boat-number] of ports
 end
 
 to-report sum-of-landings [species unit port-type]
   let index position species species-names
   ifelse unit = "euro" [
-    report sum [item index landings-euro] of ports with [kind = port-type]
+    report sum [item index port-landings-euro] of ports with [port-kind = port-type]
   ][
-    report sum [item index landings-kg] of ports with [kind = port-type]
+    report sum [item index port-landings-kg] of ports with [port-kind = port-type]
   ]
 end
 
 
 
 ;---------------------------------
-
-to setup-ports
-  read-landings "home"
-  read-landings "favorite"
-
-  ; separate the ports into two sets
-  set home-ports ports with [ kind = "home"]
-  set favorite-landing-ports ports with [kind = "favorite" ]
-
-end
 
 
 to-report viewed
@@ -324,7 +287,7 @@ to learn
   let home-port-boat one-of link-neighbors
   let my-patch one-of patches with [accessible?]
   let my-costs transportation-costs * distance my-patch
-  let my-revenue catch-efficiency-boat * ([item 2 price] of home-port-boat * [platessa-summer] of my-patch + [item 0 price] of home-port-boat * [solea-summer] of my-patch + [item 1 price] of home-port-boat * [crangon-summer] of my-patch)
+  let my-revenue catch-efficiency-boat * ([item 2 port-prices] of home-port-boat * [platessa-summer] of my-patch + [item 0 port-prices] of home-port-boat * [solea-summer] of my-patch + [item 1 port-prices] of home-port-boat * [crangon-summer] of my-patch)
   let my-gain my-revenue - my-costs
   let my-pathway one-of link-neighbors with [breed = actions and gain < my-gain]
   if my-pathway != nobody [ask my-pathway [
@@ -417,8 +380,8 @@ to-report should-go-fishing?
   ; if this month's harvest is not sufficent
   ; a boat decides to go on a fishing trip.
 
-  set prob-bad-weather random-float 1.00
-  if random-float 1.00 < prob-bad-weather
+  set port-prob-bad-weather random-float 1.00
+  if random-float 1.00 < port-prob-bad-weather
     [ if gain-boat < 1.000 [
       report true]
   ]
@@ -434,8 +397,8 @@ to leave-port
   ; Determine start end end patches of fishing activity.  This is usually the start/landing
   ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
   ; patch outside the plaice box.
-  let s-patch [start-patch] of home-port    ; starting patch of the boat
-  let l-patch [landing-patch] of home-port  ; landing patch of the boat
+  let s-patch [port-start-patch] of home-port    ; starting patch of the boat
+  let l-patch [port-landing-patch] of home-port  ; landing patch of the boat
 
   pen-up
   move-to s-patch
@@ -663,7 +626,7 @@ to go-on-fishing-trip
 
 
   ; Calculate the boat revenue depending on the landed species and the port
-  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) price] of boat-home-port))]
+  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
 
   ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
   print (sentence "R:" transportation-costs operating-costs revenue-boat)
