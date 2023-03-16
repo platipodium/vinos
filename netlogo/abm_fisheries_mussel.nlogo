@@ -270,7 +270,6 @@ to update-view
 
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   set n max [ fishing-effort-hours ] of patches
-;  if view = "effort (h)" [ask patches [set pcolor scale-color red fishing-effort-hours n 0 ]]
   if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
   if view = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
   if view = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
@@ -813,12 +812,6 @@ to calc-accessibility
 
   ; @todo add nature protection, mining etc areas.
 
-end
-
-to-report index-max-one-of [my-list]
-
-  let max-value max my-list
-  report position max-value my-list
 end
 
 to export-patches
