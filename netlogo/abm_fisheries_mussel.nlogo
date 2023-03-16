@@ -22,6 +22,7 @@ __includes [
   "include/utilities.nls"
   "include/boat.nls"
   "include/view.nls"
+  "include/prey.nls"
 ]
 
 ; breed [gears gear] ; defined in gear.nls
