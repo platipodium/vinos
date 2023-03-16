@@ -30,7 +30,7 @@ to setup-gears
   ; they typically remain within 25 km of the coast
   create-gears 1 [
     set gear-name "TBB20CSH" ; careful, the number could be mesh size, not beam length
-    set gear-species "crangon"
+    set gear-species "Crangon"
     set gear-width .020 ; width of beam in km
     set gear-drag 13 ; some number ... need more realism and unit .. maybe not relevant
     set gear-installation-cost 1000 ; EUR for changing to this gear
@@ -42,7 +42,7 @@ to setup-gears
   ; they typically remain within 25 km of the coast
   create-gears 1 [
     set gear-name "TBB08PLE"
-    set gear-species "platessa"
+    set gear-species "Pleuronectes"
     set gear-width .008 ; width of beam in km
     set gear-drag 13 ; some number ... need more realism and unit
     set gear-installation-cost 1000 ; EUR for changing to this gear
@@ -54,7 +54,7 @@ to setup-gears
   ; they typically remain within 25 km of the coast
   create-gears 1 [
     set gear-name "TBB08SOL"
-    set gear-species "solea"
+    set gear-species "Solea"
     set gear-width .008 ; width of beam in km
     set gear-drag 13 ; some number ... need more realism and unit
     set gear-installation-cost 1000 ; EUR for changing to this gear
@@ -65,7 +65,7 @@ to setup-gears
   ; Larger vessels are found throughout the AWZ except plaice box
   create-gears 1 [
     set gear-name "TBB24PLE"
-    set gear-species "platessa"
+    set gear-species "Pleuronectes"
     set gear-width .024 ; width of beam in km
     set gear-drag 20 ; some number ... need more realism and unit
     set gear-installation-cost 1000 ; EUR for changing to this gear
@@ -74,7 +74,7 @@ to setup-gears
   ]
   create-gears 1 [
     set gear-name "TBB24SOL"
-    set gear-species "solea"
+    set gear-species "Solea"
     set gear-width .024 ; width of beam in km
     set gear-drag 30 ; some number ... need more realism and unit
     set gear-installation-cost 2000 ; EUR for changing to this gear
@@ -85,7 +85,7 @@ to setup-gears
   ; Larger vessels are found throughout the AWZ
   create-gears 1 [
     set gear-name "OTB60PLE"
-    set gear-species "platessa"
+    set gear-species "Pleuronectes"
     set gear-width .024 ; width of beam in km
     set gear-drag 20 ; some number ... need more realism and unit
     set gear-installation-cost 1000 ; EUR for changing to this gear
@@ -97,7 +97,7 @@ to setup-gears
   ; data based on Penny 2007 Fisheries Research Services Internal Report No. 01/07
   create-gears 1 [
     set gear-name "DRB35NEP"
-    ;set gear-species "nephrops"
+    ;set gear-species "Nephrops"
     set gear-species "other" ; as long as not implemented in data file
     set gear-width .035 ; width of beam in km
     set gear-drag 1500 ; kgf
