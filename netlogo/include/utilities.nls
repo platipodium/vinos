@@ -203,5 +203,13 @@ to-report __test-index-max-one-of
 end
 
 
+to-report boolean2int [x]
+  ifelse x [report 1][report 0]
+end
 
+to-report  __test-boolean2int
+  if boolean2int true  != 1 [ report false ]
+  if boolean2int false != 0 [ report false ]
+  report true
+end
 

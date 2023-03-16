@@ -28,6 +28,7 @@ __includes [
 ; breed [gears gear] ; defined in gear.nls
 ; breed [boats boat] ; defined in boat.nls
 ; breed [legends legend] ; defined in view.nls
+; breed [preys prey] ; defined in prey.nls
 breed [ports port]
 breed [actions action]
 
@@ -724,10 +725,6 @@ to go-on-fishing-trip
   ; Fishing hour range: Every fisher has a minimum/maximum of how much she
   ; expects to be active. If reached, they rest, if not reached they might
   ; work harder.
-end
-
-to-report boolean2int [x]
-  ifelse x [report 1][report 0]
 end
 
 ; The geographic distance is approximated here by multiplying the NetLogo distance with
