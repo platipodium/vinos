@@ -92,9 +92,9 @@ to setup-boats
   
   ; @todo introduce quotas (=> Serra, asks Jonas)
   ask home-ports [
-    hatch-boats boats-per-port [
+    hatch-boats port-boat-number [
       create-link-with myself
-      move-to [start-patch] of one-of link-neighbors
+      move-to [port-start-patch] of one-of link-neighbors
 
       ; The 1-based boat types are
       ; 3: "typical" 1: "longer typical" 2: "flexible" 4: "not shrimper"
