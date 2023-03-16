@@ -159,7 +159,7 @@ end
 
 to setup-globals
   set min-fresh-catch 10
-  set species-names (list "solea" "crangon" "platessa" "other") ; order of the species in the excel file
+  set species-names (list "Solea" "Crangon" "Pleuronectes" "other") ; order of the species in the excel file
   set number-of-species length species-names
   set navigable-depth 2
   set view "bathymetry"
@@ -218,7 +218,7 @@ to update-view
   ask patches with [ accessible? = True ][set pcolor grey]
 
 
-  if view = "crangon"  [
+  if view = "Crangon"  [
     set qv quantile-thresholds [crangon] of patches with [crangon > 0] n
     ask patches with [crangon >= 0][
       carefully [
@@ -228,7 +228,7 @@ to update-view
     draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
   ]
 
-  if view = "solea"  [
+  if view = "Solea"  [
     set qv quantile-thresholds [solea] of patches with [solea > 0] n
     ask patches with [solea > 0][
       carefully [
@@ -238,7 +238,7 @@ to update-view
     draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
    ]
 
-  if view = "platessa"  [
+  if view = "Pleuronectes"  [
     set qv quantile-thresholds [platessa] of patches with [platessa > 0] n
     set view-legend-thresholds qv
     ask patches with [platessa > 0][
@@ -392,7 +392,7 @@ to-report catch-species [haul-length]
   ;(solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for fish-biomass
 
-  let my-species "crangon"
+  let my-species "Crangon"
   let index-species position my-species species-names
 
   ; @todo replace with max
@@ -445,7 +445,7 @@ to leave-port
   let my-target-species item (index-max-one-of boat-gear-priorities) gear-species-names
   if my-target-species = nobody [ set my-target-species  "other" ]
 
-  ifelse (boat-engine > 221 and my-target-species = "plaice") [
+  ifelse (boat-engine > 221 and my-target-species = "Pleuronectes") [
     set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
     set l-patch s-patch
     print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
@@ -471,7 +471,7 @@ to go-on-fishing-trip
 
   let my-target-species item (index-max-one-of boat-gear-priorities) gear-species-names
   if my-target-species = nobody [ set my-target-species  "other" ]
-  if (boat-engine > 221 and my-target-species = "plaice") [
+  if (boat-engine > 221 and my-target-species = "Pleuronectes") [
     set navigable-patches navigable-patches with [not plaice-box?]
   ]
 
@@ -892,7 +892,7 @@ CHOOSER
 246
 view
 view
-"crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
+"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
 4
 
 BUTTON
