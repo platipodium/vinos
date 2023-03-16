@@ -119,7 +119,7 @@ to setup-boats
       set  boat-capacity 100000                                  ; kg of storage
       
       
-      set  boat-gear-catches         n-values number-of-gears  [?1 -> 0 ]    ; vector, 4 entries for solea, plaice, crangon and other species
+      set  boat-gear-catches         n-values number-of-gears  [?1 -> 0 ] 
       set  catch-efficiency-boat   n-values number-of-gears  [?1 -> 0.25 ]
       set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
       set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
