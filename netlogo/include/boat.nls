@@ -147,30 +147,6 @@ to setup-boats
     ask my-links [set hidden? true]
   ]
   
-
-   ;ask home-ports [
-   ;  hatch-boats boats-per-port [
-   ; create-boats sum-boats [
-   ;   set transportation-costs [port-transportation-costs] of home-port-boat / [port-average-trip-length] of home-port-boat
-  ;    set operating-costs [port-operation-costs] of home-port-boat / 365
-   ;   ifelse ([port-transportation-costs] of home-port-boat + [port-operation-costs] of home-port-boat) != 0 [
-
-   ;     set catch-efficiency [total-landings-kg] of home-port-boat / ([port-transportation-costs] of home-port-boat + [port-operation-costs] of home-port-boat)
-    ;  ][
-   ;     set catch-efficiency [total-landings-kg] of home-port-boat / 1
-   ;   ]
-      ; create actions
-      ; assemble these actions in a list
-      ; save this as agent-set
-    ;  hatch-actions memory-size [
-
-    ;    create-link-with myself]
-    ;  set pathways link-neighborstime-at-sea < trip-length / 2
-
-    ;  set time-at-sea 0
-    ;]
- ;  ]
-
 end
 
 to-report csv-property [x]
