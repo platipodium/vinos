@@ -345,7 +345,7 @@ end
 
 to calc-fish
   ask patches [
-    set fish-biomass (list solea-summer platessa-summer crangon-summer 0)
+    set fish-biomass (list solea platessa crangon 0)
     ;set fish-abundance (list 100 200 300 400) ; default values needs to be adjusted when data available
   ]
 end
