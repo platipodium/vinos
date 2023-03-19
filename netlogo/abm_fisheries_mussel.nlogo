@@ -117,6 +117,7 @@ to setup
   calc-fish
   calc-accessibility
 
+  setup-preys
   setup-ports
   calc-initial-values
   setup-boats ; in "boat.nls"
