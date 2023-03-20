@@ -134,7 +134,7 @@ end
 
 to setup-globals
   set min-fresh-catch 10
-  set species-names (list "Solea" "Crangon" "Pleuronectes" "other") ; order of the species in the excel file
+  set species-names []
   set number-of-species length species-names
   set navigable-depth 2
   set view "bathymetry"
@@ -154,16 +154,6 @@ end
 to calc-initial-values
   set sum-boats sum [port-boat-number] of ports
 end
-
-to-report sum-of-landings [species unit port-type]
-  let index position species species-names
-  ifelse unit = "euro" [
-    report sum [item index port-landings-euro] of ports with [port-kind = port-type]
-  ][
-    report sum [item index port-landings-kg] of ports with [port-kind = port-type]
-  ]
-end
-
 
 
 ;---------------------------------
