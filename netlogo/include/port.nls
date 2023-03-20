@@ -104,7 +104,8 @@ to port-read-landings [port-type]
           ; Add the remaining "other" catch from the total - unnamed one
           
           ifelse not empty? port-landings-euro [
-            set port-landings-euro lput (item (position "tot_euros" header-row) row - (reduce + port-landings-euro)) port-landings-euro
+            ; We don't need the "other" category yet
+            ; set port-landings-euro lput (item (position "tot_euros" header-row) row - (reduce + port-landings-euro)) port-landings-euro
           ][            
             print (sentence "Error: Port" port-name "does not report any landings in €")
           ]
@@ -116,7 +117,7 @@ to port-read-landings [port-type]
           ]
           ; Add the remaining "other" catch from the total - unnamed one
           ifelse not empty? port-landings-euro [
-          set port-landings-kg lput (item (position "tot_kgs" header-row) row - (reduce + port-landings-kg)) port-landings-kg
+            ; set port-landings-kg lput (item (position "tot_kgs" header-row) row - (reduce + port-landings-kg)) port-landings-kg
           ][
             print (sentence "Error: Port" port-name "does not report any landings in kg")
           ]
