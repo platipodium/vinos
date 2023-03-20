@@ -149,6 +149,15 @@ to port-read-landings [port-type]
     ]
   ]
   file-close
-  
-  
+ 
 end
+
+to-report sum-of-landings [species unit port-type]
+  
+  ifelse unit = "euro" [
+    report sum  [item (position species port-prey-names) port-landings-euro] of ports with  [port-kind = port-type and member? species port-prey-names]
+  ][
+    report sum  [item (position species port-prey-names) port-landings-kg] of ports with  [port-kind = port-type and member? species port-prey-names]
+  ]    
+end
+
