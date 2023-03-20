@@ -16,19 +16,21 @@ extensions [
 __includes [
   "include/geodata.nls"
   "include/calendar.nls"
-  "include/read-in-data.nls"
   "include/gear.nls"
   "include/plot.nls"
   "include/utilities.nls"
   "include/boat.nls"
   "include/view.nls"
   "include/prey.nls"
+  "include/port.nls"
 ]
 
 ; breed [gears gear] ; defined in gear.nls
 ; breed [boats boat] ; defined in boat.nls
 ; breed [legends legend] ; defined in view.nls
-breed [ports port]
+; breed [preys prey] ; defined in prey.nls
+; breed [ports port] ; defined in port.nls
+
 breed [actions action]
 
 actions-own [
@@ -41,42 +43,11 @@ actions-own [
   marginal-priority           ; expected change of the priority for the pathway
 ]
 
-ports-own [
-;;,"fav_lan","t_intv_min","tot_euros","tot_kgs","LE_EURO_SOL","LE_EURO_CSH","LE_EURO_PLE","LE_KG_SOL","LE_KG_CSH","LE_KG_PLE","VE_REF","t_intv_day","t_intv_h","ISO3_Country_Code","full_name","Coordinates","Latitude","Longitude","EU_Fish_Port","Port"
-  kind                     ; home-port (which includes also the landings as favorite port) or favorite-landing-port
-  name                     ; Name of the Port 'full name' info from UN_LOCODE.csv
-  country                  ; Name of the Country 'ISO3_Country_Code' info from UN_LOCODE.csv
-  latitude                 ; Latitude of the Port 'Latitude'
-  longitude                ; Longitude of the Port 'longitude'
-  start-patch              ; starting patch for boats
-  landing-patch            ; landing patch for boats
-  fish-catch-kg            ; vektor of fish catches
-
-  landings-euro            ; vector of landings with number-of-species in EURO 2015
-  landings-kg              ; vector of landings with number-of-species in Kg
-  price                    ; vector of prices with number-of-species in EURO 2015
-
-  port-transportation-costs; average transportation costs as percentage of the total landings in EUR 2015
-  port-operation-costs     ; average operating costs as percentage of the total landings in EUR 2015
-  port-average-trip-length ; average trip length
-
-
-  port-average-fishing-effort-in-days
-  port-average-fishing-effort-in-hours   ; t_intv_h
-  boats-per-port         ; number of individual boats per home port
-  weather                  ; status of the weather "bad" -> stay in harbor, "good" -> maybe leave harbor
-  prob-bad-weather         ; probability that the weather is too bad to leave harbor
-]
-
-
 globals [
-  number-of-species                  ; number-of-species plus one for other
-  species-names                      ; names of the species
   navigable-depth                    ; minimum depth where a boat can navigate
   min-fresh-catch                    ; wether the boat decides to go back to harbor, maybe change name
 
   sum-ports-total-landings-kg        ; overall sum of total landings per period
-  sum-ports-other-landings-kg        ; overall sum of other landings per period
   percentage-landings-kg             ; percentage of other landing over total landings per period
   sum-ports-crangon-landings-euro    ; overall sum of landings of crangon per period in EUR 2015
   sum-ports-platessa-landings-euro   ; overall sum of landings of platessa per period in EUR 2015
@@ -143,6 +114,8 @@ to setup
   calc-fish
   calc-accessibility
 
+  setup-preys
+
   setup-ports
   calc-initial-values
   setup-boats ; in "boat.nls"
@@ -159,15 +132,13 @@ end
 
 to setup-globals
   set min-fresh-catch 10
-  set species-names (list "solea" "crangon" "platessa" "other") ; order of the species in the excel file
-  set number-of-species length species-names
   set navigable-depth 2
   set view "bathymetry"
 end
 
 to go
   advance-calendar
-  ask ports [ifelse ports? [set label ""][set label name]]
+  ask ports [ifelse ports? [set label ""][set label port-name]]
   calc-fish
   let my-boats n-of 10 boats
   ;let my-boats n-of 1 boats with [who = 80]
@@ -177,31 +148,11 @@ to go
 end
 
 to calc-initial-values
-  set sum-boats sum [boats-per-port] of ports
+  set sum-boats sum [port-boat-number] of ports
 end
-
-to-report sum-of-landings [species unit port-type]
-  let index position species species-names
-  ifelse unit = "euro" [
-    report sum [item index landings-euro] of ports with [kind = port-type]
-  ][
-    report sum [item index landings-kg] of ports with [kind = port-type]
-  ]
-end
-
 
 
 ;---------------------------------
-
-to setup-ports
-  read-landings "home"
-  read-landings "favorite"
-
-  ; separate the ports into two sets
-  set home-ports ports with [ kind = "home"]
-  set favorite-landing-ports ports with [kind = "favorite" ]
-
-end
 
 
 to-report viewed
@@ -218,7 +169,7 @@ to update-view
   ask patches with [ accessible? = True ][set pcolor grey]
 
 
-  if view = "crangon"  [
+  if view = "Crangon"  [
     set qv quantile-thresholds [crangon] of patches with [crangon > 0] n
     ask patches with [crangon >= 0][
       carefully [
@@ -228,7 +179,7 @@ to update-view
     draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
   ]
 
-  if view = "solea"  [
+  if view = "Solea"  [
     set qv quantile-thresholds [solea] of patches with [solea > 0] n
     ask patches with [solea > 0][
       carefully [
@@ -238,7 +189,7 @@ to update-view
     draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
    ]
 
-  if view = "platessa"  [
+  if view = "Pleuronectes"  [
     set qv quantile-thresholds [platessa] of patches with [platessa > 0] n
     set view-legend-thresholds qv
     ask patches with [platessa > 0][
@@ -323,7 +274,7 @@ to learn
   let home-port-boat one-of link-neighbors
   let my-patch one-of patches with [accessible?]
   let my-costs transportation-costs * distance my-patch
-  let my-revenue catch-efficiency-boat * ([item 2 price] of home-port-boat * [platessa-summer] of my-patch + [item 0 price] of home-port-boat * [solea-summer] of my-patch + [item 1 price] of home-port-boat * [crangon-summer] of my-patch)
+  let my-revenue catch-efficiency-boat * ([item 2 port-prices] of home-port-boat * [platessa-summer] of my-patch + [item 0 port-prices] of home-port-boat * [solea-summer] of my-patch + [item 1 port-prices] of home-port-boat * [crangon-summer] of my-patch)
   let my-gain my-revenue - my-costs
   let my-pathway one-of link-neighbors with [breed = actions and gain < my-gain]
   if my-pathway != nobody [ask my-pathway [
@@ -381,33 +332,24 @@ end
 
 to calc-fish
   ask patches [
-    set fish-biomass (list solea-summer platessa-summer crangon-summer 0)
+    set prey-names (list "Solea" "Pleuronectes" "Crangon")
+    set fish-biomass (list solea platessa crangon)
     ;set fish-abundance (list 100 200 300 400) ; default values needs to be adjusted when data available
   ]
 end
 
 to-report catch-species [haul-length]
-;to-report catch-species [haul-length haul-width]
   ; calculate the values for each patch and every target species
   ;(solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for fish-biomass
 
-  let my-species "crangon"
-  let index-species position my-species species-names
+  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
 
-  ; @todo replace with max
-  let new-catch n-values (number-of-gears) [ i ->
-    (item i catch-efficiency-boat) * (item (position ([gear-species] of item i boat-gears) species-names) fish-biomass) * (([gear-width] of item i boat-gears) * haul-length) * (boolean2int (item 0 fish-biomass > 0) )
-  ] ; use 'gear-width' specific for each gear
+  report n-values (number-of-gears) [ igear ->
+     (item igear catch-efficiency-boat) * (item (item igear ispecieslist) fish-biomass)
+      * (([gear-width] of item igear boat-gears) * haul-length) * (boolean2int (item (item igear ispecieslist) fish-biomass > 0) )
+  ]
 
-  ;set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i new-catch)]
-
-  ; @todo summarize over all species with this gear
-  ;set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
-  ;print (list boat-gear-catches)
-  ;print (list fish-biomass)
-  ;print new-catch
-  report  new-catch
 end
 
 ; This is a boat procedure
@@ -416,8 +358,8 @@ to-report should-go-fishing?
   ; if this month's harvest is not sufficent
   ; a boat decides to go on a fishing trip.
 
-  set prob-bad-weather random-float 1.00
-  if random-float 1.00 < prob-bad-weather
+  set port-prob-bad-weather random-float 1.00
+  if random-float 1.00 < port-prob-bad-weather
     [ if gain-boat < 1.000 [
       report true]
   ]
@@ -433,8 +375,8 @@ to leave-port
   ; Determine start end end patches of fishing activity.  This is usually the start/landing
   ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
   ; patch outside the plaice box.
-  let s-patch [start-patch] of home-port    ; starting patch of the boat
-  let l-patch [landing-patch] of home-port  ; landing patch of the boat
+  let s-patch [port-start-patch] of home-port    ; starting patch of the boat
+  let l-patch [port-landing-patch] of home-port  ; landing patch of the boat
 
   pen-up
   move-to s-patch
@@ -442,10 +384,10 @@ to leave-port
   set boat-distance-at-sea gis-distance home-port
   set boat-time-at-sea  boat-distance-at-sea / boat-steaming-speed
 
-  let my-target-species item (index-max-one-of boat-gear-priorities) gear-species-names
+  let my-target-species item (index-max-one-of boat-gear-priorities) gear-prey-names
   if my-target-species = nobody [ set my-target-species  "other" ]
 
-  ifelse (boat-engine > 221 and my-target-species = "plaice") [
+  ifelse (boat-engine > 221 and my-target-species = "Pleuronectes") [
     set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
     set l-patch s-patch
     print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
@@ -469,9 +411,9 @@ to go-on-fishing-trip
 
   let navigable-patches patches with [accessible?]
 
-  let my-target-species item (index-max-one-of boat-gear-priorities) gear-species-names
+  let my-target-species item (index-max-one-of boat-gear-priorities) gear-prey-names
   if my-target-species = nobody [ set my-target-species  "other" ]
-  if (boat-engine > 221 and my-target-species = "plaice") [
+  if (boat-engine > 221 and my-target-species = "Pleuronectes") [
     set navigable-patches navigable-patches with [not plaice-box?]
   ]
 
@@ -479,7 +421,7 @@ to go-on-fishing-trip
   let time-left boat-triplength
   let haul-time 2   ; 2 hours for a typical haul time without change of direction
   let distance-left boat-steaming-speed * time-left ; at typical speed of 19 km / h this is 1368 km
-  let new-catch n-values (number-of-species - 1) [i -> 0]
+  let new-catch n-values (length prey-names - 1) [i -> 0]
   let distance-to-alternative-patch 40 ;
 
   ; Sascha suggests to use favorite-port instead of home-port in the next 10 lines
@@ -655,14 +597,13 @@ to go-on-fishing-trip
     (transportation-costs * item i boat-gear-catches +  operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
   ]
 
-  ; Find the position of the target gear-species in species-names and return the index of the species,
+  ; Find the position of the target gear-species in prey-names and return the index of the species,
   ; save this in a temporary list of size number-of-gears, resulting in the gear-species index map ispecieslist
   ; @todo move this to gear.nls as global
-  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) species-names ]
-
+  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
 
   ; Calculate the boat revenue depending on the landed species and the port
-  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) price] of boat-home-port))]
+  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
 
   ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
   print (sentence "R:" transportation-costs operating-costs revenue-boat)
@@ -724,10 +665,6 @@ to go-on-fishing-trip
   ; Fishing hour range: Every fisher has a minimum/maximum of how much she
   ; expects to be active. If reached, they rest, if not reached they might
   ; work harder.
-end
-
-to-report boolean2int [x]
-  ifelse x [report 1][report 0]
 end
 
 ; The geographic distance is approximated here by multiplying the NetLogo distance with
@@ -892,7 +829,7 @@ CHOOSER
 246
 view
 view
-"crangon" "platessa" "solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
+"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
 4
 
 BUTTON

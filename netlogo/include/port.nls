@@ -1,0 +1,164 @@
+; SPDX-FileCopyrightText: 2022-2023 Universität Hamburg (UHH)
+; SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+; SPDX-License-Identifier: CC-BY-4.0
+; Author: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
+; Author: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+extensions [ csv ]
+
+globals [
+;  test-list
+]
+
+breed [ ports port ]
+
+ports-own [
+;;,"fav_lan","t_intv_min","tot_euros","tot_kgs","LE_EURO_SOL","LE_EURO_CSH","LE_EURO_PLE","LE_KG_SOL","LE_KG_CSH","LE_KG_PLE","VE_REF","t_intv_day","t_intv_h","ISO3_Country_Code","full_name","Coordinates","Latitude","Longitude","EU_Fish_Port","Port"
+  port-kind                     ; home-port (which includes also the landings as favorite port) or favorite-landing-port
+  port-name                     ; Name of the Port 'full name' info from UN_LOCODE.csv
+  port-country                  ; Name of the Country 'ISO3_Country_Code' info from UN_LOCODE.csv
+  port-latitude                 ; Latitude of the Port 'Latitude'
+  port-longitude                ; Longitude of the Port 'longitude'
+  port-start-patch              ; starting patch for boats
+  port-landing-patch            ; landing patch for boats
+  
+  port-fish-catch-kg            ; vektor of fish catches
+
+  port-landings-euro            ; vector of landings with number-of-species in EURO 2015
+  port-landings-kg              ; vector of landings with number-of-species in Kg
+  port-prices                    ; vector of prices with number-of-species in EURO 2015
+
+  port-transportation-costs; average transportation costs as percentage of the total landings in EUR 2015
+  port-operation-costs     ; average operating costs as percentage of the total landings in EUR 2015
+  port-average-trip-length ; average trip length
+
+
+  port-average-fishing-effort-in-days
+  port-average-fishing-effort-in-hours   ; t_intv_h
+  port-boat-number
+  port-weather                  ; status of the weather "bad" -> stay in harbor, "good" -> maybe leave harbor
+  port-prob-bad-weather         ; probability that the weather is too bad to leave harbor
+  
+  port-prey-names ; list of species that are landed here
+]
+
+
+to setup-ports
+  port-read-landings "home"
+  port-read-landings "favorite"
+
+  ; separate the ports into two sets
+  set home-ports ports with [ port-kind = "home"]
+  set favorite-landing-ports ports with [port-kind = "favorite" ]
+
+end
+
+
+
+to port-read-landings [port-type]
+  ifelse port-type = "home" [
+    file-open "../data/220126-one_year-landings-per_port-home.csv"      ; Data of German fleet per home port
+  ][
+    file-open "../data/220126-one_year-landings-per_port-favorite.csv"  ; Data of German fleet per favorite landing port
+  ] 
+  gis:load-coordinate-system "../data/wgs1984.prj"
+
+  let row csv:from-row file-read-line
+  let header-row row 
+  
+  ;member? "LE_EURO_PLE" test-list
+  ; [prey-three-code] of preys
+  ; ;;,"fav_lan","t_intv_min","tot_euros","tot_kgs","LE_EURO_SOL","LE_EURO_CSH","LE_EURO_PLE","LE_KG_SOL","LE_KG_CSH","LE_KG_PLE","VE_REF","t_intv_day","t_intv_h","ISO3_Country_Code","full_name","Coordinates","Latitude","Longitude","EU_Fish_Port","Port"
+ 
+  set-default-shape ports "house"
+
+  let my-prey-names []
+  foreach header-row [ row-item -> 
+    if any? preys with [ (word "LE_EURO_" prey-three-code)  = row-item] [
+          set my-prey-names lput [prey-name] of one-of preys with [ (word "LE_EURO_" prey-three-code)  = row-item] my-prey-names 
+    ] 
+  ]
+
+  while [ not file-at-end? ] [
+    set row csv:from-row file-read-line
+
+    if  (item (position "Longitude" header-row) row)  < 9.16 [
+      ; In rows 17 and 18 there are decimal coordinates
+      let xy gis:project-lat-lon (item (position "Latitude" header-row) row) (item (position "Longitude" header-row) row)
+      
+      ; Create ports only if on current map (list is not empty) and not Baltic (lon > 9.16)
+      if not (length xy = 0) [
+        create-ports 1 [
+          set port-kind port-type
+          set port-name item (position "full_name" header-row) row
+          set port-country item (position "ISO3_Country_Code" header-row) row
+          set port-latitude item (position "Latitude" header-row) row
+          set port-longitude item (position "Longitude" header-row) row
+          set port-prey-names my-prey-names
+          
+          set port-landings-euro []
+          foreach port-prey-names [ p -> 
+            let my-prey one-of preys with [prey-name = p]
+            set port-landings-euro lput item (position  (word "LE_EURO_" [prey-three-code] of my-prey) header-row) row port-landings-euro
+          ]
+          ; Add the remaining "other" catch from the total - unnamed one
+          
+          ifelse not empty? port-landings-euro [
+            ; We don't need the "other" category yet
+            ; set port-landings-euro lput (item (position "tot_euros" header-row) row - (reduce + port-landings-euro)) port-landings-euro
+          ][            
+            print (sentence "Error: Port" port-name "does not report any landings in €")
+          ]
+          
+          set port-landings-kg []
+          foreach port-prey-names [ p -> 
+            let my-prey one-of preys with [prey-name = p]
+            set port-landings-kg lput item (position  (word "LE_KG_" [prey-three-code] of my-prey) header-row) row port-landings-kg
+          ]
+          ; Add the remaining "other" catch from the total - unnamed one
+          ifelse not empty? port-landings-euro [
+            ; set port-landings-kg lput (item (position "tot_kgs" header-row) row - (reduce + port-landings-kg)) port-landings-kg
+          ][
+            print (sentence "Error: Port" port-name "does not report any landings in kg")
+          ]
+     
+          if not empty? port-landings-kg [
+          
+            set port-prices n-values length (port-prey-names) [ i -> item i port-landings-euro / ifelse-value (item i port-landings-kg > 0) [item i port-landings-kg] [1]]
+            set port-transportation-costs  sum port-landings-euro * fraction-transportation-costs
+            set port-operation-costs sum port-landings-euro * operating-costs-of-boats
+          ]
+          
+          set port-average-fishing-effort-in-days item (position "t_intv_day" header-row ) row
+          set port-average-fishing-effort-in-hours item (position "t_intv_h" header-row ) row
+          set port-boat-number item (position "VE_REF" header-row ) row
+       
+          ; @todo the follwoing is not correct:
+          set port-average-trip-length  port-average-fishing-effort-in-hours * 18 ; assumption: set average speed of a boat to 18 km per h
+          
+          set size 4
+          set label port-name
+          set label-color black
+          setxy (item 0 xy)  (item 1 xy)
+          ; find a starting patch at least 3 nm from port away
+          set port-start-patch min-one-of patches with [depth > navigable-depth and gis-distance myself > 5 and accessible?] [gis-distance myself] 
+          set port-landing-patch port-start-patch
+          
+          print (sentence "Created" port-type "port" port-name "with landings of" port-prey-names)
+        ]
+      ]
+    ]
+  ]
+  file-close
+ 
+end
+
+to-report sum-of-landings [species unit port-type]
+  
+  ifelse unit = "euro" [
+    report sum  [item (position species port-prey-names) port-landings-euro] of ports with  [port-kind = port-type and member? species port-prey-names]
+  ][
+    report sum  [item (position species port-prey-names) port-landings-kg] of ports with  [port-kind = port-type and member? species port-prey-names]
+  ]    
+end
+
