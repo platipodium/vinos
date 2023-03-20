@@ -9,7 +9,7 @@ to plot-setup-catch-by-species
   set-plot-background-color white 
   
   foreach range 3 [ [i] ->
-    let pen-name  item i species-names
+    let pen-name  item i prey-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
     set-plot-pen-color 135 - 10 * i
@@ -25,7 +25,7 @@ to plot-setup-cost-by-species
   set-plot-background-color white 
   
   foreach range 3 [ [i] ->
-    let pen-name  item i species-names
+    let pen-name  item i prey-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
     set-plot-pen-color 135 - 10 * i
@@ -38,9 +38,9 @@ end
 
 to plot-update-cost-by-species
   set-current-plot "cost-by-species"
-  ; foreach species-names [0 1 2] [[s i] ->
+  ; foreach prey-names [0 1 2] [[s i] ->
   foreach range 3 [[i] ->
-    let pen-name  item i species-names
+    let pen-name  item i prey-names
     set-current-plot-pen pen-name
     ;set-plot-x-range 0 max
     plotxy ticks sum [item i boat-gear-catches] of boats
@@ -50,9 +50,9 @@ end
 
 to plot-update-catch-by-species
   set-current-plot "catch-by-species"
-  ; foreach species-names [0 1 2] [[s i] ->
+  ; foreach prey-names [0 1 2] [[s i] ->
   foreach range 3 [[i] ->
-    let pen-name  item i species-names
+    let pen-name  item i prey-names
     set-current-plot-pen pen-name
     ;set-plot-x-range 0 max
     plotxy ticks sum [item i boat-gear-catches] of boats

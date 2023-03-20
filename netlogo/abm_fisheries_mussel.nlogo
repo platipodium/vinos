@@ -44,13 +44,10 @@ actions-own [
 ]
 
 globals [
-  number-of-species                  ; number-of-species plus one for other
-  species-names                      ; names of the species
   navigable-depth                    ; minimum depth where a boat can navigate
   min-fresh-catch                    ; wether the boat decides to go back to harbor, maybe change name
 
   sum-ports-total-landings-kg        ; overall sum of total landings per period
-  sum-ports-other-landings-kg        ; overall sum of other landings per period
   percentage-landings-kg             ; percentage of other landing over total landings per period
   sum-ports-crangon-landings-euro    ; overall sum of landings of crangon per period in EUR 2015
   sum-ports-platessa-landings-euro   ; overall sum of landings of platessa per period in EUR 2015
@@ -118,6 +115,7 @@ to setup
   calc-accessibility
 
   setup-preys
+
   setup-ports
   calc-initial-values
   setup-boats ; in "boat.nls"
@@ -134,8 +132,6 @@ end
 
 to setup-globals
   set min-fresh-catch 10
-  set species-names []
-  set number-of-species length species-names
   set navigable-depth 2
   set view "bathymetry"
 end
@@ -336,33 +332,24 @@ end
 
 to calc-fish
   ask patches [
-    set fish-biomass (list solea platessa crangon 0)
+    set prey-names (list "Solea" "Pleuronectes" "Crangon")
+    set fish-biomass (list solea platessa crangon)
     ;set fish-abundance (list 100 200 300 400) ; default values needs to be adjusted when data available
   ]
 end
 
 to-report catch-species [haul-length]
-;to-report catch-species [haul-length haul-width]
   ; calculate the values for each patch and every target species
   ;(solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for fish-biomass
 
-  let my-species "Crangon"
-  let index-species position my-species species-names
+  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
 
-  ; @todo replace with max
-  let new-catch n-values (number-of-gears) [ i ->
-    (item i catch-efficiency-boat) * (item (position ([gear-species] of item i boat-gears) species-names) fish-biomass) * (([gear-width] of item i boat-gears) * haul-length) * (boolean2int (item 0 fish-biomass > 0) )
-  ] ; use 'gear-width' specific for each gear
+  report n-values (number-of-gears) [ igear ->
+     (item igear catch-efficiency-boat) * (item (item igear ispecieslist) fish-biomass)
+      * (([gear-width] of item igear boat-gears) * haul-length) * (boolean2int (item (item igear ispecieslist) fish-biomass > 0) )
+  ]
 
-  ;set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i new-catch)]
-
-  ; @todo summarize over all species with this gear
-  ;set fish-biomass n-values (number-of-species - 1 ) [i -> (item i fish-biomass - item i new-catch)] ; patch procedure?
-  ;print (list boat-gear-catches)
-  ;print (list fish-biomass)
-  ;print new-catch
-  report  new-catch
 end
 
 ; This is a boat procedure
@@ -397,7 +384,7 @@ to leave-port
   set boat-distance-at-sea gis-distance home-port
   set boat-time-at-sea  boat-distance-at-sea / boat-steaming-speed
 
-  let my-target-species item (index-max-one-of boat-gear-priorities) gear-species-names
+  let my-target-species item (index-max-one-of boat-gear-priorities) gear-prey-names
   if my-target-species = nobody [ set my-target-species  "other" ]
 
   ifelse (boat-engine > 221 and my-target-species = "Pleuronectes") [
@@ -424,7 +411,7 @@ to go-on-fishing-trip
 
   let navigable-patches patches with [accessible?]
 
-  let my-target-species item (index-max-one-of boat-gear-priorities) gear-species-names
+  let my-target-species item (index-max-one-of boat-gear-priorities) gear-prey-names
   if my-target-species = nobody [ set my-target-species  "other" ]
   if (boat-engine > 221 and my-target-species = "Pleuronectes") [
     set navigable-patches navigable-patches with [not plaice-box?]
@@ -434,7 +421,7 @@ to go-on-fishing-trip
   let time-left boat-triplength
   let haul-time 2   ; 2 hours for a typical haul time without change of direction
   let distance-left boat-steaming-speed * time-left ; at typical speed of 19 km / h this is 1368 km
-  let new-catch n-values (number-of-species - 1) [i -> 0]
+  let new-catch n-values (length prey-names - 1) [i -> 0]
   let distance-to-alternative-patch 40 ;
 
   ; Sascha suggests to use favorite-port instead of home-port in the next 10 lines
@@ -610,11 +597,10 @@ to go-on-fishing-trip
     (transportation-costs * item i boat-gear-catches +  operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
   ]
 
-  ; Find the position of the target gear-species in species-names and return the index of the species,
+  ; Find the position of the target gear-species in prey-names and return the index of the species,
   ; save this in a temporary list of size number-of-gears, resulting in the gear-species index map ispecieslist
   ; @todo move this to gear.nls as global
-  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) species-names ]
-
+  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
 
   ; Calculate the boat revenue depending on the landed species and the port
   set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]

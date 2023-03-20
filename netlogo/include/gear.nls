@@ -18,7 +18,7 @@ gears-own [
 
 globals [
   gear-names
-  gear-species-names
+  gear-prey-names
   number-of-gears
 ]
 
@@ -95,16 +95,16 @@ to setup-gears
   
   ; Nephrops trawl 
   ; data based on Penny 2007 Fisheries Research Services Internal Report No. 01/07
-  create-gears 1 [
-    set gear-name "DRB35NEP"
-    ;set gear-species "Nephrops"
-    set gear-species "other" ; as long as not implemented in data file
-    set gear-width .035 ; width of beam in km
-    set gear-drag 1500 ; kgf
-    set gear-installation-cost 1000 ; EUR for changing to this gear
-    set gear-purchase-cost 35000 ; EUR
-    set gear-speed 5 ; 
-  ]
+;  create-gears 1 [
+;    set gear-name "DRB35NEP"
+;    ;set gear-species "Nephrops"
+;    set gear-species "other" ; as long as not implemented in data file
+;    set gear-width .035 ; width of beam in km
+;    set gear-drag 1500 ; kgf
+;    set gear-installation-cost 1000 ; EUR for changing to this gear
+;    set gear-purchase-cost 35000 ; EUR
+;    set gear-speed 5 ; 
+;  ]
 
   ; Report global variables, make sure to keep the order of the gears
   ; and the correct relation between species and gear name
@@ -112,7 +112,7 @@ to setup-gears
   let my-gear-ids sort [who] of gears
   set number-of-gears count gears
   set gear-names n-values number-of-gears [i -> [gear-name] of gear item i my-gear-ids]
-  set gear-species-names n-values number-of-gears [i -> [gear-species] of gear item i my-gear-ids]
+  set gear-prey-names n-values number-of-gears [i -> [gear-species] of gear item i my-gear-ids]
     
 end
 
