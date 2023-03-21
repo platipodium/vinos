@@ -31,7 +31,7 @@ to setup-maps
   gis:apply-raster bathymetry-dataset depth
   
   ; The following removes NaN values which are not allowed
-  ask patches with [not (depth < 0 or depth > -1) ] [ set depth 9999 ]
+  ask patches with [not (depth <= 0 or depth > -1) ] [ set depth 9999 ]
   
   ; Convert from bathymetry to depth
   ask patches [ set depth ( - depth)]
