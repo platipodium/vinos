@@ -68,6 +68,7 @@ to read-prey-csv
       set prey-scientific my-name
       set prey-german ""
       set prey-picture ""
+      set hidden? true
     ]
   ]
 
