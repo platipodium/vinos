@@ -74,6 +74,8 @@ boats-own [
 
 to setup-boats
 
+  set-default-shape boats "boat top"
+  
   ; read distribution of boat properties
   let lpue-distribution csv-property "LPUE"
   let engine-distribution csv-property "VE_KW"
