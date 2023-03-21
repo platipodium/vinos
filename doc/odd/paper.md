@@ -61,7 +61,7 @@ The primary agents in the ABM are the fishing vessels, denoted as *boats*.  They
 
 ### The primary agent: boats
 
-Boats are located at ports, according to the distribution of the German fleet in those ports.  In the German fleet there are four distinct clusters of small-scale fisheries vessels  that have typical vessel and crew size,  gear and fishing strategy (@Örey2023).  With those come physical  (speed, length, capacity, engine power) and economic properties (fixed and variable costs). 
+Boats are located at ports, according to the distribution of the German fleet in those ports.  In the German fleet there are four distinct clusters of small-scale fisheries vessels  that have typical vessel and crew size,  gear and fishing strategy (@Örey2023).  With those come physical  (speed, length, capacity, engine power) and economic properties (fixed and variable costs).  Boats have a catch efficiency that tries to model the experience of the individual boat owners.
 
 Boats go on fishing trips and record the catch and the revenue. They internally record the economic balance of their activites and continuously adapt preferences, e.g., for choosing a specific gear.  
 
@@ -96,79 +96,78 @@ A calendar records time.  The temporal domain are multiple years and the tempora
 
 ## Process overview and scheduling
 
+The natural timestep of the model is one day.  Each day, *boats in ports* make a decision to go out or not.  If a boat decides to go fishing, it starts a fishing trip during which it records catches, distances and time spent.
+It starts the fishing activity at a cell that is the nearest navigable cell from the port.
 
-One tick represents 72 hours for one fishing trip and simulations run for years. During one trip, boats change direction to move forward every two hours and the routes of boats are updated every second. One grid cell represents 5.5 km by 5.5 km and the model landscape consists of 320 x 120 cells (check).
+*Boats at sea* subdivide their fishing activity in hauls. Before a haul, a new direction is randomly chosen for the next haul, subject to accessibility.  If no navigable route can be found, the boat is marked as needed to return, if yes, a straight line haul is started lasting 2 hours.
 
-1. **Process overview and scheduling**
+To record the fishing activity on the cells, a haul is subdivided into 20 time steps of 6 minutes duration.  The time spend in a cell and the area swept is recorded for the gear with the highest priority. The catch is calculated separately for each gear (and the gear-associated target species), taking into account the target species biomass, the gear width and haul distance and the boat's catch efficiency.
 
-1. Boats start a fishing trip from a home port for the next 3 days (72 hours) and return to a landing port at a steaming speed of 19 km/h. While fishing, boats move at slower speeds of which average and standard deviation are 3 km/h and 0.5 km/h, respectively.
-2. They randomly choose a direction to move forward by targeting a patch navigable and keep going in the same direction for 2 hours. The straight-line fishing trip for 2 hours is defined as a haul. If they fail to find a navigable patch after 20 attempts, they decide to go home.
-3. While moving to the targeted patch, they catch fish, and the amount of fish caught is calculated for each gear every six minutes. The fish catch per gear is a product of fish stock (fish biomass) on the path, gear (haul) width, haul length, gear priority, and catch efficiency.
-4. After each haul, the boats evaluate the performance of the haul. If the haul is good enough, they reset the time to 24 hours even though the time left is more than 24 hours. As for the bad haul, they reset the time to 24 hours with a remaining time of fewer than 24 hours and choose an alternative patch within a 40 km distance as a start point (check). Regardless of the haul performance, they return to a landing site once out of capacity or time.
-5. During the trip, fish catch, time spent at sea, and trip distance are accumulated for each boat.
-6. After returning to the landing port, boats calculate how much gain they earn from the fishing trip by subtracting costs from revenues for each fish species. The revenue is given by multiplying the fish catch with the fish price. The price for each fish species is calculated using landing data from the home port. The costs include transportation and operation costs. The former is a function of fuel efficiency, oil price, the trip distance at sea, and fish catch, while the latter is the result of the multiplication of wage, time at sea, and fish catch.
-7. Based on the gains for each fish species, fishers (boats) assess which fish species is more profitable and increase the priority of more cost-effective fish species for the next time step. When modifying the priorities, an adaptation rate is considered, which is a rate for fishers to adapt to a changing environment, for instance, by retooling their equipment.
-8. With the changed fish priorities, the boats start a new fishing trip.
+After each haul, the boats check whether they have sufficient time, loading capacity, and fuel left to return to their home port. If there's no need to go home, a boat compares determins the sufficiency of the last haul.  If yes, the boat starts the next haul in place, if not, it steams to a new cell (currently a neighboring cell) from where to start a haul. 
 
-1. **Design concepts**
+Priorities for the different gears are updated based on the relative change of the (virtually in parallel) deployed gears and catches.
 
-1) Basic principles
+Once back home the boat's catch is registered at the port.   
 
-2) Emergence
+## Design concepts
 
-3) Adaptation
+### Basic principles
 
-4) Objectives
+The ABM is an adaptive model with the **objective** of maximizing profits, subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to the priority change in gear with the shifting priorities VIABLE approach by @Scheffran.  
 
-6) Learning
+In the VIABLE approach, each boat carries a list of priorities that are subject to change based on the boats perception of its activities.  During each haul, the benefits (i.e. the price of the catch times the amount caught) are contrasted with the costs of that haul (wage and fuel) in parallel for all gears available to a boat. The value (gain or loss, in €) for each gear type is multiplied by an adaptation rate which is added to the priorities.  
 
-7) Prediction
+More general, there arestrategies $i \in 1..n$ with priorities $r_i$, values $V_i$ and adaptation rates $a_i$. The marginal benefit of a change in $V$ with respect to $r$ is $v_i=\partial{V_i}/\partial{r_i}$.  
 
-8) Sensing
+The temporal change of the priorities $r_i$ is given by 
+$$
+\frac{dr_i}{dt} = a_i r_i \cdot \frac{v_i - \Sum r_i v_i }{\Sum v_i}
+$$
 
-9) Interaction
+### Emergence
 
-There are interactions between boats and the environment. Hcowever, no direct interaction within boats is involved in the model.
+The emergent property is the spatial pattern of fishing activities, which is best recorded as maps of effort or maps of swept area ratio (SAR). This property can be compared to existing data on effort or SAR, and it gives information on the location of the largest potential environmental impact of fisheries. 
 
-10) Stochasticity
+### Learning
 
-11) Collectives
+To enable learning, boats implement a memory of best hauls, recording the amount caught and the cell location, This memory has size 20. After a training phase, boats may choose to steam preferentially to one of the best 10 past experienced locations to start fishing.  
 
-12) Observation
+### Prediction
 
-1. **Initilization**
+When deliberating to change to a gear with higher priority, boats have to discount the installation cost of a new gear and compare this with future expected gains.  They can only switch gears if the predicted future gain with the new gear minus the installation cost is higher than the predicted future gain of the current gear. 
 
-1. **Inputs**
+### Sensing and Interaction
 
+Boats sense the resource availability of each cell, as well as global fuel prices and port-dependent market prices. There is no **interaction** between boats.   A feedback of the boats onto the cells by depleting their prey resource is foreseen but currently not implemented.
+
+### Stochasticity
+Boats are distributed across harbors according to empirical data.  Their assignation to one of the four clusters is stochastic within the empirical distribution.  Physical data of the boats are stochastic within the empirical limits of their cluster.  
+
+The direction of a haul is random across all accessible directions. The weather is stochastic within the limits of a typical North sea storm climatology. 
+
+## Initialization
+
+Ports and boats are intialized from empirical statistics available for the year 2015.  The resources are initialized from a species distribution model (SDM) based on stock assessments and environmental data for the period 2015-2020. Time is initialized on 1 Jan 2020.  
+
+## Input data
+
+The model makes use of extensive external data sources to describe the environment and to initialize the agents.
+The data sources are
+
+ * Port landings data 2015 by Hochschule Bremerhaven
+ * Species distribution of plaice, sole, and brown shrimp by Thünen
+ * Species data by FAO
+ * Bathymetry by GEBCO
+ * Offshore Wind park outlines by EMODNET
+ * EEZ outline by the UN
+ * ICES subregional divisions by ICES
+ * Plaice box outline by the European Commission
+ * Geodetic information by the International Earth Rotation Service
+ * National Park outline by NLWKN
+
+All data are publicly available.  Their licensing models are documented
+
+<!--
+## Sub-models
 1. **Sub-models**
-
-
-# Questions (those not yet moved to issues)
-
-## Things to be cleaned or fixed
-
-- Parts not used: learning before choosing direction, action breeds (clean?)
-- Variables not used (clean?)
-- Different gear order in a list of boat-gears for the boats. For example, (gear 0, gear 1, gear2) for boat 1 or (gear 1, gear 2, gear 0) for boat 2, etc.: fixed on the GitHub (27th 12)
-- Still minus priorities: fixed GitHub (27th 12)
-- Some variables (e.g., fish catch) need to be reset after one trip?
-
-1. What do we expect from the model or purpose (unclear)?
-
-1. Routes of boats: random direction + considering bad haul, boat capacity, and remaining time (related to when to return)
-2. Increasing fish catch by changing boat (gear) priority over time
-3. Increasing profits by changing boat (gear) priority over time
-4. Interaction between geophysical drivers (climate change, environmental impacts) and human activities (fishery)? At the moment, not considered.
-
-1. Next step (including questions about the existing plan)
-
-- Do fish stocks remain the same not affected by fish catch and reproduction?
-- Do we use different fish stocks depending on seasons, not only in summer?
-- Add variabilities of boats (size or engine power, preferred-distance, catch-efficiency, …)?
-- Prices of fish not affected by the market or total fish catch?
-- Environmental impacts: seabed, climate change (temperature, salinity, etc.)
-- Adaptation by agents
-
-1. Oil prices increase: stay less at sea (reducing time available), increase minimum fish catch when deciding to return. The other way around for decrease in oil prices
-2. Response to environmental impacts (e.g., changing fish stock due to climate change -\> fish catch -\> fish priorities)
-3. Learning about profitable routes?
+-->
