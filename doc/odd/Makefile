@@ -1,0 +1,78 @@
+PANDOC=pandoc
+
+## Markdown extension (e.g. md, markdown, mdown).
+MEXT = md
+
+# Markdown source format with extensions
+
+MDFORMAT=--from=markdown+pipe_tables+simple_tables+multiline_tables+fenced_code_blocks+table_captions+yaml_metadata_block+definition_lists+superscript+subscript+tex_math_dollars+inline_notes+smart
+
+BIBCMD=--filter pandoc-citeproc --biblatex --bibliography $(BIB)
+BIBCMD=
+
+TOCCMD=--toc
+TOCCMD=
+
+CMD=$(PANDOC) $(MDFORMAT) $(BIBCMD) $(TOCCMD)
+
+## All markdown files in the working directory
+SRC = $(wildcard *.$(MEXT))
+
+## Location of Pandoc support files.
+PREFIX = $(HOME)/.pandoc
+
+PDF=$(SRC:.md=.pdf)
+PPTX=$(SRC:.md=.pptx)
+HTML=$(SRC:.md=.html)
+TEX=$(SRC:.md=.tex)
+DOCX=$(SRC:.md=.docx)
+ODT=$(SRC:.md=.odt)
+EPUB=$(SRC:.md=.epub)
+TXT=$(SRC:.md=.txt)
+BIB=$(SRC:.md=.bib)
+
+all:  txt odt pdf
+pdf:	$(PDF) $(SRC) Makefile
+html:	$(HTML) $(SRC) Makefile
+docx: $(DOCX) $(SRC) Makefile
+odt:  $(ODT) $(SRC) Makefile
+epub: $(EPUB) $(SRC) Makefile
+tex:  $(TEX) $(SRC) Makefile
+txt:  $(TXT) $(SRC) Makefile
+docker: 
+	docker run --rm \
+    	--volume $PWD:/data \
+    	--user $(id -u):$(id -g) \
+    	--env JOURNAL=joss \
+    	openjournals/inara
+
+%.txt:	%.md Makefile
+	$(CMD) --to=plain -o $@ $<
+
+%.html:	%.md Makefile
+	$(CMD) --to=html --template=html.template --css=$(PREFIX)/marked/kultiad-serif.css -o $@ $<
+
+%.epub:	%.md Makefile
+	$(CMD) --to=epub -s -o $@ $<  # --epub-cover-image=cover-image.gif
+
+%.tex:	%.md Makefile
+	$(CMD) -s  --template=../templates/joss_template.tex --pdf-engine=pdflatex -o $@ $<
+	$(CMD) -s  --template=../templates/joss_template.tex --pdf-engine=pdflatex  -o $@ $<
+
+%.pdf:	%.md Makefile
+	$(CMD) -s  --template=../templates/joss_template.tex --pdf-engine=pdflatex -o $@ $<
+
+%.docx:	%.md Makefile
+	$(CMD)--to=docx -s -o $@ $<
+# --reference-doc= --filter pandoc-citeproc --bibliography
+
+%.odt:	%.md Makefile
+	$(CMD) --to=odt -s  -o $@ $<
+# --reference-doc= --filter pandoc-citeproc --bibliography
+
+clean:
+	@rm -f $(PDF) $(SRC:.md=.html) $(SRC:.md=.odt) $(SRC:.md=.docx)
+	@rm -f $(PDF:.pdf=.nav) $(PDF:.pdf=.out) $(PDF:.pdf=.tex) $(PDF:.pdf=.snm) $(PDF:.pdf=.toc)
+	@rm -f $(PDF:.pdf=.log) $(PDF:.pdf=.synctex.gz) $(PDF:.pdf=.blg)  $(PDF:.pdf=.bbl)
+	@rm -f missfont.log $(SRC:.md=.run.xml)
+	@rm -f $(EPUB) $(TXT)
