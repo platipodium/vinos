@@ -59,11 +59,12 @@ docker:
 	$(CMD) --to=epub -s -o $@ $<  # --epub-cover-image=cover-image.gif
 
 %.tex:	%.md Makefile
-	$(CMD) -s  --template=../templates/latex.template --pdf-engine=pdflatex -o $@ $<
+	$(CMD) -s  --template=../templates/latex.template  -o $@ $<
 #$(CMD) -s  --template=../templates/latex.template --pdf-engine=pdflatex  -o $@ $<
 
 %.pdf:	%.md Makefile
-	$(CMD) -s  --template=../templates/latex.template --pdf-engine=pdflatex -o $@ $<
+#	$(CMD) -s  --template=../templates/latex.template  -o $@ $<
+	$(CMD) -s   -o $@ $<
 
 %.docx:	%.md Makefile
 	$(CMD)--to=docx -s -o $@ $<
