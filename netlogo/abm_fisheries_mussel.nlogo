@@ -361,56 +361,18 @@ to-report should-go-fishing?
 end
 
 
-; This is a boat procedure initializing a new
-; fishing trip from the start patch of its associated
-; favorite port
-to leave-port
-  let home-port  one-of link-neighbors
-
-  ; Determine start end end patches of fishing activity.  This is usually the start/landing
-  ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
-  ; patch outside the plaice box.
-  let s-patch [port-start-patch] of home-port    ; starting patch of the boat
-  let l-patch [port-landing-patch] of home-port  ; landing patch of the boat
-
-  pen-up
-  move-to s-patch
-
-  set boat-distance-at-sea gis-distance home-port
-  set boat-time-at-sea  boat-distance-at-sea / boat-steaming-speed
-
-  let my-target-species item (index-max-one-of boat-gear-priorities) gear-prey-names
-  if my-target-species = nobody [ set my-target-species  "other" ]
-
-  ifelse (boat-engine > 221 and my-target-species = "Pleuronectes") [
-    set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
-    set l-patch s-patch
-    print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
-  ][
-    print (list "Boat" who "leaves from" s-patch "at depth" ([depth] of s-patch) "m " boat-distance-at-sea "km and" boat-time-at-sea "h from home" )
-  ]
-
-  set boat-trip-phase 2 ; available at start patch
-
-end
 
 ; This is a boat procedure
 ; it describes a detailed single fishing trip starting and ending in the
 ; port.
 to go-on-fishing-trip
 
-  leave-port
+  boat-leave-port
 
   let s-patch patch-here
   let l-patch patch-here
 
-  let navigable-patches patches with [accessible?]
-
-  let my-target-species item (index-max-one-of boat-gear-priorities) gear-prey-names
-  if my-target-species = nobody [ set my-target-species  "other" ]
-  if (boat-engine > 221 and my-target-species = "Pleuronectes") [
-    set navigable-patches navigable-patches with [not plaice-box?]
-  ]
+  let navigable-patches boat-accessible-patches
 
   let time-step 0.1 ; in hours  (let's say 6 min)
   let time-left boat-triplength
@@ -422,8 +384,6 @@ to go-on-fishing-trip
   ; Sascha suggests to use favorite-port instead of home-port in the next 10 lines
   let home-port one-of link-neighbors  ; home-port of boats
   let boat-plaice-box? false
-
-
   let need-to-go-to-port? false
 
   ; Move the boat from home port to the starting patch and assume it steams there,

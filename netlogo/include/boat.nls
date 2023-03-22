@@ -57,6 +57,7 @@ boats-own [
   boat-triplength
   
   boat-time-at-sea
+  boat-time-at-sea-left
   boat-distance-at-sea
   
   ; value encoding the state the boat is in during a fishing trip.
@@ -67,6 +68,7 @@ boats-own [
   ; 4 at sea, needing to go home
   ; 5 at landing patch, ready to offload
   boat-trip-phase 
+  boat-needs-return?
   
   
 ]
@@ -144,6 +146,7 @@ to setup-boats
           
       set boat-trip-phase 1 ; in port and available
       set boat-home-port myself
+      set boat-needs-return? false
     ]
     ask my-links [set hidden? true]
   ]
@@ -161,7 +164,143 @@ to-report __test_csv_property
 end
 
 
+; This is a boat procedure, it takes duration (in hours) as an argument.  A haul is a straight-line
+; fishing activity for the duration given.  
+; @todo this is not yet completely implemented
+to boat-haul [duration]
+  
+  let time-elapsed 0
+  let time-step 0.1 ; in hours, i.e. 6 minutes
+  let new-catch n-values length boat-gears [i -> 0]
+  let my-haul-catch n-values length boat-gears [i -> 0]
+  let l-patch [port-start-patch] of boat-home-port
+  let s-patch [port-start-patch] of boat-home-port
+  let distance-to-alternative-patch 40
+  
+  while [not boat-needs-return? and time-elapsed < duration] [
 
+    set time-elapsed time-elapsed + time-step
+    set new-catch catch-species (time-step * fishing-speed)
+    ask patch-here [
+      set fishing-effort-hours fishing-effort-hours + time-step
+     ]
+     forward fishing-speed * time-step ; @todo adjust to gear
+     set my-haul-catch n-values (number-of-gears) [i -> (item i boat-gear-catches + item i new-catch)]
+  
+  ]
+  set boat-time-at-sea-left boat-time-at-sea-left - time-elapsed
+  set boat-time-at-sea boat-time-at-sea + time-elapsed
+  set boat-distance-at-sea boat-distance-at-sea + time-elapsed * fishing-speed
+  let distance-left boat-steaming-speed * boat-time-at-sea-left ; at typical speed of 19 km / h this is 1368 km
+
+  
+  ; If the catch is not worth keeping it, discard it entirely and
+  ; reset the time left. Fishers don't want to keep the bad haul, as this
+  ; would restrict their left time
+  ; @todo could this lead to infinite stay at sea?
+  if (item 1 my-haul-catch < min-fresh-catch and boat-time-at-sea-left < 24)[
+      set boat-time-at-sea-left 24
+      set my-haul-catch n-values length boat-gears [i -> 0]
+   ]
+   
+  ; But if the catch is successful, then make
+  ; sure that the timeout is maximum 24 hours (to keep the fish fresh)
+  ; @todo this is not properly implemented yet
+  if (item 1 new-catch > min-fresh-catch and boat-time-at-sea-left > 24)[
+        set boat-time-at-sea-left 24
+      ]
+
+      ; Evaluate whether to go home based on different criteria, i.e.
+      ; capacity exceeded, too far from home port, or
+
+      if (item 1 boat-gear-catches > boat-capacity) [
+        print (list "Boat" who "full. Needs to go back to port")
+        set boat-needs-return? true
+      ]
+      if (gis-distance l-patch > distance-left) [
+        print (list "Boat" who "went far enough, needs to go home to reach port")
+        set boat-needs-return? true
+      ]
+      ;if (time-left < gis-distance l-patch / boat-steaming-speed) [
+      ;  print (list "Boat" who "is running out of time, needs to go home to reach port")
+      ;  set boat-needs-return? true
+      ;]
+
+      ; in case of a bad haul, select a different patch.
+      ; for now, we choose a  neighbor patch, later we have to implement
+      ; a procedure to find a patch approx 20 km away
+      ; @todo check units
+      ;if (false) [
+      if (item 1 new-catch < min-fresh-catch) [
+    let my-neighbors patches  with [accessible? and gis-distance l-patch < distance-left and gis-distance myself < distance-to-alternative-patch and gis-distance [boat-home-port] of myself > 5 ] ; @todo: currently set to 20, revise with respect to memorx
+        ifelse any? my-neighbors [
+          set s-patch one-of my-neighbors
+          print (list "Boat" who "start a new haul at a different patch with depth" ([depth] of s-patch))
+        ][
+          print (list "Boat" who "could not find any navigable water, going home")
+          set boat-needs-return? true
+        ]
+        move-to s-patch
+        set boat-distance-at-sea boat-distance-at-sea + gis-distance s-patch
+        set distance-left distance-left - gis-distance s-patch
+        set boat-time-at-sea boat-time-at-sea + gis-distance s-patch / boat-steaming-speed
+        set boat-time-at-sea-left boat-time-at-sea-left - gis-distance s-patch / boat-steaming-speed
+      ]
+
+      print (list "Boat" who "t=" boat-time-at-sea "t-=" boat-time-at-sea-left "dh=" (gis-distance l-patch) "d=" boat-distance-at-sea "d-=" distance-left "c1=" (item 1 boat-gear-catches) )
+      ;print (list who ([depth] of patch-here))
+    
+end
+
+
+
+; This is a boat procedure initializing a new
+; fishing trip from the start patch of its associated
+; favorite port
+to boat-leave-port
+
+  ; Determine start end end patches of fishing activity.  This is usually the start/landing
+  ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
+  ; patch outside the plaice box.
+  let s-patch [port-start-patch] of boat-home-port    ; starting patch of the boat
+  let l-patch [port-landing-patch] of boat-home-port  ; landing patch of the boat
+
+  pen-up
+  move-to s-patch
+
+  set boat-distance-at-sea gis-distance boat-home-port
+  set boat-time-at-sea  boat-distance-at-sea / boat-steaming-speed
+
+  let my-target-species item (index-max-one-of boat-gear-priorities) gear-prey-names
+  if my-target-species = nobody [ set my-target-species  "other" ]
+
+  ifelse (boat-engine > 221 and my-target-species = "Pleuronectes") [
+    set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
+    set l-patch s-patch
+    print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
+  ][
+    print (list "Boat" who "leaves from" s-patch "at depth" ([depth] of s-patch) "m " boat-distance-at-sea "km and" boat-time-at-sea "h from home" )
+  ]
+
+  set boat-trip-phase 2 ; available at start patch
+
+end
+
+; This boat procedure return the agent-set of accessible patches considering
+; the plaice box restriction if highest priority gear's prey is plaice.
+to-report boat-accessible-patches
+  
+  let my-patches patches with [accessible?]
+
+  let my-target-species item (index-max-one-of boat-gear-priorities) gear-prey-names
+  if my-target-species = nobody [ set my-target-species  "other" ]
+  if (boat-engine > 221 and my-target-species = "Pleuronectes") [
+    set my-patches my-patches with [not plaice-box?]
+  ]
+  
+  report my-patches
+
+end
 
 
 
