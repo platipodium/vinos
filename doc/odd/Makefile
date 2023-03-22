@@ -57,7 +57,7 @@ docker:
 
 %.tex:	%.md Makefile
 	$(CMD) -s  --template=../templates/latex.template --pdf-engine=pdflatex -o $@ $<
-	$(CMD) -s  --template=../templates/latex.template --pdf-engine=pdflatex  -o $@ $<
+#$(CMD) -s  --template=../templates/latex.template --pdf-engine=pdflatex  -o $@ $<
 
 %.pdf:	%.md Makefile
 	$(CMD) -s  --template=../templates/latex.template --pdf-engine=pdflatex -o $@ $<
