@@ -10,26 +10,30 @@ tags:
   - ODD
 authors:
   - name: Carsten Lemmen
-    orcid: 0000-0000-0000-0000
-    affiliation: 2
+    orcid: 0000-0003-3483-6036
+    affiliation: 1
     corresponding: true
     email: carsten.lemmen@hereon.de
   - name: Jieun Seo
-    affiliation: 1
+    affiliation: 2
+    orcid: 0000-0000-0000-0000
   - name: Sascha Hokamp
-    affiliation: 1
+    affiliation: 2
+    orcid: 0000-0002-2192-4013
   - name: Serra Örey
     affiliation: 3
+    orcid: 0000-0000-0000-0000
 affiliations:
  - name: Helmholtz-Zentrum Hereon, Germany
-   index: 2
- - name: University of Hamburg, Germany
    index: 1
+ - name: University of Hamburg, Germany
+   index: 2
  - name: Hochschule Bremerhaven, Germany
    index: 3
-date: 21 March 2023
+date: 22 March 2023
 SPDX-FileCopyrightText: 2023 University of Hamburg
 SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
 ---
 
@@ -121,7 +125,7 @@ More general, there arestrategies $i \in 1..n$ with priorities $r_i$, values $V_
 
 The temporal change of the priorities $r_i$ is given by 
 $$
-\frac{dr_i}{dt} = a_i r_i \cdot \frac{v_i - \Sum r_i v_i }{\Sum v_i}
+\frac{dr_i}{dt} = a_i r_i \cdot \frac{v_i - \sum r_i v_i }{\sum v_i}
 $$
 
 ### Emergence

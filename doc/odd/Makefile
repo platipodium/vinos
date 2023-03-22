@@ -50,17 +50,17 @@ docker:
 	$(CMD) --to=plain -o $@ $<
 
 %.html:	%.md Makefile
-	$(CMD) --to=html --template=html.template --css=$(PREFIX)/marked/kultiad-serif.css -o $@ $<
+	$(CMD) --to=html --template=../templates/html.template --css=$(PREFIX)/marked/kultiad-serif.css -o $@ $<
 
 %.epub:	%.md Makefile
 	$(CMD) --to=epub -s -o $@ $<  # --epub-cover-image=cover-image.gif
 
 %.tex:	%.md Makefile
-	$(CMD) -s  --template=../templates/joss_template.tex --pdf-engine=pdflatex -o $@ $<
-	$(CMD) -s  --template=../templates/joss_template.tex --pdf-engine=pdflatex  -o $@ $<
+	$(CMD) -s  --template=../templates/latex.template --pdf-engine=pdflatex -o $@ $<
+	$(CMD) -s  --template=../templates/latex.template --pdf-engine=pdflatex  -o $@ $<
 
 %.pdf:	%.md Makefile
-	$(CMD) -s  --template=../templates/joss_template.tex --pdf-engine=pdflatex -o $@ $<
+	$(CMD) -s  --template=../templates/latex.template --pdf-engine=pdflatex -o $@ $<
 
 %.docx:	%.md Makefile
 	$(CMD)--to=docx -s -o $@ $<
