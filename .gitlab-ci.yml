@@ -8,7 +8,7 @@ stages:
   - deploy
 
 license-compliance:
-    image: python:3.9
+    image: python:3.11
     stage: lint
     before_script:
         - pip install --upgrade pip
@@ -89,7 +89,7 @@ joss-paper:
   #   - if: $CI_COMMIT_BRANCH == "joss"
   needs: []
 
-joss-paper:
+odd-paper:
   stage: deploy
   image: 'openjournals/inara:latest'
   script:

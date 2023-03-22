@@ -1,5 +1,5 @@
 ---
-title: 'ODD Protocol for the NetLogo Agent-based Model of North Sea Fisheries'
+title: 'ODD Protocol for the Agent-based Model of small-scale German North Sea Fisheries'
 tags:
   - NetLogo
   - Agent-based Model
@@ -8,6 +8,7 @@ tags:
   - Fisheries
   - MuSSeL project
   - ODD
+keywords: &tags
 authors:
   - name: Carsten Lemmen
     orcid: 0000-0003-3483-6036
@@ -23,6 +24,7 @@ authors:
   - name: Serra Örey
     affiliation: 3
     orcid: 0000-0000-0000-0000
+author: &authors
 affiliations:
  - name: Helmholtz-Zentrum Hereon, Germany
    index: 1
@@ -31,15 +33,17 @@ affiliations:
  - name: Hochschule Bremerhaven, Germany
    index: 3
 date: 22 March 2023
+bibliography: paper.bib
 SPDX-FileCopyrightText: 2023 University of Hamburg
 SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
+titlepage: true
 ---
 
 # ODD Protocol: German North Sea Small-scale Fisheries
 
-The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.  The model description follows the ODD (Overview, Design concepts, Details) protocol for describing individual- and agent-based models (Grimm et al. 2006, 2010).  By following this  protocol, we aim to document the ABM such that it is replicable independently of the current implementation (in NetLogo, @Wilensky2010). 
+The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.  The model description follows the ODD (Overview, Design concepts, Details) protocol for describing individual- and agent-based models [@Grimm2010,@Grimm2020].  By following this  protocol, we aim to document the ABM such that it is replicable independently of the current implementation (in NetLogo, @Wilensky1999). 
  
 ## Purpose
 
@@ -77,10 +81,12 @@ Ports can be boats' home or favourite landing **ports**. Boats start their activ
 
 The fishery target species are denoted **preys**.  Currently, the ABM describes three different species:
 
-| **Prey instance** |  **Description** | **Picture** |
-| Crangon | The brown shrimp *Crangon crangon* .. | ![../../figures/320px-Crangon_crangon.jpg] |
-| Pleuronectes| The place *Pleuronectes platess* ...| ![../../figures/319px-Pleuronectes_platessa.jpg] |
-| Solea| The sole *Solea solea* ...| ![../../figures/Solea_solea_1.jpg] |
+| **Prey instance** | **Description** | **Picture** |
+| --- | --- | --- |
+| Crangon | The brown shrimp *Crangon crangon* ... | ![Crangon crangon](../../figures/320px-Crangon_crangon.jpg) |
+| Pleuronectes | The plaice *Pleuronectes platessa* ... | ![Pleuronectes platessa](../../figures/319px-Pleuronectes_platessa.jpg) |
+| Solea | The sole *Solea solea* ... | ![Solea solea](../../figures/Solea_solea_1.jpg) |
+
 
 The model is designed to accomodate further species relevant to the small-scale fishery such as whiting (*Merlangius merlangus*), sprat (*Sprattus sprattus*), or norwegian lobster (*Nephrops norvegicus*).
 
