@@ -34,13 +34,9 @@ __includes [
 breed [actions action]
 
 actions-own [
-  target                      ; targeted patch id
-  actions-target-species      ; primarily targetted species (solea, platessa, crangon)
-  revenue                     ; revenue for the fishing trip of the boat
-  costs                       ; costs for the fishing trip of the boat
-  gain                        ; gain for the fishing trip of the boat
-  priority                    ; priority for the pathway
-  marginal-priority           ; expected change of the priority for the pathway
+  action-patch                      ; targeted patch id
+  action-gain                        ; gain for the fishing trip of the boat
+  action-gear
 ]
 
 globals [
@@ -274,14 +270,13 @@ to learn
   let home-port-boat one-of link-neighbors
   let my-patch one-of patches with [accessible?]
   let my-costs transportation-costs * distance my-patch
-  let my-revenue catch-efficiency-boat * ([item 2 port-prices] of home-port-boat * [platessa-summer] of my-patch + [item 0 port-prices] of home-port-boat * [solea-summer] of my-patch + [item 1 port-prices] of home-port-boat * [crangon-summer] of my-patch)
+  ; the following is still wrong
+  let my-revenue 0 ; catch-efficiency-boat * ([item 2 port-prices] of home-port-boat * [platessa-summer] of my-patch + [item 0 port-prices] of home-port-boat * [solea-summer] of my-patch + [item 1 port-prices] of home-port-boat * [crangon-summer] of my-patch)
   let my-gain my-revenue - my-costs
-  let my-pathway one-of link-neighbors with [breed = actions and gain < my-gain]
+  let my-pathway one-of link-neighbors with [breed = actions and action-gain < my-gain]
   if my-pathway != nobody [ask my-pathway [
-    set target my-patch
-    set gain my-gain
-    set revenue my-revenue
-    set costs my-costs
+    set action-patch my-patch
+    set action-gain my-gain
    ]
   ]
 end
