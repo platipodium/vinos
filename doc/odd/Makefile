@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FieContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 PANDOC=pandoc
 
 ## Markdown extension (e.g. md, markdown, mdown).
