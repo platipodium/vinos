@@ -1,51 +1,65 @@
 ---
 title: 'ODD Protocol for the Agent-based Model of small-scale German North Sea Fisheries'
-tags:
-  - NetLogo
-  - Agent-based Model
-  - ABM
-  - North Sea
-  - Fisheries
-  - MuSSeL project
-  - ODD
-keywords: &tags
-authors:
+keywords: "NetLogo; Agent-based Model; North Sea; Fisheries; MuSSeL project; ODD"
+journal: comses
+type: article
+classoption: moreauthors=true
+status: 
+author:
   - name: Carsten Lemmen
     orcid: 0000-0003-3483-6036
-    affiliation: 1
-    corresponding: true
+    affil: 1
     email: carsten.lemmen@hereon.de
   - name: Jieun Seo
-    affiliation: 2
-    orcid: 0000-0000-0000-0000
+    affil: 2
+    orcid: 
   - name: Sascha Hokamp
-    affiliation: 2
+    affil: 2
     orcid: 0000-0002-2192-4013
   - name: Serra Örey
-    affiliation: 3
-    orcid: 0000-0000-0000-0000
-author: &authors
-affiliations:
- - name: Helmholtz-Zentrum Hereon, Germany
-   index: 1
- - name: University of Hamburg, Germany
-   index: 2
- - name: Hochschule Bremerhaven, Germany
-   index: 3
+    affil: 3
+    orcid: 
+correspondence: C. Lemmen <carsten.lemmen@hereon.de>
+affiliation:
+ - address: Helmholtz-Zentrum Hereon, Max-Planck-Str. 1, 21502 Geesthacht, Germany
+   num: 1
+ - address: University of Hamburg, Hamburg, Germany
+   num: 2
+ - address: Hochschule Bremerhaven, Bremerhaven, Germany
+   num: 3
 citation_author: Lemmen et al.
 year: 2023
 date: 24 March 2023
 bibliography: paper.bib
-SPDX-FileCopyrightText: 2023 University of Hamburg
 SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: 2023 University of Hamburg
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
 titlepage: true
+abstract: "The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp.
+Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by XXX and allowing up to 70 GW of offshore wind power generation.  
+Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
+acknowledgements: "The authors thank W.N. Probst for providing species distribution data as a forcing to this model.  The development of the model is funded by the German Ministry of Education and Research through the KüNO project MuSSeL (grant number XX)."
+conflictsofinterests: "The authors declare that no conflict of interest has arisen from this work."
+authorcontributions: "All author wrote the ODD.  In addition, C.L., S.H., and Ö.J. designed the model.  C.L and S.H. implemented the model. C.L. and S.Ö. collected data to force the model."
+abbreviations:
+  - short: ABM 
+    long: "Agent-based Model"
+  - short: EEZ 
+    long: "Exclusive Economic Zone"
+  - short: FAO 
+    long: "United Nations Food and Agricultural Organization"
+  - short: ODD 
+    long: "Overview, Design concepts, Details"
+  - short: OWF 
+    long: "Offshore Wind Farm"
+
+
 ---
 
 # ODD Protocol: German North Sea Small-scale Fisheries
 
-The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.  The model description follows the ODD (Overview, Design concepts, Details) protocol for describing individual- and agent-based models [@Grimm2010,@Grimm2020].  By following this  protocol, we aim to document the ABM such that it is replicable independently of the current implementation (in NetLogo, @Wilensky1999). 
+The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.  The model description follows the ODD (Overview, Design concepts, Details) protocol for describing individual- and agent-based models [@Grimm2010][@Grimm2020].  By following this  protocol, we aim to document the ABM such that it is replicable independently of the current implementation (in NetLogo, [@Wilensky1999]). 
  
 ## Purpose
 
