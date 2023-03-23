@@ -32,7 +32,9 @@ affiliations:
    index: 2
  - name: Hochschule Bremerhaven, Germany
    index: 3
-date: 22 March 2023
+citation_author: Lemmen et al.
+year: 2023
+date: 24 March 2023
 bibliography: paper.bib
 SPDX-FileCopyrightText: 2023 University of Hamburg
 SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH

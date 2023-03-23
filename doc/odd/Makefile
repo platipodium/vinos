@@ -62,9 +62,13 @@ docker:
 	$(CMD) -s  --template=../templates/latex.template  -o $@ $<
 #$(CMD) -s  --template=../templates/latex.template --pdf-engine=pdflatex  -o $@ $<
 
-%.pdf:	%.md Makefile
+#%.pdf:	%.md Makefile
 #	$(CMD) -s  --template=../templates/latex.template  -o $@ $<
-	$(CMD) -s   -o $@ $<
+#	$(CMD) -s   -o $@ $<
+
+%.pdf:	%.md Makefile ../templates/latex.template  tex
+	$(CMD) -s  --template=../templates/latex.template  -o $(TEX) $<
+	latexmk -pvc -pdf -e '$$pdflatex=q/xelatex %O -interaction=nonstopmode %S/' -f paper
 
 %.docx:	%.md Makefile
 	$(CMD)--to=docx -s -o $@ $<
