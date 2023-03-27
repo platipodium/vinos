@@ -29,19 +29,17 @@ affiliation:
    num: 3
 citation_author: Lemmen et al.
 year: 2023
-date: 24 March 2023
+license: CC-BY-4.0
 bibliography: paper.bib
 SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 SPDX-FileCopyrightText: 2023 University of Hamburg
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
-titlepage: true
 abstract: "The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp.
 Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by XXX and allowing up to 70 GW of offshore wind power generation.  
 Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
 acknowledgements: "The authors thank W.N. Probst for providing species distribution data as a forcing to this model.  The development of the model is funded by the German Ministry of Education and Research through the KüNO project MuSSeL (grant number XX)."
 conflictsofinterests: "The authors declare that no conflict of interest has arisen from this work."
-authorcontributions: "All author wrote the ODD.  In addition, C.L., S.H., and Ö.J. designed the model.  C.L and S.H. implemented the model. C.L. and S.Ö. collected data to force the model."
 abbreviations:
   - short: ABM 
     long: "Agent-based Model"
@@ -53,8 +51,6 @@ abbreviations:
     long: "Overview, Design concepts, Details"
   - short: OWF 
     long: "Offshore Wind Farm"
-
-
 ---
 
 # ODD Protocol: German North Sea Small-scale Fisheries
@@ -192,6 +188,12 @@ The data sources are
  * National Park outline by NLWKN
 
 All data are publicly available.  Their licensing models are documented
+
+# CRediT authorship contribution statement
+C.Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing.
+J.Seung: Writing – original draft.
+S.Hokamp: Conceptualization, Software, Methodology, Formal analysis, Writing – review & editing.
+S.Örey: Conceptualization, Data curation, Writing – review & editing.
 
 <!--
 ## Sub-models
