@@ -52,6 +52,8 @@
 \RequirePackage{microtype} % For command \textls[]{}
 \RequirePackage{tikz} % For \foreach used for Orcid icon
 \RequirePackage{totcount} % To enable extracting the value of the counter "page" 
+\RequirePackage{tabularx} % To enable extracting the value of the counter "page" 
+
 
  
 %% OPTIONS

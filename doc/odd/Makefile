@@ -68,7 +68,7 @@ docker:
 	$(CMD) -s  --template=../templates/comses-template.tex  -o $@ $<
 
 %.pdf:	%.md Makefile ../templates/comses-template.tex  tex
-	$(CMD) -s  --template=../templates/comses-template.tex  -o $ $<
+	$(CMD) -s  --template=../templates/comses-template.tex  -o $@ $<
 #	latexmk -pvc -pdf -e '$$pdflatex=q/xelatex %O -interaction=nonstopmode %S/' -f paper
 	pdflatex paper
 
