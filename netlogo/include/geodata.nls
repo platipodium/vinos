@@ -8,13 +8,13 @@ to setup-maps
   
   no-display
 
-  let bathymetry-dataset gis:load-dataset "../data/gebco_2021_n56.0_s53.0_w2.0_e10.0.asc"
-  let platessa-summer-dataset gis:load-dataset "../data/dist_ran.forest_pleuronectes.platessa_summer.asc"
-  let platessa-winter-dataset gis:load-dataset "../data/dist_ran.forest_pleuronectes.platessa_winter.asc"
-  let crangon-summer-dataset gis:load-dataset "../data/dist_ran.forest_crangon.crangon_summer.asc"
-  let crangon-winter-dataset gis:load-dataset "../data/dist_ran.forest_crangon.crangon_winter.asc"
-  let solea-summer-dataset gis:load-dataset "../data/dist_ran.forest_solea.solea_summer.asc"
-  let solea-winter-dataset gis:load-dataset "../data/dist_ran.forest_solea.solea_winter.asc"
+  let bathymetry-dataset gis:load-dataset "../data/gebco/gebco_2021_n56.0_s53.0_w2.0_e10.0.asc"
+  let platessa-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_pleuronectes.platessa_summer.asc"
+  let platessa-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_pleuronectes.platessa_winter.asc"
+  let crangon-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_summer.asc"
+  let crangon-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_winter.asc"
+  let solea-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_solea.solea_summer.asc"
+  let solea-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_solea.solea_winter.asc"
   
   ; Set the world envelope to the union of all of our dataset's envelopes
   gis:set-world-envelope (gis:envelope-union-of (gis:envelope-of bathymetry-dataset)
