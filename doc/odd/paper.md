@@ -174,20 +174,20 @@ Ports and boats are intialized from empirical statistics available for the year 
 ## Input data
 
 The model makes use of extensive external data sources to describe the environment and to initialize the agents.
-The data sources are
+All data are publicly available and licensed for use.  The data sources are
 
- * Port landings data 2015 by Hochschule Bremerhaven
- * Species distribution of plaice, sole, and brown shrimp by Thünen
- * Species data by FAO
- * Bathymetry by GEBCO
- * Offshore Wind park outlines by EMODNET
- * EEZ outline by the UN
- * ICES subregional divisions by ICES
- * Plaice box outline by the European Commission
- * Geodetic information by the International Earth Rotation Service
- * National Park outline by NLWKN
-
-All data are publicly available.  Their licensing models are documented
+| **Description* | **Source** | 
+| --- | --- | --- |
+| Port landings data 2015 | Hochschule Bremerhaven, unlicensed |
+| Species distribution of plaice, sole, and brown shrimp | Thünen Institute, PDDL-1.0 |
+| Species information | FAO |
+| Bathymetry | GEBCO |
+| Offshore Wind farms | EMODNet |
+| EEZ | United Nations |
+| ICES subregional divisions | ICES |
+| Plaice box | European Commision |
+| Geodetic information | International Earth Rotation Service |
+| National Parks | NLWKN, DL-DE-BY-2.0 |
 
 # CRediT authorship contribution statement
 C.Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing.
