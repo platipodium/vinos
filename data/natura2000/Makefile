@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de
+
+.PHONY: all download unzip
+
+all: download unzip
+
+plan.zip: download
+
+download:
+	curl --output plan.zip https://cmshare.eea.europa.eu/s/HHGPnNsjqq5BdEa/download
+
+unzip:  plan.zip
+	unzip plan.zip
+
+clean:
+	@rm -f *zip
+	@rm -f
