@@ -1,3 +1,5 @@
+% SPDX-FileCopyrightText: 2018-2023 MDPI
+% SPDX-License-Identifier: CC-BY-SA-3.0
 %% Bibliography style for MDPI journals
 
 ENTRY
