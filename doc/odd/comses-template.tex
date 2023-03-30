@@ -37,13 +37,13 @@ TXT=$(SRC:.md=.txt)
 BIB=$(SRC:.md=.bib)
 
 all:  txt odt pdf
-pdf:	$(PDF) $(SRC) Makefile
-html:	$(HTML) $(SRC) Makefile
+pdf:  $(PDF)  $(SRC) Makefile
+html: $(HTML) $(SRC) Makefile
 docx: $(DOCX) $(SRC) Makefile
-odt:  $(ODT) $(SRC) Makefile
+odt:  $(ODT)  $(SRC) Makefile
 epub: $(EPUB) $(SRC) Makefile
-tex:  $(TEX) $(SRC) Makefile
-txt:  $(TXT) $(SRC) Makefile
+tex:  $(TEX)  $(SRC) Makefile
+txt:  $(TXT)  $(SRC) Makefile
 docker: 
 	docker run --rm \
     	--volume $PWD:/data \
