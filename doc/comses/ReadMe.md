@@ -1,7 +1,7 @@
 <!--
-SPDX-FileCopyright: Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: Helmholtz-Zentrum hereon GmbH
 SPDX-FileContributor: Carsten Lemmen
-SPDX-License: CC0-1.0
+SPDX-License-Identifier: CC0-1.0
 -->
 
 This directory contains the sources for generating the Comses.net version of the model and ODD protocol
