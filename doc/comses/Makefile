@@ -1,6 +1,6 @@
-# SPDX-FileCopyright: Helmholtz-Zentrum hereon GmbH
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 # SPDX-FileContributor: Carsten Lemmen
-# SPDX-License: CC0-1.0
+# SPDX-License-Identifier: CC0-1.0
 
 .PHONY: clean zip all
 

@@ -38,33 +38,27 @@ BIB=$(SRC:.md=.bib)
 
 all:  txt odt pdf
 pdf:	$(PDF) $(SRC) Makefile
-html:	$(HTML) $(SRC) Makefile
+#html:	$(HTML) $(SRC) Makefile
 docx: $(DOCX) $(SRC) Makefile
 odt:  $(ODT) $(SRC) Makefile
 epub: $(EPUB) $(SRC) Makefile
 tex:  $(TEX) $(SRC) Makefile
 txt:  $(TXT) $(SRC) Makefile
-docker: 
-	docker run --rm \
-    	--volume $PWD:/data \
-    	--user $(id -u):$(id -g) \
-    	--env JOURNAL=joss \
-    	openjournals/inara
 
 %.txt:	%.md Makefile
 	$(CMD) --to=plain -o $@ $<
 
-%.html:	%.md Makefile
-	$(CMD) --to=html --template=../templates/html.template --css=$(PREFIX)/marked/kultiad-serif.css -o $@ $<
+#%.html:	%.md Makefile
+#	$(CMD) --to=html --template=../templates/html.template --css=$(PREFIX)/marked/kultiad-serif.css -o $@ $<
 
 %.epub:	%.md Makefile
 	$(CMD) --to=epub -s -o $@ $<  # --epub-cover-image=cover-image.gif
 
 %.tex:	%.md Makefile
-	$(CMD) -s  --template=../templates/comses-template.tex  -o $@ $<
+	$(CMD) -s  --template=./comses-template.tex  -o $@ $<
 
 %.pdf:	%.md Makefile
-	$(CMD) -s  --template=../templates/comses-template.tex  -o $@ $<
+	$(CMD) -s  --template=./comses-template.tex  -o $@ $<
 
 # %.pdf:	%.md Makefile ../templates/comses-template.tex  tex
 #	$(CMD) -s  --template=../templates/comses-template.tex  -o $@ $<
