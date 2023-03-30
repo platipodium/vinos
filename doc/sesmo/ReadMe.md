@@ -1,6 +1,6 @@
 <!--
-SPDX-FileCopyright:  2023 International Environmental Modelling and Software Society
-SPDX-License: CC-BY-NC-4.0
+SPDX-FileCopyrightText:  2023 International Environmental Modelling and Software Society
+SPDX-License-Identifier: CC-BY-NC-4.0
 -->
 
 # SESMO - Socio-environmental Systems Modeling

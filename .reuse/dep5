@@ -7,7 +7,7 @@ Files: data/*landings*.csv
 Copyright: 2022 Hochschule Bremerhaven
 License: Unlicensed
 
-Files: data/dist_ran*asc
+Files: data/thuenen/dist_ran*asc
 Copyright: 2022 Thuenen Institut
 License: PDDL-1.0
 
@@ -15,11 +15,11 @@ Files: figures/dis.*.png
 Copyright: 2022 Thuenen Institut
 License: PDDL-1.0
 
-Files: data/EMODnet*
+Files: data/emodnet/EMODnet*
 Copyright: 2022 EMODNET
 License: LicenseRef-EMODNET-1.0
 
-Files: data/gebco*
+Files: data/gebco/gebco*
 Copyright: 2022 GEBCO
 License: LicenseRef-GEBCO-1.0
 
