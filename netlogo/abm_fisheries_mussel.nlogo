@@ -375,7 +375,7 @@ to go-on-fishing-trip
   let navigable-patches boat-accessible-patches
 
   let time-step 0.1 ; in hours  (let's say 6 min)
-  let time-left boat-triplength
+  let time-left boat-max-duration
   let haul-time 2   ; 2 hours for a typical haul time without change of direction
   let distance-left boat-steaming-speed * time-left ; at typical speed of 19 km / h this is 1368 km
   let new-catch n-values (length prey-names - 1) [i -> 0]
@@ -848,7 +848,7 @@ adaptation
 adaptation
 0
 1
-0.562
+0.564
 0.001
 1
 NIL
@@ -863,7 +863,7 @@ memory-size
 memory-size
 0
 100
-47.0
+48.0
 1
 1
 NIL
@@ -1180,6 +1180,23 @@ wage
 1
 € h-1
 HORIZONTAL
+
+BUTTON
+60
+272
+138
+305
+NIL
+go-one
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 # TODO
