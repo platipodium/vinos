@@ -9,7 +9,6 @@ author:
   - name: Carsten Lemmen
     orcid: 0000-0003-3483-6036
     affil: 1
-    email: carsten.lemmen@hereon.de
   - name: Jieun Seo
     affil: 2
     orcid: 
@@ -23,6 +22,7 @@ correspondence: C. Lemmen <carsten.lemmen@hereon.de>
 affiliation:
  - address: Helmholtz-Zentrum Hereon, Max-Planck-Str. 1, 21502 Geesthacht, Germany
    num: 1
+   email: carsten.lemmen@hereon.de
  - address: University of Hamburg, Hamburg, Germany
    num: 2
  - address: Hochschule Bremerhaven, Bremerhaven, Germany
@@ -55,7 +55,7 @@ abbreviations:
 
 # ODD Protocol: German North Sea Small-scale Fisheries
 
-The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.  The model description follows the ODD (Overview, Design concepts, Details) protocol for describing individual- and agent-based models [@Grimm2010][@Grimm2020].  By following this  protocol, we aim to document the ABM such that it is replicable independently of the current implementation (in NetLogo, [@Wilensky1999]). 
+The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.  The model description follows the ODD (Overview, Design concepts, Details) protocol for describing individual- and agent-based models (@Grimm2010, @Grimm2020).  By following this  protocol, we aim to document the ABM such that it is replicable independently of the current implementation (in NetLogo, @Wilensky1999). 
  
 ## Purpose
 
@@ -81,7 +81,7 @@ The primary agents in the ABM are the fishing vessels, denoted as *boats*.  They
 
 ### The primary agent: boats
 
-Boats are located at ports, according to the distribution of the German fleet in those ports.  In the German fleet there are four distinct clusters of small-scale fisheries vessels  that have typical vessel and crew size,  gear and fishing strategy (@Örey2023).  With those come physical  (speed, length, capacity, engine power) and economic properties (fixed and variable costs).  Boats have a catch efficiency that tries to model the experience of the individual boat owners.
+Boats are located at ports, according to the distribution of the German fleet in those ports.  In the German fleet there are four distinct clusters of small-scale fisheries vessels  that have typical vessel and crew size,  gear and fishing strategy (@Oerey2023).  With those come physical  (speed, length, capacity, engine power) and economic properties (fixed and variable costs).  Boats have a catch efficiency that tries to model the experience of the individual boat owners.
 
 Boats go on fishing trips and record the catch and the revenue. They internally record the economic balance of their activites and continuously adapt preferences, e.g., for choosing a specific gear.  
 
@@ -135,7 +135,7 @@ Once back home the boat's catch is registered at the port.
 
 ### Basic principles
 
-The ABM is an adaptive model with the **objective** of maximizing profits, subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to the priority change in gear with the shifting priorities VIABLE approach by @Scheffran.  
+The ABM is an adaptive model with the **objective** of maximizing profits, subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to the priority change in gear with the shifting priorities VIABLE approach [@Bendor2019],[@Scheffran2016].  
 
 In the VIABLE approach, each boat carries a list of priorities that are subject to change based on the boats perception of its activities.  During each haul, the benefits (i.e. the price of the catch times the amount caught) are contrasted with the costs of that haul (wage and fuel) in parallel for all gears available to a boat. The value (gain or loss, in €) for each gear type is multiplied by an adaptation rate which is added to the priorities.  
 
@@ -199,3 +199,6 @@ S.Örey: Conceptualization, Data curation, Writing – review & editing.
 ## Sub-models
 1. **Sub-models**
 -->
+
+
+# References 

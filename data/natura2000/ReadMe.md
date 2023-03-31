@@ -1,20 +1,14 @@
 <!--
-# SPDX-FileCopyrightText: 2021 Bundesamt für Seeschifffahrt und Hydrographie (BSH)
 # SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
-# SPDX-License-Identifier: LicenseRef-DL-DE-BY-2.0
+# SPDX-FileCopyrightText: 2023 European Environmental Agency
+# SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de
 -->
 
-# Raumordnungsplan AWZ
+# Natura 2000 protected areas
 
-Der Datensatz enthält die am 1. September 2021 veröffentlichten räumlichen Festlegungen des Raumordnungsplans als zusätzliches Informationsangebot. Der Planungsmaßstab des Plans beträgt 1:400.000. Die verbindlich geltenden Dokumente sind abrufbar unter https://www.bsh.de/DE/THEMEN/Offshore/Meeresraumplanung/Raumordnungsplan_2021/raumordnungsplan-2021_node.html
+Natura 2000 is an ecological network of protected areas, set up to ensure the survival of Europe's most valuable species and habitats. Natura 2000 is based on the 1979 Birds Directive and the 1992 Habitats Directive. Natura 2000 is the key instrument to protect biodiversity in the European Union. The European database of Natura 2000 sites consists of a compilation of the data submitted by the Member States of the European Union and is generally updated once a year
 
-Zugriffsbeschränkung: unclassified --- Nutzungsbedingungen: Es gelten keine Zugriffsbeschränkungen --- Lizenz: Dieser Datensatz kann gemäß der "Datenlizenz Deutschland – Namensnennung – Version 2.0" (www.govdata.de/dl-de/by-2-0) genutzt werden., {"id":"dl-by-de/2.0","name":"Datenlizenz Deutschland Namensnennung 2.0","url":"https://www.govdata.de/dl-de/by-2-0","quelle":"Quelle: Bundesamt für Seeschifffahrt und Hydrographie"}
+The data can be obtained in various formats from 
+https://www.eea.europa.eu/en/datahub/datahubitem-view/6fc8ad2d-195d-40f4-bdec-576e7d1268e4
 
-Verzeichnis für Raumordnungsplan AWZ (Veröffentlichung: 01.09.2021, letzte Änderung: 23.11.2021)
-https://data.bsh.de/SpatialData/Main/Raumordnungsplan_AWZ/
-Download Raumordnungsplan AWZ (Veröffentlichung: 01.09.2021, letzte Änderung: 23.11.2021)
-https://data.bsh.de/SpatialData/Main/Raumordnungsplan_AWZ/Raumordnungsplan_AWZ.zip
-
-Raumordnungsplan 2021
-https://data.bsh.de/SpatialData/Main/Raumordnungsplan_AWZ/Raumordnungsplan_AWZ.zip
