@@ -10,8 +10,8 @@ MEXT = md
 
 MDFORMAT=--from=markdown+pipe_tables+simple_tables+multiline_tables+fenced_code_blocks+table_captions+yaml_metadata_block+definition_lists+superscript+subscript+tex_math_dollars+inline_notes+smart
 
-BIBCMD=--citeproc --biblatex --bibliography $(BIB)
-BIBCMD=
+BIBCMD=--citeproc #--biblatex --bibliography $(BIB)
+#BIBCMD=
 
 TOCCMD=--toc
 TOCCMD=
@@ -45,19 +45,19 @@ epub: $(EPUB) $(SRC) Makefile
 tex:  $(TEX) $(SRC) Makefile
 txt:  $(TXT) $(SRC) Makefile
 
-%.txt:	%.md Makefile
+%.txt:	%.md %.bib Makefile
 	$(CMD) --to=plain -o $@ $<
 
 #%.html:	%.md Makefile
 #	$(CMD) --to=html --template=../templates/html.template --css=$(PREFIX)/marked/kultiad-serif.css -o $@ $<
 
-%.epub:	%.md Makefile
+%.epub:	%.md  %.bib Makefile
 	$(CMD) --to=epub -s -o $@ $<  # --epub-cover-image=cover-image.gif
 
-%.tex:	%.md Makefile
+%.tex:	%.md  %.bib Makefile
 	$(CMD) -s  --template=./comses-template.tex  -o $@ $<
 
-%.pdf:	%.md Makefile
+%.pdf:	%.md  %.bib Makefile
 	$(CMD) -s  --template=./comses-template.tex  -o $@ $<
 
 # %.pdf:	%.md Makefile ../templates/comses-template.tex  tex
@@ -65,11 +65,11 @@ txt:  $(TXT) $(SRC) Makefile
 #	latexmk -pvc -pdf -e '$$pdflatex=q/xelatex %O -interaction=nonstopmode %S/' -f paper
 #	pdflatex paper
 
-%.docx:	%.md Makefile
+%.docx:	%.md  %.bib Makefile
 	$(CMD)--to=docx -s -o $@ $<
 # --reference-doc= --filter pandoc-citeproc --bibliography
 
-%.odt:	%.md Makefile
+%.odt:	%.md  %.bib Makefile
 	$(CMD) --to=odt -s  -o $@ $<
 # --reference-doc= --filter pandoc-citeproc --bibliography
 
