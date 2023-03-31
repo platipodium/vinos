@@ -105,6 +105,27 @@ to plot-update-priorities
   ]
 end
 
+
+to plot-setup-boat-trip-phase
+  set-current-plot "trip-phase"
+  set-plot-background-color white 
+  auto-plot-on
+  ;set-plot-x-range 0 max [boat-trip-phase] of boats
+  if not plot-pen-exists? "histogram" [ create-temporary-plot-pen "histogram" ]
+  set-current-plot-pen "histogram"
+  set-histogram-num-bars 5
+  set-plot-pen-mode 1 ; box
+  histogram [boat-trip-phase] of boats
+end
+
+to plot-update-boat-trip-phase
+  set-current-plot "trip-phase"
+  set-current-plot-pen "histogram"
+  histogram [boat-trip-phase] of boats
+end
+
+
+
 to update-drawings
   clear-drawing
   ifelse ports? [ask ports [set hidden? false]][ask ports [set hidden? true]]

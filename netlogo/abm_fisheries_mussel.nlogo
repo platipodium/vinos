@@ -881,10 +881,10 @@ datetime
 9
 
 SLIDER
-8
-447
-208
-480
+13
+401
+213
+434
 operating-costs-of-boats
 operating-costs-of-boats
 0
@@ -941,10 +941,10 @@ Change the background information here and hit \"update\"
 1
 
 BUTTON
-26
-559
-196
-647
+465
+500
+537
+537
 Test
 ;test-target\n;clear-drawing\n\nlet my-boats n-of 10 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
 NIL
@@ -958,25 +958,25 @@ NIL
 0
 
 SLIDER
-7
-521
-217
-554
+12
+445
+222
+478
 fraction-transportation-costs
 fraction-transportation-costs
 0
 1
-0.198
+0.83
 0.01
 1
 NIL
 HORIZONTAL
 
 BUTTON
-412
-690
-507
-723
+450
+552
+545
+585
 save-effort
 let dataset gis:patch-dataset fishing-effort-hours\ngis:store-dataset dataset \"effort\"
 NIL
@@ -990,10 +990,10 @@ NIL
 1
 
 BUTTON
-294
-698
-358
-731
+476
+608
+540
+641
 Effort
 ;test-target\nclear-drawing\n\nask patches [\nset fishing-effort-hours 0\n]\nlet my-boats boats\nrepeat 16 [\nask my-boats [go-on-fishing-trip] \n]\nset view \"effort (h)\" \nupdate-view\n
 NIL
@@ -1182,10 +1182,10 @@ wage
 HORIZONTAL
 
 BUTTON
-60
-272
-138
-305
+24
+259
+102
+292
 NIL
 go-one
 NIL
@@ -1197,6 +1197,23 @@ NIL
 NIL
 NIL
 1
+
+PLOT
+15
+547
+215
+697
+trip-phase
+Phase
+NIL
+0.0
+6.0
+0.0
+10.0
+true
+false
+"plot-setup-boat-trip-phase" "plot-update-boat-trip-phase"
+PENS
 
 @#$#@#$#@
 # TODO

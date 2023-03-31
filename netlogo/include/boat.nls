@@ -371,9 +371,21 @@ to boat-make-haul
     ]
   ]
   let _distance gis-distance _patch
+  let _netlogo-distance distance _patch
   let _time _distance / _fishing-speed 
+  
+  let new-catch n-values length boat-gears [i -> 0]
+
 
   pen-down
+  repeat (haul-time / _time-step) [
+    ;set new-catch catch-species (_time-step * _fishing-speed)
+    ask patch-here [
+      set fishing-effort-hours fishing-effort-hours + _time-step
+    ]
+    forward _netlogo-distance * _time-step / haul-time
+    ;set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i new-catch)]
+  ]
   
   move-to _patch
   set heading heading - 180 - 10 + random (21 + 1)
