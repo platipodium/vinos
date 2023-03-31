@@ -667,34 +667,33 @@ to calc-accessibility
   ask patches [set plaice-box? false]
   load-plaice-box
 
+  let depth-threshold -1
+
   ; By default, all patches are inaccessible
   ask patches [set accessible? false]
 
+  let _sns load-dataset "SNS"
+  ;ask patches gis:intersecting [set accessible? true]
+  ;ask patches with [depth < depth-threshold] [set accessible? false]
+
+  let _water-patches patches gis:intersecting  _sns
+
   ; Creep-fill from maximum depth, assumed in the North Sea
-  let new-patches nobody
-  let my-patches max-one-of patches [depth]
+  let my-patches max-one-of _water-patches [depth]
   ask my-patches [set accessible? true]
 
+  let new-patches nobody
   repeat max-pxcor * 2 [
     ask my-patches [
-      set new-patches neighbors4 with [depth > 0.1 and not accessible?]
+      set new-patches neighbors4 with [depth >= depth-threshold and not accessible?]
+      ;set new-patches neighbors4 with [not accessible?]
       ask new-patches [set accessible? true]
     ]
-    set my-patches patches with [accessible? and (count neighbors4 with [accessible?]) < 4]
-    ;ask  patches with [accessible?] [set pcolor black]
-    ;ask my-patches [set pcolor blue]
+    set my-patches _water-patches with [accessible? and (count neighbors4 with [accessible?]) < 4]
+    ;print (sentence count patches with [accessible?] count my-patches)
   ]
-  ;let creep-count count
 
-
-  ; By default, all patches are accessible
-  ;ask patches [set accessible? true]
-
-  ; We exclude all patches that are below navigable depth
-  ;ask patches with [depth < navigable-depth] [set accessible? false]
-
-  ; We excluede all patches east of the easternmost port
-  ;ask patches with [pxcor >  max [pxcor] of ports] [set accessible? false]
+  ask patches with [not accessible?] [set depth min (list -2 depth)]
 
   ;ask patches with [ all? neighbors [not accessible?] ] [set accessible? false]
 
@@ -793,7 +792,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-5
+4
 
 BUTTON
 93
