@@ -709,6 +709,14 @@ to calc-accessibility
   ; Boats are not allowed within OWF areas
   ask patches with [owf-fraction > 0.5] [set accessible? false]
 
+  ; Fishery is restricted in MPAs from 1 May 2023.  This needs to be refined
+  ; TBB and OTB are not allowed in Borkum riffgrund
+  ; TBB and OTB ar not allowed in Sylt west
+  ; Small TBB are allowed in Sylt East
+  if year > 2023 or (year = 2023 and month > 4) [
+    ask patches gis:intersecting load-dataset "Natura2000" [ set accessible? false ]
+  ]
+
   ; @todo add nature protection, mining etc areas.
 
 end
@@ -785,7 +793,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+6
 
 BUTTON
 93
@@ -897,7 +905,7 @@ oil-price
 oil-price
 25
 75
-50.0
+75.0
 5
 1
 ct l-1

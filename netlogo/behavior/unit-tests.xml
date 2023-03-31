@@ -18,6 +18,8 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
     print __test-quantiles
     print __test-formatted-number
     print __test-index-max-one-of  
+    print __test-load-dataset
+    print __test-draw-dataset
     </setup>
     <go>
     </go>

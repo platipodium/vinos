@@ -10,10 +10,12 @@ to setup-calendar
 
   set days-in-months (list 31 28 31 30 31 30 31 31 30 31 30 31 )
 
-  set year 2020
-  set month 2
+  set year 2023
+  set month 6
   set day 27
-  set day-of-year 58
+  
+  set day-of-year sum (sublist days-in-months 0 (month - 1)) + day
+  if month > 2 [set day-of-year day-of-year + leap-year ]
   set day-of-week 1 ; @todo fix this later
 
 end
