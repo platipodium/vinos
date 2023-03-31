@@ -106,22 +106,51 @@ to plot-update-priorities
 end
 
 
-to plot-setup-boat-trip-phase
-  set-current-plot "trip-phase"
+to plot-setup-boat-property
+  set-current-plot "boat-property"
   set-plot-background-color white 
   auto-plot-on
-  ;set-plot-x-range 0 max [boat-trip-phase] of boats
-  if not plot-pen-exists? "histogram" [ create-temporary-plot-pen "histogram" ]
-  set-current-plot-pen "histogram"
-  set-histogram-num-bars 5
-  set-plot-pen-mode 1 ; box
-  histogram [boat-trip-phase] of boats
 end
 
-to plot-update-boat-trip-phase
-  set-current-plot "trip-phase"
-  set-current-plot-pen "histogram"
-  histogram [boat-trip-phase] of boats
+to plot-update-boat-property
+  set-current-plot "boat-property"
+  if not plot-pen-exists? boat-property-chooser [ 
+    clear-plot
+    create-temporary-plot-pen boat-property-chooser
+    set-plot-pen-mode 1 ; box
+  ]
+  let _x-range (list 0 1)
+  set-current-plot-pen boat-property-chooser  
+  let _values [ boat-max-duration] of boats 
+  ifelse (boat-property-chooser =  "trip-phase" ) or (boat-property-chooser =  "type" ) [ 
+    if (boat-property-chooser = "trip-phase") [
+      set _values [ boat-trip-phase] of boats 
+      set-histogram-num-bars 5
+      set _x-range (list -.5 4.5)
+    ]
+    if (boat-property-chooser = "type") [
+      set _values [ boat-type] of boats 
+      set-histogram-num-bars 4
+      set _x-range (list -.5 3.5)
+    ]
+  ][
+    if ( boat-property-chooser =  "max-duration" ) [ set _values [ boat-max-duration] of boats ]
+    if ( boat-property-chooser =  "max-distance" ) [ set _values [ boat-max-distance] of boats ]
+    if ( boat-property-chooser =  "time-at-sea" ) [ set _values [ boat-time-at-sea] of boats ]
+    if ( boat-property-chooser =  "time-at-sea-left" ) [ set _values [ boat-time-at-sea-left] of boats ]
+    if ( boat-property-chooser =  "distance-at-sea" ) [ set _values [ boat-distance-at-sea] of boats ]
+    if ( boat-property-chooser =  "length" ) [ set _values [ boat-length] of boats ]
+    if ( boat-property-chooser =  "capacity" ) [ set _values [ boat-capacity] of boats ]
+    if ( boat-property-chooser =  "catch-efficiency" ) [ set _values [ catch-efficiency-boat] of boats ]
+    if ( boat-property-chooser =  "engine" ) [ set _values [ boat-engine] of boats ]
+    if ( boat-property-chooser =  "steaming-speed" ) [ set _values [ boat-steaming-speed] of boats ]
+ 
+    set-histogram-num-bars 9
+    set _x-range (list (min _values) (max _values))
+  ]
+  set-plot-x-range item 0 _x-range item 1 _x-range
+  histogram _values
+  
 end
 
 

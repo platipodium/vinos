@@ -795,7 +795,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-5
+4
 
 BUTTON
 93
@@ -851,7 +851,7 @@ adaptation
 adaptation
 0
 1
-0.564
+0.58
 0.001
 1
 NIL
@@ -1106,7 +1106,7 @@ SWITCH
 234
 box?
 box?
-1
+0
 1
 -1000
 
@@ -1185,10 +1185,10 @@ wage
 HORIZONTAL
 
 BUTTON
-227
-663
-305
-696
+379
+666
+457
+699
 NIL
 go-all
 T
@@ -1206,17 +1206,27 @@ PLOT
 547
 215
 697
-trip-phase
-Phase
+boat-property
 NIL
+# boats
 0.0
 6.0
 0.0
 10.0
 true
-false
-"plot-setup-boat-trip-phase" "plot-update-boat-trip-phase"
+true
+"plot-setup-boat-property" "plot-update-boat-property"
 PENS
+
+CHOOSER
+17
+497
+188
+542
+boat-property-chooser
+boat-property-chooser
+"distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "steaming-speed" "time-at-sea" "time-at-sea-left" "trip-phase"
+5
 
 @#$#@#$#@
 # TODO
