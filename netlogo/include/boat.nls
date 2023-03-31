@@ -53,8 +53,9 @@ boats-own [
   boat-type               ; Number 1-4 of the named cluster
   boat-length             ; length of boat in m, related (yet unknown) to capacity.
   boat-engine             ; power of the engine in kW
+ 
   boat-max-distance
-  boat-triplength
+  boat-max-duration  ; cluster-dependent typical trip length
   
   boat-time-at-sea
   boat-time-at-sea-left
@@ -70,6 +71,7 @@ boats-own [
   boat-trip-phase 
   boat-needs-return?
   
+  boat-hour ; Internal hour of the day to facility event-based scheduling
   
 ]
 
@@ -90,7 +92,8 @@ to setup-boats
   let fishing-speed-mean 5.556 ; unit is km/h (= 3kn)
   let fishing-speed-sdev 0.926 ; unit is km/h (= 0.5kn)
 
-
+  print distance-distribution
+  
   ; @todo recreate the ports with new information from Serra 
   ; on the distribution of the 4 clusters in each port.
   
@@ -113,12 +116,13 @@ to setup-boats
       set boat-engine value-from-distribution butfirst butfirst item boat-type engine-distribution      
       set boat-steaming-speed 1.852 * ( 6 + random-float 7 )   ; range 6 to 12 kn, i.e. 11 to 20 km/h 
       
-      ; boat-max-distance and boat-triplength are adaptable, but
+      ; boat-max-distance and boat-max-duration are adaptable, but
       ; rather the fishers prefer boat-tripfrequency by budgeting
       ; against their boat-total-fishing-hours
-      set boat-max-distance value-from-distribution butfirst butfirst item boat-type distance-distribution
-      set boat-triplength value-from-distribution butfirst butfirst item boat-type triplength-distribution
+      set boat-max-distance 0.001 * value-from-distribution butfirst butfirst item boat-type distance-distribution
+      set boat-max-duration value-from-distribution butfirst butfirst item boat-type triplength-distribution
       
+      ;print (sentence "Boat" who boat-max-distance)
       ; Boat capacity is not relevant for shrimpers as freshness is key concern
       set  boat-capacity 100000                                  ; kg of storage
       
@@ -147,6 +151,7 @@ to setup-boats
       set boat-trip-phase 1 ; in port and available
       set boat-home-port myself
       set boat-needs-return? false
+      set boat-hour 0
     ]
     ask my-links [set hidden? true]
   ]
@@ -262,29 +267,131 @@ to boat-leave-port
   ; Determine start end end patches of fishing activity.  This is usually the start/landing
   ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
   ; patch outside the plaice box.
-  let s-patch [port-start-patch] of boat-home-port    ; starting patch of the boat
-  let l-patch [port-landing-patch] of boat-home-port  ; landing patch of the boat
-
+  let _patch [port-start-patch] of boat-home-port    ; starting patch of the boat
+  let _distance gis-distance _patch
+  
   pen-up
-  move-to s-patch
+  move-to _patch
 
-  set boat-distance-at-sea gis-distance boat-home-port
-  set boat-time-at-sea  boat-distance-at-sea / boat-steaming-speed
-
-  let my-target-species item (index-max-one-of boat-gear-priorities) gear-prey-names
-  if my-target-species = nobody [ set my-target-species  "other" ]
-
-  ifelse (boat-engine > 221 and my-target-species = "Pleuronectes") [
-    set s-patch min-one-of patches with [accessible? and not plaice-box?] [gis-distance s-patch]
-    set l-patch s-patch
-    print (list "Boat" who "leaves from" s-patch "outside plaice box with depth" ([depth] of s-patch))
-  ][
-    print (list "Boat" who "leaves from" s-patch "at depth" ([depth] of s-patch) "m " boat-distance-at-sea "km and" boat-time-at-sea "h from home" )
-  ]
+  set boat-distance-at-sea boat-distance-at-sea + _distance
+  set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
+  set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
+  set boat-hour boat-hour + _distance / boat-steaming-speed
 
   set boat-trip-phase 2 ; available at start patch
 
 end
+
+
+; This is a boat procedure  where a boat
+; rests in a poart
+to boat-rest-port
+  
+  set boat-distance-at-sea 0
+  set boat-time-at-sea  0 
+  
+  set boat-time-at-sea-left boat-max-duration
+  set boat-hour boat-hour + 11
+
+  set boat-trip-phase 1 ; ready to leave port
+
+end
+
+
+
+; This is a boat procedure  where a boat
+; steams from it's start patch to a preferred location for fishing
+; @todo do this from memory, now random
+to boat-choose-start
+
+  let _patch one-of boat-accessible-patches in-radius 30
+  let _distance gis-distance _patch
+
+  pen-up
+  move-to _patch
+  
+  set boat-distance-at-sea boat-distance-at-sea + _distance
+  set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
+  set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
+  set boat-hour boat-hour + _distance / boat-steaming-speed
+
+  set boat-trip-phase 3 ; ready to fish
+  set heading random 360
+
+end
+
+; This is a boat procedure  where a boat
+to boat-return-port
+
+  let _patch [port-start-patch] of boat-home-port
+  let _distance gis-distance _patch
+  let _time _distance / boat-steaming-speed
+
+  pen-up
+  move-to _patch
+  
+  set boat-distance-at-sea boat-distance-at-sea + _distance
+  set boat-time-at-sea boat-time-at-sea  + _time
+  set boat-time-at-sea-left boat-time-at-sea-left - _time
+  set boat-hour boat-hour + _time
+  
+  set _distance gis-distance  boat-home-port
+  set _time _distance / boat-steaming-speed
+
+  move-to boat-home-port
+
+  set boat-distance-at-sea boat-distance-at-sea + _distance
+  set boat-time-at-sea boat-time-at-sea  + _time
+  set boat-time-at-sea-left boat-time-at-sea-left - _time
+  set boat-hour boat-hour + _time
+
+  set boat-trip-phase 0 ; need to rest
+
+end
+
+
+; This is a boat procedure  where a boat
+; fishes in a straight line
+to boat-make-haul
+
+  ; A boat deploys the gear with the highest priority
+  let haul-width [gear-width] of item (index-max-one-of boat-gear-priorities) boat-gears
+  let _fishing-speed [gear-speed] of item (index-max-one-of boat-gear-priorities) boat-gears
+  let haul-time 1 ; two hours
+  let _found false
+  let _counter 1
+  let _patch patch-ahead (_fishing-speed * haul-time)
+  let _time-step 0.1 ; 6 minutes
+  
+  while [not _found] [
+    ifelse _patch != nobody [set _found true][  
+      set heading heading - 180 - _counter * 5 + random (_counter * 10 + 1)
+      set _counter _counter + 1
+      set _patch patch-ahead (_fishing-speed * haul-time)
+    ]
+  ]
+  let _distance gis-distance _patch
+  let _time _distance / _fishing-speed 
+
+  pen-down
+  
+  move-to _patch
+  set heading heading - 180 - 10 + random (21 + 1)
+  
+  set boat-time-at-sea boat-time-at-sea  + _time
+  set boat-distance-at-sea boat-distance-at-sea + _distance  
+  set boat-time-at-sea-left boat-time-at-sea-left - _time 
+  set boat-hour boat-hour + _time
+
+  let distance-left boat-steaming-speed * boat-time-at-sea-left ; at typical speed of 19 km / h this is 1368 km
+  if distance-left < 1.1 * gis-distance [port-start-patch] of boat-home-port [
+    set boat-trip-phase 4
+  ]
+
+  print (sentence "Boat" who _distance _time distance-left boat-time-at-sea-left )
+  
+end
+
 
 ; This boat procedure return the agent-set of accessible patches considering
 ; the plaice box restriction if highest priority gear's prey is plaice.
@@ -302,5 +409,39 @@ to-report boat-accessible-patches
 
 end
 
+; test procedure
+to go-one
+  let _boat min-one-of boats [who]
+  watch _boat
+  inspect _boat
+  ;let _boat boats
+  ask _boat [
+    set size 4
+    while [boat-hour < 24] [
+      ifelse (boat-trip-phase = 4) [ ; boat needs to go home
+        ;print (sentence boat-hour ": Boat" who "is going home")
+        boat-return-port
+      ][
+      ifelse (boat-trip-phase = 3) [ ; boat is ready to fish
+        ;print (sentence boat-hour ": Boat" who "hauls from" patch-here)
+        boat-make-haul
+      ][
+      ifelse (boat-trip-phase = 2) [ ; boat ready to steam to new patch
+        ;print (sentence boat-hour ": Boat" who "steams from" patch-here)
+        boat-choose-start
+      ][
+      ifelse (boat-trip-phase = 1) [ ; boat ready to leave port
+        ;print (sentence boat-hour ": Boat" who "leaves" [port-name] of boat-home-port)
+        boat-leave-port
+      ][
+        ; (boat-trip-phase = 0) [ ; boat ready to leave port
+        ;print (sentence boat-hour ": Boat" who "rests at " [port-name] of boat-home-port)
+        boat-rest-port
+      ]]]]
+    ]
+    set boat-hour boat-hour mod 24
+    print (sentence boat-hour ": Boat" who "resets clock to" boat-hour)
+  ]
+end
 
 
