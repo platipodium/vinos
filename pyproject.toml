@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "Agent-based model of North Sea fisheries"
 authors = ["Sascha Hokamp <sascha.hokamp@uni-hamburg.de>",
            "Carsten Lemmen <carsten.lemmen@hereon.de>",
+           "Serra Örey <soerey@hs-bremerhaven.de>",
            "Nik Probst <nik.probst@thuenen.de"]
 license = "Apache 2.0"
 
