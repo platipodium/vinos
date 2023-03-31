@@ -64,11 +64,11 @@ boats-own [
   ; value encoding the state the boat is in during a fishing trip.
   ; 0 in port not available, i.e. resting, refueling, grounded
   ; 1 in port and available
-  ; 2 at start patch and ready to deploy gear
-  ; 3 at sea and able to go further out
+  ; 2 at sea and searching for place to start fishing
+  ; 3 at sea and ready to fish
   ; 4 at sea, needing to go home
-  ; 5 at landing patch, ready to offload
   boat-trip-phase 
+  
   boat-needs-return?
   
   boat-hour ; Internal hour of the day to facility event-based scheduling
