@@ -56,7 +56,7 @@ globals [
   owf-dataset                        ; Off-shore wind farms
 
   year month day                     ; time frame
-  day-of-year day-of-week
+  day-of-year
   days-in-months
 
   home-ports                 ; agentset of breed ports
@@ -793,7 +793,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-6
+5
 
 BUTTON
 93
