@@ -85,6 +85,8 @@ patches-own [
   owf-fraction
   accessible?             ; false if not accessible to fishery, i.e. close to port, too shallow, restricted area
   plaice-box?
+
+  patch-prey-names
 ]
 
 ; ------------------------------------------------------------------------------------------
@@ -328,6 +330,7 @@ end
 to calc-fish
   ask patches [
     set prey-names (list "Solea" "Pleuronectes" "Crangon")
+    set patch-prey-names (list "Solea" "Pleuronectes" "Crangon")
     set fish-biomass (list solea platessa crangon)
     ;set fish-abundance (list 100 200 300 400) ; default values needs to be adjusted when data available
   ]
@@ -792,7 +795,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+5
 
 BUTTON
 93
@@ -863,7 +866,7 @@ memory-size
 memory-size
 0
 100
-48.0
+0.0
 1
 1
 NIL
@@ -1182,13 +1185,13 @@ wage
 HORIZONTAL
 
 BUTTON
-24
-259
-102
-292
+227
+663
+305
+696
 NIL
-go-one
-NIL
+go-all
+T
 1
 T
 OBSERVER

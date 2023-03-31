@@ -168,97 +168,6 @@ to-report __test_csv_property
   report lpue = [[1 41.33597392121994 44.29353998676394 12.592817787094033 11.456572055826198 96.83554521537783] [2 44.896109846997646 44.93153848086322 10.283125939897474 27.14061269693432 63.39053728677305] [3 52.3697708750142 54.51564668646204 15.098579547056138 27.91232373317848 111.57142350676918] [4 3.845738658502041 13.822901977235906 18.237950929313804 0.9253936126421393 60.43421042459698]]
 end
 
-
-; This is a boat procedure, it takes duration (in hours) as an argument.  A haul is a straight-line
-; fishing activity for the duration given.  
-; @todo this is not yet completely implemented
-to boat-haul [duration]
-  
-  let time-elapsed 0
-  let time-step 0.1 ; in hours, i.e. 6 minutes
-  let new-catch n-values length boat-gears [i -> 0]
-  let my-haul-catch n-values length boat-gears [i -> 0]
-  let l-patch [port-start-patch] of boat-home-port
-  let s-patch [port-start-patch] of boat-home-port
-  let distance-to-alternative-patch 40
-  
-  while [not boat-needs-return? and time-elapsed < duration] [
-
-    set time-elapsed time-elapsed + time-step
-    set new-catch catch-species (time-step * fishing-speed)
-    ask patch-here [
-      set fishing-effort-hours fishing-effort-hours + time-step
-     ]
-     forward fishing-speed * time-step ; @todo adjust to gear
-     set my-haul-catch n-values (number-of-gears) [i -> (item i boat-gear-catches + item i new-catch)]
-  
-  ]
-  set boat-time-at-sea-left boat-time-at-sea-left - time-elapsed
-  set boat-time-at-sea boat-time-at-sea + time-elapsed
-  set boat-distance-at-sea boat-distance-at-sea + time-elapsed * fishing-speed
-  let distance-left boat-steaming-speed * boat-time-at-sea-left ; at typical speed of 19 km / h this is 1368 km
-
-  
-  ; If the catch is not worth keeping it, discard it entirely and
-  ; reset the time left. Fishers don't want to keep the bad haul, as this
-  ; would restrict their left time
-  ; @todo could this lead to infinite stay at sea?
-  if (item 1 my-haul-catch < min-fresh-catch and boat-time-at-sea-left < 24)[
-      set boat-time-at-sea-left 24
-      set my-haul-catch n-values length boat-gears [i -> 0]
-   ]
-   
-  ; But if the catch is successful, then make
-  ; sure that the timeout is maximum 24 hours (to keep the fish fresh)
-  ; @todo this is not properly implemented yet
-  if (item 1 new-catch > min-fresh-catch and boat-time-at-sea-left > 24)[
-        set boat-time-at-sea-left 24
-      ]
-
-      ; Evaluate whether to go home based on different criteria, i.e.
-      ; capacity exceeded, too far from home port, or
-
-      if (item 1 boat-gear-catches > boat-capacity) [
-        print (list "Boat" who "full. Needs to go back to port")
-        set boat-needs-return? true
-      ]
-      if (gis-distance l-patch > distance-left) [
-        print (list "Boat" who "went far enough, needs to go home to reach port")
-        set boat-needs-return? true
-      ]
-      ;if (time-left < gis-distance l-patch / boat-steaming-speed) [
-      ;  print (list "Boat" who "is running out of time, needs to go home to reach port")
-      ;  set boat-needs-return? true
-      ;]
-
-      ; in case of a bad haul, select a different patch.
-      ; for now, we choose a  neighbor patch, later we have to implement
-      ; a procedure to find a patch approx 20 km away
-      ; @todo check units
-      ;if (false) [
-      if (item 1 new-catch < min-fresh-catch) [
-    let my-neighbors patches  with [accessible? and gis-distance l-patch < distance-left and gis-distance myself < distance-to-alternative-patch and gis-distance [boat-home-port] of myself > 5 ] ; @todo: currently set to 20, revise with respect to memorx
-        ifelse any? my-neighbors [
-          set s-patch one-of my-neighbors
-          print (list "Boat" who "start a new haul at a different patch with depth" ([depth] of s-patch))
-        ][
-          print (list "Boat" who "could not find any navigable water, going home")
-          set boat-needs-return? true
-        ]
-        move-to s-patch
-        set boat-distance-at-sea boat-distance-at-sea + gis-distance s-patch
-        set distance-left distance-left - gis-distance s-patch
-        set boat-time-at-sea boat-time-at-sea + gis-distance s-patch / boat-steaming-speed
-        set boat-time-at-sea-left boat-time-at-sea-left - gis-distance s-patch / boat-steaming-speed
-      ]
-
-      print (list "Boat" who "t=" boat-time-at-sea "t-=" boat-time-at-sea-left "dh=" (gis-distance l-patch) "d=" boat-distance-at-sea "d-=" distance-left "c1=" (item 1 boat-gear-catches) )
-      ;print (list who ([depth] of patch-here))
-    
-end
-
-
-
 ; This is a boat procedure initializing a new
 ; fishing trip from the start patch of its associated
 ; favorite port
@@ -374,20 +283,19 @@ to boat-make-haul
   let _netlogo-distance distance _patch
   let _time _distance / _fishing-speed 
   
-  let new-catch n-values length boat-gears [i -> 0]
-
+  let _new-catches n-values length boat-gears [i -> 0]
+  let _haul-catches n-values length boat-gears [i -> 0]
 
   pen-down
   repeat (haul-time / _time-step) [
-    ;set new-catch catch-species (_time-step * _fishing-speed)
+    set _new-catches boat-catch-species (_time-step * _fishing-speed)
     ask patch-here [
       set fishing-effort-hours fishing-effort-hours + _time-step
     ]
     forward _netlogo-distance * _time-step / haul-time
-    ;set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i new-catch)]
+    set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
   ]
   
-  move-to _patch
   set heading heading - 180 - 10 + random (21 + 1)
   
   set boat-time-at-sea boat-time-at-sea  + _time
@@ -399,8 +307,24 @@ to boat-make-haul
   if distance-left < 1.1 * gis-distance [port-start-patch] of boat-home-port [
     set boat-trip-phase 4
   ]
-
-  print (sentence "Boat" who _distance _time distance-left boat-time-at-sea-left )
+  
+  ; If the catch is not worth keeping, discard it entirely. Fishers do not want to keep 
+  ; the bad haul, as this  would restrict their left time, but only there are > 24 hours left
+  ; On the other hand, on good haul make sure to return within 24 hours to keep it fresh
+  if (boat-time-at-sea-left > 24) [
+    ifelse item (index-max-one-of boat-gear-priorities) _haul-catches < min-fresh-catch [
+      set _haul-catches n-values length boat-gears [i -> 0]
+      set boat-trip-phase 2
+    ][
+      set boat-time-at-sea-left 24
+    ]
+  ]
+  set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i _haul-catches)]
+  
+  ; If the boat is full, also need to return  
+  if item (index-max-one-of boat-gear-priorities) boat-gear-catches > boat-capacity [ set boat-trip-phase 4]
+  
+  ;print (sentence "Boat" who _distance _time distance-left boat-time-at-sea-left )
   
 end
 
@@ -454,6 +378,49 @@ to go-one
     set boat-hour boat-hour mod 24
     print (sentence boat-hour ": Boat" who "resets clock to" boat-hour)
   ]
+end
+
+; This new go procedure used discrete event simulation within a 24 hour tick
+; It is more efficient than the oritinal 72-h based go procedure but does not
+; yet contain the priority calculation
+to go-all
+
+  advance-calendar
+  calc-fish
+  
+  let _boats boats with [boat-hour < 24]
+  while [count _boats > 0] [
+    ask _boats [  
+      ifelse (boat-trip-phase = 4) [ boat-return-port ][
+        ifelse (boat-trip-phase = 3) [  boat-make-haul ][
+         ifelse (boat-trip-phase = 2) [ boat-choose-start ][
+           ifelse (boat-trip-phase = 1) [ boat-leave-port ][
+             ; (boat-trip-phase = 0) [ ; boat ready to leave port
+             boat-rest-port
+      ]]]]
+    ]
+    set _boats boats with [boat-hour < 24]
+  ]
+  ask boats [ set boat-hour boat-hour mod 24 ]
+  
+  update-plots
+  tick
+
+end
+
+
+to-report boat-catch-species [haul-length]
+  ; calculate the values for each patch and every target species
+  ;(solea, platessa and crangon), i.e. biomass cath in KG
+  ; @todo: negative values possible for fish-biomass
+
+  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) patch-prey-names ]
+
+  report n-values (number-of-gears) [ igear ->
+     (item igear catch-efficiency-boat) * (item (item igear ispecieslist) fish-biomass)
+      * (([gear-width] of item igear boat-gears) * haul-length) * (boolean2int (item (item igear ispecieslist) fish-biomass > 0) )
+  ]
+
 end
 
 
