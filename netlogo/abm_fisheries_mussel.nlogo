@@ -118,6 +118,7 @@ to setup
   calc-initial-values
   setup-boats ; in "boat.nls"
 
+  set boat-property-chooser "distance-at-sea"
   setup-plots
 
   set view-legend-n 9
@@ -136,7 +137,7 @@ end
 
 to go
   advance-calendar
-  ask ports [ifelse ports? [set label ""][set label port-name]]
+  ask ports [ifelse show-ports? [set label ""][set label port-name]]
   calc-fish
   let my-boats n-of 10 boats
   ;let my-boats n-of 1 boats with [who = 80]
@@ -834,10 +835,10 @@ NIL
 SWITCH
 1241
 119
-1344
+1376
 152
-ports?
-ports?
+show-ports?
+show-ports?
 0
 1
 -1000
@@ -969,7 +970,7 @@ fraction-transportation-costs
 fraction-transportation-costs
 0
 1
-0.83
+0.81
 0.01
 1
 NIL
@@ -1089,32 +1090,32 @@ Select what to\nshow as \nbackground\ninformation
 1
 
 SWITCH
+1244
+232
+1346
+265
+owf?
+owf?
+0
+1
+-1000
+
+SWITCH
+1243
+274
+1346
+307
+box?
+box?
+0
+1
+-1000
+
+SWITCH
 1242
-159
-1344
-192
-owf?
-owf?
-0
-1
--1000
-
-SWITCH
-1241
-201
-1344
-234
-box?
-box?
-0
-1
--1000
-
-SWITCH
-1240
-242
-1343
-275
+315
+1345
+348
 sar?
 sar?
 1
@@ -1122,10 +1123,10 @@ sar?
 -1000
 
 BUTTON
-1238
-280
-1343
-313
+1240
+353
+1345
+386
 update
 update-drawings
 NIL
@@ -1170,15 +1171,15 @@ Staff costs are usually around 80 € h-1
 1
 
 SLIDER
-276
-590
-448
-623
+271
+573
+443
+606
 wage
 wage
 50
 120
-85.0
+70.0
 5
 1
 € h-1
@@ -1204,7 +1205,7 @@ NIL
 PLOT
 15
 547
-215
+220
 697
 boat-property
 NIL
@@ -1219,14 +1220,42 @@ true
 PENS
 
 CHOOSER
-17
+15
 497
-188
+156
 542
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "steaming-speed" "time-at-sea" "time-at-sea-left" "trip-phase"
-5
+7
+
+SWITCH
+1241
+156
+1377
+189
+show-boats?
+show-boats?
+0
+1
+-1000
+
+BUTTON
+159
+498
+221
+542
+Update
+plot-update-boat-property
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+0
 
 @#$#@#$#@
 # TODO

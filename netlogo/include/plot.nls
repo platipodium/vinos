@@ -148,16 +148,16 @@ to plot-update-boat-property
     set-histogram-num-bars 9
     set _x-range (list (min _values) (max _values))
   ]
+  if (item 0 _x-range) = (item 1 _x-range) [set _x-range replace-item 1 _x-range (item 1 _x-range + 1)]
   set-plot-x-range item 0 _x-range item 1 _x-range
   histogram _values
   
 end
 
-
-
 to update-drawings
   clear-drawing
-  ifelse ports? [ask ports [set hidden? false]][ask ports [set hidden? true]]
+  ask ports [set hidden? not show-ports?]
+  ask boats [set hidden? not show-boats?]
   if owf? [ show-windfarms]
   if sar? [ draw-background "SAR" ]
   display
