@@ -261,6 +261,16 @@ end
 
 ; Boat preocedure to rest
 to boat-rest-port
+  ; boats don't go out after saturday afternoon and on Sunday, and earliest at 4 on Monday
+;  ifelse (weekday-name = "Sat" and boat-hour > 12) [set boat-hour 24][
+;    ifelse (weekday-name = "Sun") [set boat-hour 24][
+;      ifelse (weekday-name = "Mon") [set boat-hour 4][
+;        set boat-hour boat-hour + 11
+;      ]
+;      set boat-time-at-sea-left boat-max-duration
+;      set boat-trip-phase 1 ; ready to leave port
+;    ]
+;  ]
   set boat-hour boat-hour + 11
   set boat-time-at-sea-left boat-max-duration
   set boat-trip-phase 1 ; ready to leave port
