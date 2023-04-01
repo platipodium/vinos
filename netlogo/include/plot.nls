@@ -144,6 +144,8 @@ to plot-update-boat-property
     if ( boat-property-chooser =  "catch-efficiency" ) [ set _values [ catch-efficiency-boat] of boats ]
     if ( boat-property-chooser =  "engine" ) [ set _values [ boat-engine] of boats ]
     if ( boat-property-chooser =  "steaming-speed" ) [ set _values [ boat-steaming-speed] of boats ]
+    if ( boat-property-chooser =  "transportation-costs" ) [ set _values [ boat-transportation-costs] of boats ]
+    if ( boat-property-chooser =  "operating-costs" ) [ set _values [ boat-operating-costs] of boats ]
  
     set-histogram-num-bars 9
     set _x-range (list (min _values) (max _values))
