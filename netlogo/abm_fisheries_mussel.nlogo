@@ -359,7 +359,7 @@ to-report should-go-fishing?
 
   set port-prob-bad-weather random-float 1.00
   if random-float 1.00 < port-prob-bad-weather
-    [ if gain-boat < 1.000 [
+    [ if boat-gains < 1.000 [
       report true]
   ]
 end
@@ -569,11 +569,11 @@ to go-on-fishing-trip
 
 
 
-  set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
-  set gain-boat n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
-  let delta-adjust sum map [ i -> abs i ] delta-gain-boat ; fix minus boat priority ; in cast that the gain-boat decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
+  set boat-delta-gains n-values (number-of-gears) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
+  set boat-gains n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
+  let delta-adjust sum map [ i -> abs i ] boat-delta-gains ; fix minus boat priority ; in cast that the boat-gains decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
   ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
-  set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i delta-gain-boat) * (item i boat-gear-priorities) / delta-adjust]
+  set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i boat-delta-gains) * (item i boat-gear-priorities) / delta-adjust]
   ][
     set boat-delta-priorities map [i -> 0] boat-delta-priorities
   ]
@@ -597,9 +597,9 @@ to go-on-fishing-trip
   ; old implemenation for species
   ;set costs-boat n-values (number-of-species - 1) [ i -> (boat-transportation-costs * item i boat-gear-catches +  boat-operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
   ;set revenue-boat n-values (number-of-species - 1)[i -> (item i boat-gear-catches * price-species)] ; @todo needs to be solved, price is related to home-port
-  ;set delta-gain-boat n-values (number-of-species - 1) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
-  ;set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
-  ;set delta-boat-gear-priorities n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i boat-gear-priorities)]
+  ;set boat-delta-gains n-values (number-of-species - 1) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
+  ;set boat-gains n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
+  ;set delta-boat-gear-priorities n-values (number-of-species - 1) [i -> adaptation * (item i boat-delta-gains) / (item i boat-gear-priorities)]
   ;set boat-gear-priorities n-values (number-of-species - 1) [i -> item i boat-gear-priorities - item i delta-boat-gear-priorities]
   print (list "Boat" who " has cost of " (boat-transportation-costs + boat-operating-costs) )
   print (list "Boat" who " has cost of " costs-boat )
@@ -908,7 +908,7 @@ oil-price
 oil-price
 25
 75
-75.0
+25.0
 5
 1
 ct l-1
@@ -1179,7 +1179,7 @@ wage
 wage
 50
 120
-50.0
+75.0
 5
 1
 € h-1
@@ -1227,7 +1227,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "operating-costs" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase"
-7
+0
 
 SWITCH
 1241

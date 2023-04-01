@@ -21,8 +21,8 @@ boats-own [
 
   revenue-boat             ; revenue for the fishing trip of the boat
   costs-boat               ; costs for the fishing trip of the boat
-  delta-gain-boat          ; change in gain
-  gain-boat                ; gain for the fishing trip of the boat
+  boat-delta-gains          ; change in gain
+  boat-gains                ; gain for the fishing trip of the boat
   boat-delta-priorities      ; change in priority
   boat-gear-priorities            ; priority for the pathway
   priority-weighted-average  ; priority weighted average of gain
@@ -67,6 +67,7 @@ boats-own [
   ; 2 at sea and searching for place to start fishing
   ; 3 at sea and ready to fish
   ; 4 at sea, needing to go home
+  ; 5  in port, need to unload
   boat-trip-phase 
   
   boat-needs-return?
@@ -131,7 +132,7 @@ to setup-boats
       set  catch-efficiency-boat   n-values number-of-gears  [?1 -> 0.25 ]
       set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
       set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
-      set  gain-boat               n-values number-of-gears  [?1 -> 0 ]    ; gain for the fishing trip of the boat
+      set  boat-gains               n-values number-of-gears  [?1 -> 0 ]    ; gain for the fishing trip of the boat
       set  boat-delta-priorities   n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
       set  boat-gear-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
       set  boat-transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
@@ -228,11 +229,11 @@ to boat-land-port
   print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)
 
 
-  set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
-  set gain-boat n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
-  let delta-adjust sum map [ i -> abs i ] delta-gain-boat ; fix minus boat priority ; in cast that the gain-boat decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
+  set boat-delta-gains n-values (number-of-gears) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
+  set boat-gains n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
+  let delta-adjust sum map [ i -> abs i ] boat-delta-gains ; fix minus boat priority ; in cast that the boat-gains decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
   ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
-    set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i delta-gain-boat) * (item i boat-gear-priorities) / delta-adjust]
+    set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i boat-delta-gains) * (item i boat-gear-priorities) / delta-adjust]
   ][
     set boat-delta-priorities map [i -> 0] boat-delta-priorities
   ]
