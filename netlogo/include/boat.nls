@@ -40,9 +40,9 @@ boats-own [
   other-catch-kg          ; other catch in kg for a fishing trip
   other-catch-euro        ; other catch in EUR 2015 for a fishing trip
 
-  transportation-costs    ; costs for one km of the fishing trip, not known, work with a parameter
+  boat-transportation-costs    ; costs for one km of the fishing trip, not known, work with a parameter
                           ; comment: mainly driven by oil price, approx 10-20 percent of the revenue for crangon, up to 30 percent for solea and platessa according to press relesease March 2022 going up to 50 percent
-  operating-costs         ; cost for opertating the boat, not known, work with a parameter
+  boat-operating-costs         ; cost for opertating the boat, not known, work with a parameter
                           ; comment: approximately 50 percent of the revenue
   target-species          ; species primarily tragetted (solea, platessa, crangon)
 
@@ -134,8 +134,8 @@ to setup-boats
       set  gain-boat               n-values number-of-gears  [?1 -> 0 ]    ; gain for the fishing trip of the boat
       set  boat-delta-priorities   n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
       set  boat-gear-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
-      set  transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
-      set  operating-costs 0                                  ; start value, is calculated according to wage and time at sea
+      set  boat-transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
+      set  boat-operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
       set  boat-steaming-speed 19                                  ; range 10  to 12
       set label ""                                             ; ????
@@ -205,15 +205,15 @@ to boat-land-port
 
   ; Diesel for shipping is usually 0.5 € l-1
   ; In the end tranpsortatino costs should be 15% of crangon reenvu, up to 30% for platessa/sole
-  set transportation-costs _boat-fuel-consumption * oil-price * boat-distance-at-sea; typically 750 €
+  set boat-transportation-costs _boat-fuel-consumption * oil-price * boat-distance-at-sea; typically 750 €
 
   ; Typically there are 3 people aboard, i.e. 150 * 3 work hours per month.  Average wage is 5000+2*2000 per
   ; gross salary per month, adding 40% costs gives 12600 EUR, i.e. 84 € h-1, there is slider wage
   ; in the end operating costs should be around 50% of revenue
-  set operating-costs wage * boat-time-at-sea ; is typically 4000 €
+  set boat-operating-costs wage * boat-time-at-sea ; is typically 4000 €
 
   if (sum boat-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
-    (transportation-costs * item i boat-gear-catches +  operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
+    (boat-transportation-costs * item i boat-gear-catches +  boat-operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
   ]
 
   ; Find the position of the target gear-species in prey-names and return the index of the species,
@@ -225,7 +225,7 @@ to boat-land-port
   set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
 
   ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
-  print (sentence "R:" transportation-costs operating-costs revenue-boat)
+  print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)
 
 
   set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]

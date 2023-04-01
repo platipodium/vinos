@@ -272,7 +272,7 @@ end
 to learn
   let home-port-boat one-of link-neighbors
   let my-patch one-of patches with [accessible?]
-  let my-costs transportation-costs * distance my-patch
+  let my-costs boat-transportation-costs * distance my-patch
   ; the following is still wrong
   let my-revenue 0 ; catch-efficiency-boat * ([item 2 port-prices] of home-port-boat * [platessa-summer] of my-patch + [item 0 port-prices] of home-port-boat * [solea-summer] of my-patch + [item 1 port-prices] of home-port-boat * [crangon-summer] of my-patch)
   let my-gain my-revenue - my-costs
@@ -544,16 +544,16 @@ to go-on-fishing-trip
 
   ; Diesel for shipping is usually 0.5 € l-1
   ; In the end tranpsortatino costs should be 15% of crangon reenvu, up to 30% for platessa/sole
-  set transportation-costs boat-fuel-consumption * oil-price * boat-distance-at-sea; typically 750 €
+  set boat-transportation-costs boat-fuel-consumption * oil-price * boat-distance-at-sea; typically 750 €
 
   ; Typically there are 3 people aboard, i.e. 150 * 3 work hours per month.  Average wage is 5000+2*2000 per
   ; gross salary per month, adding 40% costs gives 12600 EUR, i.e. 84 € h-1, there is slider wage
   ; in the end operating costs should be around 50% of revenue
-  set operating-costs wage * boat-time-at-sea ; is typically 4000 €
+  set boat-operating-costs wage * boat-time-at-sea ; is typically 4000 €
 
 
   if (sum boat-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
-    (transportation-costs * item i boat-gear-catches +  operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
+    (boat-transportation-costs * item i boat-gear-catches +  boat-operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
   ]
 
   ; Find the position of the target gear-species in prey-names and return the index of the species,
@@ -565,7 +565,7 @@ to go-on-fishing-trip
   set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
 
   ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
-  print (sentence "R:" transportation-costs operating-costs revenue-boat)
+  print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)
 
 
 
@@ -595,13 +595,13 @@ to go-on-fishing-trip
 
 
   ; old implemenation for species
-  ;set costs-boat n-values (number-of-species - 1) [ i -> (transportation-costs * item i boat-gear-catches +  operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
+  ;set costs-boat n-values (number-of-species - 1) [ i -> (boat-transportation-costs * item i boat-gear-catches +  boat-operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
   ;set revenue-boat n-values (number-of-species - 1)[i -> (item i boat-gear-catches * price-species)] ; @todo needs to be solved, price is related to home-port
   ;set delta-gain-boat n-values (number-of-species - 1) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
   ;set gain-boat n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
   ;set delta-boat-gear-priorities n-values (number-of-species - 1) [i -> adaptation * (item i delta-gain-boat) / (item i boat-gear-priorities)]
   ;set boat-gear-priorities n-values (number-of-species - 1) [i -> item i boat-gear-priorities - item i delta-boat-gear-priorities]
-  print (list "Boat" who " has cost of " (transportation-costs + operating-costs) )
+  print (list "Boat" who " has cost of " (boat-transportation-costs + boat-operating-costs) )
   print (list "Boat" who " has cost of " costs-boat )
   print (list "Boat" who " has dpriorities of" boat-delta-priorities)
   print (list "Boat" who " has priorities of" boat-gear-priorities)
@@ -966,8 +966,8 @@ SLIDER
 445
 222
 478
-fraction-transportation-costs
-fraction-transportation-costs
+fraction-boat-transportation-costs
+fraction-boat-transportation-costs
 0
 1
 0.81
@@ -1700,7 +1700,7 @@ NetLogo 6.3.0
     <enumeratedValueSet variable="Adaptation">
       <value value="0.489"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="fraction-transportation-costs">
+    <enumeratedValueSet variable="fraction-boat-transportation-costs">
       <value value="0.198"/>
     </enumeratedValueSet>
   </experiment>
