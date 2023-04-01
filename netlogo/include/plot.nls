@@ -126,7 +126,7 @@ to plot-update-boat-property
     if (boat-property-chooser = "trip-phase") [
       set _values [ boat-trip-phase] of boats 
       set-histogram-num-bars 5
-      set _x-range (list -.5 4.5)
+      set _x-range (list -.5 5.5)
     ]
     if (boat-property-chooser = "type") [
       set _values [ boat-type] of boats 
