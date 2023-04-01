@@ -192,41 +192,103 @@ to boat-leave-port
 end
 
 
-; This is a boat procedure  where a boat
-; rests in a poart
-to boat-rest-port
+; This is a boat procedure  where a boat lands at a port and offloads its cargo
+; here the optimization is done and the memory update
+to boat-land-port
+  
+  ; "Eins bleibt immer gleich: Pro Stunde rechnet man pro PS mit einem Konsum von 0,21 Liter bei einem
+  ; Diesel und 0,29 Liter bei Benzin als Treibstoff.” https://www.boatsandstories.com/verbrauch_1-3-2/
+  ; At 150 PS and 48 h trip covering 300 km, the efficiency is 150*48*0,21/300 = 5 l km-1
+  ; @todo we can adjust this to boat-engine power
+  ; we scale the fuel-efficiency (0 to 1) with boat-fuel-consumption
+  let _boat-fuel-consumption 48 * boat-engine *  1.35962 * 0.21 / 300 ; is typically 5 l km-1
+
+  ; Diesel for shipping is usually 0.5 € l-1
+  ; In the end tranpsortatino costs should be 15% of crangon reenvu, up to 30% for platessa/sole
+  set transportation-costs _boat-fuel-consumption * oil-price * boat-distance-at-sea; typically 750 €
+
+  ; Typically there are 3 people aboard, i.e. 150 * 3 work hours per month.  Average wage is 5000+2*2000 per
+  ; gross salary per month, adding 40% costs gives 12600 EUR, i.e. 84 € h-1, there is slider wage
+  ; in the end operating costs should be around 50% of revenue
+  set operating-costs wage * boat-time-at-sea ; is typically 4000 €
+
+  if (sum boat-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
+    (transportation-costs * item i boat-gear-catches +  operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
+  ]
+
+  ; Find the position of the target gear-species in prey-names and return the index of the species,
+  ; save this in a temporary list of size number-of-gears, resulting in the gear-species index map ispecieslist
+  ; @todo move this to gear.nls as global
+  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
+
+  ; Calculate the boat revenue depending on the landed species and the port
+  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
+
+  ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
+  print (sentence "R:" transportation-costs operating-costs revenue-boat)
+
+
+  set delta-gain-boat n-values (number-of-gears) [i -> (item i gain-boat) - (item i revenue-boat - item i costs-boat)]
+  set gain-boat n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
+  let delta-adjust sum map [ i -> abs i ] delta-gain-boat ; fix minus boat priority ; in cast that the gain-boat decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
+  ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
+    set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i delta-gain-boat) * (item i boat-gear-priorities) / delta-adjust]
+  ][
+    set boat-delta-priorities map [i -> 0] boat-delta-priorities
+  ]
+  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
+  set boat-gear-priorities map [i -> i / sum boat-gear-priorities] boat-gear-priorities
+
+
+  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
+  ; Make sure that boat-gear-priorities always sum to 1
+  if sum boat-gear-priorities != 0 [
+    set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities / sum boat-gear-priorities ]
+  ]
+
+  set boat-gear-catches map [i -> 0] boat-gear-catches
   
   set boat-distance-at-sea 0
   set boat-time-at-sea  0 
-  
-  set boat-time-at-sea-left boat-max-duration
-  set boat-hour boat-hour + 11
+  set boat-time-at-sea-left 0
 
-  set boat-trip-phase 1 ; ready to leave port
-
+  set boat-trip-phase 0
+  ; @todo find out how long it takes to land the catch and clean the boat, here, we assume 2 hours
+  set boat-hour boat-hour + 2
 end
 
 
+; Boat preocedure to rest
+to boat-rest-port
+  set boat-hour boat-hour + 11
+  set boat-time-at-sea-left boat-max-duration
+  set boat-trip-phase 1 ; ready to leave port
+end
 
 ; This is a boat procedure  where a boat
 ; steams from it's start patch to a preferred location for fishing
 ; @todo do this from memory, now random
 to boat-choose-start
 
-  let _patch one-of boat-accessible-patches in-radius 30
-  let _distance gis-distance _patch
-
-  pen-up
-  move-to _patch
+  let _patch one-of boat-accessible-patches in-radius 30 ; @todo change this to max-distance
   
-  set boat-distance-at-sea boat-distance-at-sea + _distance
-  set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
-  set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
-  set boat-hour boat-hour + _distance / boat-steaming-speed
+  ; If there are not accessible patches found, go home and try again
+  ifelse _patch = nobody [
+    set boat-trip-phase 4 ; need to go home
+  ][
+    let _distance gis-distance _patch
 
-  set boat-trip-phase 3 ; ready to fish
-  set heading random 360
+    pen-up
+    move-to _patch
+  
+    set boat-distance-at-sea boat-distance-at-sea + _distance
+    set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
+    set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
+    set boat-hour boat-hour + _distance / boat-steaming-speed
 
+    set boat-trip-phase 3 ; ready to fish
+    set heading random 360
+  ]
 end
 
 ; This is a boat procedure  where a boat
@@ -254,7 +316,7 @@ to boat-return-port
   set boat-time-at-sea-left boat-time-at-sea-left - _time
   set boat-hour boat-hour + _time
 
-  set boat-trip-phase 0 ; need to rest
+  set boat-trip-phase 5 ; need to land
 
 end
 
@@ -354,6 +416,10 @@ to go-one
   ask _boat [
     set size 4
     while [boat-hour < 24] [
+      ifelse (boat-trip-phase = 5) [ ; boat needs land
+        ;print (sentence boat-hour ": Boat" who "is going home")
+        boat-land-port
+      ][
       ifelse (boat-trip-phase = 4) [ ; boat needs to go home
         ;print (sentence boat-hour ": Boat" who "is going home")
         boat-return-port
@@ -373,7 +439,7 @@ to go-one
         ; (boat-trip-phase = 0) [ ; boat ready to leave port
         ;print (sentence boat-hour ": Boat" who "rests at " [port-name] of boat-home-port)
         boat-rest-port
-      ]]]]
+      ]]]]]
     ]
     set boat-hour boat-hour mod 24
     print (sentence boat-hour ": Boat" who "resets clock to" boat-hour)
@@ -391,13 +457,13 @@ to go-all
   let _boats boats with [boat-hour < 24]
   while [count _boats > 0] [
     ask _boats [  
-      ifelse (boat-trip-phase = 4) [ boat-return-port ][
-        ifelse (boat-trip-phase = 3) [  boat-make-haul ][
-         ifelse (boat-trip-phase = 2) [ boat-choose-start ][
-           ifelse (boat-trip-phase = 1) [ boat-leave-port ][
-             ; (boat-trip-phase = 0) [ ; boat ready to leave port
-             boat-rest-port
-      ]]]]
+      ifelse (boat-trip-phase = 5) [ boat-land-port ][
+        ifelse (boat-trip-phase = 4) [ boat-return-port ][
+          ifelse (boat-trip-phase = 3) [  boat-make-haul ][
+           ifelse (boat-trip-phase = 2) [ boat-choose-start ][
+             ifelse (boat-trip-phase = 1) [ boat-leave-port ][
+               boat-rest-port ; boat-trip-phase = 0
+      ]]]]]
     ]
     set _boats boats with [boat-hour < 24]
   ]
