@@ -964,10 +964,10 @@ NIL
 SLIDER
 12
 445
-222
+254
 478
-fraction-boat-transportation-costs
-fraction-boat-transportation-costs
+fraction-transportation-costs
+fraction-transportation-costs
 0
 1
 0.81
@@ -1179,7 +1179,7 @@ wage
 wage
 50
 120
-70.0
+50.0
 5
 1
 € h-1
@@ -1205,7 +1205,7 @@ NIL
 PLOT
 15
 547
-220
+231
 697
 boat-property
 NIL
@@ -1222,11 +1222,11 @@ PENS
 CHOOSER
 15
 497
-156
+161
 542
 boat-property-chooser
 boat-property-chooser
-"distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "steaming-speed" "time-at-sea" "time-at-sea-left" "trip-phase"
+"distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "operating-costs" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase"
 7
 
 SWITCH
@@ -1241,9 +1241,9 @@ show-boats?
 -1000
 
 BUTTON
-159
+169
 498
-221
+231
 542
 Update
 plot-update-boat-property
@@ -1700,7 +1700,7 @@ NetLogo 6.3.0
     <enumeratedValueSet variable="Adaptation">
       <value value="0.489"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="fraction-boat-transportation-costs">
+    <enumeratedValueSet variable="fraction-transportation-costs">
       <value value="0.198"/>
     </enumeratedValueSet>
   </experiment>
