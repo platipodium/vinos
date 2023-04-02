@@ -2,22 +2,15 @@
 # SPDX-License-Identifier: CC-BY-4.0
 # SPDX-FieContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
+include :
+  - .gitlab/license.yaml
+  - .gitlab/docker.yaml
+
 stages:
   - lint
   - run
   - deploy
 
-license-compliance:
-    image: python:3.11
-    stage: lint
-    before_script:
-        - pip install --upgrade pip
-        - pip install poetry
-        - poetry install
-    script:
-        - poetry run reuse lint
-    allow_failure: true
-    needs: []
 
 unit-tests:
   image: comses/netlogo # see https://github.com/comses/docker-netlogo
@@ -32,20 +25,20 @@ unit-tests:
       --setup-file ./behavior/unit-tests.xml
       --experiment "unit-tests" --table -
   
-create-map:
-  image: comses/netlogo # see https://github.com/comses/docker-netlogo
-  stage: run
-  before_script:
-    - echo "Nothing done here."
-  script:
-    - echo "Trying to run in working directory and headless mode"
-    - echo "Java HOME is ${JAVA_HOME}"
-    - cd ${CI_PROJECT_DIR}/netlogo
-    - > 
-      bash /opt/netlogo/netlogo-headless.sh 
-      --model ./abm_fisheries_mussel.nlogo 
-      --setup-file ./behavior/effort-map.xml
-      --experiment "effort-map" --table -
+# create-map:
+#   image: comses/netlogo # see https://github.com/comses/docker-netlogo
+#   stage: run
+#   before_script:
+#     - echo "Nothing done here."
+#   script:
+#     - echo "Trying to run in working directory and headless mode"
+#     - echo "Java HOME is ${JAVA_HOME}"
+#     - cd ${CI_PROJECT_DIR}/netlogo
+#     - > 
+#       bash /opt/netlogo/netlogo-headless.sh 
+#       --model ./abm_fisheries_mussel.nlogo 
+#       --setup-file ./behavior/effort-map.xml
+#       --experiment "effort-map" --table -
   
   # Preserve resulting files
   artifacts:
@@ -53,20 +46,24 @@ create-map:
       - ./netlogo/results/
   needs: []
 
-pages: # predefined name by GitLab
-    stage: deploy
-    dependencies: 
-        - create-map
-    script:
-        - mkdir -p public # required by GitLab
-        - mv ./netlogo/results/*.png public/
-        - touch public/index.html
-    rules:
-        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    artifacts:
-        paths:
-            - public/
-    needs: []
+# The pages deployment only works on public projects, so we 
+# have to wait past Milestone 1 to enable this feature. It
+# is advertised in the JOSS paper, so needs to be implemented
+# right away.
+# pages: # predefined name by GitLab
+#     stage: deploy
+#     dependencies: 
+#         - create-map
+#     script:
+#         - mkdir -p public # required by GitLab
+#         - mv ./netlogo/results/*.png public/
+#         - touch public/index.html
+#     rules:
+#         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+#     artifacts:
+#         paths:
+#             - public/
+#     needs: []
 
 joss-paper:
   stage: deploy

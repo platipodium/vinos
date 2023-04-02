@@ -1,0 +1,46 @@
+# SPDX-FileCopyrightText: 2023 Oracle Corporation
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-License-Identifier: GPL-2.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+FROM openjdk
+
+#ARG MODEL_NAME
+#ARG NETLOGO_VERSION
+#ARG NETLOGO_NAME=NetLogo-$NETLOGO_VERSION
+#ARG NETLOGO_URL=https://ccl.northwestern.edu/netlogo/${NETLOGO_VERSION}/${NETLOGO_NAME}-64.tgz
+
+ENV LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8
+
+ENV MODEL_NAME=abm_fisheries_mussel.nlogo
+ENV NETLOGO_VERSION=6.3.0
+ENV NETLOGO_NAME=NetLogo-${NETLOGO_VERSION}
+ENV NETLOGO_URL=https://ccl.northwestern.edu/netlogo/${NETLOGO_VERSION}/${NETLOGO_NAME}-64.tgz
+
+RUN echo ${NETLOGO_URL}
+RUN mkdir /home/netlogo
+RUN curl ${NETLOGO_URL} --output ${NETLOGO_NAME}-64.tgz
+RUN tar xzf ${NETLOGO_NAME}-64.tgz -C /home/netlogo --strip-components=1
+#RUN rm -f ${NETLOGO_NAME}-64.tgz
+    
+COPY ./data /home/src/data
+COPY ./netlogo /home/src/netlogo
+COPY ./LICENSES /home/src/LICENSES
+COPY ./.reuse /home/src/.reuse
+COPY ./ReadMe.md /home/src/
+
+RUN ln -sf /home/src/netlogo/${MODEL_NAME} /home/src/netlogo/NLModel.nlogo
+#CMD /bin/bash
+
+ENTRYPOINT ["/home/netlogo/netlogo-headless.sh", \
+ "--model", "/home/src/netlogo/NLModel.nlogo", \
+ "--table", "/home/src/netlogo/results/table-output.csv", \
+ "--spreadsheet", "/home/src/netlogo/results/spreadsheet-output.csv"]
+
+# To build the docker file, and run reproducible behaviourspace experiments:
+# `docker build -t netlogo .`
+# `docker run -t netlogo --setup-file /home/src/netlogo/behavior/unit-tests.xml` 
+# `docker run -v path/to/your/results/folder:/home/src/netlogo/results netlogo --setup-file /home/src/netlogo/behavior/unit-tests.xml`
+
+# docker run -i -v /tmp/.X11-unix:/tmp/.X11-unix --user="$(id --user):$(id --group)" -t netlogo  
