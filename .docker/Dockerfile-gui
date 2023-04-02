@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+FROM ubuntu:rolling
+
+ARG NETLOGO_VERSION=6.3.0
+
+ENV LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8
+
+ENV MODEL_NAME=abm_fisheries_mussel.nlogo
+ENV NETLOGO_NAME=NetLogo-${NETLOGO_VERSION}
+ENV NETLOGO_URL=https://ccl.northwestern.edu/netlogo/${NETLOGO_VERSION}/${NETLOGO_NAME}-64.tgz
+
+RUN apt update && apt install -y \
+  curl xserver-xorg \
+  openjdk-8-jre \
+  python3-poetry
+
+RUN mkdir /opt/netlogo
+RUN mkdir /model
+RUN curl ${NETLOGO_URL} --output ${NETLOGO_NAME}-64.tgz
+RUN tar xzf ${NETLOGO_NAME}-64.tgz -C /opt/netlogo --strip-components=1
+#RUN rm -f ${NETLOGO_NAME}-64.tgz
+
+COPY ./data /model/data
+COPY ./netlogo /model/netlogo
+COPY ./LICENSES /model/LICENSES
+COPY ./.reuse /model/.reuse
+COPY ./ReadMe.md /model/
+
+CMD /bin/bash
+
+#ENTRYPOINT ["/opt/netlogo/netlogo-headless.sh", \
+# "--model", "/model/netlogo/${MODEL_NAME}", \
+# "--table", "/model/netlogo/results/table-output.csv", \
+# "--spreadsheet", "/model/netlogo/results/spreadsheet-output.csv"]
+
+# To build the docker file, and run netlogo interactivley:
+# `docker build -t netlogo .`
+# docker run -i -v /tmp/.X11-unix:/tmp/.X11-unix --user="$(id --user):$(id --group)" -t netlogo  
