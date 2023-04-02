@@ -9,13 +9,12 @@ tags:
   - MuSSeL project
 authors:
   - name: Carsten Lemmen
-    orcid: 0000-0000-0000-0000
-    equal-contrib: true
-    affiliation: "1" # (Multiple affiliations must be quoted)
+    orcid: 0000-0003-3483-6036
+    affiliation: 1
     corresponding: true
   - name: Sascha Hokamp
-    equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
     affiliation: 2
+    orcid: 0000-0002-2192-4013
   - name: Serra Örey
     affiliation: 3
 affiliations:
@@ -23,11 +22,11 @@ affiliations:
    index: 1
  - name: University of Hamburg, Germany
    index: 2
- - name: Independent Researcher, Country
+ - name: Hochschule Bremerhaven, Bremerhaven, Germany
    index: 3
 date: 2 April 2023
 bibliography: paper.bib
-SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (hereon)
+SPDX-FileCopyrightText: 2022-2023  Helmholtz-Zentrum hereon GmbH (hereon)
 SPDX-License-Identifier: CC-BY-4.0
 SPDX-FileContributor: Carsten Lemmen
 ---
@@ -72,9 +71,9 @@ Currently, most NetLogo models have not used continuous integration (CI) and con
 
 # Model documentation and license
 
-The model is documented in short form in the NetLogo's `Info` section in the IDE. A full documentation following the Overview, Design, and Details (ODD) standard protocol for ABM is available in the repository as `doc/odd/paper.md`. 
+The model is documented in short form in the NetLogo's `Info` section in the IDE. A full documentation following the Overview, Design, and Details [@Grimm2020; ODD] standard protocol for ABM is available in the repository as `doc/odd/paper.md`. 
 
-Allata from third parties is licensed under various open source licenses.  The model, its results and own proprietary data was released under open source licenses, mostly Apache 2.0 and CC-BY-SA-4.0.  A comprehensive documentation of all is provided via ReUSE. 
+Allata from third parties is licensed under various open source licenses.  The model, its results and own proprietary data was released under open source licenses, mostly Apache 2.0 and CC-BY-SA-4.0.  A comprehensive documentation of all is provided via REUSE [@FSF2023]. 
 
 <!--
 
