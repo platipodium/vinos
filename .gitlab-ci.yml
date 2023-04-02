@@ -9,12 +9,12 @@ include :
 stages:
   - lint
   - run
+  - test
   - deploy
-
 
 unit-tests:
   image: comses/netlogo # see https://github.com/comses/docker-netlogo
-  stage: run
+  stage: test
   script:
     - echo "Trying to run in working directory and headless mode"
     - echo "Java HOME is ${JAVA_HOME}"
