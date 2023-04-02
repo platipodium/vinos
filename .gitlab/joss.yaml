@@ -12,7 +12,6 @@ joss-paper:
     - inara -o pdf doc/joss/paper.md
   environment:
     name: draft
-    OPTERR: 0
   variables:
     GIT_SHA: $CI_COMMIT_SHA
     JOURNAL: joss
