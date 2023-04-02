@@ -5,16 +5,13 @@
 
 FROM openjdk
 
-#ARG MODEL_NAME
-#ARG NETLOGO_VERSION
-#ARG NETLOGO_NAME=NetLogo-$NETLOGO_VERSION
-#ARG NETLOGO_URL=https://ccl.northwestern.edu/netlogo/${NETLOGO_VERSION}/${NETLOGO_NAME}-64.tgz
+ARG NETLOGO_VERSION=6.3.0
 
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8
 
 ENV MODEL_NAME=abm_fisheries_mussel.nlogo
-ENV NETLOGO_VERSION=6.3.0
+ENV NETLOGO_VERSION=${NETLOGO_VERSION}
 ENV NETLOGO_NAME=NetLogo-${NETLOGO_VERSION}
 ENV NETLOGO_URL=https://ccl.northwestern.edu/netlogo/${NETLOGO_VERSION}/${NETLOGO_NAME}-64.tgz
 
@@ -30,7 +27,8 @@ COPY ./LICENSES /home/src/LICENSES
 COPY ./.reuse /home/src/.reuse
 COPY ./ReadMe.md /home/src/
 
-RUN ln -sf /home/src/netlogo/${MODEL_NAME} /home/src/netlogo/NLModel.nlogo
+RUN sed  's/^NetLogo 6..../NetLogo '${NETLOGO_VERSION}'/g' \
+  /home/src/netlogo/${MODEL_NAME} > /home/src/netlogo/NLModel.nlogo
 #CMD /bin/bash
 
 ENTRYPOINT ["/home/netlogo/netlogo-headless.sh", \
