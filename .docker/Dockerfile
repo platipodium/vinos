@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2023 Oracle Corporation
 # SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
-# SPDX-License-Identifier: GPL-2.0
+# SPDX-License-Identifier: GPL-2.0-only
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 FROM openjdk
