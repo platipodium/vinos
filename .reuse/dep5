@@ -52,8 +52,7 @@ Copyright: Food and Agriculture Organization of the United Nations
 License: LicenseRef-CC-BY-3.0-IGO
 
 Files: data/natura2000/northsea/MPA*
-Copyright: European Environmental Agency
-Copyright: Helmholtz-Zentrum hereon GmbH
+Copyright: 2023 European Environmental Agency, Helmholtz-Zentrum hereon GmbH
 License: CC0-1.0
 
 Files: data/coastline/sns_waterbody*
