@@ -1,0 +1,44 @@
+# GitLab CI configuration file for providing a headless 
+# NetLogo docker image based on Oracle's OpenJDK 8
+#
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor Carsten Lemmen <carsten.lemmen@hereon.de
+
+variables:
+    CONTAINER_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE/netlogo:${NETLOGO_VERSION}
+
+.base:
+    image: docker
+    tags: ["docker", "dind"]
+    services:
+        - docker:dind
+    allow_failure: false
+    interruptible: true
+
+build-docker:
+    extends: .base
+    stage: deploy
+    parallel:
+        matrix:
+            - NETLOGO_VERSION: ["6.3.0", "6.2.0"]
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+
+    script:
+        - "docker build -t ${CONTAINER_REGISTRY_IMAGE}
+           --build-arg NETLOGO_VERSION=${NETLOGO_VERSION} ./.docker/Dockerfile"
+        - docker push ${CONTAINER_REGISTRY_IMAGE}
+    allow_failure: false
+    needs: []
+
+docker-unit-tests:
+    extends: .base
+    stage: test
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    script:
+        - docker pull -t ${CONTAINER_REGISTRY_IMAGE}
+        - docker run -t ${CONTAINER_REGISTRY_IMAGE}  --setup-file /home/src/netlogo/behavior/unit-tests.xml
+    needs:
+        - build-docker
