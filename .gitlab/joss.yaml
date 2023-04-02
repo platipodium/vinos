@@ -1,0 +1,27 @@
+# GitLab CI configuration file for providing a headless 
+# NetLogo docker image based on Oracle's OpenJDK 8
+#
+# SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor Carsten Lemmen <carsten.lemmen@hereon.de
+
+joss-paper:
+  stage: deploy
+  image: 'openjournals/inara:latest'
+  script:
+    - inara -o pdf doc/joss/paper.md
+  environment:
+    name: draft
+  variables:
+    GIT_SHA: $CI_COMMIT_SHA
+    JOURNAL: joss
+  when: always
+  allow_failure: true
+  artifacts:
+    paths:
+      - doc/joss/paper.pdf
+      - pdf
+  dependencies:
+  #rules:
+  #   - if: $CI_COMMIT_BRANCH == "joss"
+  needs: []

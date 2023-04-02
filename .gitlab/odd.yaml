@@ -1,0 +1,22 @@
+# GitLab CI configuration file for providing a headless 
+# NetLogo docker image based on Oracle's OpenJDK 8
+#
+# SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor Carsten Lemmen <carsten.lemmen@hereon.de
+
+odd-paper:
+  stage: deploy
+  image: 'openjournals/inara:latest'
+  script:
+    - cd doc/odd
+    - make pdf 
+  when: always
+  allow_failure: true
+  artifacts:
+    paths:
+      - doc/odd/paper.pdf
+  dependencies:
+  #rules:
+  #   - if: $CI_COMMIT_BRANCH == "joss"
+  needs: []

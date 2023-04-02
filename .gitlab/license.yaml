@@ -3,7 +3,7 @@
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 license-compliance:
-    image: python:3.12
+    image: python:3.11
     stage: lint
     before_script:
         - pip install --upgrade pip
