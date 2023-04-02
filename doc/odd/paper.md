@@ -9,14 +9,17 @@ author:
   - name: Carsten Lemmen
     orcid: 0000-0003-3483-6036
     affil: 1
-  - name: Jieun Seo
-    affil: 2
-    orcid: 
   - name: Sascha Hokamp
     affil: 2
     orcid: 0000-0002-2192-4013
   - name: Serra Örey
     affil: 3
+    orcid: 
+  - name: Jürgen Scheffran
+    affil: 2
+    orcid: 
+  - name: Jieun Seo
+    affil: 2
     orcid: 
 correspondence: C. Lemmen <carsten.lemmen@hereon.de>
 affiliation:
@@ -83,7 +86,12 @@ The primary agents in the ABM are the fishing vessels, denoted as *boats*.  They
 
 Boats are located at ports, according to the distribution of the German fleet in those ports.  In the German fleet there are four distinct clusters of small-scale fisheries vessels  that have typical vessel and crew size,  gear and fishing strategy (@Oerey2023).  With those come physical  (speed, length, capacity, engine power) and economic properties (fixed and variable costs).  Boats have a catch efficiency that tries to model the experience of the individual boat owners.
 
-Boats go on fishing trips and record the catch and the revenue. They internally record the economic balance of their activites and continuously adapt preferences, e.g., for choosing a specific gear.  
+<!-- @todo  we need to work on catch-efficiency, maybe leave it out? -->
+
+Boats go on fishing trips and record the catch and the revenue. They internally record the economic balance of their activites and continuously adapt preferences, e.g., for choosing a specific gear. 
+
+<!-- @todo  we need to work on addinng area-flexbilty, max distance and other variables to memory -->
+
 
 ### Subsidiary agents: ports, preys, gears
 
@@ -91,34 +99,54 @@ Ports, preys, and gears are inactive agents that are introduced to structure the
 
 Ports can be boats' home or favourite landing **ports**. Boats start their activity from a port and dock to unload at a port.  They can stay in a port when deciding not to fish.  Along the German coast, there are 54 ports, for which boat and landing statistics are available.   At the ports, the simulated landings are recorded.
 
+<!-- @todo  Make landings a prognostic variable for ports, get rid of landing statistics for now as input -->
+
 The fishery target species are denoted **preys**.  Currently, the ABM describes three different species:
 
 | **Prey instance** | **Description** | **Picture** |
 | --- | --- | --- |
-| Crangon | The brown shrimp *Crangon crangon* ... | ![Crangon crangon](../../figures/320px-Crangon_crangon.jpg) |
-| Pleuronectes | The plaice *Pleuronectes platessa* ... | ![Pleuronectes platessa](../../figures/319px-Pleuronectes_platessa.jpg) |
-| Solea | The sole *Solea solea* ... | ![Solea solea](../../figures/Solea_solea_1.jpg) |
+| Crangon | The brown shrimp *Crangon crangon* ... | ![Crangon crangon](../../figures/320px-Crangon_crangon.jpg) { width=25% }|
+| Pleuronectes | The plaice *Pleuronectes platessa* ... | ![Pleuronectes platessa](../../figures/319px-Pleuronectes_platessa.jpg) { width=25% }|
+| Solea | The sole *Solea solea* ... | ![Solea solea](../../figures/Solea_solea_1.jpg){ width=25% } |
 
+<!-- @todo  Add fish descriptions -->
 
-The model is designed to accomodate further species relevant to the small-scale fishery such as whiting (*Merlangius merlangus*), sprat (*Sprattus sprattus*), or norwegian lobster (*Nephrops norvegicus*).
+The model is designed to accomodate further species relevant to the small-scale fishery such as whiting (*Merlangius merlangus*), sprat (*Sprattus sprattus*), or Norwegian lobster (*Nephrops norvegicus*).
 
 Boats and preys are connecte via the **gears** agent.  The gear prescribes the geometric area that can be fished, the speed at which fishing can occur, and the prey that is caught.  A gear can be installed, or changed, on a boat, subject to economic (invvestment cost) and physical (weight, size) constraints.  The gear also determines the impact of the fishing activity on the environment, i.e. how much prey is removed and how much of the sea floor is swept.
 
+<!-- @todo  Add the change of gear -->
+<!-- @todo  Add SAR diagnostic -->
+<!-- @todo  Add removal and recovery of prey -->
+
 ### Spatial units
 
-The spatial domain is described by a grid, whose cells (in NetLogo: patches) carry spatial information on the environment and record spatial information.  The domain itself is the German Bight including Germany's EEZ.  It is represented geographically in the WGS84 datum, and bounded by the rectangle spanned by the coordinates (2° E; 53°N) and (10° E; 56 °N); the resolution is 0.025 x 0.025 degree (1.5 arc minutes, or approximately 1.7 x 2.9 km).  The resulting grid has a size of 320 columns x 120 rows.
+The spatial domain is described by a grid, whose cells (in NetLogo: patches) carry spatial information on the environment and record activity information.  The domain itself is the German Bight including Germany's EEZ.  It is represented geographically in the WGS84 datum, and bounded by the rectangle spanned by the coordinates (2° E; 53°N) and (10° E; 56 °N); the resolution is 0.025 x 0.025 degree (1.5 arc minutes, or approximately 1.7 x 2.9 km).  The resulting grid has a size of 320 columns x 120 rows.
 
-The domain is divided into an active part (water) and an inactive part (land).  The demarcation between land and water is achieved by using the GEBCO bathymetry and assigning water to cells with positive depth.  Using a creep-fill algorithm and filtering Baltic waters east of 9.25° E, a continuous accessible domain is calculated.
+The domain is divided into an active part (water) and an inactive part (land).  The demarcation between land and water is achieved by using the GEBCO bathymetry bounded by European Environmental Agency's coastline dataset.  Using a creep-fill algorithm a continuous accessible domain is ensured.
 
-Cells carry information on resources (fish stocks of the respective species), regulatory fishery closure areas (offshore wind and exclusion zones).  They record activity of the fishery occuring in the grid cell as area swept and as hours fished.
+Cells carry information on resources (fish stocks of the respective species, at climatological seasonal resolution), regulatory fishery closure areas (offshore wind and trawling exclusion zones).  They record activity of the fishery occuring in the grid cell as area swept and as hours fished.
 
 ### Nonspatial environment
 
 A calendar records time.  The temporal domain are multiple years and the temporal resolution is 1 day.  With the progress of the calendar, surrogate weather is introduced that may influence a boat's decision to go on a fishing trip.  Seasonal information is used to describe the annual variation of prey resources.  
 
+<!-- @todo Use the weather -->
+
 ## Process overview and scheduling
 
-The natural timestep of the model is one day.  Each day, *boats in ports* make a decision to go out or not.  If a boat decides to go fishing, it starts a fishing trip during which it records catches, distances and time spent.
+The global timestep of the model is one day.  Within the 24-hour period, we use Discrete Event Simulation (DES) to trigger the action of boats within 5 phases  
+
+| **Phase* | **Description** |
+| --- | --- |
+| Phase 0 - inactive | Boats are in port and resting, not ready to go out |
+| Pleuronectes | The plaice *Pleuronectes platessa* ... | ![Pleuronectes platessa](../../figures/319px-Pleuronectes_platessa.jpg) { width=25% }|
+| Solea | The sole *Solea solea* ... | ![Solea solea](../../figures/Solea_solea_1.jpg){ width=25% } |
+
+
+<!-- @todo describe the DES event scheduling -->
+
+Each day, *boats in ports* make a decision to go out or not.  If a boat decides to go fishing, it starts a fishing trip during which it records catches, distances and time spent.
 It starts the fishing activity at a cell that is the nearest navigable cell from the port.
 
 *Boats at sea* subdivide their fishing activity in hauls. Before a haul, a new direction is randomly chosen for the next haul, subject to accessibility.  If no navigable route can be found, the boat is marked as needed to return, if yes, a straight line haul is started lasting 2 hours.
