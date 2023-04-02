@@ -5,6 +5,8 @@
 include :
   - .gitlab/license.yaml
   - .gitlab/docker.yaml
+  - .gitlab/joss.yaml
+  - .gitlab/odd.yaml
 
 stages:
   - lint
@@ -19,6 +21,7 @@ unit-tests:
     - echo "Trying to run in working directory and headless mode"
     - echo "Java HOME is ${JAVA_HOME}"
     - cd ${CI_PROJECT_DIR}/netlogo
+    - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' abm_fisheries_mussel.nlogo
     - > 
       bash /opt/netlogo/netlogo-headless.sh 
       --model ./abm_fisheries_mussel.nlogo 
@@ -65,45 +68,4 @@ unit-tests:
 #             - public/
 #     needs: []
 
-joss-paper:
-  stage: deploy
-  image: 'openjournals/inara:latest'
-  script:
-    - inara -o pdf doc/joss/paper.md
-  environment:
-    name: draft
-  variables:
-    GIT_SHA: $CI_COMMIT_SHA
-    JOURNAL: joss
-  when: always
-  allow_failure: true
-  artifacts:
-    paths:
-      - doc/joss/paper.pdf
-      - pdf
-  dependencies:
-  #rules:
-  #   - if: $CI_COMMIT_BRANCH == "joss"
-  needs: []
-
-odd-paper:
-  stage: deploy
-  image: 'openjournals/inara:latest'
-  script:
-    - inara -o pdf doc/odd/paper.md
-  environment:
-    name: draft
-  variables:
-    GIT_SHA: $CI_COMMIT_SHA
-    JOURNAL: joss
-  when: always
-  allow_failure: true
-  artifacts:
-    paths:
-      - doc/odd/paper.pdf
-      - pdf
-  dependencies:
-  #rules:
-  #   - if: $CI_COMMIT_BRANCH == "joss"
-  needs: []
 
