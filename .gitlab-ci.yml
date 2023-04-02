@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH (hereon)#
 # SPDX-License-Identifier: CC-BY-4.0
-# SPDX-FieContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 include :
   - .gitlab/license.yaml
@@ -27,6 +27,8 @@ unit-tests:
       --model ./abm_fisheries_mussel.nlogo 
       --setup-file ./behavior/unit-tests.xml
       --experiment "unit-tests" --table -
+  allow_failure: false
+  needs: []
   
 # create-map:
 #   image: comses/netlogo # see https://github.com/comses/docker-netlogo
@@ -44,28 +46,27 @@ unit-tests:
 #       --experiment "effort-map" --table -
   
   # Preserve resulting files
-  artifacts:
-    paths: 
-      - ./netlogo/results/
-  needs: []
+  # artifacts:
+  #   paths: 
+  #     - ./netlogo/results/
+  # needs: []
 
-# The pages deployment only works on public projects, so we 
-# have to wait past Milestone 1 to enable this feature. It
-# is advertised in the JOSS paper, so needs to be implemented
-# right away.
-# pages: # predefined name by GitLab
-#     stage: deploy
-#     dependencies: 
-#         - create-map
-#     script:
-#         - mkdir -p public # required by GitLab
-#         - mv ./netlogo/results/*.png public/
-#         - touch public/index.html
-#     rules:
-#         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-#     artifacts:
-#         paths:
-#             - public/
-#     needs: []
+pages: # predefined name by GitLab
+    stage: deploy
+    script:
+        - mkdir -p public # required by GitLab
+        - touch public/index.html
+        #- mv ./netlogo/results/*.png public/
+        - cp ./doc/odd/paper.pdf public/odd.pdf
+        - cp ./doc/joss/paper.pdf public/joss.pdf
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    artifacts:
+        paths:
+            - public/
+    needs: 
+      - joss-paper
+      - odd-paper
+    #  - create-map
 
 

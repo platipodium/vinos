@@ -24,12 +24,11 @@ build-docker:
             - NETLOGO_VERSION: ["6.3.0", "6.2.2"]
     before_script:
         - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
-
     script:
         - "docker build -t ${CONTAINER_REGISTRY_IMAGE}
            --build-arg NETLOGO_VERSION=${NETLOGO_VERSION} -f docker/Dockerfile-headless ."
         - docker push ${CONTAINER_REGISTRY_IMAGE}
-    allow_failure: false
+    allow_failure: true
     needs: []
 
 docker-unit-tests:
