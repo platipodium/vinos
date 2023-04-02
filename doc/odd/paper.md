@@ -54,6 +54,8 @@ abbreviations:
     long: "Overview, Design concepts, Details"
   - short: OWF 
     long: "Offshore Wind Farm"
+  - short: DES 
+    long: "Discrete Event Simulation"
 ---
 
 # ODD Protocol: German North Sea Small-scale Fisheries
@@ -127,6 +129,8 @@ The domain is divided into an active part (water) and an inactive part (land).  
 
 Cells carry information on resources (fish stocks of the respective species, at climatological seasonal resolution), regulatory fishery closure areas (offshore wind and trawling exclusion zones).  They record activity of the fishery occuring in the grid cell as area swept and as hours fished.
 
+<!-- @todo add SAR -->
+
 ### Nonspatial environment
 
 A calendar records time.  The temporal domain are multiple years and the temporal resolution is 1 day.  With the progress of the calendar, surrogate weather is introduced that may influence a boat's decision to go on a fishing trip.  Seasonal information is used to describe the annual variation of prey resources.  
@@ -137,27 +141,33 @@ A calendar records time.  The temporal domain are multiple years and the tempora
 
 The global timestep of the model is one day.  Within the 24-hour period, we use Discrete Event Simulation (DES) to trigger the action of boats within 5 phases  
 
-| **Phase* | **Description** |
-| --- | --- |
-| Phase 0 - inactive | Boats are in port and resting, not ready to go out |
-| Pleuronectes | The plaice *Pleuronectes platessa* ... | ![Pleuronectes platessa](../../figures/319px-Pleuronectes_platessa.jpg) { width=25% }|
-| Solea | The sole *Solea solea* ... | ![Solea solea](../../figures/Solea_solea_1.jpg){ width=25% } |
+| **Phase* | **Location** |**Description** |
+| --- | --- | --- |
+| Phase 0 rest  | port | Boats are resting, not ready to go out |
+| Phase 1 ready | port-sea |  Boats are ready to go out and are deployed|
+| Phase 2 steam | sea  | Boats steam in open water |
+| Phase 3 fish  | sea  | Boats fish open water  |
+| Phase 4 steam | sea  | Boats need to return  |
+| Phase 5 land  | port | Boats are offloading |
+
+Boats cycle through all phases consecutively, keeping a record of how much time they spend.  Boats in **phase 0** keep the legal resting time of 11 hours, and rest during the weekend (from Saturday noon to Monday 4 am).  After the resting period, they make a decision on whether to go out or not.  This decision may depend on weather and  (in a later model version) expected catch.  If the decision is positive, a boat enters phase 1.  Boats in **phase 1** virtually steam from the port location to the port's closest open sea deployment location.  Adding this phase makes it possible for the ports to be located on dry ground at the available grid resolution, as many ports are located upstream of the coastline demarcation.  Having arrived at the deployment locatino, boats enter phase 2.
+
+Boats in **phase 2** steam to a preferred location for the next fishing haul.  This preferred location is chosen randomly but subject to the fuel constraints and maximum distance preference of each boat.  At a later implementation of the model, this location is also chosen taking into account previous experience of successful fishing hauls.  Phase 2 may also be entered after an unsuccessful fishing haul.  At the new location, a boat enters **phase 3** for fishing.  Fishing is done in several hauls;   a haul is directed towards only accessible water, and at the end of a haul the ship turns around (with slight variation) continues to the next haul.
+
+To record the fishing activity on the cells, a haul is subdivided into time steps of 6 minutes duration.  The time spend in a cell and the area swept is recorded for the gear with the highest priority. The catch is calculated separately for each gear (and the gear-associated target species), taking into account the target species biomass, the gear width and haul distance and the boat's catch efficiency.
+Hauls continue until one of the following constraints is met (always taking into account the time and fuel cost of the return trip):
+
+1. The maximum preferred time at sea is exhausted;
+2. the maximum time from the first successful catch (24 hours to keep fresh) is exhausted;
+3. the fuel is exhausted;
+4. the loading capacity is exhausted;
+5. the catch is considered insufficient.  
 
 
-<!-- @todo describe the DES event scheduling -->
+On an insufficient catch, the boat enters phase 2 to look for a different location.  On a successful catch and after having spent the allocated time or fuel, the boat enters phase 4.
 
-Each day, *boats in ports* make a decision to go out or not.  If a boat decides to go fishing, it starts a fishing trip during which it records catches, distances and time spent.
-It starts the fishing activity at a cell that is the nearest navigable cell from the port.
-
-*Boats at sea* subdivide their fishing activity in hauls. Before a haul, a new direction is randomly chosen for the next haul, subject to accessibility.  If no navigable route can be found, the boat is marked as needed to return, if yes, a straight line haul is started lasting 2 hours.
-
-To record the fishing activity on the cells, a haul is subdivided into 20 time steps of 6 minutes duration.  The time spend in a cell and the area swept is recorded for the gear with the highest priority. The catch is calculated separately for each gear (and the gear-associated target species), taking into account the target species biomass, the gear width and haul distance and the boat's catch efficiency.
-
-After each haul, the boats check whether they have sufficient time, loading capacity, and fuel left to return to their home port. If there's no need to go home, a boat compares determins the sufficiency of the last haul.  If yes, the boat starts the next haul in place, if not, it steams to a new cell (currently a neighboring cell) from where to start a haul. 
-
-Priorities for the different gears are updated based on the relative change of the (virtually in parallel) deployed gears and catches.
-
-Once back home the boat's catch is registered at the port.   
+Boats in **phase 4** need to return.  They virtually steam in a straight line to their deployment location and on to their port. At the port, they enter **phase 5** to unload their catch and clean the boat.  Priorities for the different gears are updated based on the relative change of the deployed gears and catches.
+Finally, boats re-enter phase 0 and start the cycle. 
 
 ## Design concepts
 
@@ -175,6 +185,8 @@ $$
 $$
 
 ### Emergence
+
+
 
 The emergent property is the spatial pattern of fishing activities, which is best recorded as maps of effort or maps of swept area ratio (SAR). This property can be compared to existing data on effort or SAR, and it gives information on the location of the largest potential environmental impact of fisheries. 
 
@@ -219,9 +231,10 @@ All data are publicly available and licensed for use.  The data sources are
 
 # CRediT authorship contribution statement
 C.Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing.
-J.Seung: Writing – original draft.
 S.Hokamp: Conceptualization, Software, Methodology, Formal analysis, Writing – review & editing.
 S.Örey: Conceptualization, Data curation, Writing – review & editing.
+J. Scheffran: Conceptualization, Formal analysis, Writing – review & editing
+J.Seung: Writing – original draft.
 
 <!--
 ## Sub-models
