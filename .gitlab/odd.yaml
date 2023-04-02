@@ -7,8 +7,12 @@
 
 odd-paper:
   stage: deploy
-  image: 'openjournals/inara:latest'
+  #image: 'openjournals/inara:latest'
+  image: 'pandoc/latex:latest'
   script:
+    - which apt
+    - which yum
+    - which make
     - cd doc/odd
     - make pdf 
   when: always
