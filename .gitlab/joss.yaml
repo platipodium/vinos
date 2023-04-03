@@ -9,7 +9,7 @@ joss-paper:
   stage: deploy
   image: 'openjournals/inara:latest'
   script:
-    - inara -o pdf doc/joss/paper.md
+    - inara -o pdf,cff doc/joss/paper.md
   environment:
     name: draft
   variables:
