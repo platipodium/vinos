@@ -37,7 +37,7 @@ docker-unit-tests:
     before_script:
         - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
     script:
-        - docker pull -t ${CONTAINER_REGISTRY_IMAGE}
-        - docker run -t ${CONTAINER_REGISTRY_IMAGE}  --setup-file /home/src/netlogo/behavior/unit-tests.xml
+        - docker pull ${CONTAINER_REGISTRY_IMAGE}
+        - docker run ${CONTAINER_REGISTRY_IMAGE}  --setup-file /home/src/netlogo/behavior/unit-tests.xml
     needs:
         - build-docker

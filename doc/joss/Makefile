@@ -16,7 +16,7 @@ cff pdf: $(PDF)
 	docker run -it -v $(PWD):/data \
     -u $(id -u):$(id -g) \
     openjournals/inara \
-    -o pdf,csl $(PDF)
+    -o pdf,cff $(SRC)
 
 clean:
 	@rm -f $(PDF) $(XREF) $(HTML) CITATION.cff paper.preprint.*
