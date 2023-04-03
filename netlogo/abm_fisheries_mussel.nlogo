@@ -1279,16 +1279,18 @@ The intended audience of the ABM are marine researchers and government agencies 
 
 Agents are boats,  the gear they use, the strategies they employ, and their prey.  All agents are encapsulated in object-oriented design as `breeds`.  The agents' methods implement the interaction rules between agents and between agents and their environment.  Key interactions are the movement rules of boats across the seascape, the harvesting of resources, and the cost-benefit analysis of a successful catch and its associated costs.  Adaptation occurs at the level of preference changes for gear selection (and prey species), and the time and distance preferences for fishing trips.  
 
-A notable programming feature is the integration of the legend with the (map) `view`, a feature that is lacking from the default capabilities of NetLogo.  There have been discussions on how to implement a legend using the `plot` element, but so far this is the only NetLogo model known to the authors implementing a legend with the `view`. 
+A notable programming feature is the integration of the legend with the (map) `view`, a feature that is lacking from the default capabilities of NetLogo.  There have been discussions on how to implement a legend using the `plot` element[1], but so far this is the only NetLogo model known to the authors implementing a legend with the `view`. 
 
 ## Model documentation and license
 
-The model is documented  with the Overview, Design, and Details [@Grimm2020; ODD] standard protocol for ABMs, available in the repository as [doc/odd/paper.md](doc/odd/paper.md)
-All data from third parties is licensed under various open source licenses.  The model, its results and own proprietary data was released under open source licenses, mostly Apache 2.0 and CC-BY-SA-4.0.  A comprehensive documentation of all is provided via REUSE [@FSF2023]. 
+The model is documented  with the Overview, Design, and Details (ODD, [2]) standard protocol for ABMs, available in the repository as [doc/odd/paper.md](doc/odd/paper.md)
+All data from third parties is licensed under various open source licenses.  The model, its results and own proprietary data was released under open source licenses, mostly Apache 2.0 and CC-BY-SA-4.0.  A comprehensive documentation of all is provided via REUSE [3]. 
 
 ### Acknowledgements
 
-We acknowledge contributions from Wolfgang Probst, Seong Jieun, and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A  "Multiple Stressors on North Sea Life" within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit (FONA) program of the Germany Bundesministerium für Bildung und Forschung (BMBF).  
+We acknowledge contributions from Wolfgang Probst, Seong Jieun, and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A  "Multiple Stressors on North Sea Life" [4] within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit (FONA) program of the Germany Bundesministerium für Bildung und Forschung (BMBF).  
+
+
 
 ### License 
 
@@ -1296,8 +1298,25 @@ Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH, Universität Hamburg, Hochsc
 Authors: Carsten Lemmen, Sascha Hokamp, Serra Örey
 License: Apache 2.0
 
-![Küstenforschung Nord- und Ostsee](../assets/logo_kueno.png) ![Funded by BMBF](../assets/logo_bmbffunded.png)
+![Hereon](../assets/logo-hereon.png)       ![UHH](../assets/logo-uhh.png)     ![HSB](../assets/logo-hsb.png)
 
+
+## References
+
+
+[1]: Arn, Luke C, Javier Sandoval. 2018. “Netlogo How to Add a Legend?” Stackoverflow. 2018. https://stackoverflow.com/questions/51328633/netlo go-how-to-add-a-legend.
+
+[2]: Grimm, Volker, Steven F. Railsback, Christian E. Vincenot, Uta Berger, Cara Gallagher, Donald L. Deangelis, Bruce Edmonds, et al. 2020. “The ODD protocol for describing agent-based and other simulation models: A second update to improve clarity, replication, and structural realism.” JASSS 23 (2). https://doi.org/10.18564/jasss.4259.
+
+[3]: “REUSE Software.” 2023. Free Software Foundation Europe e.V. 2023. https://reuse.software.
+
+[4]: "Multiple Stressors on North Sea Life.  https://www.mussel-project.de
+
+
+
+
+
+![Funded by BMBF](../assets/logo-bmbf-funded.png)
 
 
 @#$#@#$#@

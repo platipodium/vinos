@@ -107,9 +107,9 @@ The fishery target species are denoted **preys**.  Currently, the ABM describes 
 
 | **Prey instance** | **Description** | **Picture** |
 | --- | --- | --- |
-| Crangon | The brown shrimp *Crangon crangon* ... | ![Crangon crangon](../../figures/320px-Crangon_crangon.jpg) { width=25% }|
-| Pleuronectes | The plaice *Pleuronectes platessa* ... | ![Pleuronectes platessa](../../figures/319px-Pleuronectes_platessa.jpg) { width=25% }|
-| Solea | The sole *Solea solea* ... | ![Solea solea](../../figures/Solea_solea_1.jpg){ width=25% } |
+| Crangon | The brown shrimp *Crangon crangon* ... | ![Crangon crangon](../../assets/320px-Crangon_crangon.jpg){ width=25% }|
+| Pleuronectes | The plaice *Pleuronectes platessa* ... | ![Pleuronectes platessa](../../assets/319px-Pleuronectes_platessa.jpg){ width=25% }|
+| Solea | The sole *Solea solea* ... | ![Solea solea](../../assets/Solea_solea_1.jpg){ width=25% } |
 
 <!-- @todo  Add fish descriptions -->
 

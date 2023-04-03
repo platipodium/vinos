@@ -1,5 +1,5 @@
 ---
-title: 'A NetLogo Agent-Based Model of small-scale fisheries'
+title: 'A NetLogo Agent-based Model of German North Sea Small-scale fisheries'
 tags:
   - NetLogo
   - Agent-based Model
@@ -24,7 +24,7 @@ affiliations:
    index: 2
  - name: Hochschule Bremerhaven, Bremerhaven, Germany
    index: 3
-date: 2 April 2023
+date: 3 April 2023
 bibliography: paper.bib
 SPDX-FileCopyrightText: 2022-2023  Helmholtz-Zentrum hereon GmbH (hereon)
 SPDX-License-Identifier: CC-BY-4.0
@@ -36,8 +36,7 @@ SPDX-FileContributor: Carsten Lemmen
 The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.  
 Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp.
 
-Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.  
-
+Fisheries in the North Sea face area competition with other uses of the sea---long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.  
 Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet.
 
 # Statement of need
@@ -54,7 +53,7 @@ The intended audience of the ABM are marine researchers and government agencies 
 
 # Key features of the ABM
 
-As a NetLogo implementation, the model integrates a (frontend) user interface, its basic documentation, and the (backend) code in a single integrated development environment, that can be run in  NetLogo (@Wilensky1999, version 6 required), a Java-based portable ABM and system dynamics simulation platform.
+As a NetLogo implementation, the model integrates a (frontend) user interface, its basic documentation, and the (backend) code in a single integrated development environment, that can be run in  NetLogo [@Wilensky1999; version 6 required], a Java-based portable ABM and system dynamics simulation platform.
 
 The backend (code) features geospatial data access and integration of multiple georeferenced and tabular data sources, as well as integrating Web Mapping Services (WMS) to describe the grid-based environmental context. This environmental context is dynamic in time, providing seasonal resource changes and dynamic area closures.
 
@@ -62,10 +61,9 @@ Agents are boats,  the gear they use, the strategies they employ, and their prey
 
 The user interface provides an interactive environment, perusing all NetLogo graphical features.  Informational elements include a (georeferenced) map view, and several histograms and temporal scatter panels.  Interactive elements include switches for toggling information on and off, choosers to toggle which information to show, buttons to control the simulation and sliders to adjust boundary conditions, such as the oil price.
 
-
 # Notable programming and software development features
 
-A notable programming feature is the integration of the legend with the (map) `view`, a feature that is lacking from the default capabilities of NetLogo.  There have been discussions on how to implement a legend using the `plot` element, but so far this is the only NetLogo model known to the authors implementing a legend with the `view`. 
+A notable programming feature is the integration of the legend with the `view`, a feature that is lacking from the default capabilities of NetLogo.  There have been discussions on how to implement a legend using the `plot` element and using the `bitmap` extension [@Stackoverflow2018], but so far this is the only NetLogo model known to the authors implementing a legend with the `view` using basic agents. 
 
 Currently, most NetLogo models have not used continuous integration (CI) and continous deployment (CD).  With our implementation, we demonstrate how CI can be used for NetLogo by making use of NetLogo's `BehaviorSpace` tool that runs a suite of unit tests.  We also use  `BehaviorSpace` for the CD of generating the resulting maps of fishing effort under different scenarios.
 
@@ -73,24 +71,19 @@ Currently, most NetLogo models have not used continuous integration (CI) and con
 
 The model is documented in short form in the NetLogo's `Info` section in the IDE. A full documentation following the Overview, Design, and Details [@Grimm2020; ODD] standard protocol for ABM is available in the repository as `doc/odd/paper.md`. 
 
-Allata from third parties is licensed under various open source licenses.  The model, its results and own proprietary data was released under open source licenses, mostly Apache 2.0 and CC-BY-SA-4.0.  A comprehensive documentation of all is provided via REUSE [@FSF2023]. 
+All data from third parties is licensed under various open source licenses.  The model, its results and own proprietary data was released under open source licenses, mostly Apache 2.0 and CC-BY-SA-4.0.  A comprehensive documentation of all is provided via REUSE [@FSF2023]. 
 
 <!--
-
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
 
 Figures can be included like this:
 ![Caption for example figure.\label{fig:example}](figure.png){ width=20% }
 and referenced from text using \autoref{fig:example}.
 
-
 --> 
 
 # Acknowledgements
 
-We acknowledge contributions from Wolfgang Probst, Seong Jieun, and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant Multiple Stressors on North Sea Life within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit program of the Germany Research and Education ministry (BMBF).  
+We acknowledge contributions from Wolfgang Probst, Seong Jieun, and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A "Multiple Stressors on North Sea Life" within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit program of the Germany Bundesministerium für Bildung und Forschung (BMBF).  
 
 # References
 
