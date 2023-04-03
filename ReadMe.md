@@ -1,11 +1,10 @@
 <!--
-SPDX-FileCopyrightText: 2022 Carsten Lemmen <carsten.lemmen@hereon.de>
-SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon (Hereon)
-
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: CC0-1.0
 -->
 
-# Agent-based Model of German North Sea fisheries
+# Agent-based Model of German North Sea Small-scale Fisheries
 
 The North Sea small-vessel fleet targets plaice, sole, and crangon, predominantly.  The roundabout
 200 boats leave German ports for one to few day fishing trips and offload their catch.  Fishers
@@ -29,20 +28,26 @@ to recreate some of the data.
 
 ## Using the model
 
-Please refer to the `Info` tab in the graphical NetLogo model to learn more about the model, it's
-mathematical implementation and how to use it.
+To use the model, please install NetLogo from https://ccl.northwestern.edu/netlogo/download.shtml.  On 
+Windows and macOS systems, double-clicking the NetLogo application or the code (in the projects's 
+`netlogo` folder) with the extension `.nlogo` will open NetLogo's integrated development environment.
+On Linux, start NetLogo with the `netlogo-gui.sh` shell script provided by NetLogo.
+
+Please refer to the `Info` tab in the graphical NetLogo model to learn quickly more about the model, it's
+mathematical implementation and how to use it.  There is a full documentation in ODD format available in 
+`doc/odd/paper.md`. 
 
 ## Licenses
 
-The model is copyrighted by [University of Hamburg](https://www.uni-hamburg.de) and 
-[Helmholtz-Zentrum Hereon](https://www.hereon.de).  It is available under
+The model is copyrighted by [Helmholtz-Zentrum Hereon](https://www.hereon.de), [University of Hamburg](https://www.uni-hamburg.de), 
+and [Hochschule Bremerhaven](https://www.hs-bremerhaven.de).  It is available under
 the open source Apache 2.0 license.  You may freely use, distribute, and modify the model.  If you 
 do so, you must acknowledge us.  
 
 Some data and routines were also contributed by the Thünen Institute, by Hochschule Bremerhaven, 
 non-governmental organizations and government agencies, some are available under licences different
 from Apache 2.0.  Please refer to the license information available for each individual file in 
-this project for details.
+this project for details. You may use the REUSE software to view all licenses.
 
 Funding for this software development was obtained by the German Federal Ministry for Education
 and Research  (BMBF) in the project Multiple Stressors on North Sea Life (MuSSeL) in the
