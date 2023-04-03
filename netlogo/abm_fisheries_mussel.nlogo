@@ -1258,82 +1258,48 @@ NIL
 0
 
 @#$#@#$#@
-# TODO
+# The Agent-based Model of German North Sea Small-scale fisheries
 
-- Feedback on resource by fishery
-- Oil price effect on costs
-- Add sole and plaice
-- Add boat trait distribution from Serra's data
+The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.  Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp.
 
-## Data sources
+Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.   Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet.
 
+## Purpose, scope and audience
+The purpose of this ABM is to provide an interactive simulation environment that describes spatial, temporal and structural adaptations of the fleet.  It adaptively describes
+ 
+ * where to fish  and how far to go out to sea
+ * how often to go out
+ * what gear to use and what species to target
 
-### Species probability presences
+Its scope is the German North sea small-scale fisheries.  This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The target species is currently restricted to the most important ones: plaice, sole and brown shrimp, but is in principle extensible to further target species like Norwegian lobster or whiting. 
 
-The data was obtained from Nik Probst, based on Random Forest species distribution modeling for Merlangus, Platessa, Solea, Crangon and Sprattus. Please do not distribute this unpublished data.  
+The intended audience of the ABM are marine researchers and government agencies concerned with spatial planning, environmental status assessment, and climate change mitigation.  It can also assist in a stakeholder dialogue with tourism and fishers to contextualize the complexity of the interactions between fisheries economics, changing resources and regulatory restrictions.  It is intended to be used for scenario development for future sustainable fisheries at the German North Sea coast.
 
-### Bathymetry
+## Agents and implementation features
 
-Bathymetry data was obtained 2022-01-07 from GEBCO Compilation Group (2021) GEBCO 2021 Grid (https://doi.org/10.5285/c6612cbe-50b3-0cff-e053-6c86abc09f8f).
+Agents are boats,  the gear they use, the strategies they employ, and their prey.  All agents are encapsulated in object-oriented design as `breeds`.  The agents' methods implement the interaction rules between agents and between agents and their environment.  Key interactions are the movement rules of boats across the seascape, the harvesting of resources, and the cost-benefit analysis of a successful catch and its associated costs.  Adaptation occurs at the level of preference changes for gear selection (and prey species), and the time and distance preferences for fishing trips.  
 
-You can go to https://download.gebco.net to download the data as NetCDF, GeoTIFF, PNG and Esri ASCII.  
+A notable programming feature is the integration of the legend with the (map) `view`, a feature that is lacking from the default capabilities of NetLogo.  There have been discussions on how to implement a legend using the `plot` element, but so far this is the only NetLogo model known to the authors implementing a legend with the `view`. 
 
-### Offshore wind farms
+## Model documentation and license
 
-EmodNet provides human activities at https://www.emodnet-humanactivities.eu/download-data.php. After providing your country and sector, the wind farm polygon areas are freely available. 
+The model is documented  with the Overview, Design, and Details [@Grimm2020; ODD] standard protocol for ABMs, available in the repository as [doc/odd/paper.md](doc/odd/paper.md)
+All data from third parties is licensed under various open source licenses.  The model, its results and own proprietary data was released under open source licenses, mostly Apache 2.0 and CC-BY-SA-4.0.  A comprehensive documentation of all is provided via REUSE [@FSF2023]. 
 
-#### Todo
-- classify areas to restrict during certain years
+### Acknowledgements
 
-### Swept-area ratio
-
-This is a todo item.  The first goal of ours simulation environment would be to explain the SAR map from our simulation
-
-### Waves
-
-This is a todo item. Likely not relevant for spatial pattern, as the storminess is a global phenomenon and not a local one.   
-
-#### Image-based processing 
-
-Portable Network Graphics (png) images were used with the following projection information: 
-
-```
-nrows=120
-ncols=180
-xmin=2
-ymin=53
-xmax=10
-ymax=56
-projection=+proj=longlat +datum=WGS84 +no_defs
-```
-
-From the NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` and further processed via `.pnm` to yield a `.png`.  The resulting file was then resampled to 180 x 120 pixels.
-
-#### Georeferenced processing
-
-The ESRII ASCII file was directly used (see code in `geodata.nls`)
-
-#### Viable implementation
-
-1. we need two points in time with information
-2. for each point in time we come up with a value
-3. calculate change in value
-4. agent shifts towards action pathways according to best value change
-
-- Agent ist das Boot.  
-- Action pathway ist gear selection (later target species)
-- gear hat Eigenschaft: gear-width => influences catch, gear-drag => influences fuel cost
-- after two trips, we compare the value (income - cost)*value_factor between two trips 
-
-
+We acknowledge contributions from Wolfgang Probst, Seong Jieun, and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A  "Multiple Stressors on North Sea Life" within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit (FONA) program of the Germany Bundesministerium für Bildung und Forschung (BMBF).  
 
 ### License 
 
-Copyright: Universität Hamburg and Helmholtz-Zentrum Hereon, 
-Authors: Carsten Lemmen, Sascha Hokamp
+Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH, Universität Hamburg, Hochschule Bremerhaven
+Authors: Carsten Lemmen, Sascha Hokamp, Serra Örey
 License: Apache 2.0
 
-We use cartographic data provided by Openstreetmap @copyright OpenStreetmap Contributors.
+![Küstenforschung Nord- und Ostsee](../assets/logo_kueno.png) ![Funded by BMBF](../assets/logo_bmbffunded.png)
+
+
+
 @#$#@#$#@
 default
 true
