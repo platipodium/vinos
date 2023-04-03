@@ -38,7 +38,7 @@ BIB=$(SRC:.md=.bib)
 
 all:  txt odt pdf
 pdf:	$(PDF) $(SRC) Makefile
-#html:	$(HTML) $(SRC) Makefile
+html:	$(HTML) $(SRC) Makefile
 docx: $(DOCX) $(SRC) Makefile
 odt:  $(ODT) $(SRC) Makefile
 epub: $(EPUB) $(SRC) Makefile
@@ -48,8 +48,8 @@ txt:  $(TXT) $(SRC) Makefile
 %.txt:	%.md %.bib Makefile
 	$(CMD) --to=plain -o $@ $<
 
-#%.html:	%.md Makefile
-#	$(CMD) --to=html --template=../templates/html.template --css=$(PREFIX)/marked/kultiad-serif.css -o $@ $<
+%.html:	%.md Makefile
+	$(CMD) --to=html -o $@ $<
 
 %.epub:	%.md  %.bib Makefile
 	$(CMD) --to=epub -s -o $@ $<  # --epub-cover-image=cover-image.gif
@@ -79,3 +79,10 @@ clean:
 	@rm -f $(PDF:.pdf=.log) $(PDF:.pdf=.synctex.gz) $(PDF:.pdf=.blg)  $(PDF:.pdf=.bbl)
 	@rm -f missfont.log $(SRC:.md=.run.xml)
 	@rm -f $(EPUB) $(TXT)
+	@rm -f allbib.html
+	
+
+
+bib: 
+	pandoc allbib.tex -o allbib.html --citeproc --bibliography paper.bib
+	pandoc allbib.tex -o allbib.pdf --citeproc --bibliography paper.bib 
