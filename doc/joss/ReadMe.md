@@ -9,3 +9,6 @@ for documentating the model.
 
 Read more about JOSS submission at [https://joss.readthedocs.io/en/latest/submitting.html](https://joss.readthedocs.io/en/latest/submitting.html).
 
+The paper pdf is build in the CD pipeline using the `openjournals/inara` docker.  Using the 
+Makefile, you can also build the pdf locally with this docker.
+
