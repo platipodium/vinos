@@ -79,7 +79,7 @@ clean:
 	@rm -f $(PDF:.pdf=.log) $(PDF:.pdf=.synctex.gz) $(PDF:.pdf=.blg)  $(PDF:.pdf=.bbl)
 	@rm -f missfont.log $(SRC:.md=.run.xml)
 	@rm -f $(EPUB) $(TXT)
-	@rm -f allbib.html
+	@rm -f allbib.html allbib.pdf
 	
 
 
