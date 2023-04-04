@@ -8,18 +8,7 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 <experiments>
   <experiment name="unit-tests" repetitions="1" runMetricsEveryStep="true">
     <setup>
-    print __test_csv_property
-    print __test_five-number-summary
-    print __test_haversine-distance
-    print __test-value-from-distribution
-    print __test-normalize
-    print __test-quantile-thresholds
-    print __test-quantile-thresholds-number
-    print __test-quantiles
-    print __test-formatted-number
-    print __test-index-max-one-of  
-    print __test-load-dataset
-    print __test-draw-dataset
+    unit-test
     </setup>
     <go>
     </go>

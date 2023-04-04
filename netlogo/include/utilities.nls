@@ -73,9 +73,11 @@ end
 
 
 to-report normalize [data]
+  if length data < 2 [report data]
   let min-data min data
   let max-data max data
-  report data ;map [ (item - min-data) / (max-data - min-data) ] data
+  if min-data = max-data [report data]
+  report map [i -> (i - min-data) / (max-data - min-data) ] data
 end
 
 to-report __test-normalize
@@ -212,4 +214,25 @@ to-report  __test-boolean2int
   if boolean2int false != 0 [ report false ]
   report true
 end
+
+to  unit-test
+  let tests (list  __test-boolean2int __test_csv_property __test-load-dataset 
+    __test_five-number-summary __test_haversine-distance __test-value-from-distribution
+    __test-normalize __test-quantile-thresholds __test-quantile-thresholds-number
+  __test-quantiles __test-formatted-number __test-index-max-one-of)
+  foreach tests [
+    t -> ifelse t [print "Test passed"][print "Test failed" stop ]
+  ]
+  
+end
+
+
+
+
+
+
+
+
+
+
 
