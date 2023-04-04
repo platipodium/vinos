@@ -13,15 +13,15 @@ variables:
     tags: ["docker", "dind"]
     services:
         - docker:dind
+    parallel:
+        matrix:
+            - NETLOGO_VERSION: ["6.3.0", "6.2.2"]
     allow_failure: false
     interruptible: true
 
 build-docker:
     extends: .base
     stage: deploy
-    parallel:
-        matrix:
-            - NETLOGO_VERSION: ["6.3.0", "6.2.2"]
     before_script:
         - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
     script:
