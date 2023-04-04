@@ -1107,7 +1107,7 @@ SWITCH
 307
 box?
 box?
-0
+1
 1
 -1000
 
@@ -1256,6 +1256,23 @@ NIL
 NIL
 NIL
 0
+
+BUTTON
+1241
+391
+1346
+424
+clear
+clear-drawing
+NIL
+1
+T
+OBSERVER
+NIL
+C
+NIL
+NIL
+1
 
 @#$#@#$#@
 # The Agent-based Model of German North Sea Small-scale fisheries
