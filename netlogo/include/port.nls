@@ -40,21 +40,24 @@ ports-own [
   port-prob-bad-weather         ; probability that the weather is too bad to leave harbor
   
   port-prey-names ; list of species that are landed here
+  port-clusters
 ]
 
 
 to setup-ports
-  port-read-landings "home"
-  port-read-landings "favorite"
+  
+  ; The following are outdated and are now replace by location first, later landings data
+   port-read-landings "home"
+   port-read-landings "favorite"
 
-  ; separate the ports into two sets
-  set home-ports ports with [ port-kind = "home"]
+  ; port-read
+
+  set home-ports ports with [ port-kind = "favorite"]
   set favorite-landing-ports ports with [port-kind = "favorite" ]
 
 end
 
-
-
+; This routine is outdated
 to port-read-landings [port-type]
   ifelse port-type = "home" [
     file-open "../data/220126-one_year-landings-per_port-home.csv"      ; Data of German fleet per home port
@@ -154,11 +157,69 @@ to port-read-landings [port-type]
 end
 
 to-report sum-of-landings [species unit port-type]
-  
   ifelse unit = "euro" [
     report sum  [item (position species port-prey-names) port-landings-euro] of ports with  [port-kind = port-type and member? species port-prey-names]
   ][
     report sum  [item (position species port-prey-names) port-landings-kg] of ports with  [port-kind = port-type and member? species port-prey-names]
   ]    
 end
+
+
+; sub_grp,fav_lan,n_vessels,X,ISO3_Country_Code,full_name,Coordinates,Latitude,Longitude,EU_Fish_Port,Port,Region
+to port-read
+  file-open "../data/orey_etal_data/musselabm-harbor_vessel.csv"  ; Data of German fleet per landing port and cluster
+  gis:load-coordinate-system "../data/wgs1984.prj"
+
+  ; Read the first line and skip until not commented with '#'
+  let _row csv:from-row file-read-line
+  while [ starts-with _row "#" ][ set _row csv:from-row file-read-line ]
+  let header-row _row print header-row
+   
+  set-default-shape ports "house"
+
+  while [ not file-at-end? ] [
+    set _row csv:from-row file-read-line print _row
+
+    if  (item (position "Longitude" header-row) _row)  < 9.16 [
+      ; In rows 7,8 there are decimal coordinates
+      let xy gis:project-lat-lon (item (position "Latitude" header-row) _row) (item (position "Longitude" header-row) _row)
+      
+      ; Create ports only if on current map (list is not empty) and not Baltic (lon > 9.16) and not already created.
+      ; if created, add those boats to the port
+      if not (length xy = 0) [
+        let _port-name item (position "full_name" header-row) _row
+        
+        if not any? ports with [port-name = _port-name ][
+          create-ports 1 [
+            set port-kind "favorite"
+            set port-name _port-name
+            set port-country item (position "ISO3_Country_Code" header-row) _row
+            set port-latitude item (position "Latitude" header-row) _row
+            set port-longitude item (position "Longitude" header-row) _row
+                    
+            set size 4
+            set label port-name
+            set label-color black
+            setxy (item 0 xy)  (item 1 xy)
+            set port-start-patch min-one-of patches with [depth > navigable-depth and gis-distance myself > 5 and accessible?] [gis-distance myself] 
+            set port-landing-patch port-start-patch
+            set port-clusters (list 0 0 0 0)
+            print (sentence "Created" port-kind "port" port-name)
+          
+          ]; find a starting patch at least 3 nm from port away
+        ]
+        ask ports with [port-name = _port-name ][
+            print  ((item (position "sub_grp" header-row) _row) - 1 )
+            print (item (position "n_vessels" header-row) _row)
+            set port-clusters replace-item ((item (position "sub_grp" header-row) _row) - 1 ) port-clusters (item (position "n_vessels" header-row) _row)
+        ]
+      ]
+    ]
+  ]
+  file-close
+ 
+end
+
+
+
 
