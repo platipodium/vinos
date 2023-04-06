@@ -223,8 +223,29 @@ to  unit-test
   foreach tests [
     t -> ifelse t [print "Test passed"][print "Test failed" stop ]
   ]
-  
 end
+
+to-report starts-with [_list _char]
+  while [is-list? _list] [set _list first _list]
+  if not is-string? _list [report false]
+  if not (first _list = _char) [report false]
+  report true
+end
+
+to-report __test-starts-with
+  if not starts-with "# abc" "#" [report false]
+  if not starts-with  (list "#"  "bs" 4) "#" [report false]
+  if not starts-with  (list "#b" "cd" "b") "#" [report false]
+  report true
+end
+
+
+
+
+
+
+
+
 
 
 
