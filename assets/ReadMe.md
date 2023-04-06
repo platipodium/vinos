@@ -23,3 +23,9 @@ projection=+proj=longlat +datum=WGS84 +no_defs
 ```
 
 From a NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` and further processed via `.pnm` to yield a `.png`.  The resulting file was then resampled to 180 x 120 pixels.
+
+## Flowchart
+
+The flowchart was generated from a miro, publicly available at https://miro.com/app/board/o9J_lr2i62o=/
+
+
