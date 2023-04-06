@@ -135,16 +135,33 @@ to setup-globals
   set view "bathymetry"
 end
 
+; This new go procedure used discrete event simulation within a 24 hour tick
+; It is more efficient than the oritinal 72-h based go procedure but does not
+; yet contain the priority calculation
 to go
+
   advance-calendar
-  ask ports [ifelse show-ports? [set label ""][set label port-name]]
   calc-fish
-  let my-boats n-of 10 boats
-  ;let my-boats n-of 1 boats with [who = 80]
-  ask my-boats [go-on-fishing-trip]
+
+  let _boats boats with [boat-hour < 24]
+  while [count _boats > 0] [
+    ask _boats [
+      ifelse (boat-trip-phase = 5) [ boat-land-port ][
+        ifelse (boat-trip-phase = 4) [ boat-return-port ][
+          ifelse (boat-trip-phase = 3) [  boat-make-haul ][
+           ifelse (boat-trip-phase = 2) [ boat-choose-start ][
+             ifelse (boat-trip-phase = 1) [ boat-leave-port ][
+               boat-rest-port ; boat-trip-phase = 0
+      ]]]]]
+    ]
+    set _boats boats with [boat-hour < 24]
+  ]
+  ask boats [ set boat-hour boat-hour mod 24 ]
+
   update-plots
   tick
 end
+
 
 to calc-initial-values
   set sum-boats sum [port-boat-number] of ports
@@ -799,11 +816,11 @@ view
 4
 
 BUTTON
-93
+92
 106
-156
+161
 139
-NIL
+go
 go
 T
 1
@@ -1179,28 +1196,11 @@ wage
 wage
 50
 120
-75.0
+120.0
 5
 1
 € h-1
 HORIZONTAL
-
-BUTTON
-379
-666
-457
-699
-NIL
-go-all
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
 
 PLOT
 15
@@ -1334,7 +1334,6 @@ License: Apache 2.0
 
 
 ![Funded by BMBF](../assets/logo-bmbf-funded.png)
-
 
 @#$#@#$#@
 default
