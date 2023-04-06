@@ -160,8 +160,11 @@ to setup-boats
 end
 
 to-report csv-property [x]
-  let filename (word "../data/orey_etal_data/musselabm-" x ".csv")
-  report butfirst csv:from-file filename
+  let _filename (word "../data/orey_etal_data/musselabm-" x ".csv")
+  let _data csv:from-file _filename
+  ; Remove any comments starting with #
+  while [first first first _data = "#" ] [ set _data butfirst _data]
+  report butfirst _data
 end
 
 to-report __test_csv_property   
