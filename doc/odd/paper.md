@@ -1,5 +1,5 @@
 ---
-title: 'ODD Protocol for the Agent-based Model of small-scale German North Sea Fisheries'
+title: 'ODD Protocol for the Agent-based Model of Small-scale German North Sea Fisheries'
 keywords: "NetLogo; Agent-based Model; North Sea; Fisheries; MuSSeL project; ODD"
 journal: comses
 type: article
@@ -39,7 +39,7 @@ SPDX-FileCopyrightText: 2023 University of Hamburg
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
 abstract: "The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp.
-Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by XXX and allowing up to 70 GW of offshore wind power generation.  
+Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. 
 Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
 acknowledgements: "The authors thank W.N. Probst for providing species distribution data as a forcing to this model.  We thank M. Ryan for helping with the shape files. The development of the model is funded by the German Ministry of Education and Research through the KüNO project MuSSeL (grant number XX)."
 conflictsofinterests: "The authors declare that no conflict of interest has arisen from this work."
@@ -66,7 +66,7 @@ The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a S
 
 Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp.
 
-Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by XXX and allowing up to 70 GW of offshore wind power generation.  
+Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. 
 
 Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet.
 
@@ -78,7 +78,7 @@ The **purpose** of this ABM is to provide an interactive simulation environment 
 
 Its **scope** is the German North sea small-scale fisheries.  This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The target species is currently restricted to the most important ones: plaice, sole and brown shrimp, but is in principle extensible to further target species like Norwegian lobster or whiting. 
 
-The **intended audience** of the ABM are marine researchers and government agencies concerned with spatial planning, environmental status assessment, and climate change mitigation.  It can also assist in a stakeholder dialogue with tourism and fishers to contextualize the complexity of the interactions between fisheries economics, changing resources and regulatory restrictions.  It is intended to be used for scenario development for future sustainable fisheries at the German North Sea coast.
+The **intended audience** of the ABM are marine researchers and government agencies concerned with spatial planning, environmental status assessment, and climate change mitigation.  It can also assist in a stakeholder dialogue with tourism and fishers to contextualize the complexity of the interactions between fisheries economics, changing resources and regulatory restrictions.  It is intended to be used for communication of and scenario development for future sustainable fisheries at the German North Sea coast.
 
 ## Entities, state variables, and scales	
 
@@ -105,17 +105,17 @@ Ports can be boats' home or favourite landing **ports**. Boats start their activ
 
 The fishery target species are denoted **preys**.  Currently, the ABM describes three different species:
 
-| **Prey instance** | **Description** | **Picture** |
+| **Shrimp** | **Plaice** | **Sole**|
 | --- | --- | --- |
-| Crangon | The brown shrimp *Crangon crangon* ... | ![Crangon crangon](../../assets/320px-Crangon_crangon.jpg){ width=25% }|
-| Pleuronectes | The plaice *Pleuronectes platessa* ... | ![Pleuronectes platessa](../../assets/319px-Pleuronectes_platessa.jpg){ width=25% }|
-| Solea | The sole *Solea solea* ... | ![Solea solea](../../assets/Solea_solea_1.jpg){ width=25% } |
+| *Crangon crangon*, Brown shrimp, Nordseekrabbe | *Pleuronectes platessa*, European plaice, Scholle | *Solea solea*, European sole, Seezunge |
+| ![Crangon crangon](../../assets/320px-Crangon_crangon.jpg){ width=25% height=15% }| ![Pleuronectes platessa](../../assets/319px-Pleuronectes_platessa.jpg){ width=25% height=15% } | ![Solea solea](../../assets/Solea_solea_1.jpg){ width=25% height=15% } |
+| The brown shrimp *Crangon crangon* ... describe gear/net  .. all pictures by @Hillewaert2005. | The plaice ... | The sole ...|
 
 <!-- @todo  Add fish descriptions -->
 
 The model is designed to accomodate further species relevant to the small-scale fishery such as whiting (*Merlangius merlangus*), sprat (*Sprattus sprattus*), or Norwegian lobster (*Nephrops norvegicus*).
 
-Boats and preys are connecte via the **gears** agent.  The gear prescribes the geometric area that can be fished, the speed at which fishing can occur, and the prey that is caught.  A gear can be installed, or changed, on a boat, subject to economic (invvestment cost) and physical (weight, size) constraints.  The gear also determines the impact of the fishing activity on the environment, i.e. how much prey is removed and how much of the sea floor is swept.
+Boats and preys are connected via the **gears** agent:  The gear prescribes the geometric area that can be fished, the speed at which fishing can occur, and the prey that is caught.  A gear can be installed, or changed, on a boat, subject to economic (investment cost) and physical (weight, size) constraints.  The gear also determines the impact of the fishing activity on the environment, i.e. how much prey is removed and how much of the sea floor is swept.
 
 <!-- @todo  Add the change of gear -->
 <!-- @todo  Add SAR diagnostic -->
@@ -127,7 +127,7 @@ The spatial domain is described by a grid, whose cells (in NetLogo: patches) car
 
 The domain is divided into an active part (water) and an inactive part (land).  The demarcation between land and water is achieved by using the GEBCO bathymetry bounded by European Environmental Agency's coastline dataset.  Using a creep-fill algorithm a continuous accessible domain is ensured.
 
-Cells carry information on resources (fish stocks of the respective species, at climatological seasonal resolution), regulatory fishery closure areas (offshore wind and trawling exclusion zones).  They record activity of the fishery occuring in the grid cell as area swept and as hours fished.
+Cells carry information on resources (fish stocks of the respective species, at climatological seasonal resolution), and regulatory fishery closure areas (offshore wind and trawling exclusion zones).  They record activity of the fishery occuring in the grid cell as area swept and as hours fished.
 
 <!-- @todo add SAR -->
 
@@ -141,7 +141,7 @@ A calendar records time.  The temporal domain are multiple years and the tempora
 
 The global timestep of the model is one day.  Within the 24-hour period, we use Discrete Event Simulation (DES) to trigger the action of boats within 5 phases  
 
-| **Phase* | **Location** |**Description** |
+| **Phase** | **Location** |**Description** |
 | --- | --- | --- |
 | Phase 0 rest  | port | Boats are resting, not ready to go out |
 | Phase 1 ready | port-sea |  Boats are ready to go out and are deployed|
@@ -150,7 +150,7 @@ The global timestep of the model is one day.  Within the 24-hour period, we use 
 | Phase 4 steam | sea  | Boats need to return  |
 | Phase 5 land  | port | Boats are offloading |
 
-Boats cycle through all phases consecutively, keeping a record of how much time they spend.  Boats in **phase 0** keep the legal resting time of 11 hours, and rest during the weekend (from Saturday noon to Monday 4 am).  After the resting period, they make a decision on whether to go out or not.  This decision may depend on weather and  (in a later model version) expected catch.  If the decision is positive, a boat enters phase 1.  Boats in **phase 1** virtually steam from the port location to the port's closest open sea deployment location.  Adding this phase makes it possible for the ports to be located on dry ground at the available grid resolution, as many ports are located upstream of the coastline demarcation.  Having arrived at the deployment locatino, boats enter phase 2.
+Boats cycle through all phases consecutively, keeping a record of how much time they spend.  Boats in **phase 0** keep the legal resting time of 11 hours, and rest during the weekend (from Saturday noon to Monday 4 am).  After the resting period, they make a decision on whether to go out or not.  This decision may depend on weather and  (in a later model version) expected catch.  If the decision is positive, a boat enters phase 1.  Boats in **phase 1** directly (straight line, without environmental sensing) steam from the port location to the port's closest open sea deployment location.  Adding this phase makes it possible for the ports to be located on dry ground at the available grid resolution, as many ports are located upstream of the coastline demarcation.  Having arrived at the deployment locatino, boats enter phase 2.
 
 Boats in **phase 2** steam to a preferred location for the next fishing haul.  This preferred location is chosen randomly but subject to the fuel constraints and maximum distance preference of each boat.  At a later implementation of the model, this location is also chosen taking into account previous experience of successful fishing hauls.  Phase 2 may also be entered after an unsuccessful fishing haul.  At the new location, a boat enters **phase 3** for fishing.  Fishing is done in several hauls;   a haul is directed towards only accessible water, and at the end of a haul the ship turns around (with slight variation) continues to the next haul.
 
@@ -166,33 +166,39 @@ Hauls continue until one of the following constraints is met (always taking into
 
 On an insufficient catch, the boat enters phase 2 to look for a different location.  On a successful catch and after having spent the allocated time or fuel, the boat enters phase 4.
 
-Boats in **phase 4** need to return.  They virtually steam in a straight line to their deployment location and on to their port. At the port, they enter **phase 5** to unload their catch and clean the boat.  Priorities for the different gears are updated based on the relative change of the deployed gears and catches.
-Finally, boats re-enter phase 0 and start the cycle. 
+Boats in **phase 4** need to return.  They directly steam in a straight line to their deployment location and on to their port. At the port, they enter **phase 5** to unload their catch and clean the boat.  Priorities for the different gears are updated based on the relative change of the deployed gears and catches.
+Finally, boats re-enter phase 0 and restart the cycle. 
 
 ## Design concepts
 
 ### Basic principles
 
-The ABM is an adaptive model with the **objective** of maximizing profits, subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to the priority change in gear with the shifting priorities VIABLE approach [@Bendor2019],[@Scheffran2016].  
+<!-- German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.  -->
+The ABM is an adaptive model with the **objective** of increasing profits, subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to 
+changing gear with shifting priorities for allocating fishing effort, and disribed by the VIABLE approach [@BenDor2019;@Scheffran2000].  
 
-In the VIABLE approach, each boat carries a list of priorities that are subject to change based on the boats perception of its activities.  During each haul, the benefits (i.e. the price of the catch times the amount caught) are contrasted with the costs of that haul (wage and fuel) in parallel for all gears available to a boat. The value (gain or loss, in €) for each gear type is multiplied by an adaptation rate which is added to the priorities.  
+In the VIABLE approach, each boat carries a list of priorities that are subject to change based on the boats perception and evaluation of its activities.  During each haul, the costs of that haul (wage and fuel)  are subtracted from the benefits (i.e. the price of the catch times the amount caught) in parallel for all gears available to a boat. The marginal value (gain or loss, in €, divided by XXXX) for each gear type and is multiplied by an adaptation rate determining the relative change in priorities.  
 
-More general, there arestrategies $i \in 1..n$ with priorities $r_i$, values $V_i$ and adaptation rates $a_i$. The marginal benefit of a change in $V$ with respect to $r$ is $v_i=\partial{V_i}/\partial{r_i}$.  
+More general, there are strategies $i \in 1..n$ with priorities $r_i$, values $V_i$ and adaptation rates $a_i$. The marginal benefit of a change in $V$ with respect to $r$ is $v_i=\partial{V_i}/\partial{r_i}$.  
 
 The temporal change of the priorities $r_i$ is given by 
 $$
 \frac{dr_i}{dt} = a_i r_i \cdot \frac{v_i - \sum r_i v_i }{\sum v_i}
 $$
 
+<!-- 
+This equation is universal, also applies to fishery, requiring more details on value function. In this paper further details are not given, e.g. fishing efficiency which is a key variable and depends on gear type. This requires a full paper with more math. For more details see BenDor/Scheffran 2019, Chapter 8 or Scheffran 2000.
+-->
+
 ### Emergence
 
 
-
+<!-- This is the first time effort is mentioned. -->
 The emergent property is the spatial pattern of fishing activities, which is best recorded as maps of effort or maps of swept area ratio (SAR). This property can be compared to existing data on effort or SAR, and it gives information on the location of the largest potential environmental impact of fisheries. 
 
 ### Learning
 
-To enable learning, boats implement a memory of best hauls, recording the amount caught and the cell location, This memory has size 20. After a training phase, boats may choose to steam preferentially to one of the best 10 past experienced locations to start fishing.  
+To enable learning, boats implement a memory of best hauls, recording the amount caught and the cell location, This memory has size 20. After a training phase, boats may choose to steam preferentially to one of the best 10 past experienced locations to start fishing.  Learning is not used in the current version of the model. 
 
 ### Prediction
 
@@ -200,7 +206,7 @@ When deliberating to change to a gear with higher priority, boats have to discou
 
 ### Sensing and Interaction
 
-Boats sense the resource availability of each cell, as well as global fuel prices and port-dependent market prices. There is no **interaction** between boats.   A feedback of the boats onto the cells by depleting their prey resource is foreseen but currently not implemented.
+Boats sense the resource availability of each cell, as well as global fuel prices and port-dependent market prices. There is no direct **interaction** between boats.   A feedback of the boats onto the cells by depleting their prey resource is foreseen but currently not implemented.
 
 ### Stochasticity
 Boats are distributed across harbors according to empirical data.  Their assignation to one of the four clusters is stochastic within the empirical distribution.  Physical data of the boats are stochastic within the empirical limits of their cluster.  
@@ -216,8 +222,8 @@ Ports and boats are intialized from empirical statistics available for the year 
 The model makes use of extensive external data sources to describe the environment and to initialize the agents.
 All data are publicly available and licensed for use.  The data sources are
 
-| **Description* | **Source** | 
-| --- | --- | --- |
+| **Description** | **Source** | 
+| --- | --- |
 | Port landings data 2015 | Hochschule Bremerhaven, unlicensed |
 | Species distribution of plaice, sole, and brown shrimp | Thünen Institute, PDDL-1.0 |
 | Species information | FAO |
