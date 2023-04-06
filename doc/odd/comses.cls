@@ -3,7 +3,6 @@
 % SPDX-License-Identifier: CC-BY-SA-4.0
 % SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% %%	MDPI class for LaTeX files	 28.9.2018 b
 %% %%	For any information please send an e-mail to:
