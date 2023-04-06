@@ -60,7 +60,7 @@ globals [
   days-in-months
 
   home-ports                 ; agentset of breed ports
-  favorite-landing-ports     ; agentset of breed ports
+  ;favorite-landing-ports     ; agentset of breed ports
 
   view-legend-n
   view-legend-thresholds
@@ -164,7 +164,7 @@ end
 
 
 to calc-initial-values
-  set sum-boats sum [port-boat-number] of ports
+  set sum-boats sum [sum port-clusters] of ports
 end
 
 
@@ -1334,7 +1334,6 @@ License: Apache 2.0
 
 
 ![Funded by BMBF](../assets/logo-bmbf-funded.png)
-
 @#$#@#$#@
 default
 true

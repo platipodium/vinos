@@ -100,9 +100,15 @@ to setup-boats
   
   ; @todo introduce quotas (=> Serra, asks Jonas)
   ask home-ports [
-    hatch-boats port-boat-number [
-      create-link-with myself
-      move-to [port-start-patch] of one-of link-neighbors
+    (foreach (range 4) port-clusters [ [i j] -> 
+      hatch-boats j [
+        create-link-with myself
+        set boat-type i
+      ]     
+    ])
+    ask link-neighbors [
+      move-to [port-start-patch] of myself
+      
 
       ; The 1-based boat types are
       ; 3: "typical" 1: "longer typical" 2: "flexible" 4: "not shrimper"
@@ -163,7 +169,7 @@ to-report csv-property [x]
   let _filename (word "../data/orey_etal_data/musselabm-" x ".csv")
   let _data csv:from-file _filename
   ; Remove any comments starting with #
-  while [first first first _data = "#" ] [ set _data butfirst _data]
+  while [starts-with _data "#" ] [ set _data butfirst _data]
   report butfirst _data
 end
 

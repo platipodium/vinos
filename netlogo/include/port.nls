@@ -35,7 +35,7 @@ ports-own [
 
   port-average-fishing-effort-in-days
   port-average-fishing-effort-in-hours   ; t_intv_h
-  port-boat-number
+  ;port-boat-number
   port-weather                  ; status of the weather "bad" -> stay in harbor, "good" -> maybe leave harbor
   port-prob-bad-weather         ; probability that the weather is too bad to leave harbor
   
@@ -47,24 +47,27 @@ ports-own [
 to setup-ports
   
   ; The following are outdated and are now replace by location first, later landings data
-   port-read-landings "home"
-   port-read-landings "favorite"
+   ;port-read-landings "home"
+   ;port-read-landings "favorite"
 
-  ; port-read
+  port-read
 
   set home-ports ports with [ port-kind = "favorite"]
-  set favorite-landing-ports ports with [port-kind = "favorite" ]
+  ;set favorite-landing-ports ports with [port-kind = "favorite" ]
 
 end
 
 ; This routine is outdated
 to port-read-landings [port-type]
+
+  carefully [file-close][]
   ifelse port-type = "home" [
     file-open "../data/220126-one_year-landings-per_port-home.csv"      ; Data of German fleet per home port
   ][
     file-open "../data/220126-one_year-landings-per_port-favorite.csv"  ; Data of German fleet per favorite landing port
   ] 
   gis:load-coordinate-system "../data/wgs1984.prj"
+
 
   let row csv:from-row file-read-line
   let header-row row 
@@ -98,6 +101,7 @@ to port-read-landings [port-type]
           set port-latitude item (position "Latitude" header-row) row
           set port-longitude item (position "Longitude" header-row) row
           set port-prey-names my-prey-names
+          set port-clusters (list 0 0 0 0)
           
           set port-landings-euro []
           foreach port-prey-names [ p -> 
@@ -134,7 +138,7 @@ to port-read-landings [port-type]
           
           set port-average-fishing-effort-in-days item (position "t_intv_day" header-row ) row
           set port-average-fishing-effort-in-hours item (position "t_intv_h" header-row ) row
-          set port-boat-number item (position "VE_REF" header-row ) row
+          ;set port-boat-number item (position "VE_REF" header-row ) row
        
           ; @todo the follwoing is not correct:
           set port-average-trip-length  port-average-fishing-effort-in-hours * 18 ; assumption: set average speed of a boat to 18 km per h
@@ -167,6 +171,8 @@ end
 
 ; sub_grp,fav_lan,n_vessels,X,ISO3_Country_Code,full_name,Coordinates,Latitude,Longitude,EU_Fish_Port,Port,Region
 to port-read
+  
+  carefully [file-close][]
   file-open "../data/orey_etal_data/musselabm-harbor_vessel.csv"  ; Data of German fleet per landing port and cluster
   gis:load-coordinate-system "../data/wgs1984.prj"
 
@@ -205,12 +211,15 @@ to port-read
             set port-landing-patch port-start-patch
             set port-clusters (list 0 0 0 0)
             print (sentence "Created" port-kind "port" port-name)
+            
+            set port-prey-names (list "Crangon" "Pleuronectes" "Solea")
+            set port-prices n-values length (port-prey-names) [ i -> 3 ] ; set to 3 EUR/kg (@todo refine)
+            
           
           ]; find a starting patch at least 3 nm from port away
         ]
         ask ports with [port-name = _port-name ][
-            print  ((item (position "sub_grp" header-row) _row) - 1 )
-            print (item (position "n_vessels" header-row) _row)
+            print port-clusters
             set port-clusters replace-item ((item (position "sub_grp" header-row) _row) - 1 ) port-clusters (item (position "n_vessels" header-row) _row)
         ]
       ]
