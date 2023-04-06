@@ -41,7 +41,7 @@ SPDX-License-Identifier: CC-BY-4.0
 abstract: "The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp.
 Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. 
 Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
-acknowledgements: "The authors thank W.N. Probst for providing species distribution data as a forcing to this model.  We thank M. Ryan for helping with the shape files. The development of the model is funded by the German Ministry of Education and Research through the KüNO project MuSSeL (grant number XX)."
+acknowledgements: "The authors thank W.N. Probst for providing species distribution data as a forcing to this model.  We thank M. Ryan for helping with the shape files. The development of the model is funded by the German Ministry of Education and Research through the KüNO project MuSSeL (grant number 03F0862A)."
 conflictsofinterests: "The authors declare that no conflict of interest has arisen from this work."
 abbreviations:
   - short: ABM 
@@ -109,7 +109,7 @@ The fishery target species are denoted **preys**.  Currently, the ABM describes 
 | --- | --- | --- |
 | *Crangon crangon*, Brown shrimp, Nordseekrabbe | *Pleuronectes platessa*, European plaice, Scholle | *Solea solea*, European sole, Seezunge |
 | ![Crangon crangon](../../assets/320px-Crangon_crangon.jpg){ width=25% height=15% }| ![Pleuronectes platessa](../../assets/319px-Pleuronectes_platessa.jpg){ width=25% height=15% } | ![Solea solea](../../assets/Solea_solea_1.jpg){ width=25% height=15% } |
-| The brown shrimp *Crangon crangon* ... describe gear/net  .. all pictures by @Hillewaert2005. | The plaice ... | The sole ...|
+| The brown shrimp *Crangon crangon* ... describe gear/net  .. all pictures by @Hillewaert2005. The brown shrimp ranks at the top three species caught from the North Sea with respect to landing value, which can exceed 100 Million Euro in some years (Temming & Hufnagl, 2014) The majority (>90 %) of the German cutters are smaller than 20 m Currently standard cod end diamond mesh sizes of 20 mm are in use. Trials with diamond 26 mm and square 24 mm mesh sizes showed that undersized shrimp can be reduced by up to 80 % and fish bycatch by up to 20 % (Schultz et al., 2015). | The plaice ... | The sole ...|
 
 <!-- @todo  Add fish descriptions -->
 

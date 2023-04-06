@@ -25,7 +25,7 @@ affiliations:
    index: 2
  - name: Hochschule Bremerhaven, Bremerhaven, Germany
    index: 3
-date: 3 April 2023
+date: 6 April 2023
 bibliography: paper.bib
 SPDX-FileCopyrightText: 2022-2023  Helmholtz-Zentrum hereon GmbH (hereon)
 SPDX-License-Identifier: CC-BY-4.0
@@ -48,13 +48,13 @@ The purpose of this ABM is to provide an interactive simulation environment that
  * how often to go out
  * what gear to use and what species to target
 
-Its scope is the German North sea small-scale fisheries.  This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The target species is currently restricted to the most important ones: plaice, sole and brown shrimp, but is in principle extensible to further target species like Norwegian lobster or whiting. 
+Its scope is the German North Sea small-scale fisheries.  This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The target species described by the model are currently restricted to the most important ones: plaice, sole and brown shrimp, but is in principle extensible to further target species like Norwegian lobster or whiting. 
 
 The intended audience of the ABM are marine researchers and government agencies concerned with spatial planning, environmental status assessment, and climate change mitigation.  It can also assist in a stakeholder dialogue with tourism and fishers to contextualize the complexity of the interactions between fisheries economics, changing resources and regulatory restrictions.  It is intended to be used for scenario development for future sustainable fisheries at the German North Sea coast.
 
 # Key features of the ABM
 
-As a NetLogo implementation, the model integrates a (frontend) user interface, its basic documentation, and the (backend) code in a single integrated development environment, that can be run in  NetLogo [@Wilensky1999; version 6 required], a Java-based portable ABM and system dynamics simulation platform.
+As a NetLogo implementation, the model is embedded in an integrated development environment (IDE), which integrates a (frontend) user interface, its basic documentation, and the (backend) code in a single integrated development environment, that can be run in  NetLogo [@Wilensky1999; version 6 required], a Java-based portable ABM and system dynamics simulation platform.
 
 The backend (code) features geospatial data access and integration of multiple georeferenced and tabular data sources, as well as integrating Web Mapping Services (WMS) to describe the grid-based environmental context. This environmental context is dynamic in time, providing seasonal resource changes and dynamic area closures.
 
@@ -72,7 +72,7 @@ Currently, most NetLogo models have not used continuous integration (CI) and con
 
 The model is documented in short form in the NetLogo's `Info` section in the IDE. A full documentation following the Overview, Design, and Details [@Grimm2020; ODD] standard protocol for ABM is available in the repository as `doc/odd/paper.md`. 
 
-All data from third parties is licensed under various open source licenses.  The model, its results and own proprietary data was released under open source licenses, mostly Apache 2.0 and CC-BY-SA-4.0.  A comprehensive documentation of all is provided via REUSE [@FSF2023]. 
+All data from third parties is licensed under various open source licenses.  The model, its results and own proprietary data is released under open source licenses, mostly Apache 2.0 and CC-BY-SA-4.0.  A comprehensive documentation of all is provided via @FSF2023. 
 
 <!--
 
@@ -84,7 +84,7 @@ and referenced from text using \autoref{fig:example}.
 
 # Acknowledgements
 
-We acknowledge contributions from Wolfgang Probst, Seong Jieun, and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A "Multiple Stressors on North Sea Life" within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit program of the Germany Bundesministerium für Bildung und Forschung (BMBF).  
+We acknowledge contributions from Wolfgang Probst, Marie Ryan, Jieun Seo, and Jürgen Scheffran for providing data, fruitful discussions and for contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A "Multiple Stressors on North Sea Life" within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit program of the Germany Bundesministerium für Bildung und Forschung (BMBF).  
 
 # References
 
