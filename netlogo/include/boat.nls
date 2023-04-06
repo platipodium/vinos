@@ -460,33 +460,6 @@ to go-one
   ]
 end
 
-; This new go procedure used discrete event simulation within a 24 hour tick
-; It is more efficient than the oritinal 72-h based go procedure but does not
-; yet contain the priority calculation
-to go-all
-
-  advance-calendar
-  calc-fish
-  
-  let _boats boats with [boat-hour < 24]
-  while [count _boats > 0] [
-    ask _boats [  
-      ifelse (boat-trip-phase = 5) [ boat-land-port ][
-        ifelse (boat-trip-phase = 4) [ boat-return-port ][
-          ifelse (boat-trip-phase = 3) [  boat-make-haul ][
-           ifelse (boat-trip-phase = 2) [ boat-choose-start ][
-             ifelse (boat-trip-phase = 1) [ boat-leave-port ][
-               boat-rest-port ; boat-trip-phase = 0
-      ]]]]]
-    ]
-    set _boats boats with [boat-hour < 24]
-  ]
-  ask boats [ set boat-hour boat-hour mod 24 ]
-  
-  update-plots
-  tick
-
-end
 
 
 to-report boat-catch-species [haul-length]
