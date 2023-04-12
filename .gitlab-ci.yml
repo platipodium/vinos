@@ -7,6 +7,7 @@ include :
   - .gitlab/docker.yaml
   - .gitlab/joss.yaml
   - .gitlab/odd.yaml
+  - .gitlab/pandoc.yaml
 
 stages:
   - lint
@@ -30,6 +31,7 @@ unit-tests:
   allow_failure: false
   needs: []
   
+# @todo we can run it in the comses or our own docker
 # create-map:
 #   image: comses/netlogo # see https://github.com/comses/docker-netlogo
 #   stage: run
@@ -51,19 +53,20 @@ unit-tests:
   #     - ./netlogo/results/
   # needs: []
 
-pages: # predefined name by GitLab
+pages:
     stage: deploy
     script:
-        - mkdir -p public # required by GitLab
-        - touch public/index.html
+        - cp -r .gitlab/public .
         #- mv ./netlogo/results/*.png public/
         - cp ./doc/odd/paper.pdf public/odd.pdf
         - cp ./doc/joss/paper.pdf public/joss.pdf
     rules:
-        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+        - if: $CI_COMMIT_BRANCH == main
     artifacts:
         paths:
             - public/
+    only:
+      - main
     needs: 
       - joss-paper
       - odd-paper
