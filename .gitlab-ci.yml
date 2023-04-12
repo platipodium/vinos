@@ -60,13 +60,9 @@ pages:
         #- mv ./netlogo/results/*.png public/
         - cp ./doc/odd/paper.pdf public/odd.pdf
         - cp ./doc/joss/paper.pdf public/joss.pdf
-    rules:
-        - if: $CI_COMMIT_BRANCH == main
     artifacts:
         paths:
             - public/
-    only:
-      - main
     needs: 
       - joss-paper
       - odd-paper
