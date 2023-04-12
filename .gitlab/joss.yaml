@@ -5,57 +5,53 @@
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor Carsten Lemmen <carsten.lemmen@hereon.de
 
-joss-inara:
-  stage: deploy
-  image: 'openjournals/inara'
-  script:
-    - inara -o pdf,cff doc/joss/paper.md
-  environment:
-    name: draft
-  variables:
-    GIT_SHA: $CI_COMMIT_SHA
-    JOURNAL: joss
-  when: manual
-  allow_failure: false
-#  artifacts:
-#    paths:
-#      - doc/joss/paper.pdf
-#      - pdf
-#  dependencies:
-  #rules:
-  #   - if: $CI_COMMIT_BRANCH == "joss"
-  needs: []
-
 joss:
-    image: docker
-    tags: ["docker", "dind"]
-    services:
-        - docker:dind
-    variables:
-        CONTAINER_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE/pandoc:latest
-    allow_failure: false
-    interruptible: true
-    stage: deploy
-
-    before_script:
-        - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
-    script:
-        - docker pull ${CONTAINER_REGISTRY_IMAGE}
-        - docker run -v $(pwd):/data ${CONTAINER_REGISTRY_IMAGE} joss /data/doc/joss/paper.md
-    needs: []
-
-    artifacts:
-      paths:
-        - doc/joss/paper.pdf
-    needs: []
-
-joss-extra:
     image: $CI_REGISTRY_IMAGE/pandoc:latest
     script:
-      - joss -o cff doc/joss/paper.md
+      - joss -p -o pdf doc/joss/paper.md
     artifacts:
       paths:
         - doc/joss/paper.pdf
     needs: []
     stage: deploy
+
+# joss-inara:
+#   stage: deploy
+#   image: 'openjournals/inara'
+#   script:
+#     - inara -o pdf,cff doc/joss/paper.md
+#   environment:
+#     name: draft
+#   variables:
+#     GIT_SHA: $CI_COMMIT_SHA
+#     JOURNAL: joss
+#   when: manual
+#   allow_failure: false
+#   artifacts:
+#     paths:
+#       - doc/joss/paper.pdf
+#   needs: []
+
+# joss:
+#     image: docker
+#     tags: ["docker", "dind"]
+#     services:
+#         - docker:dind
+#     variables:
+#         CONTAINER_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE/pandoc:latest
+#     allow_failure: false
+#     interruptible: true
+#     stage: deploy
+
+#     before_script:
+#         - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+#     script:
+#         - docker pull ${CONTAINER_REGISTRY_IMAGE}
+#         - docker run -v $(pwd):/data ${CONTAINER_REGISTRY_IMAGE} joss /data/doc/joss/paper.md
+#     needs: []
+
+#     artifacts:
+#       paths:
+#         - doc/joss/paper.pdf
+#     needs: []
 
