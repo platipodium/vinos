@@ -50,6 +50,12 @@ joss:
     needs: []
 
 joss-extra:
-     image: $CI_REGISTRY_IMAGE/pandoc:latest
-     script:
-       - joss -o cff data/doc/joss/paper.md
+    image: $CI_REGISTRY_IMAGE/pandoc:latest
+    script:
+      - joss -o cff doc/joss/paper.md
+    artifacts:
+      paths:
+        - doc/joss/paper.pdf
+    needs: []
+    stage: deploy
+
