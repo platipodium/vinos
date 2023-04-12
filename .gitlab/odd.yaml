@@ -5,22 +5,55 @@
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor Carsten Lemmen <carsten.lemmen@hereon.de
 
+# odd-paper-old:
+#   stage: deploy
+#   #image: 'openjournals/inara:latest'
+#   image: 'pandoc/latex:latest'
+#   script:
+#     #- which apt
+#     #- which yum
+#     #- which make
+#     - cd doc/odd
+#     - make pdf 
+#   when: always
+#   allow_failure: true
+#   artifacts:
+#     paths:
+#       - doc/odd/paper.pdf
+#   dependencies:
+#   #rules:
+#   #   - if: $CI_COMMIT_BRANCH == "joss"
+#   needs: []
+
 odd-paper:
   stage: deploy
-  #image: 'openjournals/inara:latest'
-  image: 'pandoc/latex:latest'
+  image: pandoc/latex:alpine
+  variables: 
+    OSFONTDIR: /usr/share/fonts
+    OPENJOURNALS_PATH: /usr/local/share/openjournals
+    JOURNAL: joss
+
+  before_script:
+    - apk add --no-cache ttf-hack
+    - tlmgr update --self && tlmgr install \
+        algorithmicx algorithms booktabs caption collection-context \
+        draftwatermark environ etoolbox fancyvrb float fontspec fontsetup \
+        latexmk lineno listings logreq marginnote mathspec newcomputermodern \
+        orcidlink pgf preprint seqsplit tcolorbox titlesec trimspaces \
+        xcolor xkeyval xstring
+#    - git clone --shallow https://github.com/impallari/Libre-Franklin.git
+#    - cp Libre-Franklin/fonts/TTF/* ${OSFONTDIR}
+    - git clone --shallow https://github.com/openjournals/inara.git
+    - cp inara/fonts/libre-franklin/* ${OSFONTDIR}
+    - luaotfload-tool --update 
+    - chmod -R o+w /opt/texlive/texdir/texmf-var
+    - apk add --no-cache ttf-opensans
+    - fc-cache -sfv $OSFONTDIR/libre-franklin
+    - mtxrun --generate 
+    - mtxrun --script font --reload
+    - cp -r inara/resources ${OPENJOURNALS_PATH}
+    - cp -r inara/data ${OPENJOURNALS_PATH}/data
+    - cp inara/scripts/clean-metadata.lua ${OPENJOURNALS_PATH}
   script:
-    #- which apt
-    #- which yum
-    #- which make
-    - cd doc/odd
-    - make pdf 
-  when: always
-  allow_failure: true
-  artifacts:
-    paths:
-      - doc/odd/paper.pdf
-  dependencies:
-  #rules:
-  #   - if: $CI_COMMIT_BRANCH == "joss"
-  needs: []
+    - make -C doc/odd pdf
+#    - inara/scripts/entrypoint.sh .
