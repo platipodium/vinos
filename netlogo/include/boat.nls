@@ -103,16 +103,13 @@ to setup-boats
     (foreach (range 4) port-clusters [ [i j] -> 
       hatch-boats j [
         create-link-with myself
+        ; The 1-based boat types are
+        ; 3: "typical" 1: "longer typical" 2: "flexible" 4: "not shrimper"
         set boat-type i
       ]     
     ])
     ask link-neighbors [
       move-to [port-start-patch] of myself
-      
-
-      ; The 1-based boat types are
-      ; 3: "typical" 1: "longer typical" 2: "flexible" 4: "not shrimper"
-      set boat-type random 4 ; @todo update with new info once we have it
       
       ; Create a boat with Gaussian distribution around mean with stdev
       set boat-length value-from-distribution butfirst butfirst item boat-type length-distribution
