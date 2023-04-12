@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+FROM ubuntu:rolling
+
+ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+   make git \
+   texlive-plain-generic texlive-fonts-recommended texlive-latex-extra \
+   pandoc \
+   openssl ca-certificates
+
+ENV OPENJOURNALS_PATH=/usr/local/share/openjournals
+ENV JOURNAL=joss
+
+RUN git clone --depth=1 https://github.com/openjournals/inara.git
+
+RUN cp -r inara/resources ${OPENJOURNALS_PATH}
+RUN cp -r inara/data ${OPENJOURNALS_PATH}/data
+RUN cp inara/scripts/clean-metadata.lua ${OPENJOURNALS_PATH}
+RUN cp inara/scripts/entrypoint.sh /usr/local/bin/joss
+
+CMD [ "/bin/bash" ]
