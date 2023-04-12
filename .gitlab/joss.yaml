@@ -41,10 +41,15 @@ joss:
         - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
     script:
         - docker pull ${CONTAINER_REGISTRY_IMAGE}
-        - docker run -v $(pwd):data ${CONTAINER_REGISTRY_IMAGE} joss data/doc/joss/paper.md
+        - docker run -v $(pwd):/data ${CONTAINER_REGISTRY_IMAGE} joss /data/doc/joss/paper.md
     needs: []
 
     artifacts:
       paths:
         - doc/joss/paper.pdf
     needs: []
+
+joss-extra:
+     image: $CI_REGISTRY_IMAGE/pandoc:latest
+     script:
+       - joss -o cff data/doc/joss/paper.md
