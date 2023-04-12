@@ -27,7 +27,7 @@
 
 odd-paper:
   stage: deploy
-  image: pandoc/latex:alpine
+  image: pandoc/latex
   variables: 
     OSFONTDIR: /usr/share/fonts
     OPENJOURNALS_PATH: /usr/local/share/openjournals
