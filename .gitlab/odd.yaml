@@ -7,8 +7,8 @@
 
 odd-paper:
   stage: deploy
-  image: 'openjournals/inara:latest'
-  #image: 'pandoc/latex:latest'
+  #image: 'openjournals/inara:latest'
+  image: 'pandoc/latex:latest'
   script:
     #- which apt
     #- which yum

@@ -4,6 +4,7 @@
 *.aux
 *.bcf
 *.log
+*.synctex.gz
 paper.out
 paper.pdf
 paper.tex
