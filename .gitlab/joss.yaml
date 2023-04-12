@@ -1,11 +1,10 @@
-# GitLab CI configuration file for providing a headless 
-# NetLogo docker image based on Oracle's OpenJDK 8
+# GitLab CI configuration file for building the JOSS paper
 #
 # SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor Carsten Lemmen <carsten.lemmen@hereon.de
 
-joss:
+joss-paper:
     image: $CI_REGISTRY_IMAGE/pandoc:latest
     script:
       - joss -p -o pdf doc/joss/paper.md
@@ -15,6 +14,7 @@ joss:
     needs: []
     stage: deploy
 
+# This one does not work for bugs in inara upstream
 # joss-inara:
 #   stage: deploy
 #   image: 'openjournals/inara'
@@ -32,7 +32,8 @@ joss:
 #       - doc/joss/paper.pdf
 #   needs: []
 
-# joss:
+# This one actually runs (but takes much longer)
+# joss-docker:
 #     image: docker
 #     tags: ["docker", "dind"]
 #     services:
