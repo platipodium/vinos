@@ -970,23 +970,6 @@ Change the background information here and hit \"update\"
 0.0
 1
 
-BUTTON
-465
-500
-537
-537
-Test
-;test-target\n;clear-drawing\n\nlet my-boats n-of 10 boats\nwatch one-of my-boats\nask  my-boats [go-on-fishing-trip]
-NIL
-1
-T
-OBSERVER
-NIL
-T
-NIL
-NIL
-0
-
 SLIDER
 12
 445
