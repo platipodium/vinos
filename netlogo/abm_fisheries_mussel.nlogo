@@ -1002,23 +1002,6 @@ NIL
 NIL
 1
 
-BUTTON
-476
-608
-540
-641
-Effort
-;test-target\nclear-drawing\n\nask patches [\nset fishing-effort-hours 0\n]\nlet my-boats boats\nrepeat 16 [\nask my-boats [go-on-fishing-trip] \n]\nset view \"effort (h)\" \nupdate-view\n
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 PLOT
 558
 446

@@ -146,6 +146,7 @@ to draw-background [X]
 end
 
 
-
+;let dataset gis:patch-dataset fishing-effort-hours
+;gis:store-dataset dataset "effort"
 
 
