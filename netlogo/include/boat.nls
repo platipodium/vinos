@@ -74,6 +74,7 @@ boats-own [
   boat-needs-return?
   
   boat-hour ; Internal hour of the day to facility event-based scheduling
+  boat-fishable-patches ; large memory required, is this problematic?
   
 ]
 
@@ -157,6 +158,7 @@ to setup-boats
       set boat-home-port myself
       set boat-needs-return? false
       set boat-hour 0
+      set boat-fishable-patches boat-accessible-patches
     ]
     ask my-links [set hidden? true]
   ]
@@ -296,7 +298,8 @@ end
 ; @todo do this from memory, now random
 to boat-choose-start
 
-  let _patch one-of boat-accessible-patches in-radius 30 ; @todo change this to max-distance
+  ;let _patch one-of boat-accessible-patches in-radius 30 ; @todo change this to max-distance
+  let _patch one-of boat-fishable-patches in-radius 30
   
   ; If there are not accessible patches found, go home and try again
   ifelse _patch = nobody [
@@ -482,9 +485,9 @@ end
 
 ; report true if all patches touched within distance d are accessible
 to-report boat-accessible-path [d]
-  ;foreach range d [ i -> if [not accessible?] of patch-ahead i [report false]]
-  ;report true 
-  report all? (patch-set (n-values d [ i ->  patch-ahead i])) [accessible?]
+  foreach range d [ i -> if (not member? patch-ahead i boat-fishable-patches) [report false]]
+  report true 
+  ;report all? (patch-set (n-values d [ i ->  patch-ahead i])) [accessible?]  
 end
 
 ; turtle procedure, returns the scaling km/netlogo-unit in the heading of 
