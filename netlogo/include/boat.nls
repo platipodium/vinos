@@ -424,47 +424,6 @@ to-report boat-accessible-patches
 
 end
 
-; test procedure
-to go-one
-  let _boat min-one-of boats [who]
-  watch _boat
-  inspect _boat
-  ;let _boat boats
-  ask _boat [
-    set size 4
-    while [boat-hour < 24] [
-      ifelse (boat-trip-phase = 5) [ ; boat needs land
-        ;print (sentence boat-hour ": Boat" who "is going home")
-        boat-land-port
-      ][
-      ifelse (boat-trip-phase = 4) [ ; boat needs to go home
-        ;print (sentence boat-hour ": Boat" who "is going home")
-        boat-return-port
-      ][
-      ifelse (boat-trip-phase = 3) [ ; boat is ready to fish
-        ;print (sentence boat-hour ": Boat" who "hauls from" patch-here)
-        boat-make-haul
-      ][
-      ifelse (boat-trip-phase = 2) [ ; boat ready to steam to new patch
-        ;print (sentence boat-hour ": Boat" who "steams from" patch-here)
-        boat-choose-start
-      ][
-      ifelse (boat-trip-phase = 1) [ ; boat ready to leave port
-        ;print (sentence boat-hour ": Boat" who "leaves" [port-name] of boat-home-port)
-        boat-leave-port
-      ][
-        ; (boat-trip-phase = 0) [ ; boat ready to leave port
-        ;print (sentence boat-hour ": Boat" who "rests at " [port-name] of boat-home-port)
-        boat-rest-port
-      ]]]]]
-    ]
-    set boat-hour boat-hour mod 24
-    print (sentence boat-hour ": Boat" who "resets clock to" boat-hour)
-  ]
-end
-
-
-
 to-report boat-catch-species [haul-length]
   ; calculate the values for each patch and every target species
   ;(solea, platessa and crangon), i.e. biomass cath in KG

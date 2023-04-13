@@ -142,8 +142,16 @@ to go
 
   advance-calendar
   calc-fish
+  let _active-boats boats
 
-  let _boats boats with [boat-hour < 24]
+  if one? [
+    set _active-boats min-n-of 1 boats [who]
+    let _boat one-of _active-boats
+    watch _boat
+    inspect _boat
+  ]
+
+  let _boats _active-boats with [boat-hour < 24]
   while [count _boats > 0] [
     ask _boats [
       ifelse (boat-trip-phase = 5) [ boat-land-port ][
@@ -154,14 +162,13 @@ to go
                boat-rest-port ; boat-trip-phase = 0
       ]]]]]
     ]
-    set _boats boats with [boat-hour < 24]
+    set _boats _active-boats with [boat-hour < 24]
   ]
   ask boats [ set boat-hour boat-hour mod 24 ]
 
   update-plots
   tick
 end
-
 
 to calc-initial-values
   set sum-boats sum [sum port-clusters] of ports
@@ -1273,6 +1280,17 @@ C
 NIL
 NIL
 1
+
+SWITCH
+1246
+454
+1349
+487
+one?
+one?
+0
+1
+-1000
 
 @#$#@#$#@
 # The Agent-based Model of German North Sea Small-scale fisheries
