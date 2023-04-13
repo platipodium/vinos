@@ -345,63 +345,78 @@ to boat-make-haul
   ; A boat deploys the gear with the highest priority
   let haul-width [gear-width] of item (index-max-one-of boat-gear-priorities) boat-gears
   let _fishing-speed [gear-speed] of item (index-max-one-of boat-gear-priorities) boat-gears
-  let haul-time 1 ; two hours
-  let _found false
+  let haul-time 1 ; one hour
+  
+  let _haul-distance  (_fishing-speed * haul-time / 4.5)  ; todo fix distance calculation  
+  
+  let _found boat-accessible-path _haul-distance
+  let _patch patch-ahead _haul-distance
   let _counter 1
-  let _patch patch-ahead (_fishing-speed * haul-time)
-  let _time-step 0.1 ; 6 minutes
-  
-  while [not _found] [
-    ifelse _patch != nobody [set _found true][  
-      set heading heading - 180 - _counter * 5 + random (_counter * 10 + 1)
-      set _counter _counter + 1
-      set _patch patch-ahead (_fishing-speed * haul-time)
-    ]
+    
+  while [ (_counter < 10) and (_patch != nobody) and (not boat-accessible-path _haul-distance ) ] [
+    set heading heading - 180 - _counter * 5 + random (_counter * 10 + 1)
+    set _counter _counter + 1
+    set _patch patch-ahead _haul-distance
   ]
-  let _distance gis-distance _patch
-  let _netlogo-distance distance _patch
-  let _time _distance / _fishing-speed 
   
-  let _new-catches n-values length boat-gears [i -> 0]
-  let _haul-catches n-values length boat-gears [i -> 0]
+ ; while [not _found] [
+  ;  ifelse _patch != nobody [set _found true][  
+  ;    set heading heading - 180 - _counter * 5 + random (_counter * 10 + 1)
+  ;    set _counter _counter + 1
+  ;    set _patch patch-ahead _haul-distance 
+  ;  ]
+  ;]
+  
+  ifelse _patch != nobody [
+    let _time-step 0.1 ; 6 minutes  
+    let _distance gis-distance _patch
+    let _netlogo-distance distance _patch
+    let _time _distance / _fishing-speed 
+  
+    let _new-catches n-values length boat-gears [i -> 0]
+    let _haul-catches n-values length boat-gears [i -> 0]
 
-  pen-down
-  repeat (haul-time / _time-step) [
-    set _new-catches boat-catch-species (_time-step * _fishing-speed)
-    ask patch-here [
-      set fishing-effort-hours fishing-effort-hours + _time-step
+    pen-down
+    repeat (haul-time / _time-step) [
+      set _new-catches boat-catch-species (_time-step * _fishing-speed)
+      ask patch-here [
+        set fishing-effort-hours fishing-effort-hours + _time-step
+      ]
+      forward _netlogo-distance * _time-step / haul-time
+      set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
     ]
-    forward _netlogo-distance * _time-step / haul-time
-    set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
-  ]
   
-  set heading heading - 180 - 10 + random (21 + 1)
+    set heading heading - 180 - 10 + random (21 + 1)
   
-  set boat-time-at-sea boat-time-at-sea  + _time
-  set boat-distance-at-sea boat-distance-at-sea + _distance  
-  set boat-time-at-sea-left boat-time-at-sea-left - _time 
-  set boat-hour boat-hour + _time
+    set boat-time-at-sea boat-time-at-sea  + _time
+    set boat-distance-at-sea boat-distance-at-sea + _distance  
+    set boat-time-at-sea-left boat-time-at-sea-left - _time 
+    set boat-hour boat-hour + _time
 
-  let distance-left boat-steaming-speed * boat-time-at-sea-left ; at typical speed of 19 km / h this is 1368 km
-  if distance-left < 1.1 * gis-distance [port-start-patch] of boat-home-port [
-    set boat-trip-phase 4
-  ]
-  
-  ; If the catch is not worth keeping, discard it entirely. Fishers do not want to keep 
-  ; the bad haul, as this  would restrict their left time, but only there are > 24 hours left
-  ; On the other hand, on good haul make sure to return within 24 hours to keep it fresh
-  if (boat-time-at-sea-left > 24) [
-    ifelse item (index-max-one-of boat-gear-priorities) _haul-catches < min-fresh-catch [
-      set _haul-catches n-values length boat-gears [i -> 0]
-      set boat-trip-phase 2
-    ][
-      set boat-time-at-sea-left 24
+    let distance-left boat-steaming-speed * boat-time-at-sea-left ; at typical speed of 19 km / h this is 1368 km
+    if distance-left < 1.1 * gis-distance [port-start-patch] of boat-home-port [
+      set boat-trip-phase 4
     ]
-  ]
-  set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i _haul-catches)]
   
-  ; If the boat is full, also need to return  
-  if item (index-max-one-of boat-gear-priorities) boat-gear-catches > boat-capacity [ set boat-trip-phase 4]
+    ; If the catch is not worth keeping, discard it entirely. Fishers do not want to keep 
+    ; the bad haul, as this  would restrict their left time, but only there are > 24 hours left
+    ; On the other hand, on good haul make sure to return within 24 hours to keep it fresh
+    if (boat-time-at-sea-left > 24) [
+      ifelse item (index-max-one-of boat-gear-priorities) _haul-catches < min-fresh-catch [
+        set _haul-catches n-values length boat-gears [i -> 0]
+        set boat-trip-phase 2
+      ][
+        set boat-time-at-sea-left 24
+      ]
+    ]
+    set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i _haul-catches)]
+  
+    ; If the boat is full, also need to return  
+    if item (index-max-one-of boat-gear-priorities) boat-gear-catches > boat-capacity [ set boat-trip-phase 4]
+  ][
+    ; Could not find a straight-line haul from hear, so continue steaming
+    set boat-trip-phase 2
+  ]
   
   ;print (sentence "Boat" who _distance _time distance-left boat-time-at-sea-left )
   
@@ -438,4 +453,10 @@ to-report boat-catch-species [haul-length]
 
 end
 
+; report true if all patches touched within distance d are accessible
+to-report boat-accessible-path [d]
+  ;foreach range d [ i -> if [not accessible?] of patch-ahead i [report false]]
+  ;report true 
+  report all? (patch-set (n-values d [ i ->  patch-ahead i])) [accessible?]
+end
 
