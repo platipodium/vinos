@@ -19,13 +19,14 @@ authors:
     orcid: 0000-0003-3483-6036
     affiliation: 3
 affiliations:
- - name: Helmholtz-Zentrum Hereon, Germany
+ - name: Helmholtz-Zentrum Hereon, Institute of Coastal Systems Modeling and Analysis, Germany, carsten.lemmen@hereon.de
    index: 1
- - name: University of Hamburg, Germany
+ - name: Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany
    index: 2
- - name: Hochschule Bremerhaven, Bremerhaven, Germany
+ - name: Hochschule Bremerhaven, Research Cluster Life Sciences, Bremerhaven, Germany
    index: 3
-date: 6 April 2023
+date: 13 April 2023
+year: 2023
 bibliography: paper.bib
 SPDX-FileCopyrightText: 2022-2023  Helmholtz-Zentrum hereon GmbH (hereon)
 SPDX-License-Identifier: CC-BY-4.0
