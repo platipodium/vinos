@@ -169,6 +169,11 @@ to go
   ask boats [ set boat-hour boat-hour mod 24 ]
 
   update-plots
+
+  ; export the data every week on a Sunday (weekday 0)
+  if weekday = 0 [export-patches]
+
+
   tick
 end
 
@@ -750,13 +755,6 @@ to calc-accessibility
 
 end
 
-to export-patches
-  gis:store-dataset gis:patch-dataset fishing-effort-hours "results/fishing-effort-hours"
-  gis:store-dataset gis:patch-dataset depth "results/depth"
-  gis:store-dataset gis:patch-dataset owf-fraction "results/owf-fraction"
-  gis:store-dataset gis:patch-dataset accessible? "results/accessible"
-  gis:store-dataset gis:patch-dataset plaice-box? "results/plaice-box"
-end
 
 ; The profile routine is called manually from the command line while we test
 ; @todo profile other routines not called by go
@@ -822,7 +820,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-5
+4
 
 BUTTON
 92
@@ -979,28 +977,11 @@ fraction-transportation-costs
 fraction-transportation-costs
 0
 1
-0.81
+0.85
 0.01
 1
 NIL
 HORIZONTAL
-
-BUTTON
-450
-552
-545
-585
-save-effort
-let dataset gis:patch-dataset fishing-effort-hours\ngis:store-dataset dataset \"effort\"
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
 
 PLOT
 558
@@ -1153,20 +1134,20 @@ Diesel for ships is tax-exempt and \ncosts on average 0.5 € l-1
 1
 
 TEXTBOX
-273
-543
-423
-571
+268
+528
+418
+556
 Staff costs are usually around 80 € h-1
 11
 0.0
 1
 
 SLIDER
-271
-573
-443
-606
+266
+558
+438
+591
 wage
 wage
 50

@@ -145,8 +145,12 @@ to draw-background [X]
   
 end
 
-
-;let dataset gis:patch-dataset fishing-effort-hours
-;gis:store-dataset dataset "effort"
+to export-patches
+  gis:store-dataset gis:patch-dataset fishing-effort-hours (word "results/fishing-effort-hours_" (formatted-int ticks 4) "_" datetime-short)
+  gis:store-dataset gis:patch-dataset depth "results/depth"
+  gis:store-dataset gis:patch-dataset owf-fraction "results/owf-fraction"
+  gis:store-dataset gis:patch-dataset accessible? "results/accessible"
+  gis:store-dataset gis:patch-dataset plaice-box? "results/plaice-box"
+end
 
 

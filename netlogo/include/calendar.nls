@@ -67,6 +67,9 @@ to-report datetime
   report (word weekday-name " " year "-" month "-" day " (" day-of-year ")")
 end
 
+to-report datetime-short
+  report (word (formatted-int year 4) (formatted-int month 2) (formatted-int day 2))
+end
 
 ; Use Zeller's algorithm to calculate the weekday 
 ; Return from 0 (Sunday) to 6 (Saturday)
