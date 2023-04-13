@@ -143,7 +143,6 @@ to go
   advance-calendar
   calc-fish
   let _active-boats boats
-  let _one-counter nobody
 
   ; Enable a simulation with only one active boat that can be closely
   ; followed.  This is off by default
@@ -151,16 +150,11 @@ to go
     set _active-boats min-n-of 1 boats [who]
     let _boat one-of _active-boats
 
-    if (_one-counter = 0) or (_one-counter = nobody) [
+    if subject != _boat [
       watch _boat
       inspect _boat
-      set _one-counter 0
     ]
-
-    set _one-counter _one-counter + 1
-  ][
-    set _one-counter 0
-  ]
+  ][]
 
   let _boats _active-boats with [boat-hour < 24]
   while [count _boats > 0] [
@@ -1181,7 +1175,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "operating-costs" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase"
-12
+0
 
 SWITCH
 1241
