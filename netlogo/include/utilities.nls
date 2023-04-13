@@ -240,7 +240,30 @@ to-report __test-starts-with
 end
 
 
+to-report formatted-int [_number _n]
+  
+  if _n < 1 [report ""]
+  let _string "" 
+  let _position -1
+  
+  if _number > 0 [
+    set _position _n - (log _number 10 ) 
+  ]
+  ifelse  _position < 0 [
+    foreach range _n [ i -> set _string (word "*" _string) ] 
+    report _string
+  ][
+    foreach range (_position - 1) [ i -> set _string (word "0" _string) ] 
+  ]
+  report (word _string _number)
+  
+end
 
+to-report __test-formatted-int
+  
+  if formatted-int 23 4 != "0023" [report false]
+  report true
+end
 
 
 
