@@ -219,9 +219,9 @@ to  unit-test
   let tests (list  __test-boolean2int __test_csv_property __test-load-dataset 
     __test_five-number-summary __test_haversine-distance __test-value-from-distribution
     __test-normalize __test-quantile-thresholds __test-quantile-thresholds-number
-  __test-quantiles __test-formatted-number __test-index-max-one-of)
+  __test-quantiles __test-formatted-number __test-index-max-one-of  __test-formatted-int)
   foreach tests [
-    t -> ifelse t [print "Test passed"][print "Test failed" stop ]
+    t -> ifelse t [print (sentence "Test passed")][print "Test failed" stop ]
   ]
 end
 
@@ -261,7 +261,9 @@ end
 
 to-report __test-formatted-int
   
-  if formatted-int 23 4 != "0023" [report false]
+  if formatted-int  23 4 != "0023" [report false]
+  if formatted-int  23 1 != "*" [report false]
+  if formatted-int -23 3 != "***" [report false]
   report true
 end
 

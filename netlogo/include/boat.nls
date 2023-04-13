@@ -186,7 +186,8 @@ to boat-leave-port
   let _patch [port-start-patch] of boat-home-port    ; starting patch of the boat
   let _distance gis-distance _patch
   
-  pen-up
+  ; Do not show the movement during leaving port unless we're following one boat
+  if not one? [pen-up]
   move-to _patch
 
   set boat-distance-at-sea boat-distance-at-sea + _distance
@@ -295,7 +296,8 @@ to boat-choose-start
   ][
     let _distance gis-distance _patch
 
-    pen-up
+    ; Do not show the movement during choosing start unless we're following one boat
+    if not one? [pen-up]
     move-to _patch
   
     set boat-distance-at-sea boat-distance-at-sea + _distance
@@ -315,6 +317,7 @@ to boat-return-port
   let _distance gis-distance _patch
   let _time _distance / boat-steaming-speed
 
+  ; don't show returning to port
   pen-up
   move-to _patch
   
