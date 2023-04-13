@@ -1,10 +1,12 @@
-# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FieContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 *.aux
 *.bcf
 *.log
 *.synctex.gz
+*.fdb_latexmk
+*.fls
 paper.out
 paper.pdf
 paper.tex
@@ -17,7 +19,5 @@ paper.pptx
 paper.odt
 paper.txt
 paper.dvi
-paper.fdb_latexmk
-paper.fls
 texput.log
 
