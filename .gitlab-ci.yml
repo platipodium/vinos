@@ -32,26 +32,23 @@ unit-tests:
   needs: []
   
 # @todo we can run it in the comses or our own docker
-# create-map:
-#   image: comses/netlogo # see https://github.com/comses/docker-netlogo
-#   stage: run
-#   before_script:
-#     - echo "Nothing done here."
-#   script:
-#     - echo "Trying to run in working directory and headless mode"
-#     - echo "Java HOME is ${JAVA_HOME}"
-#     - cd ${CI_PROJECT_DIR}/netlogo
-#     - > 
-#       bash /opt/netlogo/netlogo-headless.sh 
-#       --model ./abm_fisheries_mussel.nlogo 
-#       --setup-file ./behavior/effort-map.xml
-#       --experiment "effort-map" --table -
+create-map:
+  image: comses/netlogo # see https://github.com/comses/docker-netlogo
+  stage: run
+  script:
+    - echo "Trying to run in working directory and headless mode"
+    - echo "Java HOME is ${JAVA_HOME}"
+    - cd ${CI_PROJECT_DIR}/netlogo
+    - > 
+      bash /opt/netlogo/netlogo-headless.sh 
+      --model ./abm_fisheries_mussel.nlogo 
+      --setup-file ./behavior/effort-map.xml
+      --experiment "effort-map" --table -
   
-  # Preserve resulting files
-  # artifacts:
-  #   paths: 
-  #     - ./netlogo/results/
-  # needs: []
+  artifacts:
+    paths: 
+      - ./netlogo/results/
+  needs: []
 
 pages:
     stage: deploy

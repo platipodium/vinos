@@ -9,7 +9,7 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
   <experiment name="effort-map" repetitions="1" sequentialRunOrder="false" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>create-effort-map</go>
-    <timeLimit steps="1000"/>
+    <timeLimit steps="1"/>
     <metric>count turtles</metric>
     <enumeratedValueSet variable="view">
       <value value="&quot;effort (h)&quot;"/>
