@@ -95,7 +95,7 @@ to port-read
             set label port-name
             set label-color black
             setxy (item 0 xy)  (item 1 xy)
-            set port-start-patch min-one-of patches with [depth > navigable-depth and gis-distance myself > 5 and accessible?] [gis-distance myself] 
+            set port-start-patch min-one-of patches with [depth > navigable-depth and distance myself > 2 and accessible?] [distance myself] 
             set port-landing-patch port-start-patch
             set port-clusters (list 0 0 0 0)
             print (sentence "Created" port-kind "port" port-name)

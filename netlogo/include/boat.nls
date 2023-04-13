@@ -11,6 +11,7 @@
 extensions [csv]
 
 breed [boats boat]
+breed [markers marker]
 
 boats-own [
   boat-gear-catches              ; for each boat a vector of fish catches (per patch or tick)
@@ -184,11 +185,18 @@ to boat-leave-port
   ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
   ; patch outside the plaice box.
   let _patch [port-start-patch] of boat-home-port    ; starting patch of the boat
-  let _distance gis-distance _patch
+  face _patch
+  let _gis-scale gis-scale
+  let _distance gis-scale * distance _patch
   
   ; Do not show the movement during leaving port unless we're following one boat
   if not one? [pen-up]
   move-to _patch
+  
+  if not [accessible?] of patch-here [ 
+    error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase)
+    stop 
+  ]
 
   set boat-distance-at-sea boat-distance-at-sea + _distance
   set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
@@ -294,11 +302,15 @@ to boat-choose-start
   ifelse _patch = nobody [
     set boat-trip-phase 4 ; need to go home
   ][
-    let _distance gis-distance _patch
+    face _patch    
+    let _distance gis-scale * distance _patch
 
     ; Do not show the movement during choosing start unless we're following one boat
     if not one? [pen-up]
     move-to _patch
+    if not [accessible?] of patch-here [ 
+      error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase) 
+    ]
   
     set boat-distance-at-sea boat-distance-at-sea + _distance
     set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
@@ -314,7 +326,8 @@ end
 to boat-return-port
 
   let _patch [port-start-patch] of boat-home-port
-  let _distance gis-distance _patch
+  face _patch
+  let _distance gis-scale * distance _patch
   let _time _distance / boat-steaming-speed
 
   ; don't show returning to port
@@ -326,7 +339,8 @@ to boat-return-port
   set boat-time-at-sea-left boat-time-at-sea-left - _time
   set boat-hour boat-hour + _time
   
-  set _distance gis-distance  boat-home-port
+  face boat-home-port
+  set _distance gis-scale * distance boat-home-port
   set _time _distance / boat-steaming-speed
 
   move-to boat-home-port
@@ -348,58 +362,68 @@ to boat-make-haul
   ; A boat deploys the gear with the highest priority
   let haul-width [gear-width] of item (index-max-one-of boat-gear-priorities) boat-gears
   let _fishing-speed [gear-speed] of item (index-max-one-of boat-gear-priorities) boat-gears
-  let haul-time 1 ; one hour
+  let _haul-time 1 ; one hour
+  let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing 
+  let _sub-step-time _haul-time * 1.0 / _sub-steps 
   
-  let _haul-distance  (_fishing-speed * haul-time / 4.5)  ; todo fix distance calculation  
+  ; Calculate conversion factor netlogo units to km, needs to be recalculated after 
+  ; every change of heading
+  let _gis-scale gis-scale
+  let _haul-distance  (_fishing-speed * _haul-time / _gis-scale)
   
-  let _found boat-accessible-path _haul-distance
   let _patch patch-ahead _haul-distance
   let _counter 1
-    
+
+  ; find (up to ten times) a straight line path with accessible patches by turning,
+  ; first slow then more
+  ; @todo also make sure no other boats in path
   while [ (_counter < 10) and (_patch != nobody) and (not boat-accessible-path _haul-distance ) ] [
     set heading heading - 180 - _counter * 5 + random (_counter * 10 + 1)
+    set _gis-scale gis-scale
+    set _haul-distance  (_fishing-speed * _haul-time / _gis-scale)
     set _counter _counter + 1
     set _patch patch-ahead _haul-distance
   ]
-  
- ; while [not _found] [
-  ;  ifelse _patch != nobody [set _found true][  
-  ;    set heading heading - 180 - _counter * 5 + random (_counter * 10 + 1)
-  ;    set _counter _counter + 1
-  ;    set _patch patch-ahead _haul-distance 
-  ;  ]
-  ;]
-  
+  if _counter >= 10 [set _patch nobody]
+    
+  ; Partition the fishing in small intervals, this could probably be optimized by calculating the 
+  ; intersection with the patch boundaries
   ifelse _patch != nobody [
-    let _time-step 0.1 ; 6 minutes  
-    let _distance gis-distance _patch
-    let _netlogo-distance distance _patch
-    let _time _distance / _fishing-speed 
-  
+    
     let _new-catches n-values length boat-gears [i -> 0]
     let _haul-catches n-values length boat-gears [i -> 0]
 
     pen-down
-    repeat (haul-time / _time-step) [
-      set _new-catches boat-catch-species (_time-step * _fishing-speed)
+    repeat (_sub-steps) [
+      set _new-catches boat-catch-species (_sub-step-time * _fishing-speed)
       ask patch-here [
-        set fishing-effort-hours fishing-effort-hours + _time-step
+        set fishing-effort-hours fishing-effort-hours + _sub-step-time
+        ;set swept-area swept-area + _haul-with * _sub-step-time * _fishing-speed
       ]
-      forward _netlogo-distance * _time-step / haul-time
+      forward _sub-step-time * fishing-speed / _gis-scale
+      
+      if not [accessible?] of patch-here [ 
+        ; @todo make this an error
+        print (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase)
+      ]
       set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
     ]
   
-    set heading heading - 180 - 10 + random (21 + 1)
+    let _next-heading heading - 180 - 10 + random (21 + 1)
   
-    set boat-time-at-sea boat-time-at-sea  + _time
-    set boat-distance-at-sea boat-distance-at-sea + _distance  
-    set boat-time-at-sea-left boat-time-at-sea-left - _time 
-    set boat-hour boat-hour + _time
+    set boat-time-at-sea boat-time-at-sea  + _haul-time
+    set boat-distance-at-sea boat-distance-at-sea + _haul-distance
+    set boat-time-at-sea-left boat-time-at-sea-left - _haul-time
+    set boat-hour boat-hour + _haul-time
 
     let distance-left boat-steaming-speed * boat-time-at-sea-left ; at typical speed of 19 km / h this is 1368 km
-    if distance-left < 1.1 * gis-distance [port-start-patch] of boat-home-port [
+    face  [port-start-patch] of boat-home-port
+    
+    if distance-left < 1.1 * gis-scale * distance [port-start-patch] of boat-home-port [
       set boat-trip-phase 4
     ]
+    
+    set heading _next-heading
   
     ; If the catch is not worth keeping, discard it entirely. Fishers do not want to keep 
     ; the bad haul, as this  would restrict their left time, but only there are > 24 hours left
@@ -462,4 +486,29 @@ to-report boat-accessible-path [d]
   ;report true 
   report all? (patch-set (n-values d [ i ->  patch-ahead i])) [accessible?]
 end
+
+; turtle procedure, returns the scaling km/netlogo-unit in the heading of 
+; a turtle
+to-report gis-scale
+  ;report 2
+  hatch-markers 1 [ 
+    create-link-with myself
+  ]
+  let _marker one-of link-neighbors with [breed = markers]
+
+  ask _marker [forward 2] ; must be more than sqrt 2 to cover diagonal of square
+  let _gis-distance gis-envelope-distance (turtle-set self  _marker)
+  if _gis-distance = 0 [
+    ask _marker [ move-to self forward -2 ]
+    set _gis-distance gis-envelope-distance (turtle-set self  _marker)
+  ]
+  ask my-out-links with [breed = markers][die]
+  ask _marker [die]
+  
+  report  _gis-distance / 1.5
+end
+  
+
+
+
 
