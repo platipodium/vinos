@@ -144,6 +144,8 @@ to go
   calc-fish
   let _active-boats boats
 
+  ; Enable a simulation with only one active boat that can be closely
+  ; followed.  This is off by default
   if one? [
     set _active-boats min-n-of 1 boats [who]
     let _boat one-of _active-boats
@@ -820,7 +822,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+5
 
 BUTTON
 92
@@ -917,7 +919,7 @@ operating-costs-of-boats
 operating-costs-of-boats
 0
 1
-0.208
+0.21
 0.001
 1
 NIL
@@ -1288,7 +1290,7 @@ SWITCH
 487
 one?
 one?
-0
+1
 1
 -1000
 
