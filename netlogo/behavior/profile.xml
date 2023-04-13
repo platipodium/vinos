@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+SPDX-License-Identifier: Apache-2.0
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+-->
+<!DOCTYPE experiments SYSTEM "behaviorspace.dtd">
+<experiments>
+  <experiment name="profile" repetitions="1" runMetricsEveryStep="false">
+    <setup>
+    </setup>
+    <go>
+    profile
+    </go>
+    <timeLimit steps="1"/>
+  </experiment>
+</experiments>

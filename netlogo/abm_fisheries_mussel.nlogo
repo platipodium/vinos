@@ -749,8 +749,6 @@ end
 
 
 ; The profile routine is called manually from the command line while we test
-; @todo profile other routines not called by go
-; @todo use profiling in CI
 to profile
   setup
   profiler:start
