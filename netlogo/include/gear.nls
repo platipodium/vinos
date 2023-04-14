@@ -25,7 +25,7 @@ globals [
 ; We define here a constant and predefined number of gears
 to setup-gears
   ask gears [die]
-    
+
   ; On vessels <300 PS shrimp are typically caught with a 2x10m beam trawl
   ; they typically remain within 25 km of the coast
   create-gears 1 [
@@ -34,10 +34,10 @@ to setup-gears
     set gear-width .020 ; width of beam in km
     set gear-drag 13 ; some number ... need more realism and unit .. maybe not relevant
     set gear-installation-cost 1000 ; EUR for changing to this gear
-    set gear-purchase-cost 25000 ; 
+    set gear-purchase-cost 25000 ;
     set gear-speed 9.26 ; 5 knots
   ]
-  
+
   ; On vessels <300 PS plaice are typically caught with a 2x4m beam trawl
   ; they typically remain within 25 km of the coast
   create-gears 1 [
@@ -46,7 +46,7 @@ to setup-gears
     set gear-width .008 ; width of beam in km
     set gear-drag 13 ; some number ... need more realism and unit
     set gear-installation-cost 1000 ; EUR for changing to this gear
-    set gear-purchase-cost 25000 ; 
+    set gear-purchase-cost 25000 ;
     set gear-speed 9.26 ; 5 knots
   ]
 
@@ -58,10 +58,10 @@ to setup-gears
     set gear-width .008 ; width of beam in km
     set gear-drag 13 ; some number ... need more realism and unit
     set gear-installation-cost 1000 ; EUR for changing to this gear
-    set gear-purchase-cost 25000 ; 
+    set gear-purchase-cost 25000 ;
     set gear-speed 9.26 ; 5 knots
   ]
-  
+
   ; Larger vessels are found throughout the AWZ except plaice box
   create-gears 1 [
     set gear-name "TBB24PLE"
@@ -81,7 +81,7 @@ to setup-gears
     set gear-purchase-cost 50000 ; EUR
     set gear-speed 12.96 ; 7 knots
   ]
-  
+
   ; Larger vessels are found throughout the AWZ
   create-gears 1 [
     set gear-name "OTB60PLE"
@@ -92,8 +92,8 @@ to setup-gears
     set gear-purchase-cost 35000 ; EUR
     set gear-speed 9.26 ; 5 knots
   ]
-  
-  ; Nephrops trawl 
+
+  ; Nephrops trawl
   ; data based on Penny 2007 Fisheries Research Services Internal Report No. 01/07
 ;  create-gears 1 [
 ;    set gear-name "DRB35NEP"
@@ -103,17 +103,17 @@ to setup-gears
 ;    set gear-drag 1500 ; kgf
 ;    set gear-installation-cost 1000 ; EUR for changing to this gear
 ;    set gear-purchase-cost 35000 ; EUR
-;    set gear-speed 5 ; 
+;    set gear-speed 5 ;
 ;  ]
 
   ; Report global variables, make sure to keep the order of the gears
   ; and the correct relation between species and gear name
-  
+
   let my-gear-ids sort [who] of gears
   set number-of-gears count gears
   set gear-names n-values number-of-gears [i -> [gear-name] of gear item i my-gear-ids]
   set gear-prey-names n-values number-of-gears [i -> [gear-species] of gear item i my-gear-ids]
-    
+
 end
 
 
@@ -143,11 +143,9 @@ end
 ; TBB >300 PS 2*12m 7 kn
 ; TBB/HG >300 PS 2*12m 7 kn
 ; OTB  60m 5 kn
-; Kleinere Fischereifahrzeuge (<300 PS) mit Baumkurren fischen bevorzugt in den nord- und ostfriesischen Küstengewässern bis in eine Entfernung von rund 25 km zur Küste (Abb. 5A). Fahrzeuge dieser Klasse fischen sowohl mit 10m breiten Krabbenkurren als auch mit 4 m breiten Schollen- & Seezungenkurren. Da eine eindeutige Identifizierung der eingesetzten Geräte nicht möglich ist, wurde von einer mittleren Breite von 7m ausgegangen, 
-; In größerer Entfernung zur Küste fischten kleinere Baumkurrenfischer nur vereinzelt. Diese Fischereifahrzeuge wechseln teilweise saisonal auch auf Scherbrettnetze zur Fischerei auf Kaisergranat (H. Fock, pers. Mittlg.), was die Befischung im küstenfernen Bereich des Elbe-Urstromtals erklären könnte. Abgesehen von diesem Bereich wurde aber eine Fischereiintensität von einem Fischereiereignis pro Jahr nur in wenigen Gebieten überschritten. 
+; Kleinere Fischereifahrzeuge (<300 PS) mit Baumkurren fischen bevorzugt in den nord- und ostfriesischen Küstengewässern bis in eine Entfernung von rund 25 km zur Küste (Abb. 5A). Fahrzeuge dieser Klasse fischen sowohl mit 10m breiten Krabbenkurren als auch mit 4 m breiten Schollen- & Seezungenkurren. Da eine eindeutige Identifizierung der eingesetzten Geräte nicht möglich ist, wurde von einer mittleren Breite von 7m ausgegangen,
+; In größerer Entfernung zur Küste fischten kleinere Baumkurrenfischer nur vereinzelt. Diese Fischereifahrzeuge wechseln teilweise saisonal auch auf Scherbrettnetze zur Fischerei auf Kaisergranat (H. Fock, pers. Mittlg.), was die Befischung im küstenfernen Bereich des Elbe-Urstromtals erklären könnte. Abgesehen von diesem Bereich wurde aber eine Fischereiintensität von einem Fischereiereignis pro Jahr nur in wenigen Gebieten überschritten.
 ;
 ; Größere Baumkurrenkutter (>300 PS) wurden im gesamten Bereich der deutschen AWZ der Nordsee eingesetzt, wobei die Fischereiintensität in Küstennähe deutlich geringer war als für die kleineren Baumkurrenkutter (Abb. 5B). Während die Fischerei mit schweren 12m-Kurren innerhalb des Plattfischschutzgebietes „Schollenbox“ verboten ist, dürfen einige der Fischereifahrzeuge in bestimmten Jahreszeiten mit leichteren Geräten auch innerhalb des Schutzgebietes fischen (H. Fock, pers. Mittlg.). Das Gebiet der höchsten Fischereiintensität mit schweren Baumkurren erstreckt sich aber entlang der Grenze der „Schollenbox“ und in nordwestliche Richtung im Elbeurstromtal. Hier wurden im Jahr 2006 Intensitäten von bis zu 5 Fischereiereignissen pro Jahr erreicht. Andere Gebiete wurden überwiegend maximal einmal pro Jahr befischt.
 ; In den nördlichen Riffbereichen am östlichen Hang des Elbe-Urstromtales fand eine Baumkurrenfischerei mit speziellem, für groben Grund geeignetem Geschirr statt (Abb. 4D). Diese 12 m-Kurren sind statt mit den üblichen Vorlaufketten mit einer Kettenmatte ausgestattet, die es erlaubt auch über gröbere Steine zu fischen, ohne das Netz zu zerstören. Der Schwerpunkt dieser Fischerei lag im Schutzgebiet „Sylter Außenriff“. Auch wenn die Befischungsfrequenz pro Hektar wegen der wenigen Fahrzeuge, die dieses Gerät einsetzen, sehr gering ist (≤ einmal pro Jahr), kann gerade in diesen Habitaten von einem deutlichen Einfluss auf die Bodenfauna ausgegangen werden.
 ; Scherbrettnetze wurden im Jahr 2006 überwiegend in küstenfernen Gebieten der deutschen AWZ der Nordsee eingesetzt (Abb. 5C). Fischereiintensitäten von mehr als einem Fischereiereignis pro Jahr werden nur im äußeren Elbe-Urstromtal (über 5 Fischereiereignisse pro Jahr) und im südlichen Bereich der Doggerbank (3,5 / J) erreicht. Teile dieser Gebiete hoher Intensität befinden sich auch im nordwestlichen Teil des Schutzgebietes „Sylter Außenriff“ sowie im Schutzgebiet „Doggerbank“.
-
-

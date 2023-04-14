@@ -18,7 +18,7 @@ boats-own [
   harvest-boat                 ; for each boat a vector of total harvest of the fish species
   catch-efficiency-boat        ; how much fish is effectively catched
   boat-capacity                ; size of the boat
-  ;boat-engine-power                
+  ;boat-engine-power
 
   revenue-boat             ; revenue for the fishing trip of the boat
   costs-boat               ; costs for the fishing trip of the boat
@@ -54,14 +54,14 @@ boats-own [
   boat-type               ; Number 1-4 of the named cluster
   boat-length             ; length of boat in m, related (yet unknown) to capacity.
   boat-engine             ; power of the engine in kW
- 
+
   boat-max-distance
   boat-max-duration  ; cluster-dependent typical trip length
-  
+
   boat-time-at-sea
   boat-time-at-sea-left
   boat-distance-at-sea
-  
+
   ; value encoding the state the boat is in during a fishing trip.
   ; 0 in port not available, i.e. resting, refueling, grounded
   ; 1 in port and available
@@ -69,20 +69,20 @@ boats-own [
   ; 3 at sea and ready to fish
   ; 4 at sea, needing to go home
   ; 5  in port, need to unload
-  boat-trip-phase 
-  
+  boat-trip-phase
+
   boat-needs-return?
-  
+
   boat-hour ; Internal hour of the day to facility event-based scheduling
   boat-fishable-patches ; large memory required, is this problematic?
-  
+
 ]
 
 
 to setup-boats
 
   set-default-shape boats "boat top"
-  
+
   ; read distribution of boat properties
   let lpue-distribution csv-property "LPUE"
   let engine-distribution csv-property "VE_KW"
@@ -90,50 +90,50 @@ to setup-boats
   let triplength-distribution csv-property "triplength"
   let length-distribution csv-property "VE_LEN"
   let hours-distribution csv-property "total_fishinghours"
-  
+
   ; @todo get th fishing speed from gear-speed
   let fishing-speed-mean 5.556 ; unit is km/h (= 3kn)
   let fishing-speed-sdev 0.926 ; unit is km/h (= 0.5kn)
 
   ; print distance-distribution
-  
-  ; @todo recreate the ports with new information from Serra 
+
+  ; @todo recreate the ports with new information from Serra
   ; on the distribution of the 4 clusters in each port.
-  
+
   ; @todo introduce quotas (=> Serra, asks Jonas)
   ask home-ports [
-    (foreach (range 4) port-clusters [ [i j] -> 
+    (foreach (range 4) port-clusters [ [i j] ->
       hatch-boats j [
         create-link-with myself
         ; The 1-based boat types are
         ; 3: "typical" 1: "longer typical" 2: "flexible" 4: "not shrimper"
         set boat-type i
-      ]     
+      ]
     ])
     ask link-neighbors [
       move-to [port-start-patch] of myself
-      
+
       ; Create a boat with Gaussian distribution around mean with stdev
       set boat-length value-from-distribution butfirst butfirst item boat-type length-distribution
-      
-      ; The engine is relevant for plaice box (only for cluster 4).  It may also 
-      ; be relevant for estimating the steaming speed, as long as there is no 
-      ; independent data. 
-      set boat-engine value-from-distribution butfirst butfirst item boat-type engine-distribution      
-      set boat-steaming-speed 1.852 * ( 6 + random-float 7 )   ; range 6 to 12 kn, i.e. 11 to 20 km/h 
-      
+
+      ; The engine is relevant for plaice box (only for cluster 4).  It may also
+      ; be relevant for estimating the steaming speed, as long as there is no
+      ; independent data.
+      set boat-engine value-from-distribution butfirst butfirst item boat-type engine-distribution
+      set boat-steaming-speed 1.852 * ( 6 + random-float 7 )   ; range 6 to 12 kn, i.e. 11 to 20 km/h
+
       ; boat-max-distance and boat-max-duration are adaptable, but
       ; rather the fishers prefer boat-tripfrequency by budgeting
       ; against their boat-total-fishing-hours
       set boat-max-distance 0.001 * value-from-distribution butfirst butfirst item boat-type distance-distribution
       set boat-max-duration value-from-distribution butfirst butfirst item boat-type triplength-distribution
-      
+
       ;print (sentence "Boat" who boat-max-distance)
       ; Boat capacity is not relevant for shrimpers as freshness is key concern
       set  boat-capacity 100000                                  ; kg of storage
-      
-      
-      set  boat-gear-catches         n-values number-of-gears  [?1 -> 0 ] 
+
+
+      set  boat-gear-catches         n-values number-of-gears  [?1 -> 0 ]
       set  catch-efficiency-boat   n-values number-of-gears  [?1 -> (0.15 + random-float 0.20) ]
       set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
       set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
@@ -153,7 +153,7 @@ to setup-boats
       ; Add location and fishing trip length in option pathways.
 
       set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
-          
+
       set boat-trip-phase 1 ; in port and available
       set boat-home-port myself
       set boat-needs-return? false
@@ -162,7 +162,7 @@ to setup-boats
     ]
     ask my-links [set hidden? true]
   ]
-  
+
 end
 
 to-report csv-property [x]
@@ -174,7 +174,7 @@ to-report csv-property [x]
   report butfirst _data
 end
 
-to-report __test_csv_property   
+to-report __test_csv_property
   ;let lpue csv-property "LPUE"
   ;report lpue = [[1 41.33597392121994 44.29353998676394 12.592817787094033 11.456572055826198 96.83554521537783] [2 44.896109846997646 44.93153848086322 10.283125939897474 27.14061269693432 63.39053728677305] [3 52.3697708750142 54.51564668646204 15.098579547056138 27.91232373317848 111.57142350676918] [4 3.845738658502041 13.822901977235906 18.237950929313804 0.9253936126421393 60.43421042459698]]
   report true
@@ -192,14 +192,14 @@ to boat-leave-port
   face _patch
   let _gis-scale gis-scale
   let _distance gis-scale * distance _patch
-  
+
   ; Do not show the movement during leaving port unless we're following one boat
   if not one? [pen-up]
   move-to _patch
-  
-  if not [accessible?] of patch-here [ 
+
+  if not [accessible?] of patch-here [
     error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase)
-    stop 
+    stop
   ]
 
   set boat-distance-at-sea boat-distance-at-sea + _distance
@@ -215,7 +215,7 @@ end
 ; This is a boat procedure  where a boat lands at a port and offloads its cargo
 ; here the optimization is done and the memory update
 to boat-land-port
-  
+
   ; "Eins bleibt immer gleich: Pro Stunde rechnet man pro PS mit einem Konsum von 0,21 Liter bei einem
   ; Diesel und 0,29 Liter bei Benzin als Treibstoff.” https://www.boatsandstories.com/verbrauch_1-3-2/
   ; At 150 PS and 48 h trip covering 300 km, the efficiency is 150*48*0,21/300 = 5 l km-1
@@ -267,9 +267,9 @@ to boat-land-port
   ]
 
   set boat-gear-catches map [i -> 0] boat-gear-catches
-  
+
   set boat-distance-at-sea 0
-  set boat-time-at-sea  0 
+  set boat-time-at-sea  0
   set boat-time-at-sea-left 0
 
   set boat-trip-phase 0
@@ -302,21 +302,21 @@ to boat-choose-start
 
   ;let _patch one-of boat-accessible-patches in-radius 30 ; @todo change this to max-distance
   let _patch one-of boat-fishable-patches in-radius 30
-  
+
   ; If there are not accessible patches found, go home and try again
   ifelse _patch = nobody [
     set boat-trip-phase 4 ; need to go home
   ][
-    face _patch    
+    face _patch
     let _distance gis-scale * distance _patch
 
     ; Do not show the movement during choosing start unless we're following one boat
     if not one? [pen-up]
     move-to _patch
-    if not [accessible?] of patch-here [ 
-      error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase) 
+    if not [accessible?] of patch-here [
+      error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase)
     ]
-  
+
     set boat-distance-at-sea boat-distance-at-sea + _distance
     set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
     set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
@@ -338,12 +338,12 @@ to boat-return-port
   ; don't show returning to port
   pen-up
   move-to _patch
-  
+
   set boat-distance-at-sea boat-distance-at-sea + _distance
   set boat-time-at-sea boat-time-at-sea  + _time
   set boat-time-at-sea-left boat-time-at-sea-left - _time
   set boat-hour boat-hour + _time
-  
+
   face boat-home-port
   set _distance gis-scale * distance boat-home-port
   set _time _distance / boat-steaming-speed
@@ -368,14 +368,14 @@ to boat-make-haul
   let haul-width [gear-width] of item (index-max-one-of boat-gear-priorities) boat-gears
   let _fishing-speed [gear-speed] of item (index-max-one-of boat-gear-priorities) boat-gears
   let _haul-time 1 ; one hour
-  let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing 
-  let _sub-step-time _haul-time * 1.0 / _sub-steps 
-  
-  ; Calculate conversion factor netlogo units to km, needs to be recalculated after 
+  let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing
+  let _sub-step-time _haul-time * 1.0 / _sub-steps
+
+  ; Calculate conversion factor netlogo units to km, needs to be recalculated after
   ; every change of heading
   let _gis-scale gis-scale
   let _haul-distance  (_fishing-speed * _haul-time / _gis-scale)
-  
+
   let _patch patch-ahead _haul-distance
   let _counter 1
 
@@ -390,11 +390,11 @@ to boat-make-haul
     set _patch patch-ahead _haul-distance
   ]
   if _counter >= 10 [set _patch nobody]
-    
-  ; Partition the fishing in small intervals, this could probably be optimized by calculating the 
+
+  ; Partition the fishing in small intervals, this could probably be optimized by calculating the
   ; intersection with the patch boundaries
   ifelse _patch != nobody [
-    
+
     let _new-catches n-values length boat-gears [i -> 0]
     let _haul-catches n-values length boat-gears [i -> 0]
 
@@ -406,16 +406,16 @@ to boat-make-haul
         ;set swept-area swept-area + _haul-with * _sub-step-time * _fishing-speed
       ]
       forward _sub-step-time * fishing-speed / _gis-scale
-      
-      if not [accessible?] of patch-here [ 
+
+      if not [accessible?] of patch-here [
         ; @todo make this an error
         print (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase)
       ]
       set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
     ]
-  
+
     let _next-heading heading - 180 - 10 + random (21 + 1)
-  
+
     set boat-time-at-sea boat-time-at-sea  + _haul-time
     set boat-distance-at-sea boat-distance-at-sea + _haul-distance
     set boat-time-at-sea-left boat-time-at-sea-left - _haul-time
@@ -423,14 +423,14 @@ to boat-make-haul
 
     let distance-left boat-steaming-speed * boat-time-at-sea-left ; at typical speed of 19 km / h this is 1368 km
     face  [port-start-patch] of boat-home-port
-    
+
     if distance-left < 1.1 * gis-scale * distance [port-start-patch] of boat-home-port [
       set boat-trip-phase 4
     ]
-    
+
     set heading _next-heading
-  
-    ; If the catch is not worth keeping, discard it entirely. Fishers do not want to keep 
+
+    ; If the catch is not worth keeping, discard it entirely. Fishers do not want to keep
     ; the bad haul, as this  would restrict their left time, but only there are > 24 hours left
     ; On the other hand, on good haul make sure to return within 24 hours to keep it fresh
     if (boat-time-at-sea-left > 24) [
@@ -442,23 +442,23 @@ to boat-make-haul
       ]
     ]
     set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i _haul-catches)]
-  
-    ; If the boat is full, also need to return  
+
+    ; If the boat is full, also need to return
     if item (index-max-one-of boat-gear-priorities) boat-gear-catches > boat-capacity [ set boat-trip-phase 4]
   ][
     ; Could not find a straight-line haul from hear, so continue steaming
     set boat-trip-phase 2
   ]
-  
+
   ;print (sentence "Boat" who _distance _time distance-left boat-time-at-sea-left )
-  
+
 end
 
 
 ; This boat procedure return the agent-set of accessible patches considering
 ; the plaice box restriction if highest priority gear's prey is plaice.
 to-report boat-accessible-patches
-  
+
   let my-patches patches with [accessible?]
 
   let my-target-species item (index-max-one-of boat-gear-priorities) gear-prey-names
@@ -466,7 +466,7 @@ to-report boat-accessible-patches
   if (boat-engine > 221 and my-target-species = "Pleuronectes") [
     set my-patches my-patches with [not plaice-box?]
   ]
-  
+
   report my-patches
 
 end
@@ -488,15 +488,15 @@ end
 ; report true if all patches touched within distance d are accessible
 to-report boat-accessible-path [d]
   foreach range d [ i -> if (not member? patch-ahead i boat-fishable-patches) [report false]]
-  report true 
-  ;report all? (patch-set (n-values d [ i ->  patch-ahead i])) [accessible?]  
+  report true
+  ;report all? (patch-set (n-values d [ i ->  patch-ahead i])) [accessible?]
 end
 
-; turtle procedure, returns the scaling km/netlogo-unit in the heading of 
+; turtle procedure, returns the scaling km/netlogo-unit in the heading of
 ; a turtle
 to-report gis-scale
   ;report 2
-  hatch-markers 1 [ 
+  hatch-markers 1 [
     create-link-with myself
   ]
   let _marker one-of link-neighbors with [breed = markers]
@@ -509,11 +509,6 @@ to-report gis-scale
   ]
   ask my-out-links with [breed = markers][die]
   ask _marker [die]
-  
+
   report  _gis-distance / 1.5
 end
-  
-
-
-
-

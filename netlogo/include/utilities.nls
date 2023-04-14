@@ -3,41 +3,41 @@
 ; Author: Carsten Lemmen <carsten.lemmen@hereon.de>
 ;
 ; This file contains utilities that are independent of the code around ("pure")
-; 
+;
 
 ; To get the typical five number summary (0%, 25%, 50%, 75%, 100% quartiles)
 to-report five-number-summary [numbers]
   let sorted-numbers sort numbers
   let median-number median sorted-numbers
   report (list    min sorted-numbers
-                  median filter [ i -> i < median-number + 1] sorted-numbers 
-                  median-number 
-                  median filter [ i -> i > median-number - 1] sorted-numbers 
+                  median filter [ i -> i < median-number + 1] sorted-numbers
+                  median-number
+                  median filter [ i -> i > median-number - 1] sorted-numbers
                   max sorted-numbers
     )
 end
 
-to-report __test_five-number-summary   
+to-report __test_five-number-summary
   report five-number-summary range 101  = (list 0 25 50 75 100)
 end
 
 to-report gis-envelope-distance [agent-set]
   report haversine-distance  (gis:envelope-of agent-set)
 end
-  
+
 to-report haversine-distance [coordinates]
   ; NetLogo angles are in degree
   let lon1 item 0 coordinates
   let lon2 item 1 coordinates
   let lat1 item 2 coordinates
   let lat2 item 3 coordinates
-  
+
   let earth-radius 6371
   let dlat (lat2 - lat1)
   let dlon (lon2 - lon1)
   let a (sin (dlat / 2) ^ 2) + (cos lat1) * (cos lat2 ) * (sin (dlon / 2) ^ 2)
   let c 2 * asin( sqrt(a) ) * pi / 180.0
-  report earth-radius * c 
+  report earth-radius * c
 end
 
 to-report __test_haversine-distance
@@ -46,15 +46,15 @@ to-report __test_haversine-distance
 end
 
 ; Given a distribution mean stddev min max, draw a value from this
-; by assuming normal mean+/-stdev distribution but within the 
+; by assuming normal mean+/-stdev distribution but within the
 ; limits given by min/max
 to-report value-from-distribution [x]
-  
+
   if length x != 4 [
     user-message (word "Error: There are " length x " items in list " x ". Need exactly 4")
     report 0
   ]
-  
+
   let value random-normal (item 0 x) (item 1 x)
   ifelse ( value >= (item 2 x) ) and ( value <= (item 3 x) ) [
     report value
@@ -63,9 +63,9 @@ to-report value-from-distribution [x]
   ]
 end
 
-to-report __test-value-from-distribution  
+to-report __test-value-from-distribution
   let distribution (list 10 5 8 12)
-  let value value-from-distribution distribution 
+  let value value-from-distribution distribution
   ifelse ( value < item 2 distribution or value > item 3 distribution) [
     report false ][ report true
   ]
@@ -86,12 +86,12 @@ to-report __test-normalize
 end
 
 to-report quantile-scale [indices data]
-  
+
   let n length indices - 1
-    
-  let my-list n-values n [ j -> 
+
+  let my-list n-values n [ j ->
      map [ x -> 0.5 / n + j / n ] (filter [ i ->  ( i >= item j indices ) and (i < item (j + 1) indices)  ] sort data)
-  ]   
+  ]
   report reduce [[x  y] -> (sentence x y) ]  my-list
 end
 
@@ -101,12 +101,12 @@ to-report quantile-indices [data n]
   let data-max last data
   let indices n-values (n - 1) [ i -> round ( length data * (i + 1) / n) ]
   set indices lput (length data - 1) (fput 0 indices)
-  report indices 
+  report indices
 end
 
 to-report quantile-thresholds [data n]
   let sorted sort data
-  if length sorted < (n + 1) [ 
+  if length sorted < (n + 1) [
     print (sentence "Error, the data is not diverse enough for" n "categories")
     report nobody
   ]
@@ -121,7 +121,7 @@ to-report __test-quantile-thresholds
   let distribution (list 10 3 4 6 2 2 3 4 7 9 2 1)
   let qi quantile-indices distribution 4
   let qv quantile-thresholds distribution 4
-  ; not working yet 
+  ; not working yet
   report true
 end
 
@@ -135,12 +135,12 @@ end
 
 to-report quantiles [data n]
   let indices quantile-indices data n
-  
+
   report quantile-scale indices data
-  ;let my-list n-values n [ j -> 
+  ;let my-list n-values n [ j ->
   ;  map [ x -> 0.5 / n + j / n ] (filter [ i ->  ( i >= item j indices ) and (i < item (j + 1) indices)  ] sort data)
   ;]
-    
+
   ;report reduce [[x  y] -> (sentence x y) ]  my-list
 end
 
@@ -159,11 +159,11 @@ end
 ;  0.01234 .012
 ;  0.00123 12e4
 to-report formatted-number [number n-significant]
-  
+
   ; This does not work for negative numbers or zero as we use the log_10
   if number <= 0 [ report number ]
   let order log number 10
-  
+
   ; of the number is too large, it needs scientific notation.
   ; @todo this needs some checks on order > 9
   if (order >= n-significant) [
@@ -177,14 +177,14 @@ to-report formatted-number [number n-significant]
   if (order > 0) [
     report (word precision number (n-significant - order - 1))
   ]
-  
+
   ; for values < 1, remove leading 0 @todo
   ;if (order > (0 - n-significant + 2)) [
   ;  report (word "." int(number * 10 ^ (n-significant ) ))
   ;]
-  
+
   report (word int(number / (10 ^ int(order - n-significant + 2) )) "e" int(2 - order))
-  
+
 end
 
 to-report __test-formatted-number
@@ -216,7 +216,7 @@ to-report  __test-boolean2int
 end
 
 to  unit-test
-  let tests (list  __test-boolean2int __test_csv_property __test-load-dataset 
+  let tests (list  __test-boolean2int __test_csv_property __test-load-dataset
     __test_five-number-summary __test_haversine-distance __test-value-from-distribution
     __test-normalize __test-quantile-thresholds __test-quantile-thresholds-number
   __test-quantiles __test-formatted-number __test-index-max-one-of  __test-formatted-int)
@@ -241,43 +241,28 @@ end
 
 
 to-report formatted-int [_number _n]
-  
+
   if _n < 1 [report ""]
-  let _string "" 
+  let _string ""
   let _position -1
-  
+
   if _number > 0 [
-    set _position _n - (log _number 10 ) 
+    set _position _n - (log _number 10 )
   ]
   ifelse  _position < 0 [
-    foreach range _n [ i -> set _string (word "*" _string) ] 
+    foreach range _n [ i -> set _string (word "*" _string) ]
     report _string
   ][
-    foreach range (_position - 1) [ i -> set _string (word "0" _string) ] 
+    foreach range (_position - 1) [ i -> set _string (word "0" _string) ]
   ]
   report (word _string _number)
-  
+
 end
 
 to-report __test-formatted-int
-  
+
   if formatted-int  23 4 != "0023" [report false]
   if formatted-int  23 1 != "*" [report false]
   if formatted-int -23 3 != "***" [report false]
   report true
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
