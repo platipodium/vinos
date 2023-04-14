@@ -49,7 +49,7 @@ create-map:
     paths: 
       - ./netlogo/results/
   needs: []
-  allow-failure: true
+  allow_failure: true
   interruptible: true
 
 # @todo we can run it in the comses or our own docker
@@ -70,7 +70,7 @@ profile:
     paths: 
       - ./netlogo/results/profiler_data.csv
   needs: []
-  allow-failure: true
+  allow_failure: true
   interruptible: true
 
 pages:
