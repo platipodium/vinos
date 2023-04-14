@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2022-203 Helmholtz-Zentrum hereon GmbH (hereon)
-# SPDX-License-Identifier: CC-BY-4.0
+# SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 include :
@@ -32,13 +32,14 @@ unit-tests:
   needs: []
   
 create-map:
-#  image: comses/netlogo # see https://github.com/comses/docker-netlogo
-  image: $CI_REGISTRY_IMAGE/netlogo:6.3.0
+  image: comses/netlogo # see https://github.com/comses/docker-netlogo
+#  image: $CI_REGISTRY_IMAGE/netlogo:6.3.0
   stage: run
   script:
     - echo "Trying to run in working directory and headless mode"
     - echo "Java HOME is ${JAVA_HOME}"
     - cd ${CI_PROJECT_DIR}/netlogo
+    - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' abm_fisheries_mussel.nlogo
     - > 
       bash /opt/netlogo/netlogo-headless.sh 
       --model ./abm_fisheries_mussel.nlogo 
@@ -52,15 +53,15 @@ create-map:
   allow_failure: true
   interruptible: true
 
-# @todo we can run it in the comses or our own docker
 profile:
-#  image: comses/netlogo # see https://github.com/comses/docker-netlogo
-  image: $CI_REGISTRY_IMAGE/netlogo:6.3.0
+  image: comses/netlogo # see https://github.com/comses/docker-netlogo
+#  image: $CI_REGISTRY_IMAGE/netlogo:6.3.0
   stage: run
   script:
     - echo "Trying to run in working directory and headless mode"
     - echo "Java HOME is ${JAVA_HOME}"
     - cd ${CI_PROJECT_DIR}/netlogo
+    - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' abm_fisheries_mussel.nlogo
     - > 
       bash /opt/netlogo/netlogo-headless.sh 
       --model ./abm_fisheries_mussel.nlogo 
@@ -80,7 +81,7 @@ pages:
         - cp -r .gitlab/public .
         - cp ./doc/odd/paper.pdf public/odd.pdf
         - cp ./doc/joss/paper.pdf public/joss.pdf
-        - cp ./netlogo/results/* public/ | true
+    #    - cp ./netlogo/results/* public/ | true
     artifacts:
         paths:
             - public/
