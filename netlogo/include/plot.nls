@@ -92,7 +92,6 @@ to plot-setup-priority-by-gear
   ]
 end
 
-
 to plot-update-priority-by-gear
   set-current-plot "priority-by-gear"
    foreach range number-of-gears [[i] ->
@@ -101,7 +100,6 @@ to plot-update-priority-by-gear
     histogram [item i boat-gear-priorities] of boats ;@to do problem wrong message recipient
   ]
 end
-
 
 to plot-setup-boat-property
   set-current-plot "boat-property"
@@ -159,6 +157,7 @@ to update-drawings
   ask boats [set hidden? not show-boats?]
   if owf? [ show-windfarms]
   if sar? [ draw-background "SAR" ]
+  setup-logo
   display
 end
 
