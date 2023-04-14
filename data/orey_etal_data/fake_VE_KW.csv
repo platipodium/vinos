@@ -1,0 +1,14 @@
+
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+# File created with fake_port_data.py on 2023-04-14 10:29:11.859807
+#
+# Warning: this file contains artificial surrogate data!
+#
+# Vessel engine power in kW
+sub_grp,median,mean,sd,min,max
+1,220,220,24.2,110.0,440
+2,220,220,19.8,110.0,440
+3,190,190,123.5,95.0,380
+4,220,220,110.0,110.0,440

@@ -1,0 +1,14 @@
+
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+# File created with fake_port_data.py on 2023-04-14 10:29:11.860057
+#
+# Warning: this file contains artificial surrogate data!
+#
+# Vessel distance from port in m
+sub_grp,median,mean,sd,min,max
+1,75,75,8.25,37.5,150
+2,125,125,11.25,62.5,250
+3,35,35,22.75,17.5,70
+4,250,250,125.0,125.0,500

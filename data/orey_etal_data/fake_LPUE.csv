@@ -1,0 +1,14 @@
+
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+# File created with fake_port_data.py on 2023-04-14 10:29:11.860667
+#
+# Warning: this file contains artificial surrogate data!
+#
+# Landings per unit effort
+sub_grp,median,mean,sd,min,max
+1,40,40,4.4,20.0,80
+2,45,45,4.05,22.5,90
+3,55,55,35.75,27.5,110
+4,5,5,2.5,2.5,10
