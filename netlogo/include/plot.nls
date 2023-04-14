@@ -4,12 +4,12 @@
 ; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
-to plot-setup-catch-by-species
-  set-current-plot "catch-by-species"
+to plot-setup-catch-by-gear
+  set-current-plot "catch-by-gear"
   set-plot-background-color white 
   
-  foreach range 3 [ [i] ->
-    let pen-name  item i prey-names
+  foreach range length gear-names [ [i] ->
+    let pen-name  item i gear-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
     set-plot-pen-color 135 - 10 * i
@@ -19,13 +19,23 @@ to plot-setup-catch-by-species
   ]
 end
 
+to plot-update-catch-by-gear
+  set-current-plot "catch-by-gear"
+  ; foreach prey-names [0 1 2] [[s i] ->
+  foreach range length gear-names [[i] ->
+    let pen-name  item i gear-names
+    set-current-plot-pen pen-name
+    ;set-plot-x-range 0 max
+    plotxy ticks sum [item i boat-gear-catches] of boats
+  ]
+end
 
-to plot-setup-cost-by-species
-  set-current-plot "cost-by-species"
+to plot-setup-gain-by-gear
+  set-current-plot "gain-by-gear"
   set-plot-background-color white 
   
-  foreach range 3 [ [i] ->
-    let pen-name  item i prey-names
+  foreach range length gear-names [ [i] ->
+    let pen-name  item i gear-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
     set-plot-pen-color 135 - 10 * i
@@ -35,27 +45,14 @@ to plot-setup-cost-by-species
   ]
 end
 
-
-to plot-update-cost-by-species
-  set-current-plot "cost-by-species"
+to plot-update-gain-by-gear
+  set-current-plot "gain-by-gear"
   ; foreach prey-names [0 1 2] [[s i] ->
-  foreach range 3 [[i] ->
-    let pen-name  item i prey-names
+  foreach range length gear-names [[i] ->
+    let pen-name  item i gear-names
     set-current-plot-pen pen-name
     ;set-plot-x-range 0 max
-    plotxy ticks sum [item i boat-gear-catches] of boats
-  ]
-end
-
-
-to plot-update-catch-by-species
-  set-current-plot "catch-by-species"
-  ; foreach prey-names [0 1 2] [[s i] ->
-  foreach range 3 [[i] ->
-    let pen-name  item i prey-names
-    set-current-plot-pen pen-name
-    ;set-plot-x-range 0 max
-    plotxy ticks sum [item i boat-gear-catches] of boats
+    plotxy ticks sum [item i boat-gains] of boats
   ]
 end
 
@@ -79,8 +76,8 @@ to plot-update-catch-by-trip
   histogram [wage] of boats
 end
 
-to plot-setup-priorities
-  set-current-plot "priorities"
+to plot-setup-priority-by-gear
+  set-current-plot "priority-by-gear"
   set-plot-background-color white 
   
   foreach range number-of-gears [ [i] ->
@@ -96,8 +93,8 @@ to plot-setup-priorities
 end
 
 
-to plot-update-priorities
-  set-current-plot "priorities"
+to plot-update-priority-by-gear
+  set-current-plot "priority-by-gear"
    foreach range number-of-gears [[i] ->
     let pen-name  item i gear-names
     set-current-plot-pen pen-name

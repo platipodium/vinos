@@ -65,6 +65,7 @@ globals [
 
   view-legend-n
   view-legend-thresholds
+  date-patch
 ]
 
 patches-own [
@@ -135,6 +136,12 @@ to setup-globals
   set min-fresh-catch 10
   set navigable-depth 2
   set view "bathymetry"
+  set date-patch patch (max-pxcor - 8) (min-pycor + 2)
+  ask date-patch [
+    set plabel-color white
+    set plabel datetime
+  ]
+
 end
 
 to setup-logo
@@ -150,6 +157,7 @@ end
 to go
 
   advance-calendar
+  ask date-patch [set plabel datetime]
   calc-fish
   let _active-boats boats
 
@@ -756,7 +764,6 @@ to calc-accessibility
 
 end
 
-
 ; The profile routine is called manually from the command line while we test
 to profile
   setup
@@ -896,17 +903,6 @@ memory-size
 NIL
 HORIZONTAL
 
-MONITOR
-1087
-383
-1221
-420
-Date
-datetime
-17
-1
-9
-
 SLIDER
 13
 401
@@ -931,7 +927,7 @@ oil-price
 oil-price
 25
 75
-25.0
+35.0
 5
 1
 ct l-1
@@ -983,11 +979,11 @@ NIL
 HORIZONTAL
 
 PLOT
-558
-446
-940
-596
-catch-by-species
+452
+444
+834
+594
+catch-by-gear
 days
 catch/kg
 0.0
@@ -996,50 +992,32 @@ catch/kg
 10.0
 true
 true
-"plot-setup-catch-by-species" "plot-update-catch-by-species"
+"plot-setup-catch-by-gear" "plot-update-catch-by-gear"
 PENS
 
 PLOT
-957
-443
-1235
-593
-cost-by-species
+843
+444
+1121
+594
+gain-by-gear
 days
-cost/k€
+gain/k€
 0.0
 10.0
 0.0
 10.0
 true
-true
-"plot-setup-cost-by-species" "plot-update-cost-by-species"
+false
+"plot-setup-gain-by-gear" "plot-update-gain-by-gear"
 PENS
 
 PLOT
-562
-607
-762
-757
-catch-by-trip
-Catch / kg
-Number
-0.0
-10.0
-0.0
-10.0
-true
-true
-"plot-setup-catch-by-trip" "plot-update-catch-by-trip\nhistogram [wage] of boats"
-PENS
-"hist" 1.0 0 -7500403 true "" ""
-
-PLOT
-778
-607
-1150
-757
-priorities
+1127
+444
+1393
+593
+priority-by-gear
 NIL
 NIL
 0.0
@@ -1047,8 +1025,8 @@ NIL
 0.0
 10.0
 true
-true
-"plot-setup-priorities" "plot-update-priorities"
+false
+"plot-setup-priority-by-gear" "plot-update-priority-by-gear"
 PENS
 
 TEXTBOX
@@ -1062,32 +1040,32 @@ Select what to\nshow as \nbackground\ninformation
 1
 
 SWITCH
-1244
-232
-1346
-265
-owf?
-owf?
-1
-1
--1000
-
-SWITCH
-1243
-274
-1346
-307
-box?
-box?
-1
-1
--1000
-
-SWITCH
 1242
-315
-1345
-348
+196
+1344
+229
+owf?
+owf?
+1
+1
+-1000
+
+SWITCH
+1241
+238
+1344
+271
+box?
+box?
+1
+1
+-1000
+
+SWITCH
+1240
+279
+1343
+312
 sar?
 sar?
 1
@@ -1095,10 +1073,10 @@ sar?
 -1000
 
 BUTTON
-1240
-353
-1345
-386
+1238
+317
+1343
+350
 update
 update-drawings
 NIL
@@ -1151,7 +1129,7 @@ wage
 wage
 50
 120
-120.0
+85.0
 5
 1
 € h-1
@@ -1213,10 +1191,10 @@ NIL
 0
 
 BUTTON
-1241
-391
-1346
-424
+1239
+355
+1344
+388
 clear
 clear-drawing
 NIL
@@ -1230,10 +1208,10 @@ NIL
 1
 
 SWITCH
-1246
-454
-1349
-487
+1241
+397
+1344
+430
 one?
 one?
 1
