@@ -14,7 +14,7 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
     <enumeratedValueSet variable="view">
       <value value="&quot;effort (h)&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="ports?">
+    <enumeratedValueSet variable="show-ports?">
       <value value="false"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="Oil-Price">
