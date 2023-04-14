@@ -31,9 +31,9 @@ unit-tests:
   allow_failure: false
   needs: []
   
-# @todo we can run it in the comses or our own docker
 create-map:
-  image: comses/netlogo # see https://github.com/comses/docker-netlogo
+#  image: comses/netlogo # see https://github.com/comses/docker-netlogo
+  image: $CI_REGISTRY_IMAGE/netlogo:6.3.0
   stage: run
   script:
     - echo "Trying to run in working directory and headless mode"
@@ -54,7 +54,8 @@ create-map:
 
 # @todo we can run it in the comses or our own docker
 profile:
-  image: comses/netlogo # see https://github.com/comses/docker-netlogo
+#  image: comses/netlogo # see https://github.com/comses/docker-netlogo
+  image: $CI_REGISTRY_IMAGE/netlogo:6.3.0
   stage: run
   script:
     - echo "Trying to run in working directory and headless mode"
@@ -79,7 +80,7 @@ pages:
         - cp -r .gitlab/public .
         - cp ./doc/odd/paper.pdf public/odd.pdf
         - cp ./doc/joss/paper.pdf public/joss.pdf
-        - cp ./netlogo/results/* public/
+        - cp ./netlogo/results/* public/ | true
     artifacts:
         paths:
             - public/
