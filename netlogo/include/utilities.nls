@@ -221,7 +221,7 @@ to  unit-test
     __test-normalize __test-quantile-thresholds __test-quantile-thresholds-number
   __test-quantiles __test-formatted-number __test-index-max-one-of  __test-formatted-int)
   foreach tests [
-    t -> ifelse t [print (sentence "Test passed")][print "Test failed" stop ]
+    t -> ifelse t [print (sentence "Test passed")][error  "Test failed"]
   ]
 end
 
