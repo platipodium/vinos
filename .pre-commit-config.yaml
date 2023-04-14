@@ -19,10 +19,10 @@ repos:
     rev: master
     hooks:
     -   id: markdownlint
--   repo: https://gitlab.com/smop/pre-commit-hooks
-    rev: master
-    hooks:
-    -   id: check-gitlab-ci
+#-   repo: https://gitlab.com/smop/pre-commit-hooks
+#    rev: master
+#    hooks:
+#    -   id: check-gitlab-ci
 -   repo: https://github.com/Data-Liberation-Front/csvlint.rb
     rev: v1.2.0
     hooks:
