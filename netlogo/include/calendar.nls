@@ -9,10 +9,19 @@
 to setup-calendar
 
   set days-in-months (list 31 28 31 30 31 30 31 31 30 31 30 31 )
+  let _month-names (list "Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec" )
 
-  set year 2023
-  set month 6
-  set day 27
+  let _ymd substring date-and-time 16 length date-and-time
+  let _month-name substring _ymd 3 6
+    
+  set year read-from-string substring _ymd (length _ymd - 4) length _ymd 
+  set month 1 + position _month-name _month-names
+  set day read-from-string  substring _ymd 0 2
+
+  set year year + int ((month + time-offset) / 12)
+  ;print (sentence year  int ((month + time-offset) / 12) )
+  set month (month + time-offset mod 12 )
+  set month (month - 1) mod 12 + 1
   
   set day-of-year sum (sublist days-in-months 0 (month - 1)) + day
   if month > 2 [set day-of-year day-of-year + leap-year ]

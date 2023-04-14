@@ -786,10 +786,10 @@ ticks
 30.0
 
 BUTTON
-22
-105
-88
-138
+13
+100
+79
+133
 NIL
 setup
 NIL
@@ -803,20 +803,20 @@ NIL
 1
 
 CHOOSER
-21
-201
-113
-246
+11
+200
+103
+245
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+5
 
 BUTTON
-92
-106
-161
-139
+83
+101
+152
+134
 go
 go
 T
@@ -830,10 +830,10 @@ NIL
 0
 
 BUTTON
-117
-202
-172
-246
+107
+201
+162
+245
 update
 update-view
 NIL
@@ -858,10 +858,10 @@ show-ports?
 -1000
 
 SLIDER
-20
-344
-192
-377
+14
+359
+186
+392
 adaptation
 adaptation
 0
@@ -873,10 +873,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-20
-303
-192
-336
+14
+318
+186
+351
 memory-size
 memory-size
 0
@@ -929,30 +929,30 @@ ct l-1
 HORIZONTAL
 
 TEXTBOX
-27
 15
-822
-49
+10
+810
+44
 Agent-based model of North Sea fisheries (MuSSeL)
 28
 0.0
 1
 
 TEXTBOX
-24
-58
-174
-100
+15
+53
+165
+95
 To operate the model, wait until the map is loaded and then click on \"go\". 
 11
 0.0
 1
 
 TEXTBOX
-24
-154
-187
-196
+14
+153
+177
+195
 Change the background information here and hit \"update\"
 11
 0.0
@@ -960,9 +960,9 @@ Change the background information here and hit \"update\"
 
 SLIDER
 12
-445
+279
 254
-478
+312
 fraction-transportation-costs
 fraction-transportation-costs
 0
@@ -1230,6 +1230,21 @@ one?
 1
 1
 -1000
+
+SLIDER
+13
+445
+269
+478
+simulation-start
+simulation-start
+-1000
+1000
+-62.2
+0.1
+1
+weeks from now
+HORIZONTAL
 
 @#$#@#$#@
 # The Agent-based Model of German North Sea Small-scale fisheries
@@ -1629,7 +1644,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.2.2
+NetLogo 6.3.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
