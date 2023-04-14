@@ -11,6 +11,7 @@ extensions [
   csv
   profiler
   palette
+  bitmap
 ]
 
 __includes [
@@ -124,6 +125,7 @@ to setup
   set view-legend-n 9
   update-view
   update-drawings
+  setup-logo
   display
 
   reset-ticks
@@ -133,6 +135,13 @@ to setup-globals
   set min-fresh-catch 10
   set navigable-depth 2
   set view "bathymetry"
+end
+
+to setup-logo
+  let _logo  bitmap:import "../assets/logo-mussel.png"
+  set _logo bitmap:scaled _logo ( 0.5 * bitmap:width _logo) (0.5 * bitmap:height _logo)
+  ;bitmap:copy-to-drawing _logo  0.1 * max-pycor
+  bitmap:copy-to-drawing _logo 0.01 * max-pxcor  2.65 * max-pycor
 end
 
 ; This new go procedure used discrete event simulation within a 24 hour tick
@@ -810,7 +819,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-5
+4
 
 BUTTON
 83
@@ -907,7 +916,7 @@ operating-costs-of-boats
 operating-costs-of-boats
 0
 1
-0.21
+0.227
 0.001
 1
 NIL
@@ -1059,7 +1068,7 @@ SWITCH
 265
 owf?
 owf?
-0
+1
 1
 -1000
 
@@ -1234,16 +1243,16 @@ one?
 SLIDER
 13
 445
-269
+218
 478
-simulation-start
-simulation-start
--1000
-1000
--62.2
-0.1
+time-offset
+time-offset
+-200
+200
+0.0
 1
-weeks from now
+1
+months from now
 HORIZONTAL
 
 @#$#@#$#@
