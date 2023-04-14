@@ -876,7 +876,7 @@ show-ports?
 SLIDER
 14
 359
-186
+252
 392
 adaptation
 adaptation
@@ -891,7 +891,7 @@ HORIZONTAL
 SLIDER
 14
 318
-186
+255
 351
 memory-size
 memory-size
@@ -906,7 +906,7 @@ HORIZONTAL
 SLIDER
 13
 401
-213
+254
 434
 operating-costs-of-boats
 operating-costs-of-boats
@@ -919,10 +919,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-268
-488
-440
-521
+258
+469
+430
+502
 oil-price
 oil-price
 25
@@ -979,10 +979,10 @@ NIL
 HORIZONTAL
 
 PLOT
-452
-444
-834
-594
+256
+547
+638
+697
 catch-by-gear
 days
 catch/kg
@@ -996,10 +996,10 @@ true
 PENS
 
 PLOT
-843
-444
-1121
-594
+647
+547
+925
+697
 gain-by-gear
 days
 gain/k€
@@ -1013,10 +1013,10 @@ false
 PENS
 
 PLOT
-1127
-444
-1393
-593
+931
+547
+1197
+696
 priority-by-gear
 NIL
 NIL
@@ -1046,7 +1046,7 @@ SWITCH
 229
 owf?
 owf?
-1
+0
 1
 -1000
 
@@ -1101,30 +1101,30 @@ viewed
 11
 
 TEXTBOX
-272
-457
-464
-496
+262
+438
+454
+477
 Diesel for ships is tax-exempt and \ncosts on average 0.5 € l-1
 10
 0.0
 1
 
 TEXTBOX
-268
-528
-418
-556
+450
+439
+600
+467
 Staff costs are usually around 80 € h-1
 11
 0.0
 1
 
 SLIDER
-266
-558
-438
-591
+448
+469
+620
+502
 wage
 wage
 50
@@ -1221,7 +1221,7 @@ one?
 SLIDER
 13
 445
-218
+231
 478
 time-offset
 time-offset
