@@ -1,0 +1,14 @@
+
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+# File created with fake_port_data.py on 2023-04-14 10:29:11.860400
+#
+# Warning: this file contains artificial surrogate data!
+#
+# Vessel triplength in j
+sub_grp,median,mean,sd,min,max
+1,30,30,3.3,15.0,60
+2,45,45,4.05,22.5,90
+3,15,15,9.75,7.5,30
+4,65,65,32.5,32.5,130
