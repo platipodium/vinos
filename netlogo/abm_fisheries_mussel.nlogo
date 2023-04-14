@@ -826,7 +826,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+2
 
 BUTTON
 83
@@ -936,11 +936,11 @@ HORIZONTAL
 TEXTBOX
 15
 10
-810
-44
-Agent-based model of North Sea fisheries (MuSSeL)
+1034
+63
+Agent-based model of German North Sea Small-scale  Fisheries (MuSSeL)
 28
-0.0
+2.0
 1
 
 TEXTBOX
