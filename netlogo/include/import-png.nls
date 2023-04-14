@@ -4,7 +4,7 @@
 
 
 to import-png
-  
+
   no-display
 
   ; Bathymetry ranges from -82 to 0 m, this needs to be retreived from the
@@ -41,4 +41,3 @@ to import-png
   display
 
 end
-

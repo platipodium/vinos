@@ -12,7 +12,7 @@ preys-own [
   prey-german
   prey-three-code     ; FAO 3 code, e.g CSH for crangon
   prey-picture
-  ; prey-price-per-kg ; 
+  ; prey-price-per-kg ;
   ; prey-gears ; list/agentset/linkset of gears that are able to catch this prey
   ; prey-boats; list/agentset/linkset of boats that catch this prey
 ]
@@ -24,14 +24,14 @@ globals [
 
 ; We define here a constant and predefined number of gears
 to setup-preys
-  ask preys [ 
+  ask preys [
     ask my-links [die]
     die
   ]
 
   read-prey-csv
-  
-  ask preys [ 
+
+  ask preys [
     if prey-name = "Crangon" [ set prey-german "Nordseekrabbe" set prey-picture "../figures/320px-Crangon_crangon.jpg" ]
     if prey-name = "Pleuronectes" [ set prey-german "Scholle" set prey-picture "../figures/319px-Pleuronectes_platessa.jpg" ]
     if prey-name = "Solea" [ set prey-german "Seezunge" set prey-picture "../figures/Solea_solea_1.jpg" ]
@@ -40,28 +40,28 @@ to setup-preys
     if prey-name = "Limanda" [ set prey-german "Kliesche" set prey-picture "../figures/319px-Limanda_limanda.jpg" ]
     if prey-name = "Nephrops" [ set prey-german "Kaisergranat" set prey-picture "../figures/320px-Nephrops_norvegicus.jpg" ]
   ]
-  
+
   ; Report global variables, make sure to keep the order of the preys
   ; and the correct relation between species and gear name
-  
+
   let my-prey-ids sort [who] of preys
   set prey-number count preys
   set prey-names n-values prey-number [i -> [prey-name] of prey item i my-prey-ids]
-    
+
 end
 
-to read-prey-csv 
-  
-  file-open "./include/prey.csv" 
-  ; Read the first row without doing anything, the ASFIS column headers are 
+to read-prey-csv
+
+  file-open "./include/prey.csv"
+  ; Read the first row without doing anything, the ASFIS column headers are
   ; "3A_Code","Taxonomic_Code","CPC_Group","Identifier","Name_En","Name_Fr","Name_Es","Name_Ar","Name_Cn","Name_Ru","Scientific_Name","Author","Major_Group","Yearbook_Group","ISSCAAP_Group","CPC_Class"
   let row csv:from-row file-read-line
 
   while [ not file-at-end? ] [
     set row csv:from-row file-read-line
-    
+
     create-preys 1 [
-      let my-name item 10 row 
+      let my-name item 10 row
       set prey-name substring my-name 0 position " " my-name ; @todo lowercase
       set prey-three-code item 0 row
       set prey-english item 4 row

@@ -6,14 +6,14 @@
 
 to plot-setup-catch-by-gear
   set-current-plot "catch-by-gear"
-  set-plot-background-color white 
-  
+  set-plot-background-color white
+
   foreach range length gear-names [ [i] ->
     let pen-name  item i gear-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
     set-plot-pen-color 135 - 10 * i
-    set-plot-pen-interval 1 
+    set-plot-pen-interval 1
     auto-plot-on
     set-plot-pen-mode 0 ; line
   ]
@@ -32,14 +32,14 @@ end
 
 to plot-setup-gain-by-gear
   set-current-plot "gain-by-gear"
-  set-plot-background-color white 
-  
+  set-plot-background-color white
+
   foreach range length gear-names [ [i] ->
     let pen-name  item i gear-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
     set-plot-pen-color 135 - 10 * i
-    set-plot-pen-interval 1 
+    set-plot-pen-interval 1
     auto-plot-on
     set-plot-pen-mode 0 ; line
   ]
@@ -78,8 +78,8 @@ end
 
 to plot-setup-priority-by-gear
   set-current-plot "priority-by-gear"
-  set-plot-background-color white 
-  
+  set-plot-background-color white
+
   foreach range number-of-gears [ [i] ->
     let pen-name  item i gear-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
@@ -103,28 +103,28 @@ end
 
 to plot-setup-boat-property
   set-current-plot "boat-property"
-  set-plot-background-color white 
+  set-plot-background-color white
   auto-plot-on
 end
 
 to plot-update-boat-property
   set-current-plot "boat-property"
-  if not plot-pen-exists? boat-property-chooser [ 
+  if not plot-pen-exists? boat-property-chooser [
     clear-plot
     create-temporary-plot-pen boat-property-chooser
     set-plot-pen-mode 1 ; box
   ]
   let _x-range (list 0 1)
-  set-current-plot-pen boat-property-chooser  
-  let _values [ boat-max-duration] of boats 
-  ifelse (boat-property-chooser =  "trip-phase" ) or (boat-property-chooser =  "type" ) [ 
+  set-current-plot-pen boat-property-chooser
+  let _values [ boat-max-duration] of boats
+  ifelse (boat-property-chooser =  "trip-phase" ) or (boat-property-chooser =  "type" ) [
     if (boat-property-chooser = "trip-phase") [
-      set _values [ boat-trip-phase] of boats 
+      set _values [ boat-trip-phase] of boats
       set-histogram-num-bars 5
       set _x-range (list -.5 5.5)
     ]
     if (boat-property-chooser = "type") [
-      set _values [ boat-type] of boats 
+      set _values [ boat-type] of boats
       set-histogram-num-bars 4
       set _x-range (list -.5 3.5)
     ]
@@ -141,14 +141,14 @@ to plot-update-boat-property
     if ( boat-property-chooser =  "steaming-speed" ) [ set _values [ boat-steaming-speed] of boats ]
     if ( boat-property-chooser =  "transportation-costs" ) [ set _values [ boat-transportation-costs] of boats ]
     if ( boat-property-chooser =  "operating-costs" ) [ set _values [ boat-operating-costs] of boats ]
- 
+
     set-histogram-num-bars 9
     set _x-range (list (min _values) (max _values))
   ]
   if (item 0 _x-range) = (item 1 _x-range) [set _x-range replace-item 1 _x-range (item 1 _x-range + 1)]
   set-plot-x-range item 0 _x-range item 1 _x-range
   histogram _values
-  
+
 end
 
 to update-drawings
@@ -160,6 +160,3 @@ to update-drawings
   setup-logo
   display
 end
-
-
-

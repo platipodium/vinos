@@ -5,7 +5,7 @@
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 to setup-maps
-  
+
   no-display
 
   let bathymetry-dataset gis:load-dataset "../data/gebco/gebco_2021_n56.0_s53.0_w2.0_e10.0.asc"
@@ -15,7 +15,7 @@ to setup-maps
   let crangon-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_winter.asc"
   let solea-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_solea.solea_summer.asc"
   let solea-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_solea.solea_winter.asc"
-  
+
   ; Set the world envelope to the union of all of our dataset's envelopes
   gis:set-world-envelope (gis:envelope-union-of (gis:envelope-of bathymetry-dataset)
 ;                                                (gis:envelope-of crangon-summer-dataset)
@@ -29,13 +29,13 @@ to setup-maps
   ;gis:set-world-envelope (list 6.7 8.0 53.2 56.5)
 
   gis:apply-raster bathymetry-dataset depth
-  
+
   ; The following removes NaN values which are not allowed
   ask patches with [not (depth <= 0 or depth > -1) ] [ set depth 9999 ]
-  
+
   ; Convert from bathymetry to depth
   ask patches [ set depth ( - depth)]
-  
+
   gis:apply-raster crangon-summer-dataset crangon-summer
   ask patches with [not (crangon-summer < 0 or crangon-summer > -1) ] [ set crangon-summer -9999 ]
 
@@ -56,14 +56,14 @@ to setup-maps
 
 end
 
-; EmodNet provides human activities at https://www.emodnet-humanactivities.eu/download-data.php. 
-; After providing your country and sector, the wind farm polygon areas are freely available. 
+; EmodNet provides human activities at https://www.emodnet-humanactivities.eu/download-data.php.
+; After providing your country and sector, the wind farm polygon areas are freely available.
 to show-windfarms
-  
+
   set owf-dataset load-dataset "OWF"
-  
-  ;foreach gis:feature-list-of owf-dataset [     
-  ;  this-owf-vector-feature -> gis:set-property-value this-owf-vector-feature "POWER_MW" read-from-string gis:property-value this-owf-vector-feature "POWER_MW" 
+
+  ;foreach gis:feature-list-of owf-dataset [
+  ;  this-owf-vector-feature -> gis:set-property-value this-owf-vector-feature "POWER_MW" read-from-string gis:property-value this-owf-vector-feature "POWER_MW"
   ;]
 
   gis:apply-coverage owf-dataset "POWER_MW" owf-fraction
@@ -71,12 +71,12 @@ to show-windfarms
 
   gis:set-drawing-color red
   gis:draw owf-dataset 1
-  
+
 end
 
 to load-plaice-box
   let _dataset  gis:load-dataset "../data/plaicebox/DB_PlaiceBox_WGS84_vTIwi_Jan2001_G.shp"
-  ask patches gis:intersecting _dataset [ set plaice-box? true ]  
+  ask patches gis:intersecting _dataset [ set plaice-box? true ]
 
   gis:set-drawing-color blue - 3
   gis:draw _dataset 1
@@ -89,7 +89,7 @@ to draw-dataset [_dataset-name _color]
 end
 
 to-report load-dataset [_dataset-name]
-  
+
   if _dataset-name = "Natura2000" [ report gis:load-dataset "../data/natura2000/northsea/MPA_NorthSea_Shapes.shp"]
   if _dataset-name = "NP" [ report gis:load-dataset "../data/nlwkn/NLP/Nationalparke_DTK25.shp"]
   if _dataset-name = "ICES" [ report gis:load-dataset "../data/ices/ICES_Statistical_Rectangles_Eco.shp"]
@@ -110,13 +110,13 @@ to-report __test-load-dataset
   if load-dataset "Plaicebox" = nobody [report false]
   if load-dataset "OWF" = nobody [report false]
   if load-dataset "SNS" = nobody [report false]
-  report true  
+  report true
 end
 
 to-report  __test-draw-dataset
-  
-  foreach (list "Natura2000" "NP" "ICES" "EEZ" "Plaicebox" "OWF" "SNS") [ i -> 
-    draw-dataset i 5 + 10 * (random 14) 
+
+  foreach (list "Natura2000" "NP" "ICES" "EEZ" "Plaicebox" "OWF" "SNS") [ i ->
+    draw-dataset i 5 + 10 * (random 14)
   ]
   report true
 end
@@ -134,15 +134,15 @@ end
 to draw-background [X]
 
   if member? X  (list "OSM" "SAR" "CHL") [ clear-drawing]
-  
+
   carefully [
     if X = "OSM" [gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 200]
     if X = "SAR" [gis:import-wms-drawing "http://coastmap.hzg.de/server/services/NOAH_geoDB/TI_SARnested/MapServer/WMSServer?" "EPSG:4326" "0" 100]
     if X = "CHL" [gis:import-wms-drawing "https://coastmap.hzg.de/server/services/MOSSCO/MOSSCO_chlorophyll/MapServer/WmsServer?" "EPSG:4326" "0" 200]
-  ][ 
+  ][
     show word "Could not load " X
   ]
-  
+
 end
 
 to export-patches
@@ -152,5 +152,3 @@ to export-patches
   gis:store-dataset gis:patch-dataset accessible? "results/accessible"
   gis:store-dataset gis:patch-dataset plaice-box? "results/plaice-box"
 end
-
-

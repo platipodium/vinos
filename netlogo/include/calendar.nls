@@ -13,8 +13,8 @@ to setup-calendar
 
   let _ymd substring date-and-time 16 length date-and-time
   let _month-name substring _ymd 3 6
-    
-  set year read-from-string substring _ymd (length _ymd - 4) length _ymd 
+
+  set year read-from-string substring _ymd (length _ymd - 4) length _ymd
   set month 1 + position _month-name _month-names
   set day read-from-string  substring _ymd 0 2
 
@@ -22,7 +22,7 @@ to setup-calendar
   ;print (sentence year  int ((month + time-offset) / 12) )
   set month (month + time-offset mod 12 )
   set month (month - 1) mod 12 + 1
-  
+
   set day-of-year sum (sublist days-in-months 0 (month - 1)) + day
   if month > 2 [set day-of-year day-of-year + leap-year ]
 
@@ -80,7 +80,7 @@ to-report datetime-short
   report (word (formatted-int year 4) (formatted-int month 2) (formatted-int day 2))
 end
 
-; Use Zeller's algorithm to calculate the weekday 
+; Use Zeller's algorithm to calculate the weekday
 ; Return from 0 (Sunday) to 6 (Saturday)
 to-report weekday
   let y0 int (year - (14 - month) / 12)
