@@ -15,10 +15,10 @@ repos:
     -   id: check-toml
     -   id: check-xml
     -   id: check-yaml
--   repo: https://github.com/jumanjihouse/pre-commit-hooks
-    rev: master
-    hooks:
-    -   id: markdownlint
+#-   repo: https://github.com/jumanjihouse/pre-commit-hooks
+#    rev: master
+#    hooks:
+#    -   id: markdownlint
 #-   repo: https://gitlab.com/smop/pre-commit-hooks
 #    rev: master
 #    hooks:
