@@ -9,11 +9,11 @@ License: Unlicensed
 
 Files: data/thuenen/dist_ran*asc
 Copyright: 2022 Thuenen Institut
-License: PDDL-1.0
+License: LicenseRef-DL-DE-BY-2.0
 
 Files: assets/dis.*.png
 Copyright: 2022 Thuenen Institut
-License: PDDL-1.0
+License: LicenseRef-DL-DE-BY-2.0
 
 Files: data/emodnet/EMODnet*
 Copyright: 2022 EMODNET
