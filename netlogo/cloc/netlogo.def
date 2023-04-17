@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FieContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+NETLOGO
+    filter remove_matches ^\s*;
+    filter remove_inline ;.*$
+    3rd_gen_scale 4.00
