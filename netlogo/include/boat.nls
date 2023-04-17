@@ -166,9 +166,17 @@ to setup-boats
 end
 
 to-report csv-property [x]
-  ; let _filename (word "../data/orey_etal_data/musselabm-" x ".csv")
-  let _filename (word "../data/orey_etal_data/fake_" x ".csv")
-  let _data csv:from-file _filename
+
+  ; Prefer actual data over fake data but fall back to it if the actual data
+  ; (prefixed "musselabm") cannot be found
+  let _filename (word "../data/orey_etal_data/musselabm-" x ".csv")
+  let _data "####"
+  carefully [
+    set _data csv:from-file _filename
+  ][
+    set _filename (word "../data/orey_etal_data/fake_" x ".csv")
+    set _data csv:from-file _filename
+  ]
   ; Remove any comments starting with #
   while [starts-with _data "#" ] [ set _data butfirst _data]
   report butfirst _data
