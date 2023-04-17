@@ -4,55 +4,55 @@ SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: CC0-1.0
 -->
 
-# Agent-based Model of German North Sea Small-scale Fisheries
+ [![status](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138/status.svg)](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138)
 
-The North Sea small-vessel fleet targets plaice, sole, and crangon, predominantly.  The roundabout
-200 boats leave German ports for one to few day fishing trips and offload their catch.  Fishers
-compare costs and benefits to previous catches and may decide to change their fishing strategy, as
-both the catch can vary with climate change and habitats for the target species, and the costs
-for operating the boat and paying wages rise. 
+# Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries
+
+Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German Small-scale Fisheries.  As a Social-Ecological Systems (SES) model it focusses on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, and brown shrimp.
+
+Fishers in the North Sea face area competition with other uses of the sea---long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.  Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet.
 
 ## Implementation
 
 The simulation model is implemented in the NetLogo framework, a graphical simulator and programming
-environment developed for educational purposes.  The model can be found in the folder `netlogo` and 
-can be started with a double-click on most operating systems after installation of NetLogo, 
-available from https://ccl.northwestern.edu/netlogo/. 
+environment developed for educational purposes.  The model can be found in the folder `netlogo` and
+can be started with a double-click on most operating systems after installation of NetLogo,
+available from https://ccl.northwestern.edu/netlogo/.
 
 ## Data and supplementary routines
 
-The simulation model uses open data available in the `data` folder.  Some of the routines to convert 
-data into a format usable by the NetLogo model are available as R routines the folder `r`, and 
-`python`, respectively.   You do not need R or python to run the simulation, unless you would like 
-to recreate some of the data. 
+The simulation model uses open data available in the `data` folder.  Some of the routines to convert
+data into a format usable by the NetLogo model are available as R routines the folder `R`, and
+`python`, respectively.   You do not need R or python to run the simulation, unless you would like
+to recreate some of the data.
 
 ## Using the model
 
-To use the model, please install NetLogo from https://ccl.northwestern.edu/netlogo/download.shtml.  On 
-Windows and macOS systems, double-clicking the NetLogo application or the code (in the projects's 
+To use the model, please install NetLogo from https://ccl.northwestern.edu/netlogo/download.shtml.  On
+Windows and macOS systems, double-clicking the NetLogo application or the code (in the projects's
 `netlogo` folder) with the extension `.nlogo` will open NetLogo's integrated development environment.
 On Linux, start NetLogo with the `netlogo-gui.sh` shell script provided by NetLogo.
 
 Please refer to the `Info` tab in the graphical NetLogo model to learn quickly more about the model, it's
-mathematical implementation and how to use it.  There is a full documentation in ODD format available in 
-`doc/odd/paper.md`. 
+mathematical implementation and how to use it.  There is a full documentation in ODD format available in
+`doc/odd/paper.md`.
 
 ## Licenses
 
-The model is copyrighted by [Helmholtz-Zentrum Hereon](https://www.hereon.de), [University of Hamburg](https://www.uni-hamburg.de), 
+The model is copyrighted by [Helmholtz-Zentrum Hereon](https://www.hereon.de), [University of Hamburg](https://www.uni-hamburg.de),
 and [Hochschule Bremerhaven](https://www.hs-bremerhaven.de).  It is available under
-the open source Apache 2.0 license.  You may freely use, distribute, and modify the model.  If you 
-do so, you must acknowledge us.  
+the open source Apache 2.0 license.  You may freely use, distribute, and modify the model.  If you
+do so, you must acknowledge us.
 
-Some data and routines were also contributed by the Thünen Institute, by Hochschule Bremerhaven, 
+Some data and routines were also contributed by the Thünen Institute, by Hochschule Bremerhaven,
 non-governmental organizations and government agencies, some are available under licences different
-from Apache 2.0.  Please refer to the license information available for each individual file in 
+from Apache 2.0.  Please refer to the license information available for each individual file in
 this project for details. You may use the REUSE software to view all licenses.
 
 Funding for this software development was obtained by the German Federal Ministry for Education
 and Research  (BMBF) in the project Multiple Stressors on North Sea Life (MuSSeL) in the
-framework of the agenda Küstenforschung Nordsee-Ostsee (KüNO III) within the 
+framework of the agenda Küstenforschung Nordsee-Ostsee (KüNO III) within the
 ministry's Forschung für Nachhaltigkeit (FONA) program.
 
 We hope you can make good use of the software and find it useful and enjoyable. We appreciate
-your feedback, bug reports and improvement suggestions.  
+your feedback, bug reports and improvement suggestions.
