@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
-# SPDX-FileCopyrightText: 2022-2023 Thünen Institut
-# SPDX-License-Identifier: LicenseRef-VIMS-Restricted
-# SPDX-FileContributor: Serra Örey <soerrey@hs-bremerhaven.de>
+# SPDX-License-Identifier: CC-BY-NC-ND-4.0
+# SPDX-FileContributor: Serra Örey <soerey@hs-bremerhaven.de>
 sub_grp,fav_lan,n_vessels,X,ISO3_Country_Code,full_name,Coordinates,Latitude,Longitude,EU_Fish_Port,Port,Region
 1,DEACC,2,1283,DEU,Accumersiel,5368N 00849E,53.679866,7.48563,Y,Y,Niedersachsen
 1,DEBUM,24,1359,DEU,Buesum,5413N 00885E,54.13333333,8.85,Y,Y,Schleswig-Holstein-Nordsee
