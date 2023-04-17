@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
+# SPDX-FileCopyrightText: 2022-2023 Thünen Institut
+# SPDX-License-Identifier: LicenseRef-VIMS-Restricted
+# SPDX-FileContributor: Serra Örey <soerrey@hs-bremerhaven.de>
+sub_grp,median,mean,sd,min,max
+1,221,214.42292495863924,11.496736750564194,180,221
+2,221,220.94117647058823,0.24253562503633297,220,221
+3,191.23076923076923,191.45932988580049,27.876250218092817,110,221
+4,220.8846153846154,238.06634615384615,32.264552413688016,220,304.75
