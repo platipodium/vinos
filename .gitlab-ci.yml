@@ -9,6 +9,7 @@ include:
 - ".gitlab/odd.yaml"
 - ".gitlab/pandoc.yaml"
 - template: Security/SAST.gitlab-ci.yml
+- template: Security/Secret-Detection.gitlab-ci.yml
 stages:
 - lint
 - run
