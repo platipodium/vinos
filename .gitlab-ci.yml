@@ -1,10 +1,7 @@
-# You can override the included template(s) by including variable overrides
-# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
-# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
-# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
-# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
-# Note that environment variables can be set in several places
-# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+# SPDX-FileCopyrightText: 2022-203 Helmholtz-Zentrum hereon GmbH (hereon)
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+#
 include:
 - ".gitlab/license.yaml"
 - ".gitlab/docker.yaml"
@@ -41,9 +38,7 @@ create-map:
   - cd ${CI_PROJECT_DIR}/netlogo
   - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' vinos.nlogo
   - 'bash /opt/netlogo/netlogo-headless.sh --model ./vinos.nlogo --setup-file ./behavior/effort-map.xml
-    --experiment "effort-map" --table -
-
-    '
+    --experiment "effort-map" --table - '
   artifacts:
     paths:
     - "./netlogo/results/effort*png"
@@ -60,9 +55,7 @@ profile:
   - cd ${CI_PROJECT_DIR}/netlogo
   - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' vinos.nlogo
   - 'bash /opt/netlogo/netlogo-headless.sh --model ./vinos.nlogo --setup-file ./behavior/profile.xml
-    --experiment "profile" --table -
-
-    '
+    --experiment "profile" --table - '
   artifacts:
     paths:
     - "./netlogo/results/profiler_data.csv"
