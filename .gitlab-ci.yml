@@ -1,95 +1,88 @@
-# SPDX-FileCopyrightText: 2022-203 Helmholtz-Zentrum hereon GmbH (hereon)
-# SPDX-License-Identifier: CC0-1.0
-# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
-
-include :
-  - .gitlab/license.yaml
-  - .gitlab/docker.yaml
-  - .gitlab/joss.yaml
-  - .gitlab/odd.yaml
-  - .gitlab/pandoc.yaml
-
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+include:
+- ".gitlab/license.yaml"
+- ".gitlab/docker.yaml"
+- ".gitlab/joss.yaml"
+- ".gitlab/odd.yaml"
+- ".gitlab/pandoc.yaml"
+- template: Security/SAST.gitlab-ci.yml
 stages:
-  - lint
-  - run
-  - test
-  - deploy
-
+- lint
+- run
+- test
+- deploy
 unit-tests:
-  image: comses/netlogo # see https://github.com/comses/docker-netlogo
+  image: comses/netlogo
   stage: test
   script:
-    - echo "Trying to run in working directory and headless mode"
-    - echo "Java HOME is ${JAVA_HOME}"
-    - cd ${CI_PROJECT_DIR}/netlogo
-    - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' vinos.nlogo
-    - >
-      bash /opt/netlogo/netlogo-headless.sh
-      --model ./vinos.nlogo
-      --setup-file ./behavior/unit-tests.xml
-      --experiment "unit-tests" --table -
+  - echo "Trying to run in working directory and headless mode"
+  - echo "Java HOME is ${JAVA_HOME}"
+  - cd ${CI_PROJECT_DIR}/netlogo
+  - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' vinos.nlogo
+  - 'bash /opt/netlogo/netlogo-headless.sh --model ./vinos.nlogo --setup-file ./behavior/unit-tests.xml
+    --experiment "unit-tests" --table -
+
+    '
   allow_failure: false
   needs: []
   timeout: 10 min
-
 create-map:
-  image: comses/netlogo # see https://github.com/comses/docker-netlogo
-#  image: $CI_REGISTRY_IMAGE/netlogo:6.3.0
+  image: comses/netlogo
   stage: run
   script:
-    - echo "Trying to run in working directory and headless mode"
-    - echo "Java HOME is ${JAVA_HOME}"
-    - cd ${CI_PROJECT_DIR}/netlogo
-    - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' vinos.nlogo
-    - >
-      bash /opt/netlogo/netlogo-headless.sh
-      --model ./vinos.nlogo
-      --setup-file ./behavior/effort-map.xml
-      --experiment "effort-map" --table -
+  - echo "Trying to run in working directory and headless mode"
+  - echo "Java HOME is ${JAVA_HOME}"
+  - cd ${CI_PROJECT_DIR}/netlogo
+  - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' vinos.nlogo
+  - 'bash /opt/netlogo/netlogo-headless.sh --model ./vinos.nlogo --setup-file ./behavior/effort-map.xml
+    --experiment "effort-map" --table -
 
+    '
   artifacts:
     paths:
-      - ./netlogo/results/effort*png
+    - "./netlogo/results/effort*png"
   needs: []
   allow_failure: true
   interruptible: true
   timeout: 10 min
-
-
 profile:
-  image: comses/netlogo # see https://github.com/comses/docker-netlogo
-#  image: $CI_REGISTRY_IMAGE/netlogo:6.3.0
+  image: comses/netlogo
   stage: run
   script:
-    - echo "Trying to run in working directory and headless mode"
-    - echo "Java HOME is ${JAVA_HOME}"
-    - cd ${CI_PROJECT_DIR}/netlogo
-    - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' vinos.nlogo
-    - >
-      bash /opt/netlogo/netlogo-headless.sh
-      --model ./vinos.nlogo
-      --setup-file ./behavior/profile.xml
-      --experiment "profile" --table -
+  - echo "Trying to run in working directory and headless mode"
+  - echo "Java HOME is ${JAVA_HOME}"
+  - cd ${CI_PROJECT_DIR}/netlogo
+  - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' vinos.nlogo
+  - 'bash /opt/netlogo/netlogo-headless.sh --model ./vinos.nlogo --setup-file ./behavior/profile.xml
+    --experiment "profile" --table -
 
+    '
   artifacts:
     paths:
-      - ./netlogo/results/profiler_data.csv
+    - "./netlogo/results/profiler_data.csv"
   needs: []
   allow_failure: true
   interruptible: true
   timeout: 10 min
-
 pages:
-    stage: deploy
-    script:
-        - cp -r .gitlab/public .
-        - cp ./doc/odd/paper.pdf public/odd.pdf
-        - cp ./doc/joss/paper.pdf public/joss.pdf
-        - cp ./netlogo/results/effort*png public/effort.png
-    artifacts:
-        paths:
-            - public/
-    needs:
-      - joss-paper
-      - odd-paper
-      - create-map
+  stage: deploy
+  script:
+  - cp -r .gitlab/public .
+  - cp ./doc/odd/paper.pdf public/odd.pdf
+  - cp ./doc/joss/paper.pdf public/joss.pdf
+  - cp ./netlogo/results/effort*png public/effort.png
+  artifacts:
+    paths:
+    - public/
+  needs:
+  - joss-paper
+  - odd-paper
+  - create-map
+sast:
+  stage: test
