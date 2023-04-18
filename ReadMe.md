@@ -6,6 +6,8 @@ SPDX-License-Identifier: CC0-1.0
 
  [![status](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138/status.svg)](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138)
  [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+ [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7240/badge)](https://bestpractices.coreinfrastructure.org/projects/7240)
+
 
 # Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries
 

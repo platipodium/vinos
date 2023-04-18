@@ -1,0 +1,65 @@
+# SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de
+
+authors:
+  # list author information. see
+  # https://github.com/citation-file-format/citation-file-format/blob/main/schema-guide.md#definitionsperson
+  # for metadata
+  - family-names: "Lemmen"
+    given-names: "Carsten"
+    affiliation: "Helmholtz-Zentrum Hereon, Institute of Coastal Systems Modeling and Analysis, Germany"
+    orcid: 0000-0003-3483-6036
+    email: "carsten.lemmen@hereon.de"
+  - family-names: Hokamp
+    given-names: Sascha
+    orcid: 0000-0002-2192-4013
+    email: sascha.hokamp@uni-hamburg.de
+    affiliation: "Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany"
+  - family-names:  Örey
+    given-names: Serra
+    orcid: 0000-0003-3483-6036
+    email: soerey@hs-bremerhaven.de
+    affiliation: "Hochschule Bremerhaven, Research Cluster Life Sciences, Bremerhaven, Germany"
+  - family-names: Scheffran
+    given-names: Jürgen
+    email: juergen.scheffran@uni-hamburg.de
+    orcid: 0000-0002-7171-3062
+    affiliation: "Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany"
+  - family-names: Probst
+    given-names: "Wolfgang Nikolaus"
+    email: nikolaus.probst@thuenen.de
+    affiliation: "Thünen Institute of Sea Fishery, Germany"
+  - family-names: Seo
+    given-names: "Jieun"
+    email: jieun.seo@uni-hamburg.de
+    affiliation: "Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany"
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+title: 'Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries'
+keywords:
+  - NetLogo
+  - Agent-based Model
+  - ABM
+  - North Sea
+  - Fisheries
+  - MuSSeL project
+  - VIABLE
+  - Plaice
+  - Sole
+  - Shrimp
+license: "Apache 2.0"
+repository-code: "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species.git"
+url: "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/"
+contact:
+  # list maintainer information. see
+  # https://github.com/citation-file-format/citation-file-format/blob/main/schema-guide.md#definitionsperson
+  # for metadata
+  - family-names: "Lemmen"
+    given-names: "Carsten"
+    affiliation: "Helmholtz-Zentrum Hereon, Institute of Coastal Systems Modeling and Analysis, Germany"
+    orcid: 0000-0003-3483-6036
+    email: "carsten.lemmen@hereon.de"
+
+version: 1.0.0
+date-released: 2023-04-17
