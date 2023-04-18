@@ -64,4 +64,6 @@ ministry's Forschung für Nachhaltigkeit (FONA) program.
 
 We hope you can make good use of the software and find it useful and enjoyable. We appreciate
 your feedback, bug reports and improvement suggestions on our [issue tracker](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/issues).  We also welcome your contributions, subject to our Contributor
-Covenant [code of conduct](./doc/contributing/code_of_conduct.md) and our [contributor license agreement](./doc/contributing/contributing-license.md)
+Covenant [code of conduct](./doc/contributing/code_of_conduct.md) and our [contributor license agreement](./doc/contributing/contributing-license.md).
+
+To file an issue or to contribute, you are asked (1) to authenticate and (2) to register:  When asked, **scroll all the way down** and click `Sign in with Helmholtz AAI`.  On the following page "Login to Helmholtz AAI OAuth2 Authorization Server", search for one of your existing authentication providers (this may be your university, company, ORCID, github, or many others) and log in.  You are then asked to provide name and email address for registration on the HIFIS GitLab instance.
