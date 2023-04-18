@@ -43,20 +43,25 @@ mathematical implementation and how to use it.  There is a full documentation in
 
 ## Licenses
 
-The model is copyrighted by [Helmholtz-Zentrum Hereon](https://www.hereon.de), [University of Hamburg](https://www.uni-hamburg.de),
-and [Hochschule Bremerhaven](https://www.hs-bremerhaven.de).  It is available under
-the open source Apache 2.0 license.  You may freely use, distribute, and modify the model.  If you
-do so, you must acknowledge us.
+The NetLogo model is copyrighted by [Helmholtz-Zentrum Hereon](https://www.hereon.de), [University of Hamburg](https://www.uni-hamburg.de), and [Hochschule Bremerhaven](https://www.hs-bremerhaven.de).  It is available under
+the open source Apache 2.0 license.  You may freely use, distribute, and modify the model;  if you
+do so, you must acknowledge us. Please find the full license terms under [./LICENSES/APACHE-2.0.txt](./LICENSES/APACHE-2.0.txt)
 
-Some data and routines were also contributed by the Thünen Institute, by Hochschule Bremerhaven,
-non-governmental organizations and government agencies, some are available under licences different
+Some data and utility routines were also contributed by the Thünen Institute, by Hochschule Bremerhaven,
+non-governmental organizations and government agencies; some are available under licenses different
 from Apache 2.0.  Please refer to the license information available for each individual file in
-this project for details. You may use the REUSE software to view all licenses.
+this project for details, and to the full terms of each license availalbe in [./LICENSES/](./LICENSES).
+You may use [REUSE.software](https://reuse.software) to view all licenses.
+
+## Funding
 
 Funding for this software development was obtained by the German Federal Ministry for Education
 and Research  (BMBF) in the project Multiple Stressors on North Sea Life (MuSSeL) in the
 framework of the agenda Küstenforschung Nordsee-Ostsee (KüNO III) within the
 ministry's Forschung für Nachhaltigkeit (FONA) program.
 
+## Contributing and reporting
+
 We hope you can make good use of the software and find it useful and enjoyable. We appreciate
-your feedback, bug reports and improvement suggestions.
+your feedback, bug reports and improvement suggestions on our [issue tracker](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/issues).  We also welcome your contributions, subject to our Contributor
+Covenant [code of conduct](./doc/contributing/code_of_conduct.md) and our [contributor license agreement](./doc/contributing/contributing-license.md)
