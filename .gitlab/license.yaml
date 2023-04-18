@@ -11,5 +11,5 @@ license-compliance:
         - poetry install
     script:
         - poetry run reuse lint
-    allow_failure: true
+    allow_failure: false
     needs: []
