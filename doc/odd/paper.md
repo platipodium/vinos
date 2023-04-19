@@ -1,6 +1,6 @@
 ---
 title: 'ODD Protocol for Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries'
-keywords: "NetLogo; Agent-based Model; ABM; North Sea; Fisheries; MuSSeL project; ODD; VIABLE; VINOS"
+keywords: "NetLogo; Agent-based Model; ABM; North Sea; Fisheries; MuSSeL project; ODD; VIABLE; ViNoS"
 journal: comses
 type: article
 classoption: moreauthors=true
@@ -17,7 +17,7 @@ author:
     orcid: 0000-0003-3483-6036
   - name: Jürgen Scheffran
     affil: 2
-    orcid:
+    orcid: 0000-0002-7171-3062
   - name: Jieun Seo
     affil: 2
     orcid:
@@ -26,9 +26,9 @@ affiliation:
  - address: Helmholtz-Zentrum Hereon, Max-Planck-Str. 1, 21502 Geesthacht, Germany
    num: 1
    email: carsten.lemmen@hereon.de
- - address: University of Hamburg, Hamburg, Germany
+ - address: Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany
    num: 2
- - address: Hochschule Bremerhaven, Bremerhaven, Germany
+ - address: Hochschule Bremerhaven, Research Cluster Life Sciences, Bremerhaven, Germany
    num: 3
 citation_author: Lemmen et al.
 year: 2023
@@ -118,7 +118,7 @@ The fishery target species are denoted **preys**.  Currently, the ABM describes 
 
 <!-- @todo  Add fish descriptions -->
 
-The model is designed to accomodate further species relevant to the small-scale fishery such as whiting (*Merlangius merlangus*), sprat (*Sprattus sprattus*), or Norwegian lobster (*Nephrops norvegicus*).
+The model is designed to accommodate further species relevant to the small-scale fishery such as whiting (*Merlangius merlangus*), sprat (*Sprattus sprattus*), or Norwegian lobster (*Nephrops norvegicus*).
 
 Boats and preys are connected via the **gears** agent:  The gear prescribes the geometric area that can be fished, the speed at which fishing can occur, and the prey that is caught.  A gear can be installed, or changed, on a boat, subject to economic (investment cost) and physical (weight, size) constraints.  The gear also determines the impact of the fishing activity on the environment, i.e. how much prey is removed and how much of the sea floor is swept.
 
@@ -138,7 +138,7 @@ Cells carry information on resources (fish stocks of the respective species, at 
 
 ### Nonspatial environment
 
-A calendar records time.  The temporal domain are multiple years and the temporal resolution is 1 day.  With the progress of the calendar, surrogate weather is introduced that may influence a boat's decision to go on a fishing trip.  Seasonal information is used to describe the annual variation of prey resources.
+A calendar records time.  The temporal domain is multiple years and the temporal resolution is 1 day.  With the progress of the calendar, surrogate weather is introduced that may influence a boat's decision to go on a fishing trip.  Seasonal information is used to describe the annual variation of prey resources.
 
 <!-- @todo Use the weather -->
 
@@ -174,7 +174,7 @@ On an insufficient catch, the boat enters phase 2 to look for a different locati
 ![Decision pathway for a simulated fishing trip.\label{fig:flowchart}](../../assets/abm_flowchart.pdf){ width=90% height=30% }
 
 Boats in **phase 4** need to return.  They directly steam in a straight line to their deployment location and on to their port. At the port, they enter **phase 5** to unload their catch and clean the boat.  Priorities for the different gears are updated based on the relative change of the deployed gears and catches.
-Finally, boats re-enter phase 0 and restart the cycle. As summary view of the model scheduling is depicted in \autoref{fig:flowchart}
+Finally, boats re-enter phase 0 and restart the cycle. A summary view of the model scheduling is depicted in \autoref{fig:flowchart}
 
 ## Design concepts
 
@@ -182,7 +182,7 @@ Finally, boats re-enter phase 0 and restart the cycle. As summary view of the mo
 
 <!-- German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.  -->
 The ABM is an adaptive model with the **objective** of increasing profits, subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to
-changing gear with shifting priorities for allocating fishing effort, and disribed by the VIABLE approach [@BenDor2019;@Scheffran2000].
+changing gear with shifting priorities for allocating fishing effort, and discribed by the VIABLE approach [@BenDor2019;@Scheffran2000].
 
 In the VIABLE approach, each boat carries a list of priorities that are subject to change based on the boats perception and evaluation of its activities.  During each haul, the costs of that haul (wage and fuel)  are subtracted from the benefits (i.e. the price of the catch times the amount caught) in parallel for all gears available to a boat. The marginal value (gain or loss, in €, divided by XXXX) for each gear type and is multiplied by an adaptation rate determining the relative change in priorities.
 
@@ -222,7 +222,7 @@ The direction of a haul is random across all accessible directions. The weather 
 
 ## Initialization
 
-Ports and boats are intialized from empirical statistics available for the year 2015.  The resources are initialized from a species distribution model (SDM) based on stock assessments and environmental data for the period 2015-2020. Time is initialized on 1 Jan 2020.
+Ports and boats are initialized from empirical statistics available for the year 2015.  The resources are initialized from a species distribution model (SDM) based on stock assessments and environmental data for the period 2015-2020. Time is initialized with current wall clock time.
 
 ## Input data
 
@@ -231,7 +231,7 @@ All data are publicly available and licensed for use.  The data sources are
 
 | **Description** | **Source** |
 | --- | --- |
-| Port landings data 2015 | Hochschule Bremerhaven, unlicensed |
+| Clustered vessel data | Hochschule Bremerhaven, CC-by-NC-ND-4.0 |
 | Species distribution of plaice, sole, and brown shrimp | Thünen Institute, PDDL-1.0 |
 | Species information | FAO |
 | Bathymetry | GEBCO |
@@ -239,15 +239,15 @@ All data are publicly available and licensed for use.  The data sources are
 | EEZ | United Nations |
 | ICES subregional divisions | ICES |
 | Plaice box | European Commision |
-| Geodetic information | International Earth Rotation Service |
-| National Parks | NLWKN, DL-DE-BY-2.0 |
+| Geodetic information | International Earth Rotation Service, CC0-1.0 |
+| National Park boundaries | NLWKN, DL-DE-BY-2.0 |
 
 # CRediT authorship contribution statement
 C.Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing.
 S.Hokamp: Conceptualization, Software, Methodology, Formal analysis, Writing – review & editing.
 S.Örey: Conceptualization, Data curation, Writing – review & editing.
 J. Scheffran: Conceptualization, Formal analysis, Writing – review & editing
-J.Seung: Writing – original draft.
+J.Seo: Writing – original draft.
 
 <!--
 ## Sub-models
