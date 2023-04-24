@@ -240,8 +240,10 @@ to boat-land-port
   ; in the end operating costs should be around 50% of revenue
   set boat-operating-costs wage * boat-time-at-sea ; is typically 4000 €
 
+  ;does this make any sense? can it be not to catch anything?
   if (sum boat-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
-    (boat-transportation-costs * item i boat-gear-catches +  boat-operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
+    ;((boat-transportation-costs + boat-operating-costs) * item i boat-gear-catches) / sum boat-gear-catches]
+    boat-transportation-costs + boat-operating-costs]
   ]
 
   ; Find the position of the target gear-species in prey-names and return the index of the species,
@@ -253,12 +255,13 @@ to boat-land-port
   set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
 
   ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
-  print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)
+  print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat boat-distance-at-sea)
 
 
   set boat-delta-gains n-values (number-of-gears) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
   set boat-gains n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
-  let delta-adjust sum map [ i -> abs i ] boat-delta-gains ; fix minus boat priority ; in cast that the boat-gains decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
+  let delta-adjust sum map [ i -> abs i ] boat-delta-gains ; fix minus boat priority 
+                                                           ; in cast that the boat-gains decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
   ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
     set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i boat-delta-gains) * (item i boat-gear-priorities) / delta-adjust]
   ][
