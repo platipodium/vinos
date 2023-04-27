@@ -29,7 +29,7 @@ USER model
 ENV HOME /home/model
 
 COPY ./data ${HOME}/data
-COPY ./assets ${HOME}/data
+COPY ./assets ${HOME}/assets
 COPY ./netlogo ${HOME}/netlogo
 COPY ./LICENSES ${HOME}/LICENSES
 COPY ./.reuse ${HOME}/.reuse
@@ -47,7 +47,4 @@ CMD /opt/netlogo/netlogo-gui.sh ${HOME}/netlogo/${MODEL_NAME}
 # "--table", "/model/netlogo/results/table-output.csv", \
 # "--spreadsheet", "/model/netlogo/results/spreadsheet-output.csv"]
 
-# To build the docker file, and run netlogo interactivley:
-# `docker build -t netlogo .`
 # docker run -i -v /tmp/.X11-unix:/tmp/.X11-unix --user="$(id --user):$(id --group)" -t ulogo
-#docker run -i -v /tmp/.X11-unix:/tmp/.X11-unix -v ${HOME}/.Xauthority:/home/model/.Xauthority --user=model:model -e DISPLAY=${DISPLAY}  -t netlogo  /opt/netlogo/netlogo-gui.sh

@@ -3,13 +3,14 @@
 # SPDX-FieContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 IP=$(shell ifconfig en0 | grep inet\  | cut -d " " -f2)
+PWD=$(shell pwd)
 
 .PHONY: all clean license docker-run docker-build
 
 all:
 
 LICENSE.md:
-	poetry run reuse spdx > LICENSE.md
+	poetry run reuse spdx | python python/reuse2txt.py > ./LICENSE.md
 
 license: LICENSE.md
 
@@ -18,7 +19,21 @@ docker-build:
 
 # Assumes you have already built a docker image
 docker-run:
-	docker run --rm  -e DISPLAY=$(IP):0 -v ${HOME}/.Xauthority:/home/model/.Xauthority -t netlogo
+	docker run --rm  -e DISPLAY=$(IP):0 \
+	  -e DISPLAY=$(IP):0 \
+	  -v ${HOME}/.Xauthority:/home/model/.Xauthority \
+	  -v /tmp/.X11-unix:/tmp/.X11-unix \
+	  --net host -t netlogo
+
+docker-shell:
+	docker image inspect  netlogo > /dev/null 2>&1 && \
+	docker run --rm -i \
+	  -e DISPLAY=$(IP):0 \
+	  -v ${HOME}/.Xauthority:/home/model/.Xauthority \
+	  -v $(PWD):/home/model/local \
+	  -v /tmp/.X11-unix:/tmp/.X11-unix \
+	  -w /home/model \
+	  --net host -t netlogo /bin/bash
 
 clean:
 	@rm -f LICENSE.md
