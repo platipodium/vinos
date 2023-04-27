@@ -22,6 +22,7 @@ RUN tar xzf ${NETLOGO_NAME}-64.tgz -C /home/netlogo --strip-components=1
 #RUN rm -f ${NETLOGO_NAME}-64.tgz
 
 COPY ./data /home/src/data
+COPY ./assets /home/src/assets
 COPY ./netlogo /home/src/netlogo
 COPY ./LICENSES /home/src/LICENSES
 COPY ./.reuse /home/src/.reuse

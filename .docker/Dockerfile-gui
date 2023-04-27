@@ -29,6 +29,7 @@ USER model
 ENV HOME /home/model
 
 COPY ./data ${HOME}/data
+COPY ./assets ${HOME}/data
 COPY ./netlogo ${HOME}/netlogo
 COPY ./LICENSES ${HOME}/LICENSES
 COPY ./.reuse ${HOME}/.reuse
@@ -50,5 +51,3 @@ CMD /opt/netlogo/netlogo-gui.sh ${HOME}/netlogo/${MODEL_NAME}
 # `docker build -t netlogo .`
 # docker run -i -v /tmp/.X11-unix:/tmp/.X11-unix --user="$(id --user):$(id --group)" -t ulogo
 #docker run -i -v /tmp/.X11-unix:/tmp/.X11-unix -v ${HOME}/.Xauthority:/home/model/.Xauthority --user=model:model -e DISPLAY=${DISPLAY}  -t netlogo  /opt/netlogo/netlogo-gui.sh
-# docker run -e DISPLAY=192.168.178.125:0 -t netlogo
-# docker run --rm  -e DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}'):0 -t nlogo
