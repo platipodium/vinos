@@ -23,8 +23,8 @@ RUN mkdir /model
 RUN curl ${NETLOGO_URL} --output ${NETLOGO_NAME}-64.tgz
 RUN tar xzf ${NETLOGO_NAME}-64.tgz -C /opt/netlogo --strip-components=1
 
-RUN groupadd -g 1000 model
-RUN useradd -d /home/model -s /bin/bash -m model -u 1000 -g 1000
+RUN groupadd -g 1009 model
+RUN useradd -d /home/model -s /bin/bash -m model -u 1009 -g 1009
 USER model
 ENV HOME /home/model
 
@@ -51,3 +51,4 @@ CMD /opt/netlogo/netlogo-gui.sh ${HOME}/netlogo/${MODEL_NAME}
 # docker run -i -v /tmp/.X11-unix:/tmp/.X11-unix --user="$(id --user):$(id --group)" -t ulogo
 #docker run -i -v /tmp/.X11-unix:/tmp/.X11-unix -v ${HOME}/.Xauthority:/home/model/.Xauthority --user=model:model -e DISPLAY=${DISPLAY}  -t netlogo  /opt/netlogo/netlogo-gui.sh
 # docker run -e DISPLAY=192.168.178.125:0 -t netlogo
+# docker run --rm  -e DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}'):0 -t nlogo
