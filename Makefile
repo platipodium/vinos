@@ -9,7 +9,7 @@ PWD=$(shell pwd)
 
 all:
 
-LICENSE.md:
+LICENSE.md: python/reuse2txt.py
 	poetry run reuse spdx | python python/reuse2txt.py > ./LICENSE.md
 
 license: LICENSE.md
