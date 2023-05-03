@@ -24,7 +24,7 @@ to setup-calendar
     error "Cannot find the month name in the date string. This is likely a problem with localization: we currently support only English and German.  You can try to change your NetLogo Interface by switching to English in the Preferences menu."
   ]
 
-  set month 1 + position _month-name _month-names
+  set month 1 + _position
   set day read-from-string  substring _ymd 0 2
 
   set year year + int ((month + time-offset) / 12)
