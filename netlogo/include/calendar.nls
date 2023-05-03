@@ -10,11 +10,20 @@ to setup-calendar
 
   set days-in-months (list 31 28 31 30 31 30 31 31 30 31 30 31 )
   let _month-names (list "Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec" )
+  let _month-names-de (list "Jan" "Feb" "Mär" "Apr" "Mai" "Jun" "Jul" "Aug" "Sep" "Okt" "Nov" "Dez" )
 
   let _ymd substring date-and-time 16 length date-and-time
   let _month-name substring _ymd 3 6
 
   set year read-from-string substring _ymd (length _ymd - 4) length _ymd
+  let _position  position _month-name _month-names
+  if _position = -1 [
+    let _position  position _month-name _month-names-de
+  ]
+  if _position = -1 [
+    error "Cannot find the month name in the date string. This is likely a problem with localization: we currently support only English and German.  You can try to change your NetLogo Interface by switching to English in the Preferences menu."
+  ]
+
   set month 1 + position _month-name _month-names
   set day read-from-string  substring _ymd 0 2
 
