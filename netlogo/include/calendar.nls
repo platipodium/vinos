@@ -18,7 +18,7 @@ to setup-calendar
   set year read-from-string substring _ymd (length _ymd - 4) length _ymd
   let _position  position _month-name _month-names
   if _position = -1 [
-    let _position  position _month-name _month-names-de
+    set _position  position _month-name _month-names-de
   ]
   if _position = -1 [
     error "Cannot find the month name in the date string. This is likely a problem with localization: we currently support only English and German.  You can try to change your NetLogo Interface by switching to English in the Preferences menu."
