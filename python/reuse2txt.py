@@ -3,7 +3,20 @@ import sys
 import datetime
 import pathlib
 
-def format_licenses(df: pd.DataFrame) -> list[str]:
+def get_copyright_list(df: pd.DataFrame) -> list[str]:
+    copyrights = set()
+    for _, row in df.iterrows():
+        try:
+            copyright = row.get('FileCopyrightText').replace('<text>','').replace('</text>',
+                '').replace('SPDX-FileCopyrightText: ','')
+        except:
+            pass
+            continue
+        copyrights.add(copyright)
+
+    return sorted(list(copyrights))
+
+def get_license_list(df: pd.DataFrame) -> list[str]:
     licenses = set()
     for _, row in df.iterrows():
         try:
@@ -101,12 +114,22 @@ The following licenses are used by this project.  You can find the full license 
 in the  [LICENSES](./LICENSES/) folder:
 ''')
 
-    licenses = format_licenses(df)
+    licenses = get_license_list(df)
     for l in licenses:
         print(f' * {l}')
 
     print(f'''
-## License by file name
+## Copyright holders
+
+The following organizations and individuals own copyrights to (parts of) this project.
+You can find the full license text in the  [LICENSES](./LICENSES/) folder:
+''')
+    copyrights = get_copyright_list(df)
+    for c in copyrights:
+        print(f' * {c}')
+
+    print(f'''
+## License and copyright by file name
 
 Each file carries a license attribution, please consult the following list to identify
 the license applicable to an individual file:
