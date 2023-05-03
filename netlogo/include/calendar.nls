@@ -6,79 +6,52 @@
 ; Reset the calendar to a default date
 ; @todo replace the functinoality with the time extension
 
+extensions [ time ]
+
+globals [
+  date ; a logotime object representing absolute date
+]
+
 to setup-calendar
-
   set days-in-months (list 31 28 31 30 31 30 31 31 30 31 30 31 )
-  let _month-names (list "Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec" )
-  let _month-names-de (list "Jan" "Feb" "Mär" "Apr" "Mai" "Jun" "Jul" "Aug" "Sep" "Okt" "Nov" "Dez" )
 
-  let _ymd substring date-and-time 16 length date-and-time
-  let _month-name substring _ymd 3 6
+  ; date-and-time gives a locale-dependent and JVM precision-dependent
+  ; output.  The YMD is the last part of the string in format
+  ; dd-MMM-yyyy  (MMM as a localized three-letter string)
+  let _now date-and-time
+  let _len length _now
+  let _ymd substring _now (_len - 11) _len
 
-  set year read-from-string substring _ymd (length _ymd - 4) length _ymd
-  let _position  position _month-name _month-names
-  if _position = -1 [
-    set _position  position _month-name _month-names-de
-  ]
-  if _position = -1 [
-    error "Cannot find the month name in the date string. This is likely a problem with localization: we currently support only English and German.  You can try to change your NetLogo Interface by switching to English in the Preferences menu."
-  ]
+  ; Use the time exension to read from this formatted string into
+  ; a logotime object and extract the numeric YMD info
+  let date time:create-with-format _ymd "dd-MMM-yyyy"
 
-  set month 1 + _position
-  set day read-from-string  substring _ymd 0 2
+  ; Now add to the current time the offset
+  set date time:plus date time-offset "months"
 
-  set year year + int ((month + time-offset) / 12)
-  ;print (sentence year  int ((month + time-offset) / 12) )
-  set month (month + time-offset mod 12 )
-  set month (month - 1) mod 12 + 1
+  ; Convert back to string and then integers
+  ;set _ymd time:show _logotime "yyyy-MM-dd"
+  ;set year read-from-string substring _ymd 0 4
+  ;set month read-from-string  substring _ymd 5 7
+  ;set day read-from-string  substring _ymd 8 10
 
-  set day-of-year sum (sublist days-in-months 0 (month - 1)) + day
-  if month > 2 [set day-of-year day-of-year + leap-year ]
+  set year time:get "year" date
+  set month time:get "month" date
+  set day time:get "day"	date
+  set day-of-year time:get "dayofyear" date
 
-end
+end setup-calendar
 
 ; Advance the calendar by one day
 to advance-calendar
 
-  set day-of-year day-of-year + 1
-  set day day + 1
+  set date time:plus date 1 "days"
 
-  let critical-day item (month - 1) days-in-months
-  ; February is longer in leap-years
-  if month = 2 [
-    set critical-day critical-day + leap-year
-  ]
+  set year time:get "year" date
+  set month time:get "month" date
+  set day time:get "day"	date
+  set day-of-year time:get "dayofyear" date
 
-  ; if condition for number of days in months
-  ; at end of month, we reset the days
-  ; take care that lists are zero-based
-  if day > critical-day [
-
-    set day 1
-    set month month + 1
-  ]
-
-  ; if condition for end of year
-  ; at the end of a year, reset month and day and day of year
-  ;if day-of-year > 365 + leap-year [
-  if month > 12 [
-    set year year + 1
-    set month 1
-    set day 1
-    set day-of-year 1
-  ]
-
-end
-
-
-to-report leap-year
-  ; any year not divisible by 4 is not a leap year
-  ; year mod 4 > 0 means there is a remainder on integer division
-  ; at a report statement, the function is terminated and returns the value
-  if ( year mod 4 > 0 )   [ report 0 ]
-  if ( year mod 400 = 0 ) [ report 1 ]
-  if ( year mod 100 = 0 ) [ report 0 ]
-  report 1
 end
 
 to-report datetime
