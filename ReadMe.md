@@ -62,6 +62,8 @@ and Research  (BMBF) in the project Multiple Stressors on North Sea Life (MuSSeL
 framework of the agenda Küstenforschung Nordsee-Ostsee (KüNO III) within the
 ministry's Forschung für Nachhaltigkeit (FONA) program.
 
+MuSSeL is a collaborative project by [Hereon](https://ror.org/03qjp1d79), [Hamburg university]( https://ror.org/00g30e956), [Hochschule Bremerhaven](https://ror.org/001yqrb02), [Thünen Institut](https://ror.org/00mr84n67) and the [Bundesamt für Seeschiffahrt und Hydrografie](https://ror.org/03ycvrj88)
+
 ## Contributing and reporting
 
 We issue [release notes](./ReleaseNotes.md) along with each major version. We recommend to use bleeding edge (latest git commit) during the initial stabilization phase of the model.  We hope you can make good use of the software and find it useful and enjoyable.
