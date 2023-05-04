@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+This script converts output from `reuse spdx` to human-readable
+text as markdown.
+
+SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+SPDX-License-Identifier: Apache-2.0
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+"""
+
 import pandas as pd
 import sys
 import datetime
