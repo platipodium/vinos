@@ -47,6 +47,8 @@ The NetLogo model is copyrighted by [Helmholtz-Zentrum Hereon](https://www.hereo
 the open source Apache 2.0 license.  You may freely use, distribute, and modify the model;  if you
 do so, you must acknowledge us. Please find the full license terms under [./LICENSES/APACHE-2.0.txt](./LICENSES/APACHE-2.0.txt)
 
+The results from model simulations using this software are the intellectual property of the person operating the model.  They are free to choose any license, subject to the constraints imposed by the data used to produce these results.  If any of your results critically depend on data (as in: are modifications of) that carries a strong copyleft (e.g. the Creative Commons Share-Alike license class), you have to publish your results also under this license.
+
 Some data and utility routines were also contributed by the Thünen Institute, by Hochschule Bremerhaven,
 non-governmental organizations and government agencies; some are available under licenses different
 from Apache 2.0.  Please refer to the license information available for each individual file in
