@@ -18,18 +18,17 @@ joss-paper:
 # https://github.com/openjournals/inara/issues/34
 joss-inara:
   stage: deploy
-
   image: 'openjournals/inara'
-  git-strategy: none # prevent from cloning repo, do this manually in before_script
+  variables:
+    GIT_SHA: $CI_COMMIT_SHA
+    GIT_STRATEGY: none # prevent cloning
+    JOURNAL: joss
   before_script:
     - git clone --depth=1 ${CI_REPOSITORY_URL} ./vinos
   script:
     - inara -o pdf,cff ./vinos/doc/joss/paper.md
   environment:
     name: draft
-  variables:
-    GIT_SHA: $CI_COMMIT_SHA
-    JOURNAL: joss
   when: manual
   allow_failure: false
   artifacts:
