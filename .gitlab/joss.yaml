@@ -24,8 +24,11 @@ joss-inara:
     GIT_STRATEGY: none # prevent cloning
     JOURNAL: joss
   before_script:
+    - echo "Cloning from ${CI_REPOSITORY_URL} to ./vinos"
     - git clone --depth=1 ${CI_REPOSITORY_URL} ./vinos
+    - ls -l
   script:
+    - echo "Executing the inara script"
     - inara -o pdf,cff ./vinos/doc/joss/paper.md
   environment:
     name: draft
