@@ -2,9 +2,7 @@
 ; SPDX-License-Identifier: Apache-2.0
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
-; Simple calendar implementation
-; Reset the calendar to a default date
-; @todo replace the functinoality with the time extension
+; Simple calendar implementation using the time extension
 
 extensions [ time ]
 
@@ -28,12 +26,6 @@ to setup-calendar
 
   ; Now add to the current time the offset
   set date time:plus date time-offset "months"
-
-  ; Convert back to string and then integers
-  ;set _ymd time:show _logotime "yyyy-MM-dd"
-  ;set year read-from-string substring _ymd 0 4
-  ;set month read-from-string  substring _ymd 5 7
-  ;set day read-from-string  substring _ymd 8 10
 
   set year time:get "year" date
   set month time:get "month" date
@@ -60,19 +52,4 @@ end
 
 to-report datetime-short
   report time:show date "yyyyMMdd"
-end
-
-; Use Zeller's algorithm to calculate the weekday
-; Return from 0 (Sunday) to 6 (Saturday)
-to-report weekday
-  let y0 int (year - (14 - month) / 12)
-  let x int (y0 + y0 / 4 - y0 / 100 + y0 / 400)
-  let m0 int (month + 12 * ((14 - month) / 12) - 2)
-  let d0 (day + x + (31 * m0) / 12) mod 7
-  report d0
-end
-
-to-report weekday-name
-  let _weekday-names (list "Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat")
-  report item weekday _weekday-names
 end

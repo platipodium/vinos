@@ -260,7 +260,7 @@ to boat-land-port
 
   set boat-delta-gains n-values (number-of-gears) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
   set boat-gains n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
-  let delta-adjust sum map [ i -> abs i ] boat-delta-gains ; fix minus boat priority 
+  let delta-adjust sum map [ i -> abs i ] boat-delta-gains ; fix minus boat priority
                                                            ; in cast that the boat-gains decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
   ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
     set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i boat-delta-gains) * (item i boat-gear-priorities) / delta-adjust]
@@ -288,23 +288,21 @@ to boat-land-port
   set boat-hour boat-hour + 2
 end
 
-
 ; Boat preocedure to rest
 to boat-rest-port
-  ; boats don't go out after saturday afternoon and on Sunday, and earliest at 4 on Monday
-;  ifelse (weekday-name = "Sat" and boat-hour > 12) [set boat-hour 24][
-;    ifelse (weekday-name = "Sun") [set boat-hour 24][
-;      ifelse (weekday-name = "Mon") [set boat-hour 4][
-;        set boat-hour boat-hour + 11
-;      ]
-;      set boat-time-at-sea-left boat-max-duration
-;      set boat-trip-phase 1 ; ready to leave port
-;    ]
-;  ]
-  set boat-hour boat-hour + 11
-  set boat-time-at-sea-left boat-max-duration
-  set boat-trip-phase 1 ; ready to leave port
-end
+  let _day-of-week time:get "dayofweek" date
+
+  ; boats arriving in port on Saturday don't go out again, neither do boats go
+  ; out on a Sunday or before Monday 4 am.  On other days, just rest 11 hours.
+  ; On weekdays
+  ifelse _day-of-week = 6 or _day-of-week = 0 [ set boat-hour 24 ][
+    ifelse  _day-of-week = 1 and boat-hour < 4 [ set boat-hour 4 ][
+       set boat-hour boat-hour + 11
+    ]
+    set boat-time-at-sea-left boat-max-duration
+    set boat-trip-phase 1 ; ready to leave port
+  ]
+ end
 
 ; This is a boat procedure  where a boat
 ; steams from it's start patch to a preferred location for fishing

@@ -192,7 +192,7 @@ to go
   update-plots
 
   ; export the data every week on a Sunday (weekday 0)
-  if weekday = 0 [export-patches]
+  if (time:get "dayofweek"  date) = 0 [export-patches]
 
   tick
 end
