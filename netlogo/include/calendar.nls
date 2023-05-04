@@ -24,7 +24,7 @@ to setup-calendar
 
   ; Use the time exension to read from this formatted string into
   ; a logotime object and extract the numeric YMD info
-  let date time:create-with-format _ymd "dd-MMM-yyyy"
+  set date time:create-with-format _ymd "dd-MMM-yyyy"
 
   ; Now add to the current time the offset
   set date time:plus date time-offset "months"
@@ -40,7 +40,7 @@ to setup-calendar
   set day time:get "day"	date
   set day-of-year time:get "dayofyear" date
 
-end setup-calendar
+end
 
 ; Advance the calendar by one day
 to advance-calendar
