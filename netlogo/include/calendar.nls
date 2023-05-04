@@ -55,11 +55,11 @@ to advance-calendar
 end
 
 to-report datetime
-  report (word weekday-name " " year "-" month "-" day " (" day-of-year ")")
+  report (word time:show date "EEE yyyy-MM-dd" " (" time:get "dayofyear" date ")")
 end
 
 to-report datetime-short
-  report (word (formatted-int year 4) (formatted-int month 2) (formatted-int day 2))
+  report time:show date "yyyyMMdd"
 end
 
 ; Use Zeller's algorithm to calculate the weekday
