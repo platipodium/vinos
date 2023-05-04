@@ -14,23 +14,26 @@ joss-paper:
     needs: []
     stage: deploy
 
-# This one does not work for bugs in inara upstream
-# joss-inara:
-#   stage: deploy
-#   image: 'openjournals/inara'
-#   script:
-#     - inara -o pdf,cff doc/joss/paper.md
-#   environment:
-#     name: draft
-#   variables:
-#     GIT_SHA: $CI_COMMIT_SHA
-#     JOURNAL: joss
-#   when: manual
-#   allow_failure: false
-#   artifacts:
-#     paths:
-#       - doc/joss/paper.pdf
-#   needs: []
+# This one does not work for bugs in inara upstream,
+# https://github.com/openjournals/inara/issues/34
+joss-inara:
+  stage: deploy
+  image: 'openjournals/inara'
+  before_script:
+    - git clone --depth=1 ${CI_REPOSITORY_URL} ./vinos
+  script:
+    - inara -o pdf,cff ./vinos/doc/joss/paper.md
+  environment:
+    name: draft
+  variables:
+    GIT_SHA: $CI_COMMIT_SHA
+    JOURNAL: joss
+  when: manual
+  allow_failure: false
+  artifacts:
+    paths:
+      - ./vinos/doc/joss/paper.pdf
+  needs: []
 
 # This one actually runs (but takes much longer)
 # joss-docker:
@@ -55,4 +58,3 @@ joss-paper:
 #       paths:
 #         - doc/joss/paper.pdf
 #     needs: []
-
