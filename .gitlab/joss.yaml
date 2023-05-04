@@ -62,3 +62,16 @@ joss-inara:
 #       paths:
 #         - doc/joss/paper.pdf
 #     needs: []
+
+joss-test:
+  image:
+    name: openjournals/inara
+    entrypoint: ["/bin/sh", "-c"]
+  script:
+    - echo "Calling inara -o pdf,cff doc/joss/paper.md"  # create two example files
+    - inara -o pdf,cff doc/joss/paper.md
+  artifacts:
+    paths:
+      - ./vinos/doc/joss/paper.pdf
+  needs: []
+
