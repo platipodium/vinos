@@ -159,7 +159,11 @@ end
 to go
 
   advance-calendar
-  ask date-patch [set plabel datetime]
+  ask date-patch [
+    set plabel-color ifelse-value holiday? [red][white]
+    set plabel datetime
+  ]
+
   calc-fish
   let _active-boats boats
 
