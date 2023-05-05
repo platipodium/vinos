@@ -67,5 +67,5 @@ to-report datetime-short
 end
 
 to-report is-holiday?
-  report ts-member? date holidays-de
+  report ts-member? holidays-germany date
 end
