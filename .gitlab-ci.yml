@@ -64,6 +64,9 @@ profile:
   allow_failure: true
   interruptible: true
   timeout: 10 min
+
+# Job to deploy the web page of the project, currently showing
+# the generated pdf papers for JOSS and COMSES.
 pages:
   stage: deploy
   script:
@@ -75,8 +78,10 @@ pages:
     paths:
     - public/
   needs:
-  - joss-paper
+  - joss-inara
   - odd-paper
   - create-map
+
+# Automated job for software security, provided by GitLab
 sast:
   stage: test
