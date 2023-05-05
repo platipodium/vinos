@@ -1,0 +1,51 @@
+; SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+; SPDX-License-Identifier: CC0-1.0
+; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+; Time series utility as a partial reimplementation of
+; NetLogo's Time Extension time series utility obtained from
+; https://github.com/NetLogo/Time-Extension/blob/master/src/time-series.nls
+
+extensions [
+  time
+  csv
+]
+
+to-report ts-create [col-name-list]
+  report  (list sentence "LOGOTIME" col-name-list)
+end
+
+; Load a formatted CSV file
+to-report ts-load [filepath]
+  report ts-load-with-format filepath nobody
+end
+
+to-report ts-load-with-format [filepath format-string]
+  let temp-ts __remove-comment-lines (csv:from-file filepath ",")
+
+  let columns fput "LOGOTIME" butfirst item 0 temp-ts ; replace the first column with "LOGOTIME"
+
+  report fput columns __sort-by-date map [ row ->
+    __convert-row-with-format row format-string
+  ] (butfirst temp-ts)
+end
+
+;; Internal functions
+to-report __sort-by-date [timeseries]
+  report sort-by [[row1 row2] -> time:is-before? (item 0 row1) (item 0 row2)] timeseries
+end
+
+to-report __remove-comment-lines [data]
+  while [(first (first (first data)) = ";")]  ;; remove lines that start with a semicolon
+      [set data but-first data]
+  report data
+end
+
+to-report __convert-row-with-format [row format-string] ; helper
+  let new-time ifelse-value format-string = nobody [time:create item 0 row] [time:create-with-format (item 0 row) format-string]
+  report fput new-time butfirst row
+end
+
+to-report __convert-row [row] ; helper
+  report __convert-row-with-format row nobody
+end

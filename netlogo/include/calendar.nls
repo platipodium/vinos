@@ -8,6 +8,8 @@ extensions [ time ]
 
 globals [
   date ; a logotime object representing absolute date
+  holidays-germany ; a logotime series with dates and names of holidays
+  holidays-morocco ; a logotime series with dates and names of holidays
 ]
 
 to setup-calendar
