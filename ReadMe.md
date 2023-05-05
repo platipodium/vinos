@@ -4,11 +4,11 @@ SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: CC0-1.0
 -->
 
- [![status](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138/status.svg)](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138)
+[![status](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138/status.svg)](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138)
  [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
  [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7240/badge)](https://bestpractices.coreinfrastructure.org/projects/7240)
  [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](./doc/contributing/code_of_conduct.md)
-
+ [![Pipeline](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/badges/main/pipeline.svg)](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/pipelines)
 
 # Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries
 
@@ -47,6 +47,8 @@ The NetLogo model is copyrighted by [Helmholtz-Zentrum Hereon](https://www.hereo
 the open source Apache 2.0 license.  You may freely use, distribute, and modify the model;  if you
 do so, you must acknowledge us. Please find the full license terms under [./LICENSES/APACHE-2.0.txt](./LICENSES/APACHE-2.0.txt)
 
+The results from model simulations using this software are the intellectual property of the person operating the model.  They are free to choose any license, subject to the constraints imposed by the data used to produce these results.  If any of your results critically depend on data (as in: are modifications of) that carries a strong copyleft (e.g. the Creative Commons Share-Alike license class), you have to publish your results also under this license.
+
 Some data and utility routines were also contributed by the Thünen Institute, by Hochschule Bremerhaven,
 non-governmental organizations and government agencies; some are available under licenses different
 from Apache 2.0.  Please refer to the license information available for each individual file in
@@ -60,10 +62,13 @@ and Research  (BMBF) in the project Multiple Stressors on North Sea Life (MuSSeL
 framework of the agenda Küstenforschung Nordsee-Ostsee (KüNO III) within the
 ministry's Forschung für Nachhaltigkeit (FONA) program.
 
+MuSSeL is a collaborative project by [Hereon](https://ror.org/03qjp1d79), [Hamburg university]( https://ror.org/00g30e956), [Hochschule Bremerhaven](https://ror.org/001yqrb02), [Thünen Institut](https://ror.org/00mr84n67) and the [Bundesamt für Seeschiffahrt und Hydrografie](https://ror.org/03ycvrj88)
+
 ## Contributing and reporting
 
-We hope you can make good use of the software and find it useful and enjoyable. We appreciate
-your feedback, bug reports and improvement suggestions on our [issue tracker](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/issues).  We also welcome your contributions, subject to our Contributor
+We issue [release notes](./ReleaseNotes.md) along with each major version. We recommend to use bleeding edge (latest git commit) during the initial stabilization phase of the model.  We hope you can make good use of the software and find it useful and enjoyable.
+
+We appreciate your feedback, bug reports and improvement suggestions on our [issue tracker](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/issues).  We also welcome your contributions, subject to our Contributor
 Covenant [code of conduct](./doc/contributing/code_of_conduct.md) and our [contributor license agreement](./doc/contributing/contributing-license.md).  The best way to contribute is by (1) creating a fork off our repository, (2) committing your changes on your fork and then (3) creating a pull request ("PR") to push your changes back to us.
 
 To file an issue or to contribute, you are asked (1) to authenticate and (2) to register:  When asked, **scroll all the way down** and click `Sign in with Helmholtz AAI`.  On the following page "Login to Helmholtz AAI OAuth2 Authorization Server", search for one of your existing authentication providers (this may be your university, company, ORCID, github, or many others) and log in.  You are then asked to provide name and email address for registration on the HIFIS GitLab instance.

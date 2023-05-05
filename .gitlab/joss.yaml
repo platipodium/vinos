@@ -14,24 +14,6 @@ joss-paper:
     needs: []
     stage: deploy
 
-# This one does not work for bugs in inara upstream
-# joss-inara:
-#   stage: deploy
-#   image: 'openjournals/inara'
-#   script:
-#     - inara -o pdf,cff doc/joss/paper.md
-#   environment:
-#     name: draft
-#   variables:
-#     GIT_SHA: $CI_COMMIT_SHA
-#     JOURNAL: joss
-#   when: manual
-#   allow_failure: false
-#   artifacts:
-#     paths:
-#       - doc/joss/paper.pdf
-#   needs: []
-
 # This one actually runs (but takes much longer)
 # joss-docker:
 #     image: docker
@@ -56,3 +38,23 @@ joss-paper:
 #         - doc/joss/paper.pdf
 #     needs: []
 
+# The JOSS-provided workflow does not work for issues between inara docker
+# and gitlab, see https://github.com/openjournals/inara/issues/34.
+# This is resolved by resetting the container's entrypoint.
+
+joss-inara:
+  stage: deploy
+  image:
+    name: openjournals/inara
+    entrypoint: ["/bin/sh", "-c"]
+  variables:
+    GIT_SHA: $CI_COMMIT_SHA
+    JOURNAL: joss
+  script:
+    - inara -o pdf,cff doc/joss/paper.md
+  allow_failure: false
+  artifacts:
+    paths:
+      - ./doc/joss/paper.pdf
+      - ./doc/joss/CITATION.cff
+  needs: []

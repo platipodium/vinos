@@ -192,7 +192,7 @@ to go
   update-plots
 
   ; export the data every week on a Sunday (weekday 0)
-  if weekday = 0 [export-patches]
+  if (time:get "dayofweek"  date) = 0 [export-patches]
 
   tick
 end
@@ -376,7 +376,7 @@ to-report summer-weight
   ;; Define seasonal signal with 120 day shift
   ;; (i.e. maximum on 1 August, minium 1 Feb)
   report seasonal-mean-weight + sin ( ( day-of-year - 129 + random day-variation-range )
-    * 360.0 / (365 + leap-year) ) * seasonal-weight-range / 2.0
+    * 360.0 / 365.25 ) * seasonal-weight-range / 2.0
 end
 
 to calc-fish
