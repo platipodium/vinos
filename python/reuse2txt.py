@@ -12,15 +12,18 @@ import pandas as pd
 import sys
 import datetime
 import pathlib
+import re
 
 def get_copyright_list(df: pd.DataFrame) -> list[str]:
     copyrights = set()
     for _, row in df.iterrows():
+        #for
         try:
             copyright = row.get('FileCopyrightText').replace('<text>','').replace('</text>',
                 '').replace('SPDX-FileCopyrightText: ','')
+            pattern = re.compile(r'^\s*\d+(?:-\d*)?\s*')
+            copyright = pattern.sub("",copyright)
         except:
-            pass
             continue
         copyrights.add(copyright)
 
@@ -60,9 +63,7 @@ def format_reuse(df: pd.DataFrame) -> str:
             continue
         copyright = row.get('FileCopyrightText').replace('<text>','').replace('</text>',
                 '').replace('SPDX-FileCopyrightText: ','')
-        #print(f"{row['FileName']}:\nLicense: {row['LicenseInfoInFile']}\nCopyright: {copyright}\n")
         text += f"* {row['FileName']}:\nLicense: {license}\nCopyright: {copyright}\n\n"
-
     return text
 
 def process_reuse() -> pd.DataFrame:
@@ -149,4 +150,4 @@ Each file carries a license attribution, please consult the following list to id
 the license applicable to an individual file:
 ''')
 
-    print(formatted)
+    #print(formatted)

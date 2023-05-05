@@ -35,6 +35,209 @@ in the  [LICENSES](./LICENSES/) folder:
 The following organizations and individuals own copyrights to (parts of) this project.
 You can find the full license text in the  [LICENSES](./LICENSES/) folder:
 
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon
+2022-2023 Helmholtz-Zentrum hereon GmbH
+2022-203 Helmholtz-Zentrum hereon GmbH (hereon)
+2023 Helmholtz-Zentrum hereon
+2022-2023 Helmholtz-Zentrum hereon
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+2022-2023 Helmholtz-Zentrum hereon
+2023 Helmholtz-Zentrum hereon
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+2022 Hochschule Bremerhaven
+Helmholtz-Zentrum Hereon 2021, 2022
+2022 Thuenen Institut
+2022-2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2005 Hans Hillewaert
+2005 Hans Hillewaert
+2005 Hans Hillewaert
+2006 Hans Hillewaert
+2005 Hans Hillewaert
+2009 Georges Jansoone
+2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2022-2023 Helmholtz-Zentrum hereon GmbH
+2007 Hans Hillewaert
+2022-23 Hochschule Bremerhaven
+2022 Thuenen Institut
+2022 Thuenen Institut
+2022 Thuenen Institut
+2022 Thuenen Institut
+2022 Thuenen Institut
+2022 Thuenen Institut
+2022 Thuenen Institut
+2022 Thuenen Institut
+2022 GEBCO
+2023 Bundesministerium für Bildung und Forschung
+2021-2023 Helmholtz-Zentrum hereon GmbH
+2023 Hochschule Bremerhaven
+Helmholtz-Zentrum hereon GmbH
+2023 Universität Hamburg
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Carsten Lemmen <carsten.lemmen@hereon.de>
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2021 Bundesamt für Seeschifffahrt und Hydrographie (BSH)
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+United Nations Convention on the Law of the Sea
+United Nations Convention on the Law of the Sea
+United Nations Convention on the Law of the Sea
+United Nations Convention on the Law of the Sea
+United Nations Convention on the Law of the Sea
+United Nations Convention on the Law of the Sea
+2022 EMODNET
+2022 EMODNET
+2022 EMODNET
+2022 EMODNET
+2022 EMODNET
+2022 EMODNET
+2022 EMODNET
+2022 EMODNET
+2022 EMODNET
+2022 EMODNET
+Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2022-2023 NOAA National Centers for Environmental Information
+2022 GEBCO
+2022 GEBCO
+2022 ICES Spatial Facility
+2022 ICES Spatial Facility
+2022 ICES Spatial Facility
+2022 ICES Spatial Facility
+2022 ICES Spatial Facility
+2022 ICES Spatial Facility
+2022 ICES Spatial Facility
+2022 ICES Spatial Facility
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2023 European Environmental Agency
+2023 Bundesministerium für Landwirtschaft und Ernährung
+2023 European Environmental Agency, Helmholtz-Zentrum hereon GmbH
+2023 European Environmental Agency, Helmholtz-Zentrum hereon GmbH
+2023 European Environmental Agency, Helmholtz-Zentrum hereon GmbH
+2023 European Environmental Agency, Helmholtz-Zentrum hereon GmbH
+2023 European Environmental Agency, Helmholtz-Zentrum hereon GmbH
+2023 European Environmental Agency, Helmholtz-Zentrum hereon GmbH
+2023 European Environmental Agency, Helmholtz-Zentrum hereon GmbH
+2023 European Environmental Agency, Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+NLWKN
+NLWKN
+NLWKN
+NLWKN
+NLWKN
+NLWKN
+NLWKN
+NLWKN
+NLWKN
+NLWKN
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Hochschule Bremerhaven
+2023 Hochschule Bremerhaven
+2023 Hochschule Bremerhaven
+2023 Hochschule Bremerhaven
+2023 Hochschule Bremerhaven
+2023 Hochschule Bremerhaven
+2023 Hochschule Bremerhaven
+European Commission
+European Commission
+European Commission
+European Commission
+European Commission
+European Commission
+European Commission
+2022 Thuenen Institut
+2022 Thuenen Institut
+2022 Thuenen Institut
+2022 Thuenen Institut
+2022 Thuenen Institut
+2022 Thuenen Institut
+International Earth Rotation Service
+2023 Helmholtz-Zentrum hereon GmbH (hereon)
+Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+2014-2023 Organization for Ethical Source
+2023 Helmholtz-Zentrum hereon GmbH
+Copyright License
+Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+2023 Helmholtz-Zentrum hereon (Hereon)
+2018-2023 JOSS
+2023 Helmholtz-Zentrum hereon GmbH
+2022-2023  Helmholtz-Zentrum hereon GmbH (hereon)
+Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+Helmholtz-Zentrum hereon GmbH
+Helmholtz-Zentrum hereon GmbH
+COMSES
+ORCID.Inc
+2018-2023 MDPI
+Copyright and citebox
+2018-2023 MDPI
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH
+ 2023 International Environmental Modelling and Software Society
+ 2023 International Environmental Modelling and Software Society
+NONE
+NONE
+2022 Carsten Lemmen <carsten.lemmen@hereon.de>
+2023 Helmholtz-Zentrum hereon GmbH
+2022 Carsten Lemmen <carsten.lemmen@hereon.de>
+2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+2023 Helmholtz-Zentrum hereon GmbH
+2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+2022 Helmholtz-Zentrum hereon GmbH (hereon)
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2022 Helmholtz-Zentrum hereon GmbH (hereon)
+2022 Universität Hamburg (UHH)
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+Food and Agriculture Organization of the United Nations
+2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+2022 Carsten Lemmen <carsten.lemmen@hereon.de>
+2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+2014-2021 Helmholtz-Zentrum Geesthacht
+2014-2021 Helmholtz-Zentrum Geesthacht
+2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+2023 Helmholtz-Zentrum hereon GmbH
+2023 Helmholtz-Zentrum hereon GmbH (hereon)
+Copyright holders
  *  2023 International Environmental Modelling and Software Society
  * 2005 Hans Hillewaert
  * 2006 Hans Hillewaert
