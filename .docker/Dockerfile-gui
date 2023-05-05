@@ -23,6 +23,10 @@ RUN mkdir /model
 RUN curl ${NETLOGO_URL} --output ${NETLOGO_NAME}-64.tgz
 RUN tar xzf ${NETLOGO_NAME}-64.tgz -C /opt/netlogo --strip-components=1
 
+# Inject JVM options
+
+RUN sed -i '16i JVM_OPTS+=("-Dsun.java2d.xrender=false")' /opt/netlogo/netlogo-gui.sh
+
 RUN groupadd -g 1009 model
 RUN useradd -d /home/model -s /bin/bash -m model -u 1009 -g 1009
 USER model
@@ -39,6 +43,7 @@ COPY ./ReadMe.md ${HOME}
 
 ENV JAVA_HOME=/usr
 ENV PATH=${PATH}:/opt/netlogo
+
 
 CMD /opt/netlogo/netlogo-gui.sh ${HOME}/netlogo/${MODEL_NAME}
 
