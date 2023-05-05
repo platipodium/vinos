@@ -25,6 +25,7 @@ __includes [
   "include/view.nls"
   "include/prey.nls"
   "include/port.nls"
+  "include/time-series.nls"
 ]
 
 ; breed [gears gear] ; defined in gear.nls
