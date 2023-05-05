@@ -4,11 +4,13 @@
 
 [tool.poetry]
 name = "Agent-based model of North Sea fisheries"
-version = "0.1.0"
+version = "1.0.0"
 description = "Agent-based model of North Sea fisheries"
 authors = ["Sascha Hokamp <sascha.hokamp@uni-hamburg.de>",
            "Carsten Lemmen <carsten.lemmen@hereon.de>",
            "Serra Örey <soerey@hs-bremerhaven.de>",
+           "Jürgen Scheffran <juergen.scheffran@uni-hamburg.de>",
+           "Jieun Seo <jieun.seo@uni-hamburg.de",
            "Nik Probst <nik.probst@thuenen.de"]
 license = "Apache 2.0"
 
@@ -19,6 +21,7 @@ matplotlib = "^3.5.1"
 pre-commit = "^3.2.2"
 tabula-py = "^2.7.0"
 pypdf = "^3.8.0"
+holidays = "^0.24"
 
 [tool.poetry.dev-dependencies]
 reuse = "^0.14.0"
