@@ -10,6 +10,7 @@ globals [
   date ; a logotime object representing absolute date
   holidays-germany ; a logotime series with dates and names of holidays
   holidays-morocco ; a logotime series with dates and names of holidays
+  holiday?
 ]
 
 to setup-calendar
@@ -34,6 +35,13 @@ to setup-calendar
   set day time:get "day"	date
   set day-of-year time:get "dayofyear" date
 
+  set holidays-germany ts-load "../data/holidays/holidays_DE.csv"
+  set holidays-morocco ts-load "../data/holidays/holidays_MA.csv"
+
+  set holiday? is-holiday?
+  ;set holidays-germany ts-load-dates "../data/holidays/holidays_DE.csv"
+  ;set holidays-morocco ts-load-dates "../data/holidays/holidays_MA.csv"
+
 end
 
 ; Advance the calendar by one day
@@ -46,6 +54,8 @@ to advance-calendar
   set day time:get "day"	date
   set day-of-year time:get "dayofyear" date
 
+  set holiday? is-holiday?
+
 end
 
 to-report datetime
@@ -54,4 +64,8 @@ end
 
 to-report datetime-short
   report time:show date "yyyyMMdd"
+end
+
+to-report is-holiday?
+  report ts-member? date holidays-de
 end

@@ -288,14 +288,14 @@ to boat-land-port
   set boat-hour boat-hour + 2
 end
 
-; Boat preocedure to rest
+; Boat procedure to rest
 to boat-rest-port
   let _day-of-week time:get "dayofweek" date
 
   ; boats arriving in port on Saturday don't go out again, neither do boats go
   ; out on a Sunday or before Monday 4 am.  On other days, just rest 11 hours.
   ; On weekdays
-  ifelse _day-of-week = 6 or _day-of-week = 0 [ set boat-hour 24 ][
+  ifelse _day-of-week = 6 or _day-of-week = 0 or holiday? [ set boat-hour 24 ][
     ifelse  _day-of-week = 1 and boat-hour < 4 [ set boat-hour 4 ][
        set boat-hour boat-hour + 11
     ]

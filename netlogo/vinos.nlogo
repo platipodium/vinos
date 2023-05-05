@@ -37,7 +37,7 @@ __includes [
 breed [actions action]
 
 actions-own [
-  action-patch                      ; targeted patch id
+  action-patch                       ; targeted patch id
   action-gain                        ; gain for the fishing trip of the boat
   action-gear
 ]
@@ -54,7 +54,7 @@ globals [
   sum-ports-crangon-landings-kg      ; overall sum of landings of crangon per period in kg
   sum-ports-platessa-landings-kg     ; overall sum of landings of platessa per period in kg
   sum-ports-solea-landings-kg        ; overall sum of landings of solea per period in kg
-  sum-boats                        ; overall boats of all ports
+  sum-boats                          ; overall boats of all ports
 
   owf-dataset                        ; Off-shore wind farms
 
@@ -140,7 +140,7 @@ to setup-globals
   set view "bathymetry"
   set date-patch patch (max-pxcor - 8) (min-pycor + 2)
   ask date-patch [
-    set plabel-color white
+    set plabel-color ifelse-value holiday? [red][white]
     set plabel datetime
   ]
 

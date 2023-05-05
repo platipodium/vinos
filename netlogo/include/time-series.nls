@@ -11,6 +11,26 @@ extensions [
   csv
 ]
 
+; This routine is added to original
+
+to-report ts-member? [ltime-series logotime]
+  let closest-row ts-get ltime-series logotime "all"
+  ifelse time:is-equal? (item 0 closest-row) logotime [
+    report true
+  ] [
+    report false
+  ]
+end
+
+to-report ts-get-exact [ltime-series logotime col-name]
+  let closest-row ts-get ltime-series logotime "all"
+  ifelse time:is-equal? (item 0 closest-row) logotime [
+    report __col-of-row (item 0 ltime-series) closest-row col-name
+  ] [
+    error word "There is no row in this timeseries with exactly the time " logotime
+  ]
+end
+
 to-report ts-create [col-name-list]
   report  (list sentence "LOGOTIME" col-name-list)
 end
@@ -28,6 +48,29 @@ to-report ts-load-with-format [filepath format-string]
   report fput columns __sort-by-date map [ row ->
     __convert-row-with-format row format-string
   ] (butfirst temp-ts)
+end
+
+to-report ts-get [ltime-series logotime col-name]
+  let b&a ts-get-before-and-after ltime-series logotime
+  let columns (item 0 ltime-series)
+  (ifelse
+    first b&a = nobody [report __col-of-row columns (last b&a) col-name] ; need this explicitly so we don't try to get __time-of first b&a iin the next conditional when first b&a is nobody
+    last b&a = nobody or
+    (abs(time:difference-between logotime (__time-of first b&a) "seconds") <= abs(time:difference-between logotime (__time-of last b&a) "seconds"))[
+      report __col-of-row columns (first b&a) col-name   ; logotime is closer to the item before than after
+    ]  [ ; else
+    report __col-of-row columns (last b&a) col-name
+    ]
+  )
+end
+
+
+
+to-report ts-get-before-and-after [ltime-series logotime]
+  let b&a __indices-before-and-after ltime-series logotime
+  let before ifelse-value (first b&a = nobody) [nobody] [item (first b&a) ltime-series]
+  let after ifelse-value (last b&a = nobody) [nobody] [item (last b&a) ltime-series]
+  report list before after
 end
 
 ;; Internal functions
@@ -48,4 +91,54 @@ end
 
 to-report __convert-row [row] ; helper
   report __convert-row-with-format row nobody
+end
+
+to-report __indices-before-and-after [timeseries logotime]
+  ; return the indexes of the rows in timeseries that have logotimes above and below the input logotime.
+  ; if there is an exact match, return the index of the exact row twice.
+  ; the column names are included so that you can just use the index on the timeseries list and not butfirst timeseries list.
+  ; This is equivalent to treating ltime-series objects here as starting at index 1
+  let i round ((length timeseries) / 2)
+  let max-i length timeseries - 1
+  let min-i 1
+  while [true] [
+    (ifelse
+      time:is-equal? logotime (__time-of item i timeseries) [report list i i]
+      (time:is-before? logotime (__time-of item i timeseries)) and i = 1 [report list nobody i]
+      (time:is-after? logotime (__time-of item i timeseries)) and i = (length timeseries - 1) [report list i nobody]
+      (time:is-after? logotime (__time-of item i timeseries)) and (time:is-before? logotime (__time-of item (i + 1) timeseries)) [report list i (i + 1)]
+      time:is-before? logotime (__time-of item i timeseries) [
+        set max-i i
+        set i floor ((i + min-i) / 2)
+      ]
+      __is-after-or-equal? logotime (__time-of item (i + 1) timeseries) [
+        set min-i i
+        set i ceiling ((i + max-i) / 2)
+      ]
+    )
+  ]
+end
+
+to-report __time-of [row]
+  report item 0 row
+end
+
+to-report __col-of-row [columns row col-name]
+  (ifelse
+    col-name = "all" or col-name = "ALL" [report row]
+    col-name = "LOGOTIME" or col-name = "logotime" [report item 0 row]
+    [ ;else
+      let pos position col-name columns
+      if pos = false [error (word "'" col-name "' is not a column in this time series")]
+      report item pos row
+    ]
+  )
+end
+
+to-report __is-before-or-equal? [logotime1 logotime2]
+  report time:is-before? logotime1 logotime2 or time:is-equal? logotime1 logotime2
+end
+
+to-report __is-after-or-equal? [logotime1 logotime2]
+  report time:is-after? logotime1 logotime2 or time:is-equal? logotime1 logotime2
 end
