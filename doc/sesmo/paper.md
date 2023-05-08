@@ -1,10 +1,8 @@
 ---
 title: 'The redistribution of German Small-scale Fisheries effort and impact due to regulatory area closures'
-keywords: "North Sea; Fisheries; Area closure; MuSSeL project; VIABLE; ViNoS; Agent-based Model; ABM"
-journal: comses
-type: article
-classoption: moreauthors=true
-status:
+keyword:
+  - North Sea
+  - Fisheries; Area closure; MuSSeL project; VIABLE; ViNoS; Agent-based Model; ABM"
 author:
   - Carsten Lemmen, Helmholtz-Zentrum Hereon, Max-Planck-Str. 1, 21502 Geesthacht, Germany
   - Serra Örey, Hochschule Bremerhaven, Research Cluster Life Sciences, Bremerhaven, Germany
@@ -12,7 +10,7 @@ author:
   - Sascha Hokamp, Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany
 correspondence: C. Lemmen <carsten.lemmen@hereon.de>
 citation_author: Lemmen et al.
-year: 2023
+date: submitted to SESMO, June 2022
 license: CC-BY-4.0
 bibliography: paper.bib
 SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
