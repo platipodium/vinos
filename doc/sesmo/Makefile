@@ -36,7 +36,7 @@ EPUB=$(SRC:.md=.epub)
 TXT=$(SRC:.md=.txt)
 BIB=$(SRC:.md=.bib)
 
-all:  txt odt pdf
+all:  docx pdf
 pdf:	$(PDF) $(SRC) Makefile
 html:	$(HTML) $(SRC) Makefile
 docx: $(DOCX) $(SRC) Makefile
