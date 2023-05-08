@@ -6,27 +6,11 @@ type: article
 classoption: moreauthors=true
 status:
 author:
-  - name: Carsten Lemmen
-    orcid: 0000-0003-3483-6036
-    affil: 1
-  - name: Sascha Hokamp
-    affil: 2
-    orcid: 0000-0002-2192-4013
-  - name: Serra Örey
-    affil: 3
-    orcid: 0000-0003-3483-6036
-  - name: Jürgen Scheffran
-    affil: 2
-    orcid: 0000-0002-7171-3062
+  - Carsten Lemmen, Helmholtz-Zentrum Hereon, Max-Planck-Str. 1, 21502 Geesthacht, Germany
+  - Serra Örey, Hochschule Bremerhaven, Research Cluster Life Sciences, Bremerhaven, Germany
+  - Jürgen Scheffran, Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany
+  - Sascha Hokamp, Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany
 correspondence: C. Lemmen <carsten.lemmen@hereon.de>
-affiliation:
- - address: Helmholtz-Zentrum Hereon, Max-Planck-Str. 1, 21502 Geesthacht, Germany
-   num: 1
-   email: carsten.lemmen@hereon.de
- - address: Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany
-   num: 2
- - address: Hochschule Bremerhaven, Research Cluster Life Sciences, Bremerhaven, Germany
-   num: 3
 citation_author: Lemmen et al.
 year: 2023
 license: CC-BY-4.0
@@ -63,7 +47,7 @@ We use the Viable North Sea (ViNoS)Agent-based Model (ABM) of the German North S
 
 ## ViNoS Model
 
-The Viable North Sea (ViNoS) Agent-Based model (ABM) is a socio-ecological systems (SES) modeling environment for interactive simulation of the German Small-scale Fisheries. It is built on the NetLogo [@Wilensky1999] platform and available as Open Source [@Lemmen2023b]. ViNoS describes describes spatial, temporal and structural adaptations of the fishing fleet.  It adaptively describes (1) where to fish  and how far to go out to sea; (2) how often to go out ; and (3) what gear to use and what species to target.
+The Viable North Sea (ViNoS) Agent-Based model (ABM) is a socio-ecological systems (SES) modeling environment for interactive simulation of the German Small-scale Fisheries. It is built on the NetLogo [@Wilensky1999] platform and available as Open Source [@Lemmen2023a]. ViNoS describes describes spatial, temporal and structural adaptations of the fishing fleet.  It adaptively describes (1) where to fish  and how far to go out to sea; (2) how often to go out ; and (3) what gear to use and what species to target.
 
 The model represents 300 fishing vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The target species considered are plaice, sole and brown shrimp using a variety of beam trawling gear and otter boards.
 
@@ -81,7 +65,7 @@ $$
 
 The emergent property is the spatial pattern of fishing activities, which is best recorded as maps of effort or maps of swept area ratio (SAR). This property can be compared to existing data on effort or SAR, and it gives information on the location of the largest potential environmental impact of fisheries.
 
-A full Overview, Design and Details (ODD) model documentation is available as @Lemmen2023a.
+A full Overview, Design and Details (ODD) model documentation is available as @Lemmen2023b.
 
 ## Supporting data sets
 

@@ -54,18 +54,19 @@ txt:  $(TXT) $(SRC) Makefile
 %.epub:	%.md  %.bib Makefile
 	$(CMD) --to=epub -s -o $@ $<  # --epub-cover-image=cover-image.gif
 
-%.tex:	%.md  %.bib Makefile
-	$(CMD) -s  --template=./sesmo-template.tex  -o $@ $<
+%.tex:	%.docx Makefile
+	$(CMD) -s  --from docx --to latex  -o $@ $<
 
-%.pdf:	%.md  %.bib Makefile
-	$(CMD) -s  --template=./sesmo-template.tex  -o $@ $<
+%.pdf:	%.docx Makefile
+	$(CMD) -s  --from docx --to pdf  -o $@ $<
 
-%.docx:	%.md  %.bib Makefile
+%.docx:	%.md  %.bib Makefile pandoc-scholar.docx
 	$(CMD)--to=docx --reference-doc=pandoc-scholar.docx -s -o $@ $<
-# --reference-doc= --filter pandoc-citeproc --bibliography
+#	$(CMD)--to=docx --reference-doc=custom-reference.docx -s -o $@ $<
 
-%.odt:	%.md  %.bib Makefile
-	$(CMD) --to=odt -s  -o $@ $<
+%.odt:	%.docx Makefile
+	$(CMD) -s  --from docx --to odt  -o $@ $<
+
 # --reference-doc= --filter pandoc-citeproc --bibliography
 
 clean:
@@ -75,8 +76,6 @@ clean:
 	@rm -f missfont.log $(SRC:.md=.run.xml)
 	@rm -f $(EPUB) $(TXT)
 	@rm -f allbib.html allbib.pdf
-
-
 
 bib:
 	pandoc allbib.tex -o allbib.html --citeproc --bibliography paper.bib
