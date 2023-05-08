@@ -4,14 +4,17 @@
 
 [tool.poetry]
 name = "Agent-based model of North Sea fisheries"
-version = "1.0.0"
+version = "1.1.0"
 description = "Agent-based model of North Sea fisheries"
-authors = ["Sascha Hokamp <sascha.hokamp@uni-hamburg.de>",
-           "Carsten Lemmen <carsten.lemmen@hereon.de>",
-           "Serra Örey <soerey@hs-bremerhaven.de>",
-           "Jürgen Scheffran <juergen.scheffran@uni-hamburg.de>",
-           "Jieun Seo <jieun.seo@uni-hamburg.de",
-           "Nik Probst <nik.probst@thuenen.de"]
+authors = [
+    "Carsten Lemmen <carsten.lemmen@hereon.de>",
+    "Sascha Hokamp <sascha.hokamp@uni-hamburg.de>",
+    "Verena Mühlberger <verena.muehlberger@uni-hamburg.de",
+    "Serra Örey <soerey@hs-bremerhaven.de>",
+    "Nik Probst <nik.probst@thuenen.de",
+    "Jürgen Scheffran <juergen.scheffran@uni-hamburg.de>",
+    "Jieun Seo <jieun.seo@uni-hamburg.de",
+    ]
 license = "Apache 2.0"
 
 [tool.poetry.dependencies]
