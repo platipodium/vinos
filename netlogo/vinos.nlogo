@@ -836,7 +836,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-1
+5
 
 BUTTON
 83
@@ -948,8 +948,8 @@ TEXTBOX
 10
 1034
 63
-Viable North Sea (ViNoS) Agent-based Model of Small-scall Fisheries
-28
+Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
+22
 2.0
 1
 
@@ -1170,7 +1170,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "operating-costs" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase"
-0
+9
 
 SWITCH
 1241
