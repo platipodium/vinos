@@ -164,8 +164,12 @@ to go
     set plabel datetime
   ]
 
+  ; Todo: adjust price, leave for next version
+  ; preis = a - b * h
+  ; set price price - sum_boats (catch) * price-sensitivity
+
   calc-fish
-  let _active-boats boats
+  let _active-boats n-of 10 boats
 
   ; Enable a simulation with only one active boat that can be closely
   ; followed.  This is off by default
@@ -832,7 +836,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+1
 
 BUTTON
 83

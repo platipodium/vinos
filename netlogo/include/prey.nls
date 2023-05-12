@@ -20,6 +20,7 @@ preys-own [
 globals [
   prey-names
   prey-number
+  prey-prices
 ]
 
 ; We define here a constant and predefined number of gears
@@ -47,7 +48,8 @@ to setup-preys
   let my-prey-ids sort [who] of preys
   set prey-number count preys
   set prey-names n-values prey-number [i -> [prey-name] of prey item i my-prey-ids]
-
+  ; ["Solea" "Pleuronectes" "Crangon"]
+  set prey-prices (list 11 1 7)
 end
 
 to read-prey-csv

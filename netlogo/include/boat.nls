@@ -5,6 +5,7 @@
 ;
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 ; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
+; SPDX-FileContributor: Jürgen Scheffran <juergen.scheffran@uni-hamburg.de>
 ; SPDX-FileContributor: Jieun Seo <jieun.seo@studium.uni-hamburg.de>
 ; SPDX-FileContributor: Serra Örey <soerey@hs-bremerhaven.de>
 
@@ -253,6 +254,7 @@ to boat-land-port
 
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
   ;set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
+  ;set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * (item (item igear ispecieslist) prey-prices))]
   set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches) * 3000]
 
   ;print (sentence "X: " revenue-boat boat-gear-catches)
@@ -261,30 +263,18 @@ to boat-land-port
   let sum-boat-gains sum boat-gains
   let sum-boat-priorities-gains sum n-values (number-of-gears) [i -> item i boat-gear-priorities * item i boat-gains]
 
-  ifelse (sum-boat-gains = 0) [][
+  ;ifelse (sum-boat-gains = 0) [][
+  ;  set boat-delta-priorities n-values (number-of-gears) [
+  ;    i -> adaptation * (item i boat-gear-priorities) * (( item i boat-gains) - sum-boat-priorities-gains) / sum-boat-gains
+  ;  ]
+  ;]
+  carefully [
     set boat-delta-priorities n-values (number-of-gears) [
       i -> adaptation * (item i boat-gear-priorities) * (( item i boat-gains) - sum-boat-priorities-gains) / sum-boat-gains
     ]
-  ]
-  ;set boat-delta-gains n-values (number-of-gears) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
-  ;set boat-gains n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
-  ;let delta-adjust sum map [ i -> abs i ] boat-delta-gains ; fix minus boat priority
-                                                           ; in cast that the boat-gains decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
-  ;ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
-  ;  set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i boat-delta-gains) * (item i boat-gear-priorities) / delta-adjust]
-  ;][
-  ;  set boat-delta-priorities map [i -> 0] boat-delta-priorities
-  ;]
-  ;set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
-  ;set boat-gear-priorities map [i -> i / sum boat-gear-priorities] boat-gear-priorities
-
+  ][]
 
   set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities + item i boat-delta-priorities]
-  ; Make sure that boat-gear-priorities always sum to 1
-  ;if sum boat-gear-priorities != 0 [
-  ;  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities / sum boat-gear-priorities ]
-  ;]
-
 
   ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
   ; At the moment, boat-tranpsortation cost are 70 k€, op-costs are 2000 € revenue is 0.0002
