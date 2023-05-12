@@ -116,6 +116,12 @@ to setup-gears
 
 end
 
+; sfdSAR R package
+; The goal of sfdSAR is to make it easy to follow the procedure of calculating swept area ratio of an area of seabed by a fishing gear.
+; check table: data(gear_widths) it uses  Eigaard et al. (2016), with additions from ICES (2015). 
+; ICES 2015. Report of the Working Group on Spatial Fisheries Data (WGSFD), 8–12 June 2015, ICES Headquarters, Copenhagen, Denmark. ICES CM 2015/SSGEPI:18. 150pp
+; Eigaard OR, Bastardie F, Breen M, et al. (2016) Estimating seabed pressure from demersal trawls, seines, and dredges based on gear design and dimensions. ICES Journal of Marine Science, 73:27‐43
+; https://github.com/ices-tools-dev/sfdSAR
 
 ; FAO International Standard Classification of Fishing Gear ISSCFG
 ; He, P., Chopin, F., Suuronen, P., Ferro, R.
