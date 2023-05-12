@@ -257,25 +257,33 @@ to boat-land-port
   ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
   print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat boat-distance-at-sea)
 
+  set boat-gains n-values (number-of-gears ) [i -> item i revenue-boat - item i costs-boat]
+  let sum-boat-gains sum boat-gains
+  let sum-boat-priorities-gains sum n-values (number-of-gears) [i -> item i boat-gear-priorities * item i boat-gains]
 
-  set boat-delta-gains n-values (number-of-gears) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
-  set boat-gains n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
-  let delta-adjust sum map [ i -> abs i ] boat-delta-gains ; fix minus boat priority
+  if (not sum-boat-gains = 0) [
+    set boat-delta-priorities n-values (number-of-gears) [
+      i -> adaptation * (item i boat-gear-priorities) * (( item i boat-gains) - sum-boat-priorities-gains) / sum-boat-gains
+    ]
+  ]
+  ;set boat-delta-gains n-values (number-of-gears) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
+  ;set boat-gains n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
+  ;let delta-adjust sum map [ i -> abs i ] boat-delta-gains ; fix minus boat priority
                                                            ; in cast that the boat-gains decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
-  ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
-    set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i boat-delta-gains) * (item i boat-gear-priorities) / delta-adjust]
-  ][
-    set boat-delta-priorities map [i -> 0] boat-delta-priorities
-  ]
-  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
-  set boat-gear-priorities map [i -> i / sum boat-gear-priorities] boat-gear-priorities
+  ;ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
+  ;  set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i boat-delta-gains) * (item i boat-gear-priorities) / delta-adjust]
+  ;][
+  ;  set boat-delta-priorities map [i -> 0] boat-delta-priorities
+  ;]
+  ;set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
+  ;set boat-gear-priorities map [i -> i / sum boat-gear-priorities] boat-gear-priorities
 
 
-  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
+  ;set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
   ; Make sure that boat-gear-priorities always sum to 1
-  if sum boat-gear-priorities != 0 [
-    set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities / sum boat-gear-priorities ]
-  ]
+  ;if sum boat-gear-priorities != 0 [
+  ;  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities / sum boat-gear-priorities ]
+  ;]
 
   set boat-gear-catches map [i -> 0] boat-gear-catches
 
