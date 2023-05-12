@@ -174,6 +174,7 @@ Hauls continue until one of the following constraints is met (always taking into
 On an insufficient catch, the boat enters phase 2 to look for a different location.  On a successful catch and after having spent the allocated time or fuel, the boat enters phase 4.
 
 ![Decision pathway for a simulated fishing trip.\label{fig:flowchart}](../../assets/abm_flowchart.pdf){ width=90% height=30% }
+UPDATE the flowchart with white background (SERRA:monday-2023-05-15)
 
 Boats in **phase 4** need to return.  They directly steam in a straight line to their deployment location and on to their port. At the port, they enter **phase 5** to unload their catch and clean the boat.  Priorities for the different gears are updated based on the relative change of the deployed gears and catches.
 Finally, boats re-enter phase 0 and restart the cycle. A summary view of the model scheduling is depicted in \autoref{fig:flowchart}
