@@ -252,7 +252,7 @@ to boat-land-port
   ; @todo move this to gear.nls as global
   let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
 
-  let _boat-prey-catches (list 0 0 0)
+  ;let _boat-prey-catches (list 0 0 0)
   ;[0 1 2 2 0 0 1
   ;let _index-prey-ger]
   ;(foreach ispecieslist (range number-of-gears)[ [iprey igear] ->
