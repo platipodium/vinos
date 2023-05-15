@@ -164,6 +164,7 @@ to go
     set plabel datetime
   ]
 
+  ;let _total-prey-landed sum ([port-prey-landed] of ports)
   ; Todo: adjust price, leave for next version
   ; preis = a - b * h
   ; set price price - sum_boats (catch) * price-sensitivity

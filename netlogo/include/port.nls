@@ -26,6 +26,7 @@ ports-own [
 
   ;port-landings-euro            ; vector of landings with number-of-species in EURO 2015
   ;port-landings-kg              ; vector of landings with number-of-species in Kg
+  port-prey-landed               ; vector of length prey-names that records the daily landing
 
   port-transportation-costs; average transportation costs as percentage of the total landings in EUR 2015
   port-operation-costs     ; average operating costs as percentage of the total landings in EUR 2015
