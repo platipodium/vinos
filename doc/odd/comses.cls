@@ -1164,7 +1164,8 @@
 		\linespread{1.44} 
 		\fontsize{9}{9}\selectfont 
 		\ifthenelse{\equal{\@status}{submit}}{
-			\noindent \copyright{} {\@ \the\year} by the \@authornum. %
+%			\noindent \copyright{} {\@ \the\year} by the \@authornum. %
+			\noindent \copyright{} {\@ \the\year} by the authors. %
 			Submitted to {\em \journalname} for %
 			possible open access publication %
 			under the terms and conditions of the Creative Commons Attribution %

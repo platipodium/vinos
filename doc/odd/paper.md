@@ -40,7 +40,7 @@ SPDX-FileCopyrightText: 2023 University of Hamburg
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
 abstract: "Viable North Sea (ViNoS): an Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp. Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
-acknowledgements: "The authors thank W.N. Probst for providing species distribution data as a forcing to this model.  We thank M. Ryan for helping with the shape files. The development of the model is funded by the German Ministry of Education and Research through the KüNO project 'Multiple Stressors on North Sea Life' (MuSSeL) with grant number 03F0862A."
+acknowledgement: "The authors thank W.N. Probst for providing species distribution data as a forcing to this model.  We thank M. Ryan for helping with the shape files. The development of the model is funded by the German Ministry of Education and Research through the KüNO project 'Multiple Stressors on North Sea Life' (MuSSeL) with grant number 03F0862A.  We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others."
 conflictsofinterests: "The authors declare that no conflict of interest has arisen from this work."
 abbreviations:
   - short: ABM
@@ -235,16 +235,16 @@ All data are publicly available and licensed for use.  The data sources are
 
 | **Description** | **Source** |
 | --- | --- |
-| Clustered vessel data | Hochschule Bremerhaven, CC-by-NC-ND-4.0 |
-| Species distribution of plaice, sole, and brown shrimp | Thünen Institute, PDDL-1.0 |
-| Species information | FAO |
-| Bathymetry | GEBCO |
-| Offshore Wind farms | EMODNet |
-| EEZ | United Nations |
-| ICES subregional divisions | ICES |
+| Clustered vessel data | Hochschule Bremerhaven |
+| Species distribution of plaice, sole, and brown shrimp | Thünen Institute |
+| Species information | Food and Agriculture Organization (FAO) |
+| Bathymetry | General Bathymetry Chart of the Oceans (GEBCO) |
+| Offshore Wind Farms (OWF) | European Commission, European Marine Observation and Data Network (EMODnet)  |
+| Exclusive economic zone (EEZ) | United Nations Convention on the Law of the Sea |
+| Subregional divisions | International Council for the Exploration of the Seas (ICES) Spatial Facility |
 | Plaice box | European Commision |
-| Geodetic information | International Earth Rotation Service, CC0-1.0 |
-| National Park boundaries | NLWKN, DL-DE-BY-2.0 |
+| Geodetic information | International Earth Rotation Service (IERS) |
+| National Park boundaries | Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz (NLWKN) |
 
 # CRediT authorship contribution statement
 C.Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing.
@@ -257,6 +257,5 @@ J.Seo: Writing – original draft.
 ## Sub-models
 1. **Sub-models**
 -->
-
 
 # References
