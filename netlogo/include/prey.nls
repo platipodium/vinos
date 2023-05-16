@@ -53,7 +53,7 @@ to setup-preys
 
   set prey-prices n-values prey-number [ i -> 5] ; default value is 5 EUR kg-1
   set prey-prices replace-item (position "Crangon" prey-names) prey-prices 7
-  set prey-prices replace-item (position "Pleuronectes" prey-names) prey-prices 1
+  set prey-prices replace-item (position "Pleuronectes" prey-names) prey-prices 3 ; should be lower
   set prey-prices replace-item (position "Solea" prey-names) prey-prices 11
 end
 

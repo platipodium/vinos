@@ -247,12 +247,8 @@ to boat-land-port
     boat-transportation-costs + boat-operating-costs]
   ]
 
-  ; Find the position of the target gear-species in prey-names and return the index of the species,
-  ; save this in a temporary list of size number-of-gears, resulting in the gear-species index map ispecieslist
-  ; @todo move this to gear.nls as global
-  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
+  let _boat-prey-catches n-values count preys [ i -> 0]
 
-  ;let _boat-prey-catches (list 0 0 0)
   ;[0 1 2 2 0 0 1
   ;let _index-prey-ger]
   ;(foreach ispecieslist (range number-of-gears)[ [iprey igear] ->
@@ -260,11 +256,9 @@ to boat-land-port
   ;])
 
 
-
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
-  ;set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
-  ;set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * (item (item igear ispecieslist) prey-prices))]
-  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches) * 3000]
+  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * (item (item igear gear-prey-indices) prey-prices))]
+  ;set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches) * 3000]
 
   ;print (sentence "X: " revenue-boat boat-gear-catches)
 
