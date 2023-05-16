@@ -2,6 +2,7 @@
 title: 'ODD Protocol for Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries'
 keywords: "NetLogo; Agent-based Model; ABM; North Sea; Fisheries; MuSSeL project; ODD; VIABLE; ViNoS"
 journal: comses
+csl-refs: true
 type: article
 classoption: moreauthors=true
 status:

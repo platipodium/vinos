@@ -80,9 +80,7 @@ clean:
 	@rm -f missfont.log $(SRC:.md=.run.xml)
 	@rm -f $(EPUB) $(TXT)
 	@rm -f allbib.html allbib.pdf
-	
 
-
-bib: 
+bib: paper.bib
 	pandoc allbib.tex -o allbib.html --citeproc --bibliography paper.bib
-	pandoc allbib.tex -o allbib.pdf --citeproc --bibliography paper.bib 
+	pandoc allbib.tex -o allbib.pdf --citeproc --bibliography paper.bib
