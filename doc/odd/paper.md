@@ -24,19 +24,19 @@ author:
     orcid:
 correspondence: C. Lemmen <carsten.lemmen@hereon.de>
 affiliation:
- - address: Helmholtz-Zentrum Hereon, Max-Planck-Str. 1, 21502 Geesthacht, Germany
+ - address: Helmholtz-Zentrum Hereon, Institute of Coastal Systems - Analysis and Modeling, Max-Planck-Str. 1, 21502 Geesthacht, Germany
    num: 1
    email: carsten.lemmen@hereon.de
- - address: Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany
+ - address: Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Bundesstrasse 53, 20146 Hamburg, Germany
    num: 2
- - address: Hochschule Bremerhaven, Research Cluster Life Sciences, Bremerhaven, Germany
+ - address: Hochschule Bremerhaven, Research Cluster Life Sciences, An der Karlstadt 8, 27568 Bremerhaven, Germany
    num: 3
 citation_author: Lemmen et al.
 year: 2023
 license: CC-BY-4.0
 bibliography: paper.bib
 SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
-SPDX-FileCopyrightText: 2023 University of Hamburg
+SPDX-FileCopyrightText: 2023 Universität Hamburg
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
 abstract: "Viable North Sea (ViNoS): an Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp. Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
