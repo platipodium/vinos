@@ -9,6 +9,7 @@ SPDX-License-Identifier: CC0-1.0
  [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7240/badge)](https://bestpractices.coreinfrastructure.org/projects/7240)
  [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](./doc/contributing/code_of_conduct.md)
  [![Pipeline](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/badges/main/pipeline.svg)](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/pipelines)
+ [![REUSE status](https://api.reuse.software/badge/github.com/fsfe/reuse-tool)](https://api.reuse.software/info/codebase.helmholtz.cloud/mussel/netlogo-northsea-species)
 
 # Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries
 
