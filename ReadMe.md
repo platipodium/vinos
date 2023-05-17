@@ -41,7 +41,7 @@ On Linux, start NetLogo with the `netlogo-gui.sh` shell script provided by NetLo
 
 Please refer to the `Info` tab in the graphical NetLogo model to learn quickly more about the model, it's
 mathematical implementation and how to use it.  There is a full documentation in ODD format available in
-[./doc/odd/paper.md](./doc/odd/paper.md).
+[./doc/odd/paper.md](./doc/odd/paper.md) or from [https://mussel.pages.hzdr.de/netlogo-northsea-species/odd.pdf](https://mussel.pages.hzdr.de/netlogo-northsea-species/odd.pdf).
 
 ## Licenses
 
