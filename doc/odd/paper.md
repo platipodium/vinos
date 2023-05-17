@@ -187,19 +187,26 @@ Finally, boats re-enter phase 0 and restart the cycle. A summary view of the mod
 The ABM is an adaptive model with the **objective** of increasing value gains (here: net profits), subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to changing gear with shifting priorities for allocating fishing effort, and described by the ABM framework VIABLE (Values and Investments from Agent-Based interaction and Learning in Environmental systems) [@BenDor2019;@Scheffran2000].
 
 In the VIABLE approach, each boat carries a list of priorities for certain fishing actions that are subject to change based on the boat’s perception and evaluation of its activities.  During each haul, the costs of that haul (wage and fuel) $C$ are subtracted from the benefits, i.e. the income from the catch (harvest) $H$ times the market price $p$ for each fish:
+
 $$
-V = p H – C.
+V = p H - C.
 $$
+
 The fish catch $H$ from a haul is a function of fishing effort $E$ (in work hours), density of a particular fish species $X$ in the area of fishing and the catch efficiency $e$ for the respective gear type interacting with this particular fish:
+
 $$
-H = e X E .
+H = e X E.
 $$
-If for each boat there are several gear types (termed ``action pathways'' in the VIABLE approach) $k = 1,\ldots,m$ available, according to the gradient decision rule each agent changes priority $r_k$ in proportion to the product of marginal value $v_k$ and priority $p_k$ for each gear type, multiplied by an adaptation rate $a$ determining how strong agents adapt action to value. The marginal value van be the change in $V_k$ when choosing priority $k$ or in mathematical terms the partial derivative of the value function with respect to priority $v_k=\partial{V}/\partial{r_k}$, if that function is known.
+
+If for each boat there are several gear types (termed "action pathways" in the VIABLE approach) $k = 1 \ldots m$ available, according to the gradient decision rule each agent changes priority $r_k$ in proportion to the product of marginal value $v_k$ and priority $p_k$ for each gear type, multiplied by an adaptation rate $a$ determining how strong agents adapt action to value.
+The marginal value van be the change in $V_k$ when choosing priority $k$ or in mathematical terms the partial derivative of the value function with respect to priority $v_k=\partial{V}/\partial{r_k}$, if that function is known.
 Althogether, the temporal change of the priorities $r_k$ is given by
+
 $$
 \frac{dr_k}{dt} = a r_k \cdot \frac{v_k - \sum r_k v_k }{\sum v_k}
 $$
-Both sums are for normalisation purposes to make sure that all priorities add up to 1. The first sum means that pathways $k$ above average increase and below average decrease, indicating a competition to select the ``better'' gear.
+
+Both sums are for normalisation purposes to make sure that all priorities add up to 1. The first sum means that pathways $k$ above average increase and below average decrease, indicating a competition to select the "better" gear.
 
 
 <!--
@@ -208,7 +215,6 @@ This equation is universal, also applies to fishery, requiring more details on v
 
 ### Emergence
 
-<!-- This is the first time effort is mentioned. -->
 The emergent property is the spatial pattern of fishing activities, which is best recorded as maps of effort or maps of swept area ratio (SAR). This property can be compared to existing data on effort or SAR, and it gives information on the location of the largest potential environmental impact of fisheries.
 
 ### Learning
