@@ -190,21 +190,19 @@ Finally, boats re-enter phase 0 and restart the cycle. A summary view of the mod
 <!-- German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.  -->
 The ABM is an adaptive model with the **objective** of increasing value gains (here: net profits), subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to changing gear with shifting priorities for allocating fishing effort, and described by the ABM framework VIABLE (Values and Investments from Agent-Based interaction and Learning in Environmental systems) [@BenDor2019;@Scheffran2000].
 
-<!-- Do we need table captions? Format is unbalanced, left column takes too much space. Also do not split table over two pages. -->
-
-| **Symbol** | **Description** |
-| --- | --- |
-| $k$ | Action pathway, here: gear selected out of $m$ possibilities  $k = 1\ldots m$. |
-| $C$ | Cost of a haul, composed of time-dependent cost (e.g. wages) and distance costs (fuel), measured in € |
-| $H$ | Fish catch, or harvest, during a haul measured in kg.  Calculated from catch efficiency $e$, prey density $X$, and effort $E$.|
-| $E$ | Effort of fishing activity measured in hours. Fishers typically fish 1500 to 2000 hours per year.|
-| $X$ | Density of fish at fishing ground, expressed in kg m^-2^ trawled.|
-| $e$ | Catch efficiency, expressed in units of m^2^ h^-1^.|
-| $p$ | Price of the fish, expresses in € kg^-1^|
-| $V$ | Value, here: net gain of haul, i.e. fish catch $H$ times price $p$ minus cost $C$, measured in €. |
-| $r_k$ | Priority for action pathway $k$ with $0\leq r_k\leq 1$ and $\sum_1^m r_k = 1$.   |
-| $v_k$ | Marginal change of value with priority $v_k=\partial{V}/\partial{r_k}$, expressed in €.  |
-| $a$ | Adaptation rate (sensitivity) of a change in priority from a change in value.  |
+| **Symbol** | **Description**                                                |
+|------------|---------------------------------------------------------------|
+| $k$        | Action pathway, here: gear selected out of $m$ possibilities  $k = 1\ldots m$. |
+| $C$        | Cost of a haul, composed of time-dependent cost (e.g. wages) and distance costs (fuel), measured in € |
+| $H$        | Fish catch, or harvest, during a haul measured in kg. Calculated from catch efficiency $e$, prey density $X$, and effort $E$. |
+| $E$        | Effort of fishing activity measured in hours. Fishers typically fish 1500 to 2000 hours per year. |
+| $X$        | Density of fish at fishing ground, expressed in kg m^-2^ trawled. |
+| $e$        | Catch efficiency, expressed in units of m^2^ h^-1^.             |
+| $p$        | Price of the fish, expresses in € kg^-1^.                      |
+| $V$        | Value, here: net gain of haul, i.e. fish catch $H$ times price $p$ minus cost $C$, measured in €. |
+| $r_k$      | Priority for action pathway $k$ with $0\leq r_k\leq 1$ and $\sum_1^m r_k = 1$. |
+| $v_k$      | Marginal change of value with priority $v_k=\partial{V}/\partial{r_k}$, expressed in €. |
+| $a$        | Adaptation rate (sensitivity) of a change in priority from a change in value. |
 
 In the VIABLE approach, each boat carries a list of priorities for certain fishing actions that are subject to change based on the boat’s perception and evaluation of its activities.  During each haul, the costs of that haul (wage and fuel) $C$ are subtracted from the benefits, i.e. the income from the catch (harvest) $H$ times the market price $p$ for each fish:
 
