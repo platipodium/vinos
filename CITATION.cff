@@ -34,6 +34,11 @@ authors:
     given-names: "Jieun"
     email: jieun.seo@uni-hamburg.de
     affiliation: "Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany"
+  - family-names: Mühlberger
+    given-names: "Verena"
+    email: verena.muehlberger@uni-hamburg.de
+    orcid: 0009-0000-0785-6811
+    affiliation: "Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany"
 cff-version: 1.2.0
 message: "If you use this software, please cite it using these metadata."
 title: 'Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries'

@@ -22,6 +22,10 @@ author:
   - name: Jieun Seo
     affil: 2
     orcid:
+  - name: Verena Mühlberger
+    affil: 2
+    orcid: 0009-0000-0785-6811
+
 correspondence: C. Lemmen <carsten.lemmen@hereon.de>
 affiliation:
  - address: Helmholtz-Zentrum Hereon, Institute of Coastal Systems - Analysis and Modeling, Max-Planck-Str. 1, 21502 Geesthacht, Germany
@@ -273,11 +277,12 @@ All data are publicly available and licensed for use.  The data sources are
 | National Park boundaries | Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz (NLWKN) |
 
 # CRediT authorship contribution statement
-C.Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing.
-S.Hokamp: Conceptualization, Software, Methodology, Formal analysis, Writing – review & editing.
-S.Örey: Conceptualization, Data curation, Writing – review & editing.
+C. Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing.
+S. Hokamp: Conceptualization, Software, Methodology, Writing – review & editing.
+S. Örey: Conceptualization, Data curation, Writing – review & editing.
 J. Scheffran: Conceptualization, Formal analysis, Writing – review & editing
-J.Seo: Writing – original draft.
+J. Seo: Writing – original draft.
+V. Mühlberger: Data curation.
 
 <!--
 ## Sub-models
