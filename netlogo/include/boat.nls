@@ -255,10 +255,8 @@ to boat-land-port
   ;  replace-item iprey _boat-prey-catches (item iprey _boat-prey-catches) + (item igear boat-gear-catches)
   ;])
 
-
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
-  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * (item (item igear gear-prey-indices) prey-prices))]
-  ;set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches) * 3000]
+  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches *  1000 * (item (item igear gear-prey-indices) prey-prices))]
 
   ;print (sentence "X: " revenue-boat boat-gear-catches)
 

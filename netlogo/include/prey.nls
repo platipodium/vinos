@@ -48,12 +48,9 @@ to setup-preys
   let my-prey-ids sort [who] of preys
   set prey-number count preys
   set prey-names n-values prey-number [i -> [prey-name] of prey item i my-prey-ids]
-  ; ["Solea" "Pleuronectes" "Crangon"]
-  set prey-prices (list 11 1 7)
-
   set prey-prices n-values prey-number [ i -> 5] ; default value is 5 EUR kg-1
   set prey-prices replace-item (position "Crangon" prey-names) prey-prices 7
-  set prey-prices replace-item (position "Pleuronectes" prey-names) prey-prices 3 ; should be lower
+  set prey-prices replace-item (position "Pleuronectes" prey-names) prey-prices 1 ; should be lower
   set prey-prices replace-item (position "Solea" prey-names) prey-prices 11
 end
 
