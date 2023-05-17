@@ -39,7 +39,7 @@ SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 SPDX-FileCopyrightText: 2023 Universität Hamburg
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
-abstract: "Viable North Sea (ViNoS): an Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp. Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
+abstract: "Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German North Sea Small-scale Fisheries in a Social-Ecological Systems (SES) framewiork focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp. Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
 acknowledgement: "The authors thank W.N. Probst for providing species distribution data as a forcing to this model.  We thank M. Ryan for helping with the shape files. The development of the model is funded by the German Ministry of Education and Research through the KüNO project 'Multiple Stressors on North Sea Life' (MuSSeL) with grant number 03F0862A.  We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others."
 conflictsofinterests: "The authors declare that no conflict of interest has arisen from this work."
 abbreviations:
@@ -69,7 +69,7 @@ The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a S
 
 ## Purpose
 
-Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp (@Letschter2022, @Döring2020).
+Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp (@Letscher2022, @Döring2020).
 
 Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities released a new maritime spatial plan on 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.
 
@@ -97,11 +97,9 @@ Boats are located at ports, according to the distribution of the German fleet in
 
 <!-- @todo  we need to work on catch-efficiency, maybe leave it out? -->
 
-Boats go on fishing trips and record the catch and the revenue. They internally record the economic balance of their activites and continuously adapt preferences, e.g., for choosing a specific gear.
+Boats go on fishing trips and record the catch and the revenue. They internally record the economic balance of their activites and continuously adapt priorities, e.g., for choosing a specific gear, based on value gains.
 
 <!-- @todo  we need to work on addinng area-flexbilty, max distance and other variables to memory -->
-
-SERRA
 
 ### Subsidiary agents: ports, preys, gears
 
@@ -109,7 +107,7 @@ Ports, preys, and gears are immobile agents that are introduced to structure the
 
 Ports are the boats' favourite landing **ports**. Boats start their activity from a port and dock to unload at a port.  They can stay in a port when deciding not to fish.  Along the German North Sea coast, there are 54 ports for which boat and landing statistics are available.   At the ports, the simulated landings are recorded.
 
-<!-- @todo  Make landings a prognostic variable for ports, get rid of landing statistics for now as input -->
+<!-- @todo  Make landings a prognostic variable for ports -->
 
 The fishery target species are denoted **preys**.  Currently, the ABM describes three different species:
 
@@ -186,17 +184,23 @@ Finally, boats re-enter phase 0 and restart the cycle. A summary view of the mod
 ### Basic principles
 
 <!-- German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.  -->
-The ABM is an adaptive model with the **objective** of increasing profits, subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to
-changing gear with shifting priorities for allocating fishing effort, and discribed by the VIABLE approach [@BenDor2019;@Scheffran2000].
+The ABM is an adaptive model with the **objective** of increasing value gains (here: net profits), subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to changing gear with shifting priorities for allocating fishing effort, and described by the ABM framework VIABLE (Values and Investments from Agent-Based interaction and Learning in Environmental systems) [@BenDor2019;@Scheffran2000].
 
-In the VIABLE approach, each boat carries a list of priorities that are subject to change based on the boats perception and evaluation of its activities.  During each haul, the costs of that haul (wage and fuel)  are subtracted from the benefits (i.e. the price of the catch times the amount caught) in parallel for all gears available to a boat. The marginal value (gain or loss, in €, divided by XXXX) for each gear type and is multiplied by an adaptation rate determining the relative change in priorities.
-
-More general, there are strategies $i \in 1..n$ with priorities $r_i$, values $V_i$ and adaptation rates $a_i$. The marginal benefit of a change in $V$ with respect to $r$ is $v_i=\partial{V_i}/\partial{r_i}$.
-
-The temporal change of the priorities $r_i$ is given by
+In the VIABLE approach, each boat carries a list of priorities for certain fishing actions that are subject to change based on the boat’s perception and evaluation of its activities.  During each haul, the costs of that haul (wage and fuel) $C$ are subtracted from the benefits, i.e. the income from the catch (harvest) $H$ times the market price $p$ for each fish:
 $$
-\frac{dr_i}{dt} = a_i r_i \cdot \frac{v_i - \sum r_i v_i }{\sum v_i}
+V = p H – C.
 $$
+The fish catch $H$ from a haul is a function of fishing effort $E$ (in work hours), density of a particular fish species $X$ in the area of fishing and the catch efficiency $e$ for the respective gear type interacting with this particular fish:
+$$
+H = e X E .
+$$
+If for each boat there are several gear types (termed ``action pathways'' in the VIABLE approach) $k = 1,\ldots,m$ available, according to the gradient decision rule each agent changes priority $r_k$ in proportion to the product of marginal value $v_k$ and priority $p_k$ for each gear type, multiplied by an adaptation rate $a$ determining how strong agents adapt action to value. The marginal value van be the change in $V_k$ when choosing priority $k$ or in mathematical terms the partial derivative of the value function with respect to priority $v_k=\partial{V}/\partial{r_k}$, if that function is known.
+Althogether, the temporal change of the priorities $r_k$ is given by
+$$
+\frac{dr_k}{dt} = a r_k \cdot \frac{v_k - \sum r_k v_k }{\sum v_k}
+$$
+Both sums are for normalisation purposes to make sure that all priorities add up to 1. The first sum means that pathways $k$ above average increase and below average decrease, indicating a competition to select the ``better'' gear.
+
 
 <!--
 This equation is universal, also applies to fishery, requiring more details on value function. In this paper further details are not given, e.g. fishing efficiency which is a key variable and depends on gear type. This requires a full paper with more math. For more details see BenDor/Scheffran 2019, Chapter 8 or Scheffran 2000.
