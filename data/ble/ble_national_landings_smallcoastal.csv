@@ -1,3 +1,7 @@
+SPDX-FileContributor: Verena Mühlberger <verena.muehlberger@uni-hamburg.de>
+SPDX-FileCopyrightText: 2023 Universität Hamburg
+SPDX-FileCopyrightText: 2023 Bundesministerium für Landwirtschaft und Ernährung
+SPDX-License-Identifier: LicenseRef-DL-DE-BY-2.0
 year_month;Speisekrabbe € kg^-1;Scholle € kg^-1;Seezunge € kg^-1;
 2003;2.49;1.59;9.77
 2004;2.16;1.45;8.50;
