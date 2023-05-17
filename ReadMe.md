@@ -8,8 +8,9 @@ SPDX-License-Identifier: CC0-1.0
  [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
  [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7240/badge)](https://bestpractices.coreinfrastructure.org/projects/7240)
  [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](./doc/contributing/code_of_conduct.md)
- [![Pipeline](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/badges/main/pipeline.svg)](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/pipelines)
  [![REUSE status](https://api.reuse.software/badge/github.com/fsfe/reuse-tool)](https://api.reuse.software/info/codebase.helmholtz.cloud/mussel/netlogo-northsea-species)
+
+<!--  [![Pipeline](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/badges/main/pipeline.svg)](https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/pipelines) -->
 
 # Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries
 
@@ -20,16 +21,16 @@ Fishers in the North Sea face area competition with other uses of the sea---long
 ## Implementation
 
 The simulation model is implemented in the NetLogo framework, a graphical simulator and programming
-environment developed for educational purposes.  The model can be found in the folder `netlogo` and
-can be started with a double-click on most operating systems after installation of NetLogo,
+environment developed for educational purposes.  The main application of the model is found in [./netlogo/vinos.nlogo](./netlogo/vinos.nlogo) and
+can be started with a double-click on most operating systems after installation of NetLogo, freely
 available from https://ccl.northwestern.edu/netlogo/.
 
 ## Data and supplementary routines
 
-The simulation model uses open data available in the `data` folder.  Some of the routines to convert
-data into a format usable by the NetLogo model are available as R routines the folder `R`, and
-`python`, respectively.   You do not need R or python to run the simulation, unless you would like
-to recreate some of the data.
+The simulation model uses open data available in the [./data](./data) folder.  Some of the routines to convert
+data into a format usable by the NetLogo model are available as `R` routines the folder [./R](./R), and
+[./python](./python), respectively.   You do not need `R` or `python` to run the simulation, unless you would like
+to recreate some of the input data.
 
 ## Using the model
 
@@ -40,7 +41,7 @@ On Linux, start NetLogo with the `netlogo-gui.sh` shell script provided by NetLo
 
 Please refer to the `Info` tab in the graphical NetLogo model to learn quickly more about the model, it's
 mathematical implementation and how to use it.  There is a full documentation in ODD format available in
-`doc/odd/paper.md`.
+[./doc/odd/paper.md](./doc/odd/paper.md).
 
 ## Licenses
 
