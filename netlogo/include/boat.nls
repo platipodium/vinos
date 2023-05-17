@@ -5,6 +5,7 @@
 ;
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 ; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
+; SPDX-FileContributor: Jürgen Scheffran <juergen.scheffran@uni-hamburg.de>
 ; SPDX-FileContributor: Jieun Seo <jieun.seo@studium.uni-hamburg.de>
 ; SPDX-FileContributor: Serra Örey <soerey@hs-bremerhaven.de>
 
@@ -233,7 +234,7 @@ to boat-land-port
 
   ; Diesel for shipping is usually 0.5 € l-1
   ; In the end tranpsortatino costs should be 15% of crangon reenvu, up to 30% for platessa/sole
-  set boat-transportation-costs _boat-fuel-consumption * oil-price * boat-distance-at-sea; typically 750 €
+  set boat-transportation-costs _boat-fuel-consumption * oil-price / 100 * boat-distance-at-sea; typically 750 €
 
   ; Typically there are 3 people aboard, i.e. 150 * 3 work hours per month.  Average wage is 5000+2*2000 per
   ; gross salary per month, adding 40% costs gives 12600 EUR, i.e. 84 € h-1, there is slider wage
@@ -246,44 +247,40 @@ to boat-land-port
     boat-transportation-costs + boat-operating-costs]
   ]
 
-  ; Find the position of the target gear-species in prey-names and return the index of the species,
-  ; save this in a temporary list of size number-of-gears, resulting in the gear-species index map ispecieslist
-  ; @todo move this to gear.nls as global
-  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
+  let _boat-prey-catches n-values count preys [ i -> 0]
 
-  ; Calculate the boat revenue depending on the landed species and the port
-  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
+  ;[0 1 2 2 0 0 1
+  ;let _index-prey-ger]
+  ;(foreach ispecieslist (range number-of-gears)[ [iprey igear] ->
+  ;  replace-item iprey _boat-prey-catches (item iprey _boat-prey-catches) + (item igear boat-gear-catches)
+  ;])
 
-  ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
-  print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat boat-distance-at-sea)
+  ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
+  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches *  1000 * (item (item igear gear-prey-indices) prey-prices))]
+
+  ;print (sentence "X: " revenue-boat boat-gear-catches)
 
   set boat-gains n-values (number-of-gears ) [i -> item i revenue-boat - item i costs-boat]
   let sum-boat-gains sum boat-gains
   let sum-boat-priorities-gains sum n-values (number-of-gears) [i -> item i boat-gear-priorities * item i boat-gains]
 
-  if (not sum-boat-gains = 0) [
+  ;ifelse (sum-boat-gains = 0) [][
+  ;  set boat-delta-priorities n-values (number-of-gears) [
+  ;    i -> adaptation * (item i boat-gear-priorities) * (( item i boat-gains) - sum-boat-priorities-gains) / sum-boat-gains
+  ;  ]
+  ;]
+  carefully [
     set boat-delta-priorities n-values (number-of-gears) [
       i -> adaptation * (item i boat-gear-priorities) * (( item i boat-gains) - sum-boat-priorities-gains) / sum-boat-gains
     ]
-  ]
-  ;set boat-delta-gains n-values (number-of-gears) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
-  ;set boat-gains n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
-  ;let delta-adjust sum map [ i -> abs i ] boat-delta-gains ; fix minus boat priority
-                                                           ; in cast that the boat-gains decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
-  ;ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
-  ;  set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i boat-delta-gains) * (item i boat-gear-priorities) / delta-adjust]
-  ;][
-  ;  set boat-delta-priorities map [i -> 0] boat-delta-priorities
-  ;]
-  ;set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
-  ;set boat-gear-priorities map [i -> i / sum boat-gear-priorities] boat-gear-priorities
+  ][]
 
+  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities + item i boat-delta-priorities]
 
-  ;set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
-  ; Make sure that boat-gear-priorities always sum to 1
-  ;if sum boat-gear-priorities != 0 [
-  ;  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities / sum boat-gear-priorities ]
-  ;]
+  ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
+  ; At the moment, boat-tranpsortation cost are 70 k€, op-costs are 2000 € revenue is 0.0002
+  print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)
+
 
   set boat-gear-catches map [i -> 0] boat-gear-catches
 
@@ -421,6 +418,8 @@ to boat-make-haul
       ask patch-here [
         set fishing-effort-hours fishing-effort-hours + _sub-step-time
         ;set swept-area swept-area + _haul-with * _sub-step-time * _fishing-speed
+        ; @todo reduce fish on patch by amount taken out, allow for recovery
+
       ]
       forward _sub-step-time * fishing-speed / _gis-scale
 

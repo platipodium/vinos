@@ -24,9 +24,9 @@ ports-own [
 
   port-fish-catch-kg            ; vektor of fish catches
 
-  port-landings-euro            ; vector of landings with number-of-species in EURO 2015
-  port-landings-kg              ; vector of landings with number-of-species in Kg
-  port-prices                    ; vector of prices with number-of-species in EURO 2015
+  ;port-landings-euro            ; vector of landings with number-of-species in EURO 2015
+  ;port-landings-kg              ; vector of landings with number-of-species in Kg
+  port-prey-landed               ; vector of length prey-names that records the daily landing
 
   port-transportation-costs; average transportation costs as percentage of the total landings in EUR 2015
   port-operation-costs     ; average operating costs as percentage of the total landings in EUR 2015
@@ -49,13 +49,13 @@ to setup-ports
   set home-ports ports with [ port-kind = "favorite"]
 end
 
-to-report sum-of-landings [species unit port-type]
-  ifelse unit = "euro" [
-    report sum  [item (position species port-prey-names) port-landings-euro] of ports with  [port-kind = port-type and member? species port-prey-names]
-  ][
-    report sum  [item (position species port-prey-names) port-landings-kg] of ports with  [port-kind = port-type and member? species port-prey-names]
-  ]
-end
+;to-report sum-of-landings [species unit port-type]
+;  ifelse unit = "euro" [
+;    report sum  [item (position species port-prey-names) port-landings-euro] of ports with  [port-kind = port-type and member? species port-prey-names]
+;  ][
+;    report sum  [item (position species port-prey-names) port-landings-kg] of ports with  [port-kind = port-type and member? species port-prey-names]
+;  ]
+;end
 
 ; sub_grp,fav_lan,n_vessels,X,ISO3_Country_Code,full_name,Coordinates,Latitude,Longitude,EU_Fish_Port,Port,Region
 to port-read
@@ -100,9 +100,8 @@ to port-read
             set port-clusters (list 0 0 0 0)
             print (sentence "Created" port-kind "port" port-name)
 
-            set port-prey-names (list "Crangon" "Pleuronectes" "Solea")
-            set port-prices n-values length (port-prey-names) [ i -> 3 ] ; set to 3 EUR/kg (@todo refine)
 
+            set port-prey-names (list "Crangon" "Pleuronectes" "Solea")
 
           ]; find a starting patch at least 3 nm from port away
         ]

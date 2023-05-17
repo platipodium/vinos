@@ -164,8 +164,13 @@ to go
     set plabel datetime
   ]
 
+  ;let _total-prey-landed sum ([port-prey-landed] of ports)
+  ; Todo: adjust price, leave for next version
+  ; preis = a - b * h
+  ; set price price - sum_boats (catch) * price-sensitivity
+
   calc-fish
-  let _active-boats boats
+  let _active-boats n-of 10 boats
 
   ; Enable a simulation with only one active boat that can be closely
   ; followed.  This is off by default
@@ -944,8 +949,8 @@ TEXTBOX
 10
 1034
 63
-Viable North Sea (ViNoS) Agent-based Model of Small-scall Fisheries
-28
+Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
+22
 2.0
 1
 

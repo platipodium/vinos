@@ -20,6 +20,7 @@ preys-own [
 globals [
   prey-names
   prey-number
+  prey-prices
 ]
 
 ; We define here a constant and predefined number of gears
@@ -47,7 +48,10 @@ to setup-preys
   let my-prey-ids sort [who] of preys
   set prey-number count preys
   set prey-names n-values prey-number [i -> [prey-name] of prey item i my-prey-ids]
-
+  set prey-prices n-values prey-number [ i -> 5] ; default value is 5 EUR kg-1
+  set prey-prices replace-item (position "Crangon" prey-names) prey-prices 7
+  set prey-prices replace-item (position "Pleuronectes" prey-names) prey-prices 1 ; should be lower
+  set prey-prices replace-item (position "Solea" prey-names) prey-prices 11
 end
 
 to read-prey-csv
@@ -77,4 +81,13 @@ to read-prey-csv
   set prey-names n-values prey-number [i -> [prey-name] of prey item i my-prey-ids]
 
   file-close
+end
+
+to-report prey-gear-indices
+  ; gear-prey-names ["Crangon" "Pleuronectes" "Solea" "Pleuronectes" "Solea" "Pleuronectes"]
+  ; prey-names  ["Nephrops" "Crangon" "Merlangius" "Pleuronectes" "Solea" "Limanda" "Sprattus"]
+
+  report n-values count preys [ iprey ->
+    filter [ igear -> (item igear gear-prey-names) = (item iprey prey-names) ] (range count gears)
+  ]
 end

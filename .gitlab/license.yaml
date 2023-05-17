@@ -13,3 +13,10 @@ license-compliance:
         - poetry run reuse lint
     allow_failure: false
     needs: []
+
+reuse:
+  image:
+    name: fsfe/reuse:latest
+    entrypoint: [""]
+  script:
+    - reuse lint
