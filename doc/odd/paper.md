@@ -39,7 +39,7 @@ SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 SPDX-FileCopyrightText: 2023 Universität Hamburg
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
-abstract: "Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German North Sea Small-scale Fisheries in a Social-Ecological Systems (SES) framewiork focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp. Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
+abstract: "Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German North Sea Small-scale Fisheries in a Social-Ecological Systems (SES) framework focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp. Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
 acknowledgement: "The authors thank W.N. Probst for providing species distribution data as a forcing to this model.  We thank M. Ryan for helping with the shape files. The development of the model is funded by the German Ministry of Education and Research through the KüNO project 'Multiple Stressors on North Sea Life' (MuSSeL) with grant number 03F0862A.  We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others."
 conflictsofinterests: "The authors declare that no conflict of interest has arisen from this work."
 abbreviations:
@@ -186,6 +186,8 @@ Finally, boats re-enter phase 0 and restart the cycle. A summary view of the mod
 <!-- German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.  -->
 The ABM is an adaptive model with the **objective** of increasing value gains (here: net profits), subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to changing gear with shifting priorities for allocating fishing effort, and described by the ABM framework VIABLE (Values and Investments from Agent-Based interaction and Learning in Environmental systems) [@BenDor2019;@Scheffran2000].
 
+<!-- Do we need table captions? Format is unbalanced, left column takes too much space. Also do not split table over two pages. -->
+
 | **Symbol** | **Description** |
 | --- | --- |
 | $k$ | Action pathway, here: gear selected out of $m$ possibilities  $k = 1\ldots m$. |
@@ -196,9 +198,9 @@ The ABM is an adaptive model with the **objective** of increasing value gains (h
 | $e$ | Catch efficiency, expressed in units of m^2^ h^-1^.|
 | $p$ | Price of the fish, expresses in € kg^-1^|
 | $V$ | Value, here: net gain of haul, i.e. fish catch $H$ times price $p$ minus cost $C$, measured in €. |
-| $r_k$ | Priority for action pathway $k$ with $\sum_1^k r_k = 1$.   |
+| $r_k$ | Priority for action pathway $k$ with $0\leq r_k\leq 1$ and $\sum_1^m r_k = 1$.   |
 | $v_k$ | Marginal change of value with priority $v_k=\partial{V}/\partial{r_k}$, expressed in €.  |
-| $a$ | Adoption rate (sensitivity) of a change in priority from a change in value.  |
+| $a$ | Adaptation rate (sensitivity) of a change in priority from a change in value.  |
 
 In the VIABLE approach, each boat carries a list of priorities for certain fishing actions that are subject to change based on the boat’s perception and evaluation of its activities.  During each haul, the costs of that haul (wage and fuel) $C$ are subtracted from the benefits, i.e. the income from the catch (harvest) $H$ times the market price $p$ for each fish:
 
@@ -220,7 +222,7 @@ $$
 \frac{dr_k}{dt} = a r_k \cdot \frac{v_k - \sum r_k v_k }{\sum v_k}
 $$
 
-Both sums are for normalisation purposes to make sure that all priorities add up to 1. The first sum means that pathways $k$ above average increase and below average decrease, indicating a competition to select the "better" gear.
+Both sums are for normalisation purposes to make sure that all priorities add up to 1. The first sum means that pathways $k$ with marginal value above average $v_k$ increase and below average decrease, indicating a competition to select the "better" gear.
 
 
 <!--
