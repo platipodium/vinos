@@ -43,7 +43,7 @@ SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 SPDX-FileCopyrightText: 2023 Universität Hamburg
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
-abstract: "Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German North Sea Small-scale Fisheries in a Social-Ecological Systems (SES) framework focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp. Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
+abstract: "Viable North Sea (ViNoS) is an Agent-based Model of the German North Sea Small-scale Fisheries in a Social-Ecological Systems framework focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, and brown shrimp. Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming.  German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water.  And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet."
 acknowledgement: "The authors thank W.N. Probst for providing species distribution data as a forcing to this model.  We thank M. Ryan for helping with the shape files. The development of the model is funded by the German Ministry of Education and Research through the KüNO project 'Multiple Stressors on North Sea Life' (MuSSeL) with grant number 03F0862A.  We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others."
 conflictsofinterests: "The authors declare that no conflict of interest has arisen from this work."
 abbreviations:
@@ -69,11 +69,11 @@ abbreviations:
 
 # ODD Protocol: German North Sea Small-scale Fisheries
 
-The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.  The model description follows the ODD (Overview, Design concepts, Details) protocol for describing individual- and agent-based models (@Grimm2010, @Grimm2020).  By following this  protocol, we aim to document the ABM such that it is replicable independently of the current implementation (in NetLogo, @Wilensky1999).
+The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.  This model description follows the ODD (Overview, Design concepts, Details) protocol for describing individual- and agent-based models (@Grimm2010, @Grimm2020).  By following this  protocol, we aim to document the ABM such that it is replicable independently of the current implementation (in NetLogo, @Wilensky1999).
 
 ## Purpose
 
-Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, brown shrimp (@Letschert2023, @Döring2020).
+Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, and brown shrimp (@Letschert2023, @Döring2020).
 
 Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF).  German authorities released a new maritime spatial plan on 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.
 
@@ -87,17 +87,17 @@ The **purpose** of this ABM is to provide an interactive simulation environment 
  * how often to go out
  * what gear to use and what species to target
 
-Its **scope** is the German North sea small-scale fisheries.  This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The target species is currently restricted to the most important ones: plaice, sole and brown shrimp, but is in principle extensible to further target species like Norwegian lobster or whiting.
+Its **scope** is the German North sea small-scale fisheries.  This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The currently simulated target species are the three most important ones: plaice, sole and brown shrimp, but the model is in principle extensible to further species like Norwegian lobster, sprat or whiting.
 
 The **intended audience** of the ABM are marine researchers and government agencies concerned with spatial planning, environmental status assessment, and climate change mitigation.  It can also assist in a stakeholder dialogue with tourism and fishers to contextualize the complexity of the interactions between fisheries economics, changing resources and regulatory restrictions.  It is intended to be used for communication of and scenario development for future sustainable fisheries at the German North Sea coast.
 
 ## Entities, state variables, and scales
 
-The primary agents in the ABM are the fishing vessels, denoted as *boats*.  They are linked to supplementary classes of agents that describe the *gears* used for fishing, the target species denoted as *preys* and the *ports* where boats land their catch. The agents interact with the *environment* that describes the *spatial domain* and resource and regulatory changes.
+The primary agents in the ABM are the fishing vessels, denoted as *boats*.  They are linked to supplementary classes of agents that describe the *gears* used for fishing, the target species denoted as *preys*, and the *ports* where boats land their catch. The agents interact with the *environment* that describes the *spatial domain* and resource and regulatory changes.
 
 ### The primary agent: boats
 
-Boats are located at ports, according to the distribution of the German fleet in those ports.  In the German fleet there are four distinct clusters of small-scale fisheries vessels  that have typical vessel and crew size,  gear and fishing strategy (@Oerey2023).  With those come physical  (speed, length, capacity, engine power) and economic properties (fixed and variable costs).  Boats have a catch efficiency that tries to model the experience of the individual boat owners.
+Boats are located at ports, according to the empirical distribution of the German fleet in those ports.  In the German fleet there are four distinct clusters of small-scale fisheries vessels  that have typical vessel and crew size,  gear and fishing strategy [@Oerey2023].  With those come physical  (speed, length, capacity, engine power) and economic properties (fixed and variable costs).  Boats have a catch efficiency that tries to model the experience of the individual boat owners.
 
 <!-- @todo  we need to work on catch-efficiency, maybe leave it out? -->
 
@@ -108,12 +108,11 @@ Boats go on fishing trips and record the catch and the revenue. They internally 
 ### Subsidiary agents: ports, preys, gears
 
 Ports, preys, and gears are immobile agents that are introduced to structure the model in object-oriented design and encapsulated their state variables and methods.
-
-Ports are the boats' favourite landing **ports**. Boats start their activity from a port and dock to unload at a port.  They can stay in a port when deciding not to fish.  Along the German North Sea coast, there are 54 ports for which boat and landing statistics are available.   At the ports, the simulated landings are recorded.
+Ports are the boats' favourite landing ports. Boats start their activity from a port and dock to unload at a port.  They can stay in a port when deciding not to fish.  Along the German North Sea coast, there are 54 ports for which boat and landing statistics are available.   At the ports, the simulated landings are recorded.
 
 <!-- @todo  Make landings a prognostic variable for ports -->
 
-The fishery target species are denoted **preys**.  Currently, the ABM describes three different species:
+The fishery target species are denoted *preys*.  Currently, the ABM describes three different species:
 
 | **Shrimp** | **Plaice** | **Sole**|
 | --- | --- | --- |
@@ -149,7 +148,7 @@ A calendar records time.  The temporal domain is multiple years and the temporal
 
 ## Process overview and scheduling
 
-The global timestep of the model is one day.  Within the 24-hour period, we use Discrete Event Simulation (DES) to trigger the action of boats within 5 phases
+The global timestep of the model is one day.  Within the 24-hour period, we use Discrete Event Simulation (DES) to trigger the action of boats within 6 phases:
 
 | **Phase** | **Location** |**Description** |
 | --- | --- | --- |
@@ -162,10 +161,10 @@ The global timestep of the model is one day.  Within the 24-hour period, we use 
 
 Boats cycle through all phases consecutively, keeping a record of how much time they spend.  Boats in **phase 0** keep the legal resting time of 11 hours, and rest during the weekend (from Saturday noon to Monday 4 am).  After the resting period, they make a decision on whether to go out or not.  This decision may depend on weather and  (in a later model version) expected catch.  If the decision is positive, a boat enters phase 1.  Boats in **phase 1** directly (straight line, without environmental sensing) steam from the port location to the port's closest open sea deployment location.  Adding this phase makes it possible for the ports to be located on dry ground at the available grid resolution, as many ports are located upstream of the coastline demarcation.  Having arrived at the deployment location, boats enter phase 2.
 
-Boats in **phase 2** steam to a preferred location for the next fishing haul.  This preferred location is chosen randomly but subject to the fuel constraints and maximum distance preference of each boat.  At a later implementation of the model, this location is also chosen taking into account previous experience of successful fishing hauls.  Phase 2 may also be entered after an unsuccessful fishing haul.  At the new location, a boat enters **phase 3** for fishing.  Fishing is done in several hauls;   a haul is directed towards only accessible water, and at the end of a haul the ship turns around (with slight variation) continues to the next haul.
+Boats in **phase 2** steam to a preferred location for the next fishing haul.  This preferred location is chosen randomly but subject to the fuel constraints and maximum distance preference of each boat.  At a later implementation of the model, this location is also chosen taking into account previous experience of successful fishing hauls.  Phase 2 may also be entered after an unsuccessful fishing haul.  At the new location, a boat enters **phase 3** for fishing.  Fishing is done in several hauls;   a haul is directed towards only accessible water, and at the end of a haul the ship turns around (with slight variation) and continues to the next haul.
 
-To record the fishing activity on the cells, a haul is subdivided into time steps of 6 minutes duration.  The time spend in a cell and the area swept is recorded for the gear with the highest priority. The catch is calculated separately for each gear (and the gear-associated target species), taking into account the target species biomass, the gear width and haul distance and the boat's catch efficiency.
-Hauls continue until one of the following constraints is met (always taking into account the time and fuel cost of the return trip):
+To record the fishing activity on the cells, a haul is subdivided into time substeps of 6 minutes duration.  The time spent in a cell and the area swept is recorded for the gear with the highest priority. The catch is calculated separately for each gear (and the gear-associated target species), taking into account the target species' biomass at the haul location, the gear width and haul distance and the boat's catch efficiency.
+Hauls are repeated until one of the following constraints is met (always taking into account the time and fuel cost of the return trip):
 
 1. The maximum preferred time at sea is exhausted;
 2. the maximum time from the first successful catch (24 hours to keep fresh) is exhausted;
@@ -174,12 +173,12 @@ Hauls continue until one of the following constraints is met (always taking into
 5. the catch is considered insufficient.
 
 
-On an insufficient catch, the boat enters phase 2 to look for a different location.  On a successful catch and after having spent the allocated time or fuel, the boat enters phase 4.
 
 ![Decision pathway for a simulated fishing trip.\label{fig:flowchart}](../../assets/abm_flowchart.pdf){ width=90% height=30% }
 
 <!--UPDATE the flowchart with white background (SERRA:monday-2023-05-15) -->
 
+On an insufficient catch, the boat enters phase 2 to look for a different location.  On a successful catch and after having spent the allocated time or fuel, the boat enters phase 4.
 Boats in **phase 4** need to return.  They directly steam in a straight line to their deployment location and on to their port. At the port, they enter **phase 5** to unload their catch and clean the boat.  Priorities for the different gears are updated based on the relative change of the deployed gears and catches.
 Finally, boats re-enter phase 0 and restart the cycle. A summary view of the model scheduling is depicted in \autoref{fig:flowchart}
 
