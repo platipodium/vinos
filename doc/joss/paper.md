@@ -32,7 +32,7 @@ affiliations:
    index: 2
  - name: Hochschule Bremerhaven, Research Cluster Life Sciences, Bremerhaven, Germany
    index: 3
-date: 15 April 2023
+date: 19 May 2023
 year: 2023
 bibliography: paper.bib
 SPDX-FileCopyrightText: 2022-2023  Helmholtz-Zentrum hereon GmbH (hereon)
@@ -60,7 +60,7 @@ The intended audience of the ABM are marine researchers and government agencies 
 
 # Key features of the ABM
 
-As a NetLogo implementation, the model comprises a (frontend) user `interface`, its basic `info` documentation, and the (backend) `code` in a single integrated development environment (IDE) provided by NetLogo [@Wilensky1999; version 6 required], a Java-based portable ABM and system dynamics simulation platform.
+As a NetLogo implementation, the model comprises a (frontend) user `interface`, its basic `info` documentation, and the (backend) `code` in a single integrated development environment (IDE) provided by NetLogo [@Wilensky1999, version 6 required], a Java-based portable ABM and system dynamics simulation platform.
 
 The backend (`code`) features geospatial data access and integration of multiple georeferenced and tabular data sources, as well as integrating Web Mapping Services (WMS) to describe the grid-based environmental context. This environmental context is dynamic in time, providing seasonal resource changes and dynamic area closures.
 
@@ -76,12 +76,12 @@ To date, most NetLogo models have not exploited continuous integration (CI) and 
 
 # Model documentation and license
 
-The model is documented in short form the NetLogo IDE's `info` section. A full documentation following the Overview, Design, and Details [ODD; @Grimm2020] standard protocol for ABM is available in the repository as `doc/odd/paper.md`. Data from third parties is licensed under various open source licenses.  The model, its results and own proprietary data are released under open source licenses, mostly Apache 2.0 and CC-by-SA-4.0.  A comprehensive documentation of all is provided via @FSF2023.
+The model is documented in short form the NetLogo IDE's `info` section. A full documentation following the Overview, Design, and Details [ODD, @Grimm2020] standard protocol for ABM is available in the repository as `doc/odd/paper.md`. Data from third parties is licensed under various open source licenses.  The model, its results and own proprietary data are released under open source licenses, mostly Apache 2.0 and CC-by-SA-4.0.  A comprehensive documentation of all licenses is provided via @FSF2023.
 
 <!-- @todo Refer to the published ODD version (once this is published) -->
 
 # Acknowledgements
 
-We acknowledge contributions from Wolfgang Probst, Marie Ryan, and Jieun Seo for providing data, fruitful discussions and for contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A "Multiple Stressors on North Sea Life" (MuSSeL) within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit program of the Germany Bundesministerium für Bildung und Forschung (BMBF).
+We acknowledge contributions from Wolfgang Probst, Marie Ryan, and Jieun Seo for providing data, fruitful discussions and for contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A "Multiple Stressors on North Sea Life" (MuSSeL) within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit program of the Germany Bundesministerium für Bildung und Forschung (BMBF).  We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others
 
 # References
