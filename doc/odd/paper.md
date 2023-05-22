@@ -121,7 +121,8 @@ The fishery target species are denoted *preys*.  Currently, the ABM describes th
 | ![Crangon crangon](../../assets/320px-Crangon_crangon.jpg){ width=25% height=15% }| ![Pleuronectes platessa](../../assets/319px-Pleuronectes_platessa.jpg){ width=25% height=15% } | ![Solea solea](../../assets/Solea_solea_1.jpg){ width=25% height=15% } |
 | The brown shrimp *Crangon crangon* ... describe gear/net  .. all pictures by @Hillewaert2005. The brown shrimp ranks at the top three species caught from the North Sea with respect to landing value, which can exceed 100 Million Euro in some years (Temming & Hufnagl, 2014) The majority (>90 %) of the German cutters are smaller than 20 m Currently standard cod end diamond mesh sizes of 20 mm are in use. Trials with diamond 26 mm and square 24 mm mesh sizes showed that undersized shrimp can be reduced by up to 80 % and fish bycatch by up to 20 % (@Schultz et al., 2015). | The plaice  | The sole |
 
-<!-- @todo  Add fish descriptions @todo-serra I am not so sure why do we need this table... I would rather drop the species picture and turn it into paragraph?-->
+<!-- @todo  Add fish descriptions @todo-serra I am not so sure why do we need this table... I would rather drop the species picture and turn it into paragraph?
+we can add the gear and vessels that target them in detail amybe the price issue...-->
 
 The model is designed to accommodate further species relevant to the small-scale fishery such as whiting (*Merlangius merlangus*), sprat (*Sprattus sprattus*), or Norwegian lobster (*Nephrops norvegicus*). Each prey species is assigned a price obtained from historic prices of the last decades.
 
