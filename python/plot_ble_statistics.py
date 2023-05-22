@@ -14,12 +14,7 @@ import datetime
 
 
 def extrapolate_timeseries(df: pd.DataFrame) -> pd.DataFrame:
-    # does not work yet
 
-    try:
-        df.set_index('year_month', inplace=True)
-    except:
-        pass
     model = ARIMA(df['Crangon'], order=(1, 0, 0))  # You can adjust the order of the model as needed
     model_fit = model.fit()
 
@@ -34,12 +29,23 @@ def extrapolate_timeseries(df: pd.DataFrame) -> pd.DataFrame:
     return pd.concat([df,extrapolated_df])
 
 
+def plot_seasonal(df):
+
+    fig = plt.figure(figsize=(8,4), tight_layout=True)
+    one_year=df[df.year==2010]['Pleuronectes']
+    groups = one_year.groupby(pd.Grouper(freq='M'))
+    months = pd.concat([pd.DataFrame(x[1].values) for x in groups], axis=1)
+    months = pd.DataFrame(months)
+    months.columns = range(1,13)
+    months.boxplot()
+
+
 def plot_timeseries(df):
 
     fig = plt.figure(figsize=(8,4), tight_layout=True)
-    ax = sns.lineplot(data=df, x='year_month', y='Crangon', linewidth=2.5, label='Crangon')
-    ax = sns.lineplot(data=df, x='year_month', y='Solea', linewidth=2.5, label='Solea')
-    ax = sns.lineplot(data=df, x='year_month', y='Pleuronectes', linewidth=2.5, label='Pleuronectes')
+    ax = sns.lineplot(x=df.index, y='Crangon', data=df, linewidth=2.5, label='Crangon')
+    ax = sns.lineplot(x=df.index,data=df, y='Solea', linewidth=2.5, label='Solea')
+    ax = sns.lineplot(x=df.index, data=df, y='Pleuronectes', linewidth=2.5, label='Pleuronectes')
     ax.set(xlabel='Year', ylabel='€ kg$^{-1}$', title='Price evolution', ylim=(0,20))
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
     ax.xaxis.set_major_locator(mdates.YearLocator())
@@ -52,10 +58,14 @@ def plot_timeseries(df):
 if __name__ == "__main__":
 
     df = pd.read_csv('../data/ble/ble_national_landings_monthly.csv',
-        delimiter=',',comment='#',parse_dates=[0])
+        delimiter=',',comment='#',parse_dates=[0], )
     df.loc[df['Pleuronectes'] > 20, 'Pleuronectes'] = np.nan
 
-    #df[df[['Crangon'],]|>20] = np.nan
+    df.set_index('year_month', inplace=True)
+
+    df['year'] = df.index.year
+    df['month'] = df.index.month
 
     plot_timeseries(df)
+    plot_seasonal(df)
     #df_e = extrapolate_timeseries(df)
