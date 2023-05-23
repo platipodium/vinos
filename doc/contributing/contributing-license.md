@@ -8,15 +8,15 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 Thank you for your interest in contributing to our project ("We" or "Us").
 
-This contributor agreement ("Agreement") documents the rights granted by contributors to Us. To make this document effective, please sign it and send it to Us by mail, email, fax, or electronic submission. This is a legally binding document, so please read it carefully before agreeing to it. 
+This contributor agreement ("Agreement") documents the rights granted by contributors to Us. To make this document effective, please sign it and send it to Us by mail, email, fax, or electronic submission. This is a legally binding document, so please read it carefully before agreeing to it.
 
 ## Definitions
 
-"You" means the individual who Submits a Contribution to Us; or the 
- any Legal Entity on behalf of whom a Contribution has been received by Us.
- "Legal Entity" means an entity which is not a natural person. "Affiliates" means other Legal Entities that control, are controlled by, or under common control with that Legal Entity. For the purposes of this definition, "control" means (i) the power, direct or indirect, to cause the direction or management of such Legal Entity, whether by contract or otherwise, (ii) ownership of fifty percent (50%) or more of the outstanding shares or securities which vote to elect the management or other persons who direct such Legal Entity or (iii) beneficial ownership of such entity.
+"You" means the individual who Submits a Contribution to Us; or the
+any Legal Entity on behalf of whom a Contribution has been received by Us.
+"Legal Entity" means an entity which is not a natural person. "Affiliates" means other Legal Entities that control, are controlled by, or under common control with that Legal Entity. For the purposes of this definition, "control" means (i) the power, direct or indirect, to cause the direction or management of such Legal Entity, whether by contract or otherwise, (ii) ownership of fifty percent (50%) or more of the outstanding shares or securities which vote to elect the management or other persons who direct such Legal Entity or (iii) beneficial ownership of such entity.
 
-"Contribution" means any work of authorship that is Submitted by You to Us in which You own or assert ownership of the Copyright. 
+"Contribution" means any work of authorship that is Submitted by You to Us in which You own or assert ownership of the Copyright.
 
 "Copyright" means all rights protecting works of authorship owned or controlled by You, including copyright, moral and neighboring rights, as appropriate, for the full term of their existence including any extensions by You.
 
@@ -42,19 +42,22 @@ This contributor agreement ("Agreement") documents the rights granted by contrib
 
 We agree to license the Contribution only under the terms of the license or licenses which We are using on the Submission Date for the Material (including any rights to adopt any future version of a license if permitted).
 
-### Outbound Licenses for open source Material 
+### Outbound Licenses for open source Material
 
 We agree to license the Contribution only under the terms of the license or licenses which We are using on the Submission Date for the Material or any licenses which are approved by the Open Source Initiative on or after the Effective Date, including both permissive and copyleft licenses, whether or not such licenses are subsequently disapproved (including any right to adopt any future version of a license if permitted).
 
 In addition, We may use the following licenses for Media in the Contribution: [CC0-1.0, CC-by-SA-4.0] (including any right to adopt any future version of a license if permitted).
 
 ### Moral Rights
+
 If moral rights apply to the Contribution, to the maximum extent permitted by law, You waive and agree not to assert such moral rights against Us or our successors in interest, or any of our licensees, either direct or indirect.
 
 ### Our Rights
+
 You acknowledge that We are not obligated to use Your Contribution as part of the Material and may decide to include any Contribution We consider appropriate.
 
 ### Reservation of Rights
+
 Any rights not expressly [assigned or] licensed under this section are expressly reserved by You.
 
 ## Agreement
