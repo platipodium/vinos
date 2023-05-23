@@ -82,6 +82,6 @@ The model is documented in short form the NetLogo IDE's `info` section. A full d
 
 # Acknowledgements
 
-We acknowledge contributions from Wolfgang Probst, Marie Ryan, and Jieun Seo for providing data, fruitful discussions and for contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context. The development of the model was made possible by the grant 03F0862A "Multiple Stressors on North Sea Life" (MuSSeL) within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit program of the Germany Bundesministerium für Bildung und Forschung (BMBF). We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others
+We acknowledge contributions from Nikolaus Probst, Marie Ryan, and Jieun Seo for providing data, fruitful discussions and for contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context. The development of the model was made possible by the grant 03F0862A "Multiple Stressors on North Sea Life" (MuSSeL) within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit program of the Germany Bundesministerium für Bildung und Forschung (BMBF). We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others
 
 # References

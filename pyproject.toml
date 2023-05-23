@@ -25,6 +25,7 @@ matplotlib = "^3.5.1"
 tabula-py = "^2.7.0"
 pypdf = "^3.8.0"
 holidays = "^0.24"
+clevercsv = "^0.8.0"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^3.2.2"
