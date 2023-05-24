@@ -6,11 +6,11 @@
 # SPDX-FileContributor Carsten Lemmen <carsten.lemmen@hereon.de
 
 odd-paper:
-    image: $CI_REGISTRY_IMAGE/pandoc:latest
-    script:
-      - make -C doc/odd pdf
-    artifacts:
-      paths:
-        - doc/odd/paper.pdf
-    needs: []
-    stage: deploy
+  image: $CI_REGISTRY_IMAGE/pandoc:latest
+  script:
+    - make -C doc/odd pdf
+  artifacts:
+    paths:
+      - doc/odd/paper.pdf
+  needs: []
+  stage: deploy

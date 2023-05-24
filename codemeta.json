@@ -1,123 +1,115 @@
 {
-    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
-    "@type": "SoftwareSourceCode",
-    "license": "https://spdx.org/licenses/Apache-2.0",
-    "codeRepository": "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species.git",
-    "contIntegration": "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/pipelines",
-    "dateCreated": "2022-01-07",
-    "datePublished": "2023-04-17",
-    "dateModified": "2023-05-08",
-    "issueTracker": "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/issues",
-    "name": "Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries",
-    "version": "1.1.0",
-    "description": "Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German Small-scale Fisheries.  As a Social-Ecological Systems (SES) model it focusses on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, and brown shrimp.\n",
-    "applicationCategory": "Social Ecological Systems",
-    "funding": "03F0862A",
-    "developmentStatus": "active",
-    "isPartOf": "https://mussel-project.de",
-    "funder": {
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "license": "https://spdx.org/licenses/Apache-2.0",
+  "codeRepository": "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species.git",
+  "contIntegration": "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/pipelines",
+  "dateCreated": "2022-01-07",
+  "datePublished": "2023-04-17",
+  "dateModified": "2023-05-08",
+  "issueTracker": "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/issues",
+  "name": "Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries",
+  "version": "1.1.0",
+  "description": "Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German Small-scale Fisheries.  As a Social-Ecological Systems (SES) model it focusses on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, and brown shrimp.\n",
+  "applicationCategory": "Social Ecological Systems",
+  "funding": "03F0862A",
+  "developmentStatus": "active",
+  "isPartOf": "https://mussel-project.de",
+  "funder": {
+    "@type": "Organization",
+    "name": "BMBF"
+  },
+  "keywords": [
+    "NetLogo",
+    "North Sea",
+    "Fishery",
+    "Shrimp",
+    "Plaice",
+    "Sole",
+    "Agent-based Model",
+    "MuSSeL"
+  ],
+  "programmingLanguage": ["NetLogo"],
+  "runtimePlatform": ["JVM"],
+  "operatingSystem": ["Linux", "Windows", "macOS"],
+  "author": [
+    {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0003-3483-6036",
+      "givenName": "Carsten",
+      "familyName": "Lemmen",
+      "email": "carsten.lemmen@hereon.de",
+      "affiliation": {
         "@type": "Organization",
-        "name": "BMBF"
+        "name": "Helmholtz-Zentrum Hereon"
+      }
     },
-    "keywords": [
-        "NetLogo",
-        "North Sea",
-        "Fishery",
-        "Shrimp",
-        "Plaice",
-        "Sole",
-        "Agent-based Model",
-        "MuSSeL"
-    ],
-    "programmingLanguage": [
-        "NetLogo"
-    ],
-    "runtimePlatform": [
-        "JVM"
-    ],
-    "operatingSystem": [
-        "Linux",
-        "Windows",
-        "macOS"
-    ],
-    "author": [
-        {
-            "@type": "Person",
-            "@id": "https://orcid.org/0000-0003-3483-6036",
-            "givenName": "Carsten",
-            "familyName": "Lemmen",
-            "email": "carsten.lemmen@hereon.de",
-            "affiliation": {
-                "@type": "Organization",
-                "name": "Helmholtz-Zentrum Hereon"
-            }
-        },
-        {
-            "@type": "Person",
-            "@id": "https://orcid.org/0000-0002-2192-4013",
-            "givenName": "Sascha",
-            "familyName": "Hokamp",
-            "email": "sascha.hokamp@uni-hamburg.de",
-            "affiliation": {
-                "@type": "Organization",
-                "name": "University of Hamburg"
-            }
-        },
-        {
-            "@type": "Person",
-            "@id": "https://orcid.org/0000-0003-3483-6036",
-            "givenName": "Serra",
-            "familyName": "Örey",
-            "email": "soerey@hs-bremerhaven.de",
-            "affiliation": {
-                "@type": "Organization",
-                "name": "Hochschule Bremerhaven"
-            }
-        },
-        {
-            "@type": "Person",
-            "givenName": "W. Nikolaus",
-            "familyName": "Probst",
-            "email": "nikolaus.probst@thuenen.de",
-            "affiliation": {
-                "@type": "Organization",
-                "name": "Thünen Institut for Sea Fishery"
-            }
-        },
-        {
-            "@type": "Person",
-            "@id": "https://orcid.org/0000-0002-7171-3062",
-            "givenName": "Jürgen",
-            "familyName": "Scheffran",
-            "email": "juergen.scheffran@uni-hamburg.de",
-            "affiliation": {
-                "@type": "Organization",
-                "name": "University of Hamburg"
-            }
-        }
-    ],
-    "maintainer:": "https://orcid.org/0000-0003-3483-6036",
-    "contributor": [
-        {
-            "@type": "Person",
-            "givenName": "Jieun",
-            "familyName": "Seo",
-            "email": "jieun.seo@uni-hamburg.de",
-            "affiliation": {
-                "@type": "Organization",
-                "name": "University of Hamburg"
-            }
-        },
-        {
-            "@type": "Person",
-            "@id": "https://orcid.org/0009-0000-0785-6811",
-            "givenName": "Verena",
-            "familyName": "Mühlberger",
-            "email": "verena.muehlberger@uni-hamburg.de",
-            "affiliation": {
-                "@type": "Organization",
-                "name": "University of Hamburg"
-            }
-        }
-    ]
+    {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-2192-4013",
+      "givenName": "Sascha",
+      "familyName": "Hokamp",
+      "email": "sascha.hokamp@uni-hamburg.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "University of Hamburg"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0003-3483-6036",
+      "givenName": "Serra",
+      "familyName": "Örey",
+      "email": "soerey@hs-bremerhaven.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Hochschule Bremerhaven"
+      }
+    },
+    {
+      "@type": "Person",
+      "givenName": "W. Nikolaus",
+      "familyName": "Probst",
+      "email": "nikolaus.probst@thuenen.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Thünen Institut for Sea Fishery"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-7171-3062",
+      "givenName": "Jürgen",
+      "familyName": "Scheffran",
+      "email": "juergen.scheffran@uni-hamburg.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "University of Hamburg"
+      }
+    }
+  ],
+  "maintainer:": "https://orcid.org/0000-0003-3483-6036",
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Jieun",
+      "familyName": "Seo",
+      "email": "jieun.seo@uni-hamburg.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "University of Hamburg"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://orcid.org/0009-0000-0785-6811",
+      "givenName": "Verena",
+      "familyName": "Mühlberger",
+      "email": "verena.muehlberger@uni-hamburg.de",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "University of Hamburg"
+      }
+    }
+  ]
 }

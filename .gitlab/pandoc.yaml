@@ -1,4 +1,4 @@
-# GitLab CI configuration file for providing a pandoc 
+# GitLab CI configuration file for providing a pandoc
 # docker for document generation
 #
 # SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon
@@ -6,35 +6,35 @@
 # SPDX-FileContributor Carsten Lemmen <carsten.lemmen@hereon.de
 
 .base-pandoc-docker:
-    image: docker
-    tags: ["docker", "dind"]
-    services:
-        - docker:dind
-    stage: deploy
-    variables:
-        CONTAINER_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE/pandoc
-    allow_failure: false
-    interruptible: true
-    rules:
-      - if: $CI_COMMIT_BRANCH == "docker"
-    needs: []
+  image: docker
+  tags: ["docker", "dind"]
+  services:
+    - docker:dind
+  stage: deploy
+  variables:
+    CONTAINER_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE/pandoc
+  allow_failure: false
+  interruptible: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == "docker"
+  needs: []
 
 build-pandoc-docker:
-    extends: .base-pandoc-docker
-    before_script:
-        - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
-    script:
-        - "docker build -t ${CONTAINER_REGISTRY_IMAGE}
-            -f .docker/Dockerfile-pandoc ."
-        - docker push ${CONTAINER_REGISTRY_IMAGE}
+  extends: .base-pandoc-docker
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - "docker build -t ${CONTAINER_REGISTRY_IMAGE}
+      -f .docker/Dockerfile-pandoc ."
+    - docker push ${CONTAINER_REGISTRY_IMAGE}
 
 test-pandoc-docker:
-    extends: .base-docker
-    stage: deploy
-    before_script:
-        - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
-    script:
-        - docker pull ${CONTAINER_REGISTRY_IMAGE}
-        - docker run ${CONTAINER_REGISTRY_IMAGE}  pandoc -h
-    needs:
-        - build-pandoc-docker
+  extends: .base-docker
+  stage: deploy
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker pull ${CONTAINER_REGISTRY_IMAGE}
+    - docker run ${CONTAINER_REGISTRY_IMAGE}  pandoc -h
+  needs:
+    - build-pandoc-docker

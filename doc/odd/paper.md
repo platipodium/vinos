@@ -99,7 +99,9 @@ The primary agents in the ABM are the fishing vessels, denoted as _boats_. They 
 ### The primary agent: boats
 
 Boats are located at ports, according to the empirical distribution of the German fleet in those ports. In the German fleet there are four distinct clusters of small-scale fisheries vessels that have typical vessel and crew size, gear and fishing strategy [@Oerey2023]. With those come physical (speed, length, capacity, engine power) and economic properties (fixed and variable costs). Boats have a catch efficiency that tries to model the experience of the individual boat owners.
+
 <!-- @todo  we need to work on catch-efficiency, maybe leave it out? -->
+
 Boats go on fishing trips and record the catch and the revenue. They internally record the economic balance of their activites and continuously adapt priorities, e.g., for choosing a specific gear, based on value gains.
 
 <!-- @todo  we need to work on addinng area-flexbilty, max distance and other variables to memory -->

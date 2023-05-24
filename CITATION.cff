@@ -16,7 +16,7 @@ authors:
     orcid: 0000-0002-2192-4013
     email: sascha.hokamp@uni-hamburg.de
     affiliation: "Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany"
-  - family-names:  Örey
+  - family-names: Örey
     given-names: Serra
     orcid: 0000-0003-3483-6036
     email: soerey@hs-bremerhaven.de
@@ -41,7 +41,7 @@ authors:
     affiliation: "Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany"
 cff-version: 1.2.0
 message: "If you use this software, please cite it using these metadata."
-title: 'Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries'
+title: "Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries"
 keywords:
   - NetLogo
   - Agent-based Model
