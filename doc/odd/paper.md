@@ -73,15 +73,14 @@ The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a S
 
 ## Purpose, scope and audience
 
-In the German North Sea fishing fleet consists of small scale vessels shrimp beam trawlers being the biggest group. These fisheries are typically owner-operated family enterprises that use boats smaller than 24 meters (@Döring2020). These vessels' catch mainly contain demersal species, including plaice, sole, and brown shrimp(@Letschert2023).
+In the German North Sea fishing fleet consists of small scale vessels shrimp beam trawlers being the biggest group. These fisheries are typically owner-operated family enterprises that use boats smaller than 24 meters [@Döring2020]. These vessels' catch mainly contain demersal species, including plaice, sole, and brown shrimp [@Letschert2023].
 
-Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF, @stelzenmuller2022plate). German authorities released a new maritime spatial plan on 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045
+Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF, @stelzenmuller2022plate). German authorities released a new maritime spatial plan in 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045
 [@WindSeeG2023].
 
-<!-- @todo-serra I want to find the more accurate oecd2016ocean ref for germany marine future -->
 <!-- @todo  in theory the german EEZ allready is protected by about 30% https://www.bfn.de/nationale-meeresschutzgebiete#anchor-6205, hmm, in EEZ 8000/28500 km2 protected, i.e. 28%, (only german) -->
 
-Some of the ecomonically important species in the North Sea show northward shift due to the climate change related warming of the water(@dulvy2008climate) and suggest a following change in fishing grounds. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price. price fluctiations due to oligopoly and the need for re-investing into their aging vessels (@Goti-Aralucea2021).
+Some of the ecomonically important species in the North Sea show a northward habitat shift due to the climate heating of the water [@dulvy2008climate], suggesting a subsequent change in fishing grounds. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price, selling price fluctuations in an oligopolic market situation and the need for re-investing into their aging vessels [@Goti-Aralucea2021].
 
 The **purpose** of this ABM is to provide an interactive simulation environment that describes spatial, temporal and structural adaptations of the fleet. It adaptively describes
 
@@ -89,7 +88,7 @@ The **purpose** of this ABM is to provide an interactive simulation environment 
 - how often to go out
 - what gear to use and what species to target
 
-Its **scope** is the German North sea small-scale fisheries. This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The currently simulated target species are the three most important ones: plaice, sole and brown shrimp, but the model is in principle extensible to further species like Norwegian lobster, sprat or whiting.
+Its **scope** is the German North sea small-scale fisheries. This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ, @BALEFishery2022). The currently simulated target species are the three most important ones: plaice, sole and brown shrimp, but the model is in principle extensible to further species like Norwegian lobster, sprat or whiting.
 
 The **intended audience** of the ABM are marine researchers and government agencies concerned with spatial planning, environmental status assessment, and climate change mitigation. It can also assist in a stakeholder dialogue with tourism and fishers to contextualize the complexity of the interactions between fisheries economics, changing resources and regulatory restrictions. It is intended to be used for communication of and scenario development for future sustainable fisheries at the German North Sea coast.
 
@@ -100,9 +99,7 @@ The primary agents in the ABM are the fishing vessels, denoted as _boats_. They 
 ### The primary agent: boats
 
 Boats are located at ports, according to the empirical distribution of the German fleet in those ports. In the German fleet there are four distinct clusters of small-scale fisheries vessels that have typical vessel and crew size, gear and fishing strategy [@Oerey2023]. With those come physical (speed, length, capacity, engine power) and economic properties (fixed and variable costs). Boats have a catch efficiency that tries to model the experience of the individual boat owners.
-
 <!-- @todo  we need to work on catch-efficiency, maybe leave it out? -->
-
 Boats go on fishing trips and record the catch and the revenue. They internally record the economic balance of their activites and continuously adapt priorities, e.g., for choosing a specific gear, based on value gains.
 
 <!-- @todo  we need to work on addinng area-flexbilty, max distance and other variables to memory -->
