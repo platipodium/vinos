@@ -69,18 +69,17 @@ abbreviations:
 
 # ODD Protocol: German North Sea Small-scale Fisheries
 
-The Agent-based Model (ABM) of the German North Sea Small-scale Fisheries is a Social-Ecological Systems (SES) model focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. This model description follows the ODD (Overview, Design concepts, Details) protocol for describing individual- and agent-based models (@Grimm2010, @Grimm2020). By following this protocol, we aim to document the ABM such that it is replicable independently of the current implementation (in NetLogo, @Wilensky1999).
+Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German North Sea Small-scale Fisheries in a Social-Ecological Systems (SES) framework focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.This model description follows the Overview, Design concepts, Details (ODD) protocol for describing individual- and agent-based models (@Grimm2010, @Grimm2020). By following this protocol, we aim to document the ABM such that it is replicable independently of the current implementation in NetLogo [@Wilensky1999].
 
 ## Purpose, scope and audience
 
-In the North Sea, German fishing fleet consists of small scale vessels and the shrimp beam trawlers are the biggest group. This fishery is typically owner-operated family enterprises that uses boats smaller than 24 meters [@Döring2020]. These vessels' catch mainly contain demersal species, including plaice, sole, and brown shrimp[@Letschert2023].
+In the North Sea, the German small-scale fishing fleet's biggest group are the shrimp beam trawlers. This small-scale fishing fleet is typically run by owner-operated family enterprises that uses boats smaller than 24 meters [@Döring2020]. These vessels' target species are mainly demersal (living near the bottom), and include plaice, sole, and brown shrimp[@Letschert2023].
 
-Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection areas and offshore wind farms(OWF)[@stelzenmuller2022plate]. German authorities released a new maritime spatial plan on 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045[@WindSeeG2023].
+Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extraction, and currently increasing ones like marine protection areas and offshore wind farms (OWF)[@stelzenmuller2022plate]. German authorities released a new maritime spatial plan in 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045[@WindSeeG2023].
 
-<!-- @todo-serra I want to find the more accurate oecd2016ocean ref for germany marine future -->
 <!-- @todo  in theory the german EEZ allready is protected by about 30% https://www.bfn.de/nationale-meeresschutzgebiete#anchor-6205, hmm, in EEZ 8000/28500 km2 protected, i.e. 28%, (only german) -->
 
-Some of the ecomonically important species in the North Sea show northward shift due to the climate change related warming of the water[@dulvy2008climate] and suggest a following change in fishing grounds. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price, price fluctiations due to oligopoly and the need for re-investing into their aging vessels [@Goti-Aralucea2021].
+Some of the ecomonically important species in the North Sea show a northward habitat shift due to the climate change related warming of the water[@dulvy2008climate]; this suggests that also the fishing grounds may have to shift. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price, price fluctuations related to the oligopolic processing market, and the need for re-investing into their aging vessels [@Goti-Aralucea2021].
 
 The **purpose** of this ABM is to provide an interactive simulation environment that describes spatial, temporal and structural adaptations of the fleet. It adaptively describes
 
