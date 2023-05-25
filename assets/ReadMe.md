@@ -7,10 +7,10 @@ SPDX-License-Identifier: CC0-1.0
 
 This directory contains graphical elements used in the NetLogo model and its documentations
 
-## Image-based processing 
+## Image-based processing
 
-Portable Network Graphics (png) images were used with the following projection information to fit to the 
-geospatial environment of the model. 
+Portable Network Graphics (png) images were used with the following projection information to fit to the
+geospatial environment of the model.
 
 ```
 nrows=120
@@ -22,10 +22,8 @@ ymax=56
 projection=+proj=longlat +datum=WGS84 +no_defs
 ```
 
-From a NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` and further processed via `.pnm` to yield a `.png`.  The resulting file was then resampled to 180 x 120 pixels.
+From a NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` and further processed via `.pnm` to yield a `.png`. The resulting file was then resampled to 180 x 120 pixels.
 
 ## Flowchart
 
 The flowchart was generated from a miro, publicly available at https://miro.com/app/board/o9J_lr2i62o=/
-
-

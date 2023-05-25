@@ -5,7 +5,7 @@ SPDX-License-Identifier: CC0-1.0
 -->
 
 This directory contains data and surrogate data on fishing activities of vessels
-in the clusters identified in Örey et al. (2023)'s PhD thesis.  While the
+in the clusters identified in Örey et al. (2023)'s PhD thesis. While the
 actual data (prefixed `musselabm`), you can use the the data sets prefixed `fake` in the same way.
 
 Please note that the data is preliminary and should not be used

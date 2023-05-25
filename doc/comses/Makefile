@@ -9,9 +9,9 @@ DIRS=assets data .reuse LICENSES
 all: zip
 
 zip:
-	@rsync -r ../../netlogo/{ReadMe.md,*nlogo,include,behavior} code/ 
-	@for D in $(DIRS); do rsync -r ../../$$D . ; done
+	@rsync -r ../../netlogo/{ReadMe.md,*nlogo,include,behavior} code/
+	@for D in $(DIRS); do rsync -r --exclude="ble/Monatsbericht*" --exclude="ble/national_landings_*.csv" ../../$$D . ; done
 	@rsync -r ../odd/paper.{md,bib} doc/
 	@zip -r comses $(DIRS) code
-clean: 
+clean:
 	rm -rf $(DIRS) code comses.zip

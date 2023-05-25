@@ -8,41 +8,41 @@
 # using our self-hosted pandoc docker.  We prefer the
 # artifacts created by the joss-inara job below
 joss-paper:
-    image: $CI_REGISTRY_IMAGE/pandoc:latest
-    script:
-      - joss -p -o pdf,cff doc/joss/paper.md
-    artifacts:
-      paths:
-#        - doc/joss/paper.pdf
-#        - doc/joss/CITATION.cff
-    needs: []
-    stage: deploy
+  image: $CI_REGISTRY_IMAGE/pandoc:latest
+  script:
+    - joss -p -o pdf,cff doc/joss/paper.md
+  artifacts:
+    paths:
+  #        - doc/joss/paper.pdf
+  #        - doc/joss/CITATION.cff
+  needs: []
+  stage: deploy
 
 # This job generates the JOSS pdf paper and CITATION.cff
 # using our self-hosted joss docker, but needs very long
 # and is not run by default.
 joss-docker:
-    image: docker
-    tags: ["docker", "dind"]
-    services:
-        - docker:dind
-    variables:
-        CONTAINER_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE/pandoc:latest
-    allow_failure: false
-    interruptible: true
-    stage: deploy
+  image: docker
+  tags: ["docker", "dind"]
+  services:
+    - docker:dind
+  variables:
+    CONTAINER_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE/pandoc:latest
+  allow_failure: false
+  interruptible: true
+  stage: deploy
 
-    before_script:
-        - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
-    script:
-        - docker pull ${CONTAINER_REGISTRY_IMAGE}
-        - docker run -v $(pwd):/data ${CONTAINER_REGISTRY_IMAGE} joss /data/doc/joss/paper.md
-    needs: []
-    when: manual
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker pull ${CONTAINER_REGISTRY_IMAGE}
+    - docker run -v $(pwd):/data ${CONTAINER_REGISTRY_IMAGE} joss /data/doc/joss/paper.md
+  needs: []
+  when: manual
 
-    artifacts:
-      paths:
- #       - doc/joss/paper.pdf
+  artifacts:
+    paths:
+  #       - doc/joss/paper.pdf
 
 # The JOSS-provided workflow did not work for issues between inara docker
 # and gitlab, see https://github.com/openjournals/inara/issues/34.

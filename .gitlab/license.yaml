@@ -3,16 +3,16 @@
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 license-compliance:
-    image: python:3.11
-    stage: lint
-    before_script:
-        - pip install --upgrade pip
-        - pip install poetry
-        - poetry install
-    script:
-        - poetry run reuse lint
-    allow_failure: false
-    needs: []
+  image: python:3.11
+  stage: lint
+  before_script:
+    - pip install --upgrade pip
+    - pip install poetry
+    - poetry install
+  script:
+    - poetry run reuse lint
+  allow_failure: false
+  needs: []
 
 reuse:
   image:

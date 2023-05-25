@@ -7,8 +7,7 @@
 
 # Natura 2000 protected areas of the North Sea
 
-This data is extracted from EEA's Natura 2000 data set.  
+This data is extracted from EEA's Natura 2000 data set.
 
-The full data can be obtained in various formats from 
+The full data can be obtained in various formats from
 https://www.eea.europa.eu/en/datahub/datahubitem-view/6fc8ad2d-195d-40f4-bdec-576e7d1268e4
-
