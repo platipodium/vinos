@@ -49,26 +49,28 @@ conflictsofinterests: "The authors declare that no conflict of interest has aris
 abbreviations:
   - short: ABM
     long: "Agent-based Model"
-  - short: EEZ
-    long: "Exclusive Economic Zone"
-  - short: FAO
-    long: "United Nations Food and Agricultural Organization"
   - short: ODD
     long: "Overview, Design concepts, Details"
   - short: OWF
     long: "Offshore Wind Farm"
   - short: DES
     long: "Discrete Event Simulation"
+  - short: EEZ
+    long: "Exclusive Economic Zone"
+  - short: FAO
+    long: "United Nations Food and Agricultural Organization"
+  - short: GEBCO
+    long: "General Bathymetry Chart of the Oceans"
   - short: HCR
     long: "Harvest Control Rule"
   - short: MSC
     long: "Marine Stewardship Council"
+  - short: MuSSeL
+    long: "Multiple Stressors on North Sea Life"
   - short: TAC
     long: "Total Allowable Catch"
   - short: ViNoS
     long: "Viable North Sea"
-  - short: MuSSeL
-    long: "Multiple Stressors on North Sea Life"
   - short: VIABLE
     long: "Values and Investments from Agent-Based interaction and Learning in Environmental systems"
 ---
@@ -79,13 +81,13 @@ Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German North Sea S
 
 ## Purpose, scope and audience
 
-In the North Sea, the German small-scale fishing fleet's biggest group are the shrimp beam trawlers. This small-scale fishing fleet is typically run by owner-operated family enterprises that uses boats smaller than 24 meters [@Döring2020]. These vessels' target species are mainly demersal (living near the bottom), and include plaice, sole, and brown shrimp[@Letschert2023].
+In the North Sea, the German small-scale fishing fleet's biggest group are the shrimp beam trawlers. This small-scale fishing fleet is typically run by owner-operated family enterprises that uses boats smaller than 24 meters [@Döring2020]. These vessels' target species are mainly demersal (living near the bottom), and include plaice, sole, and brown shrimp [@Letschert2023].
 
-Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extraction, and currently increasing ones like marine protection areas and offshore wind farms (OWF)[@stelzenmuller2022plate]. German authorities released a new maritime spatial plan in 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045[@WindSeeG2023].
+Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extraction, and currently increasing ones like marine protection areas and offshore wind farms (OWF, @stelzenmuller2022plate). German authorities released a new maritime spatial plan in 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045 [@WindSeeG2023].
 
 <!-- @todo  in theory the german EEZ allready is protected by about 30% https://www.bfn.de/nationale-meeresschutzgebiete#anchor-6205, hmm, in EEZ 8000/28500 km2 protected, i.e. 28%, (only german) -->
 
-Some of the ecomonically important species in the North Sea show a northward habitat shift due to the climate change related warming of the water[@dulvy2008climate]; this suggests that also the fishing grounds may have to shift. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price, price fluctuations related to the oligopolic processing market, and the need for re-investing into their aging vessels [@Goti-Aralucea2021].
+Some of the ecomonically important species in the North Sea show a northward habitat shift due to the climate change related warming of the water [@dulvy2008climate]; this suggests that also the fishing grounds may have to shift. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price, price fluctuations related to the oligopolic processing market, and the need for re-investing into their aging vessels [@Goti-Aralucea2021].
 
 The **purpose** of this ABM is to provide an interactive simulation environment that describes spatial, temporal and structural adaptations of the fleet. It adaptively describes
 
@@ -122,7 +124,7 @@ Ports are the boats' favourite landing ports. Boats start their activity from a 
 
 The North Sea brown shrimp (_Crangon crangon_, Brown shrimp, Nordseekrabbe) has no catch restriction concerning a maximum allowable catch. Because of its very short life cycle, reliable stock estimates are not yet established. Since 2011 the fishery uses the harvest control rule (HCR) as a management measure. Beam trawlers between 12-24 m are the most important segment within both the Dutch and German coastal fleet. Currently, nets have a standard cod end and diamond mesh sizes of 20 mm. For the voluntery Marine Stewardship Certification (MSC) process sieb nets are required by the certified vessels to reduce bycatch and bigger mesh sizes are in discussion. There is no area restrictions apply to shrimp fishers in the German North Sea [@aviat2011north,@ICES2019wgcran].
 
-The second important group of target species in the German bight are the flatfish. Two commercially important fish species are plaice (_Pleuronectes platessa_, European plaice, Scholle) and sole (_Solea solea_, European sole, Seezunge). Both species are regulated with total allowable catches (TACs) measures. Additionally, several technical measures apply to both of the fisheries including a mesh size regulations, a minimum landing size, gear restrictions and a closed area along the continental coast where beam trawlers with engine power higher than 321 kW are not allowed to fish (the so-called "Plaice box", @rijnsdorp2020different)
+The second important group of target species in the German bight are the flatfish. Two commercially important fish species are plaice (_Pleuronectes platessa_, European plaice, Scholle) and sole (_Solea solea_, European sole, Seezunge). Both species are regulated with total allowable catch (TAC) measures. Additionally, several technical measures apply to both of the fisheries including a mesh size regulations, a minimum landing size, gear restrictions and a closed area along the continental coast where beam trawlers with engine power higher than 321 kW are not allowed to fish (the so-called "plaice box", @rijnsdorp2020different)
 
 The model is designed to accommodate further species relevant in the small-scale fishery such as whiting (_Merlangius merlangus_), sprat (_Sprattus sprattus_), or Norwegian lobster (_Nephrops norvegicus_). Each prey species is assigned a price obtained from historic prices of the last decades.
 
@@ -136,8 +138,7 @@ Boats and preys are connected via the _gears_ agent: The gear prescribes the geo
 
 The spatial domain is described by a grid, whose cells (in NetLogo: patches) carry spatial information on the environment and record activity information. The domain itself is the German Bight including Germany's EEZ. It is represented geographically in the WGS84 datum, and bounded by the rectangle spanned by the coordinates (2° E; 53° N) and (10° E; 56° N); the resolution is 0.025 x 0.025 degree (1.5 arc minutes, or approximately 1.7 x 2.9 km). The resulting grid has a size of 320 columns x 120 rows.
 
-The domain is divided into an active part (water) and an inactive part (land). The demarcation between land and water is achieved by using the GEBCO bathymetry bounded by European Environmental Agency's coastline dataset. Using a creep-fill algorithm a continuous accessible domain is ensured.
-
+The domain is divided into an active part (water) and an inactive part (land). The demarcation between land and water is achieved by using the General Bathymetry Chart of the Oceans (GEBCO) bathymetry bounded by European Environmental Agency's coastline dataset. Using a creep-fill algorithm a continuous accessible domain is ensured.
 Cells carry information on resources (fish stocks of the respective species, at climatological seasonal resolution), and regulatory fishery closure areas (offshore wind and trawling exclusion zones). They record activity of the fishery occuring in the grid cell as area swept and as hours fished.
 
 <!-- @todo add SAR -->
@@ -161,6 +162,8 @@ The global timestep of the model is one day. Within the 24-hour period, we use D
 | Phase 4 steam | sea          | Boats need to return                       |
 | Phase 5 land  | port         | Boats are offloading                       |
 
+: The 6 phases used with Discrete Event Simulation in ViNoS.
+
 Boats cycle through all phases consecutively, keeping a record of how much time they spend. Boats in **phase 0** keep the legal resting time of 11 hours, and rest during the weekend (from Saturday noon to Monday 4 am). After the resting period, they make a decision on whether to go out or not. This decision may depend on weather and (in a later model version) expected catch. If the decision is positive, a boat enters phase 1. Boats in **phase 1** directly (straight line, without environmental sensing) steam from the port location to the port's closest open sea deployment location. Adding this phase makes it possible for the ports to be located on dry ground at the available grid resolution, as many ports are located upstream of the coastline demarcation. Having arrived at the deployment location, boats enter phase 2.
 
 Boats in **phase 2** steam to a preferred location for the next fishing haul. This preferred location is chosen randomly but subject to the fuel constraints and maximum distance preference of each boat. At a later implementation of the model, this location is also chosen taking into account previous experience of successful fishing hauls. Phase 2 may also be entered after an unsuccessful fishing haul. At the new location, a boat enters **phase 3** for fishing. Fishing is done in several hauls; a haul is directed towards only accessible water, and at the end of a haul the ship turns around (with slight variation) and continues to the next haul.
@@ -174,13 +177,13 @@ Hauls are repeated until one of the following constraints is met (always taking 
 4. the loading capacity is exhausted;
 5. the catch is considered insufficient.
 
+<div>
 ![Decision pathway for a simulated fishing trip.\label{fig:flowchart}](../../assets/abm_flowchart.pdf){ width=90% height=30% }
-
-<!--UPDATE the flowchart with white background (SERRA:monday-2023-05-15) -->
+</div>
 
 On an insufficient catch, the boat enters phase 2 to look for a different location. On a successful catch and after having spent the allocated time or fuel, the boat enters phase 4.
 Boats in **phase 4** need to return. They directly steam in a straight line to their deployment location and on to their port. At the port, they enter **phase 5** to unload their catch and clean the boat. Priorities for the different gears are updated based on the relative change of the deployed gears and catches.
-Finally, boats re-enter phase 0 and restart the cycle. A summary view of the model scheduling is depicted in \autoref{fig:flowchart}
+Finally, boats re-enter phase 0 and restart the cycle. A summary view of the model scheduling is depicted in \autoref{fig:flowchart}.
 
 ## Design concepts
 
@@ -203,6 +206,8 @@ The ABM is an adaptive model with the **objective** of increasing value gains (h
 | $r_k$      | Priority for action pathway $k$ with $0\leq r_k\leq 1$ and $\sum_1^m r_k = 1$.                                                |
 | $v_k$      | Marginal change of value with priority $v_k=\partial{V}/\partial{r_k}$, expressed in €.                                       |
 | $a$        | Adaptation rate (sensitivity) of a change in priority from a change in value.                                                 |
+
+: Notation used in the VIABLE approach.
 
 In the VIABLE approach, each boat carries a list of priorities for certain fishing actions that are subject to change based on the boat’s perception and evaluation of its activities. During each haul, the costs of that haul (wage and fuel) $C$ are subtracted from the benefits, i.e. the income from the catch (harvest) $H$ times the market price $p$ for each fish:
 
@@ -273,6 +278,8 @@ All data are publicly available and licensed for use. The data sources are
 | Plaice box                                             | European Commision                                                                    |
 | Geodetic information                                   | International Earth Rotation Service (IERS)                                           |
 | National Park boundaries                               | Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz (NLWKN) |
+
+: Data and their sources for the ViNoS model.
 
 # CRediT authorship contribution statement
 
