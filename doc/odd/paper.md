@@ -63,6 +63,8 @@ abbreviations:
     long: "Harvest Control Rule"
   - short: MSC
     long: "Marine Stewardship Council"
+  - short: TAC
+    long: "Total Allowable Catch"
   - short: ViNoS
     long: "Viable North Sea"
   - short: MuSSeL
@@ -97,10 +99,11 @@ The **intended audience** of the ABM are marine researchers and government agenc
 
 ## Entities, state variables, and scales
 
-The fishery target species are denoted _preys_. Currently, the ABM describes three different species \autoref{fig:agents}. The primary agents in the ABM are the fishing vessels, denoted as _boats_. They are linked to supplementary classes of agents that describe the _gears_ used for fishing, the target species denoted as _preys_, and the _ports_ where boats land their catch. The agents interact with the _environment_ that describes the _spatial domain_ and resource and regulatory changes.
+The fishery target species are denoted _preys_. Currently, the ABM describes three different species (\autoref{fig:agents}). The primary agents in the ABM are the fishing vessels, denoted as _boats_. They are linked to supplementary classes of agents that describe the _gears_ used for fishing, the target species denoted as _preys_, and the _ports_ where boats land their catch. The agents interact with the _environment_ that describes the _spatial domain_ and resource and regulatory changes.
 
 <div>
-![Primary and subsidiary agents of the ViNoS ABM.\label{fig:agents}](../../assets/agents.pdf){ width=90% height=30%}
+<!-- Original picture is 22,26 x 14,89 cm -->
+![Primary and subsidiary agents of the ViNoS ABM.\label{fig:agents}](../../assets/agents.pdf){ width=75% height=30% }
 </div>
 
 ### The primary agent: boats
@@ -117,14 +120,13 @@ Ports are the boats' favourite landing ports. Boats start their activity from a 
 
 <!-- @todo  Make landings a prognostic variable for ports -->
 
-<<<<<<< HEAD
-The fishery target species are denoted _preys_. Currently, the ABM describes three different species. The North Sea brown shrimp(_Crangon crangon_, Brown shrimp, Nordseekrabbe) has no catch restriction concerning a maximum allowable catch. Since the species has a very short life cycle, reliable stock estimates is not yet established. Since 2011 fishery uses harvest control rule (HCR) as management measure. Beam trawlers between 12-24 m are the most important segment within both the Dutch and German coastal fleet. Currently nets have standard cod end and diamond mesh sizes of 20 mm. For the voluntery Marine Stewardship Certification (MSC) process sieb nets are required by the certified vessels to reduce bycatch and bigger mesh sizes are in discussion. There is no area restrictions apply to shrimp fishers in the German North Sea. [@aviat2011north][@ICES2019wgcran]. Second important target species in the German bight are the flat fish. Two commercially important fish species are plaice(_Pleuronectes platessa_, European plaice, Scholle ) and sole(_Solea solea_, European sole, Seezunge). Both species are regulated with total allowable catches (TACs) measures. Additionally, several technical measuresare apply to both of the fisheries including mesh size regulations,a minimum landing size,gear restrictions and a closed area along the continental coast where beam trawlers that have engine power higher than 321 kW are not allowed to fish(the PlaiceBox) [@rijnsdorp2020different]
-=======
-The North Sea brown shrimp(_Crangon crangon_, Brown shrimp, Nordseekrabbe) has no catch restriction concerning a maximum allowable catch. Because of its very short life cycle, reliable stock estimates are not yet established. Since 2011 the fishery uses the harvest control rule (HCR) as a management measure. Beam trawlers between 12-24 m are the most important segment within both the Dutch and German coastal fleet. Currently, nets have a standard cod end and diamond mesh sizes of 20 mm. For the voluntery Marine Stewardship Certification (MSC) process sieb nets are required by the certified vessels to reduce bycatch and bigger mesh sizes are in discussion. There is no area restrictions apply to shrimp fishers in the German North Sea. [@aviat2011north][@ICES2019wgcran]. Second important target species in the German bight are the flat fish. Two commercially important fish species are plaice(_Pleuronectes platessa_, European plaice, Scholle ) and sole(_Solea solea_, European sole, Seezunge). Both species are regulated with total allowable catches (TACs) measures. Additionally, several technical measuresare apply to both of the fisheries including mesh size regulations,a minimum landing size,gear restrictions and a closed area along the continental coast where beam trawlers that have engine power higher than 321 kW are not allowed to fish(the PlaiceBox) [@rijnsdorp2020different]
->>>>>>> 1470b52 (Edited (again) first part of ODD paper)
-The model is designed to accommodate further species relevant to the small-scale fishery such as whiting (_Merlangius merlangus_), sprat (_Sprattus sprattus_), or Norwegian lobster (_Nephrops norvegicus_). Each prey species is assigned a price obtained from historic prices of the last decades.
+The North Sea brown shrimp (_Crangon crangon_, Brown shrimp, Nordseekrabbe) has no catch restriction concerning a maximum allowable catch. Because of its very short life cycle, reliable stock estimates are not yet established. Since 2011 the fishery uses the harvest control rule (HCR) as a management measure. Beam trawlers between 12-24 m are the most important segment within both the Dutch and German coastal fleet. Currently, nets have a standard cod end and diamond mesh sizes of 20 mm. For the voluntery Marine Stewardship Certification (MSC) process sieb nets are required by the certified vessels to reduce bycatch and bigger mesh sizes are in discussion. There is no area restrictions apply to shrimp fishers in the German North Sea [@aviat2011north,@ICES2019wgcran].
 
-Boats and preys are connected via the **gears** agent: The gear prescribes the geometric area that can be fished, the speed at which fishing can occur, and the prey that is caught. A gear can be installed, or changed, on a boat, subject to economic (investment cost) and physical (weight, size) constraints. The gear also determines the impact of the fishing activity on the environment, i.e. how much prey is removed and how much of the sea floor is swept as the beam size of the gear changes depending on the target species.
+The second important group of target species in the German bight are the flatfish. Two commercially important fish species are plaice (_Pleuronectes platessa_, European plaice, Scholle) and sole (_Solea solea_, European sole, Seezunge). Both species are regulated with total allowable catches (TACs) measures. Additionally, several technical measures apply to both of the fisheries including a mesh size regulations, a minimum landing size, gear restrictions and a closed area along the continental coast where beam trawlers with engine power higher than 321 kW are not allowed to fish (the so-called "Plaice box", @rijnsdorp2020different)
+
+The model is designed to accommodate further species relevant in the small-scale fishery such as whiting (_Merlangius merlangus_), sprat (_Sprattus sprattus_), or Norwegian lobster (_Nephrops norvegicus_). Each prey species is assigned a price obtained from historic prices of the last decades.
+
+Boats and preys are connected via the _gears_ agent: The gear prescribes the geometric area that can be fished, the speed at which fishing can occur, and the prey that is caught. A gear can be installed, or changed, on a boat, subject to economic (investment cost) and physical (weight, size) constraints. The gear also determines the impact of the fishing activity on the environment, i.e. how much prey is removed and how much of the sea floor is swept as the beam size of the gear changes depending on the target species.
 
 <!-- @todo  Add the change of gear -->
 <!-- @todo  Add SAR diagnostic -->
@@ -132,7 +134,7 @@ Boats and preys are connected via the **gears** agent: The gear prescribes the g
 
 ### Spatial units
 
-The spatial domain is described by a grid, whose cells (in NetLogo: patches) carry spatial information on the environment and record activity information. The domain itself is the German Bight including Germany's EEZ. It is represented geographically in the WGS84 datum, and bounded by the rectangle spanned by the coordinates (2° E; 53°N) and (10° E; 56 °N); the resolution is 0.025 x 0.025 degree (1.5 arc minutes, or approximately 1.7 x 2.9 km). The resulting grid has a size of 320 columns x 120 rows.
+The spatial domain is described by a grid, whose cells (in NetLogo: patches) carry spatial information on the environment and record activity information. The domain itself is the German Bight including Germany's EEZ. It is represented geographically in the WGS84 datum, and bounded by the rectangle spanned by the coordinates (2° E; 53° N) and (10° E; 56° N); the resolution is 0.025 x 0.025 degree (1.5 arc minutes, or approximately 1.7 x 2.9 km). The resulting grid has a size of 320 columns x 120 rows.
 
 The domain is divided into an active part (water) and an inactive part (land). The demarcation between land and water is achieved by using the GEBCO bathymetry bounded by European Environmental Agency's coastline dataset. Using a creep-fill algorithm a continuous accessible domain is ensured.
 
