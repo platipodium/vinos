@@ -4,23 +4,23 @@ Upstream-Contact: Carsten Lemmen <carsten.lemmen@hereon.de
 Source: https://gitlab.hzdr.de/mussel/netlogo-northsea-species/
 
 Files: data/thuenen/dist_ran*asc
-Copyright: 2022 Thuenen Institut
+Copyright: 2022 Johann Heinrich von Thünen-Institut
 License: LicenseRef-DL-DE-BY-2.0
 
 Files: assets/dis.*.png
-Copyright: 2022 Thuenen Institut
+Copyright: 2022 Johann Heinrich von Thünen-Institut
 License: LicenseRef-DL-DE-BY-2.0
 
 Files: data/emodnet/EMODnet*
-Copyright: 2022 EMODNET
+Copyright: 2022 European Marine Observation and Data Network
 License: LicenseRef-EMODNET-1.0
 
 Files: data/gebco/gebco*
-Copyright: 2022 GEBCO
+Copyright: 2022 General Bathymetry Chart of the Oceans
 License: LicenseRef-GEBCO-1.0
 
 Files: assets/gebco*
-Copyright: 2022 GEBCO
+Copyright: 2022 General Bathymetry Chart of the Oceans
 License: LicenseRef-GEBCO-1.0
 
 Files: data/eez/*
@@ -28,7 +28,7 @@ Copyright: United Nations Convention on the Law of the Sea
 License: CC0-1.0
 
 Files: data/ices/*
-Copyright: 2022 ICES Spatial Facility
+Copyright: 2022 International Council for the Exploration of the Sea Spatial Facility
 License: LicenseRef-ICES-1.0
 
 Files: data/plaicebox/*
@@ -40,7 +40,7 @@ Copyright: International Earth Rotation Service
 License: CC0-1.0
 
 Files: data/nlwkn/NLP/*
-Copyright: NLWKN
+Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 License: LicenseRef-DL-DE-BY-2.0
 
 Files: netlogo/include/prey.csv

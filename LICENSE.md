@@ -59,13 +59,13 @@ You can find the full license text in the [LICENSES](./LICENSES/) folder:
 - Copyright License
 - Copyright and citebox
 - Copyright holders
-- EMODNET
 - European Commission
 - European Environmental Agency
 - European Environmental Agency, Helmholtz-Zentrum hereon GmbH
+- European Marine Observation and Data Network
 - Food and Agriculture Organization of the United Nations
 - Free Software Foundation Europe e.V.
-- GEBCO
+- General Bathymetry Chart of the Oceans
 - Georges Jansoone
 - Hans Hillewaert
 - Helmholtz-Zentrum Geesthacht
@@ -75,15 +75,16 @@ You can find the full license text in the [LICENSES](./LICENSES/) folder:
 - Helmholtz-Zentrum hereon GmbH (hereon)#
 - Hochschule Bremerhaven
 - Hochschule Bremerhaven
-- ICES Spatial Facility
+- International Council for the Exploration of the Sea Spatial Facility
 - International Earth Rotation Service
 - International Environmental Modelling and Software Society
 - JOSS
+- Johann Heinrich von Thünen-Institut
 - John McFarlane
 - MDPI
-- NLWKN
 - NOAA National Centers for Environmental Information
 - NONE
+- Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 - ORCID.Inc
 - Organization for Ethical Source
 - Thuenen Institut
@@ -241,39 +242,39 @@ the license applicable to an individual file:
 
 - ./assets/dis.20102014.winter.crangon_all.png:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./assets/dis.20102014.winter.merlangus_max.png:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./assets/dis.20102014.winter.merlangus_min.png:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./assets/dis.20102014.winter.platessa_max.png:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./assets/dis.20102014.winter.platessa_min.png:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./assets/dis.20102014.winter.solea_max.png:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./assets/dis.20102014.winter.solea_min.png:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./assets/dis.20102014.winter.sprattus_all.png:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./assets/gebco_2021_n56.0_s53.0_w2.0_e10.0_180x120.png:
   License: GEBCO-1.0
-  Copyright: 2022 GEBCO
+  Copyright: 2022 General Bathymetry Chart of the Oceans
 
 - ./assets/logo-bmbf-funded.png:
   License: CC0-1.0
@@ -397,43 +398,43 @@ the license applicable to an individual file:
 
 - ./data/emodnet/EMODnet_HA_WindFarms_pg_20220324.cpg:
   License: EMODNET-1.0
-  Copyright: 2022 EMODNET
+  Copyright: 2022 European Marine Observation and Data Network
 
 - ./data/emodnet/EMODnet_HA_WindFarms_pg_20220324.csv:
   License: EMODNET-1.0
-  Copyright: 2022 EMODNET
+  Copyright: 2022 European Marine Observation and Data Network
 
 - ./data/emodnet/EMODnet_HA_WindFarms_pg_20220324.dbf:
   License: EMODNET-1.0
-  Copyright: 2022 EMODNET
+  Copyright: 2022 European Marine Observation and Data Network
 
 - ./data/emodnet/EMODnet_HA_WindFarms_pg_20220324.prj:
   License: EMODNET-1.0
-  Copyright: 2022 EMODNET
+  Copyright: 2022 European Marine Observation and Data Network
 
 - ./data/emodnet/EMODnet_HA_WindFarms_pg_20220324.sbn:
   License: EMODNET-1.0
-  Copyright: 2022 EMODNET
+  Copyright: 2022 European Marine Observation and Data Network
 
 - ./data/emodnet/EMODnet_HA_WindFarms_pg_20220324.sbx:
   License: EMODNET-1.0
-  Copyright: 2022 EMODNET
+  Copyright: 2022 European Marine Observation and Data Network
 
 - ./data/emodnet/EMODnet_HA_WindFarms_pg_20220324.shp:
   License: EMODNET-1.0
-  Copyright: 2022 EMODNET
+  Copyright: 2022 European Marine Observation and Data Network
 
 - ./data/emodnet/EMODnet_HA_WindFarms_pg_20220324.shp.xml:
   License: EMODNET-1.0
-  Copyright: 2022 EMODNET
+  Copyright: 2022 European Marine Observation and Data Network
 
 - ./data/emodnet/EMODnet_HA_WindFarms_pg_20220324.shx:
   License: EMODNET-1.0
-  Copyright: 2022 EMODNET
+  Copyright: 2022 European Marine Observation and Data Network
 
 - ./data/emodnet/EMODnet_HA_WindFarms_pg_20220324.xls:
   License: EMODNET-1.0
-  Copyright: 2022 EMODNET
+  Copyright: 2022 European Marine Observation and Data Network
 
 - ./data/etopo/.gitignore:
   License: CC0-1.0
@@ -449,11 +450,11 @@ the license applicable to an individual file:
 
 - ./data/gebco/gebco_2021_n56.0_s53.0_w2.0_e10.0.asc:
   License: GEBCO-1.0
-  Copyright: 2022 GEBCO
+  Copyright: 2022 General Bathymetry Chart of the Oceans
 
 - ./data/gebco/gebco_2021_n56.0_s53.0_w2.0_e10.0.prj:
   License: GEBCO-1.0
-  Copyright: 2022 GEBCO
+  Copyright: 2022 General Bathymetry Chart of the Oceans
 
 - ./data/holidays/holidays_DE.csv:
   License: CC0-1.0
@@ -465,35 +466,35 @@ the license applicable to an individual file:
 
 - ./data/ices/ICES_Statistical_Rectangles_Eco.cpg:
   License: ICES-1.0
-  Copyright: 2022 ICES Spatial Facility
+  Copyright: 2022 International Council for the Exploration of the Sea Spatial Facility
 
 - ./data/ices/ICES_Statistical_Rectangles_Eco.dbf:
   License: ICES-1.0
-  Copyright: 2022 ICES Spatial Facility
+  Copyright: 2022 International Council for the Exploration of the Sea Spatial Facility
 
 - ./data/ices/ICES_Statistical_Rectangles_Eco.prj:
   License: ICES-1.0
-  Copyright: 2022 ICES Spatial Facility
+  Copyright: 2022 International Council for the Exploration of the Sea Spatial Facility
 
 - ./data/ices/ICES_Statistical_Rectangles_Eco.sbn:
   License: ICES-1.0
-  Copyright: 2022 ICES Spatial Facility
+  Copyright: 2022 International Council for the Exploration of the Sea Spatial Facility
 
 - ./data/ices/ICES_Statistical_Rectangles_Eco.sbx:
   License: ICES-1.0
-  Copyright: 2022 ICES Spatial Facility
+  Copyright: 2022 International Council for the Exploration of the Sea Spatial Facility
 
 - ./data/ices/ICES_Statistical_Rectangles_Eco.shp:
   License: ICES-1.0
-  Copyright: 2022 ICES Spatial Facility
+  Copyright: 2022 International Council for the Exploration of the Sea Spatial Facility
 
 - ./data/ices/ICES_Statistical_Rectangles_Eco.shp.xml:
   License: ICES-1.0
-  Copyright: 2022 ICES Spatial Facility
+  Copyright: 2022 International Council for the Exploration of the Sea Spatial Facility
 
 - ./data/ices/ICES_Statistical_Rectangles_Eco.shx:
   License: ICES-1.0
-  Copyright: 2022 ICES Spatial Facility
+  Copyright: 2022 International Council for the Exploration of the Sea Spatial Facility
 
 - ./data/natura2000/.gitignore:
   License: CC0-1.0
@@ -549,43 +550,43 @@ the license applicable to an individual file:
 
 - ./data/nlwkn/NLP/Nationalparke_DTK25.cpg:
   License: DL-DE-BY-2.0
-  Copyright: NLWKN
+  Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 
 - ./data/nlwkn/NLP/Nationalparke_DTK25.dbf:
   License: DL-DE-BY-2.0
-  Copyright: NLWKN
+  Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 
 - ./data/nlwkn/NLP/Nationalparke_DTK25.lyr:
   License: DL-DE-BY-2.0
-  Copyright: NLWKN
+  Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 
 - ./data/nlwkn/NLP/Nationalparke_DTK25.pdf:
   License: DL-DE-BY-2.0
-  Copyright: NLWKN
+  Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 
 - ./data/nlwkn/NLP/Nationalparke_DTK25.prj:
   License: DL-DE-BY-2.0
-  Copyright: NLWKN
+  Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 
 - ./data/nlwkn/NLP/Nationalparke_DTK25.sbn:
   License: DL-DE-BY-2.0
-  Copyright: NLWKN
+  Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 
 - ./data/nlwkn/NLP/Nationalparke_DTK25.sbx:
   License: DL-DE-BY-2.0
-  Copyright: NLWKN
+  Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 
 - ./data/nlwkn/NLP/Nationalparke_DTK25.shp:
   License: DL-DE-BY-2.0
-  Copyright: NLWKN
+  Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 
 - ./data/nlwkn/NLP/Nationalparke_DTK25.shp.xml:
   License: DL-DE-BY-2.0
-  Copyright: NLWKN
+  Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 
 - ./data/nlwkn/NLP/Nationalparke_DTK25.shx:
   License: DL-DE-BY-2.0
-  Copyright: NLWKN
+  Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 
 - ./data/orey_etal_data/ReadMe.md:
   License: CC0-1.0
@@ -673,27 +674,27 @@ the license applicable to an individual file:
 
 - ./data/thuenen/dist_ran.forest_crangon.crangon_summer.asc:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./data/thuenen/dist_ran.forest_crangon.crangon_winter.asc:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./data/thuenen/dist_ran.forest_pleuronectes.platessa_summer.asc:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./data/thuenen/dist_ran.forest_pleuronectes.platessa_winter.asc:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./data/thuenen/dist_ran.forest_solea.solea_summer.asc:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./data/thuenen/dist_ran.forest_solea.solea_winter.asc:
   License: DL-DE-BY-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./data/wgs1984.prj:
   License: CC0-1.0
