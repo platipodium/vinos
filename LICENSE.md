@@ -1,5 +1,3 @@
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
 <!--
 SPDX-FileCopyRightText: 2023 Helmholtz-Zentrum hereon GmbH
 SPDX-LicenseRef: CC0-1.0
