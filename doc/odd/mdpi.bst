@@ -1,4 +1,4 @@
-% SPDX-FileCopyrightText: 2018-2023 MDPI
+% SPDX-FileCopyrightText: 2018-2023 Multidisciplinary Digital Publishing Institute
 % SPDX-License-Identifier: CC-BY-SA-3.0
 %% Bibliography style for MDPI journals
 
@@ -61,7 +61,7 @@ FUNCTION {output.nonnull}
 	    'write$
 	    { output.state after.item =
 	    {"; " * write$}
-	    {add.period$ " " * write$} 
+	    {add.period$ " " * write$}
 	    if$}
 	  if$
 	}
@@ -532,7 +532,7 @@ FUNCTION {format.vol.num.pages}
 { volume emphasize field.or.null
   number empty$
     'skip$
-    { 
+    {
       volume empty$
 	{ "there's a number but no volume in " cite$ * warning$ }
 	'skip$
@@ -570,7 +570,7 @@ FUNCTION {format.in.ed.booktitle}
     { "" }
     { editor empty$
 	{ edition empty$
-            {"In " booktitle emphasize *} 
+            {"In " booktitle emphasize *}
             {"In " booktitle emphasize * ", " * edition * " ed." *}
           if$
          }
@@ -589,7 +589,7 @@ FUNCTION {format.in.ed.booktitle.proc}
     { "" }
     { editor empty$
 	{ edition empty$
-            {" " booktitle  *} 
+            {" " booktitle  *}
             {" " booktitle  * ", " * edition * " ed." *}
           if$
          }
@@ -856,7 +856,7 @@ FUNCTION {inbook}
       after.item 'output.state :=
       format.bvolume output
       format.chapter.pages "chapter and pages" output.check
-      
+
     }
     { format.chapter.pages "chapter and pages" output.check
       new.block
@@ -1339,5 +1339,3 @@ FUNCTION {end.bib}
 }
 
 EXECUTE {end.bib}
-
-

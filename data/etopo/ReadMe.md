@@ -1,5 +1,5 @@
 <!--
-# SPDX-FileCopyrightText: 2022-2023 NOAA National Centers for Environmental Information
+# SPDX-FileCopyrightText: 2022-2023 National Oceanic and Atmospheric Administration National Centers for Environmental Information
 # SPDX-License-Identifier: CC0-1.0
 -->
 

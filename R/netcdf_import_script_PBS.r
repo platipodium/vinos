@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022 Thuenen Institut
+# SPDX-FileCopyrightText: 2022 Johann Heinrich von Thünen-Institut
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileContributor: Nik Probst
 
@@ -46,5 +46,3 @@ btt.sp<-SpatialPointsDataFrame(coordinates(btt[,1:2]),data=data.frame(btt=btt[,3
 btt<-rasterize(btt.sp,prd.grd.low,field="btt",method="nbh")
 btt<-resample(btt,prd.grd,method="ngb")
 btt<-mask(btt,pdgs[[1]])
-
-

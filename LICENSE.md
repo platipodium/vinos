@@ -81,13 +81,12 @@ You can find the full license text in the [LICENSES](./LICENSES/) folder:
 - JOSS
 - Johann Heinrich von Thünen-Institut
 - John McFarlane
-- MDPI
-- NOAA National Centers for Environmental Information
+- Multidisciplinary Digital Publishing Institute
 - NONE
+- National Oceanic and Atmospheric Administration National Centers for Environmental Information
 - Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
-- ORCID.Inc
+- Open Researcher and Contributor ID.Inc
 - Organization for Ethical Source
-- Thuenen Institut
 - United Nations Convention on the Law of the Sea
 - Universität Hamburg
 
@@ -186,7 +185,7 @@ the license applicable to an individual file:
 
 - ./R/netcdf_import_script_PBS.r:
   License: Apache-2.0
-  Copyright: 2022 Thuenen Institut
+  Copyright: 2022 Johann Heinrich von Thünen-Institut
 
 - ./ReadMe.md:
   License: CC0-1.0
@@ -446,7 +445,7 @@ the license applicable to an individual file:
 
 - ./data/etopo/ReadMe.md:
   License: CC0-1.0
-  Copyright: 2022-2023 NOAA National Centers for Environmental Information
+  Copyright: 2022-2023 National Oceanic and Atmospheric Administration National Centers for Environmental Information
 
 - ./data/gebco/gebco_2021_n56.0_s53.0_w2.0_e10.0.asc:
   License: GEBCO-1.0
@@ -782,11 +781,11 @@ the license applicable to an individual file:
 
 - ./doc/odd/assets/logo-orcid-eps-converted-to.pdf:
   License: CC0-1.0
-  Copyright: ORCID.Inc
+  Copyright: Open Researcher and Contributor ID.Inc
 
 - ./doc/odd/comses-template.tex:
   License: CC-BY-SA-3.0
-  Copyright: 2018-2023 MDPI
+  Copyright: 2018-2023 Multidisciplinary Digital Publishing Institute
 
 - ./doc/odd/comses.cls:
   License: CC-BY-SA-4.0
@@ -794,7 +793,7 @@ the license applicable to an individual file:
 
 - ./doc/odd/mdpi.bst:
   License: CC-BY-SA-3.0
-  Copyright: 2018-2023 MDPI
+  Copyright: 2018-2023 Multidisciplinary Digital Publishing Institute
 
 - ./doc/odd/paper.bib:
   License: CC0-1.0
@@ -834,7 +833,7 @@ the license applicable to an individual file:
 
 - ./doc/sesmo/sesmo-template.tex:
   License: CC-BY-SA-3.0
-  Copyright: 2018-2023 MDPI
+  Copyright: 2018-2023 Multidisciplinary Digital Publishing Institute
 
 - ./doc/sesmo/sesmo.cls:
   License: CC-BY-SA-4.0
