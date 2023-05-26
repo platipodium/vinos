@@ -35,7 +35,7 @@ affiliations:
 date: 19 May 2023
 year: 2023
 bibliography: paper.bib
-SPDX-FileCopyrightText: 2022-2023  Helmholtz-Zentrum hereon GmbH (hereon)
+SPDX-FileCopyrightText: 2022-2023  Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: CC-BY-4.0
 SPDX-FileContributor: Carsten Lemmen
 ---
