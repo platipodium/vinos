@@ -3,10 +3,6 @@ Upstream-Name:  Agent-based model of North Sea fisheries
 Upstream-Contact: Carsten Lemmen <carsten.lemmen@hereon.de
 Source: https://gitlab.hzdr.de/mussel/netlogo-northsea-species/
 
-Files: data/*landings*.csv
-Copyright: 2022 Hochschule Bremerhaven
-License: Unlicensed
-
 Files: data/thuenen/dist_ran*asc
 Copyright: 2022 Thuenen Institut
 License: LicenseRef-DL-DE-BY-2.0
