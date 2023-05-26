@@ -25,8 +25,15 @@ to setup-calendar
 
   ; Use the time exension to read from this formatted string into
   ; a logotime object and extract the numeric YMD info
-  set date time:create-with-format _ymd "dd-MMM-yyyy"
+  ; there might be a problem with localization and your JVM_OPTS, thus
+  ; wrap it carefully and fallback to a preset time for now
 
+  carefully [
+    set date time:create-with-format _ymd "dd-MMM-yyyy"
+  ][
+    print (sentence "Could not parse date" _ymd)
+    set date time:create "2023/06/01"
+  ]
   ; Now add to the current time the offset
   set date time:plus date time-offset "months"
 
