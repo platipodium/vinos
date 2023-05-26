@@ -1,8 +1,8 @@
 <!--
-# SPDX-FileCopyrightText: 2021 Bundesamt für Seeschifffahrt und Hydrographie (BSH)
+# SPDX-FileCopyrightText: 2021 Bundesamt für Seeschifffahrt und Hydrographie
 # SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 # SPDX-License-Identifier: LicenseRef-DL-DE-BY-2.0
-# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
 
 # Raumordnungsplan AWZ

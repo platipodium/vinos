@@ -1,21 +1,3 @@
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-Cannot identify license in row "{row}"
-
 <!--
 SPDX-FileCopyRightText: 2023 Helmholtz-Zentrum hereon GmbH
 SPDX-LicenseRef: CC0-1.0
@@ -50,18 +32,12 @@ in the [LICENSES](./LICENSES/) folder:
 The following organizations and individuals own copyrights to (parts of) this project.
 You can find the full license text in the [LICENSES](./LICENSES/) folder:
 
-- , 2007 Hans Hillewaert
-- Bundesamt für Seeschifffahrt und Hydrographie (BSH)
+- Bundesamt für Seeschifffahrt und Hydrographie
 - Bundesministerium für Bildung und Forschung
 - Bundesministerium für Landwirtschaft und Ernährung
 - COMSES
-- Carsten Lemmen <carsten.lemmen@hereon.de>
-- Copyright License
-- Copyright and citebox
-- Copyright holders
 - European Commission
 - European Environmental Agency
-- European Environmental Agency, Helmholtz-Zentrum hereon GmbH
 - European Marine Observation and Data Network
 - Food and Agriculture Organization of the United Nations
 - Free Software Foundation Europe e.V.
@@ -69,16 +45,12 @@ You can find the full license text in the [LICENSES](./LICENSES/) folder:
 - Georges Jansoone
 - Hans Hillewaert
 - Helmholtz-Zentrum Geesthacht
-- Helmholtz-Zentrum hereon
 - Helmholtz-Zentrum hereon GmbH
-- Helmholtz-Zentrum hereon GmbH (hereon)
-- Helmholtz-Zentrum hereon GmbH (hereon)#
 - Hochschule Bremerhaven
 - Hochschule Bremerhaven
 - International Council for the Exploration of the Sea Spatial Facility
 - International Earth Rotation Service
 - International Environmental Modelling and Software Society
-- JOSS
 - Johann Heinrich von Thünen-Institut
 - John McFarlane
 - Multidisciplinary Digital Publishing Institute
@@ -87,6 +59,7 @@ You can find the full license text in the [LICENSES](./LICENSES/) folder:
 - Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 - Open Researcher and Contributor ID.Inc
 - Organization for Ethical Source
+- The Journal of Open Source Software
 - United Nations Convention on the Law of the Sea
 - Universität Hamburg
 
@@ -109,7 +82,7 @@ the license applicable to an individual file:
 
 - ./.github/workflows/joss-draft.yaml:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./.github/workflows/reuse.yaml:
   License: CC0-1.0
@@ -121,27 +94,27 @@ the license applicable to an individual file:
 
 - ./.gitlab-ci.yml:
   License: CC0-1.0
-  Copyright: 2022-203 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./.gitlab/docker.yaml:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./.gitlab/joss.yaml:
   License: CC0-1.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./.gitlab/license.yaml:
   License: CC0-1.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./.gitlab/odd.yaml:
   License: CC0-1.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./.gitlab/pandoc.yaml:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./.gitlab/public/.gitignore:
   License: CC0-1.0
@@ -149,7 +122,7 @@ the license applicable to an individual file:
 
 - ./.gitlab/public/favicon-32x32.ico:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./.gitlab/public/index.html:
   License: CC0-1.0
@@ -161,11 +134,11 @@ the license applicable to an individual file:
 
 - ./.pre-commit-config.yaml:
   License: CC0-1.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./CITATION.cff:
   License: CC0-1.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./Makefile:
   License: CC0-1.0
@@ -173,7 +146,7 @@ the license applicable to an individual file:
 
 - ./R/.gitignore:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./R/abm_test-output_map-plotting.Rmd:
   License: Apache-2.0
@@ -221,7 +194,7 @@ the license applicable to an individual file:
 
 - ./assets/Leonardo_Select_A_cartoon_of_a_shrimp_fishing_boat_navigating_3.jpg:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./assets/ReadMe.md:
   License: CC0-1.0
@@ -237,7 +210,7 @@ the license applicable to an individual file:
 
 - ./assets/agents.pdf:
   License: CC-BY-SA-4.0
-  Copyright: 2005, 2007 Hans Hillewaert
+  Copyright: 2005 Hans Hillewaert
 
 - ./assets/dis.20102014.winter.crangon_all.png:
   License: DL-DE-BY-2.0
@@ -297,7 +270,7 @@ the license applicable to an individual file:
 
 - ./assets/vinos_screenshot.png:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./codemeta.json:
   License: CC0-1.0
@@ -305,7 +278,7 @@ the license applicable to an individual file:
 
 - ./data/.gitignore:
   License: CC0-1.0
-  Copyright: 2023 Carsten Lemmen <carsten.lemmen@hereon.de>
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./data/ble/.gitignore:
   License: CC0-1.0
@@ -329,15 +302,15 @@ the license applicable to an individual file:
 
 - ./data/bsh/.gitignore:
   License: CC0-1.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./data/bsh/Makefile:
   License: CC0-1.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./data/bsh/ReadMe.md:
   License: DL-DE-BY-2.0
-  Copyright: 2021 Bundesamt für Seeschifffahrt und Hydrographie (BSH)
+  Copyright: 2021 Bundesamt für Seeschifffahrt und Hydrographie
 
 - ./data/coastline/.gitignore:
   License: CC0-1.0
@@ -441,7 +414,7 @@ the license applicable to an individual file:
 
 - ./data/etopo/Makefile:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./data/etopo/ReadMe.md:
   License: CC0-1.0
@@ -497,11 +470,11 @@ the license applicable to an individual file:
 
 - ./data/natura2000/.gitignore:
   License: CC0-1.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./data/natura2000/Makefile:
   License: CC0-1.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./data/natura2000/ReadMe.md:
   License: CC0-1.0
@@ -701,7 +674,7 @@ the license applicable to an individual file:
 
 - ./doc/.gitignore:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./doc/ReadMe.md:
   License: CC0-1.0
@@ -741,7 +714,7 @@ the license applicable to an individual file:
 
 - ./doc/joss/Makefile:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./doc/joss/ReadMe.md:
   License: CC0-1.0
@@ -749,7 +722,7 @@ the license applicable to an individual file:
 
 - ./doc/joss/joss-template.tex:
   License: CC-BY-SA-4.0
-  Copyright: 2018-2023 JOSS
+  Copyright: 2018-2023 The Journal of Open Source Software
 
 - ./doc/joss/paper.bib:
   License: CC0-1.0
@@ -757,7 +730,7 @@ the license applicable to an individual file:
 
 - ./doc/joss/paper.md:
   License: CC-BY-4.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./doc/odd/.gitignore:
   License: CC0-1.0
@@ -765,7 +738,7 @@ the license applicable to an individual file:
 
 - ./doc/odd/Makefile:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./doc/odd/ReadMe.md:
   License: CC0-1.0
@@ -809,7 +782,7 @@ the license applicable to an individual file:
 
 - ./doc/sesmo/Makefile:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./doc/sesmo/ReadMe.md:
   License: CC-BY-NC-4.0
@@ -841,7 +814,7 @@ the license applicable to an individual file:
 
 - ./netlogo/.gitignore:
   License: CC0-1.0
-  Copyright: 2022 Carsten Lemmen <carsten.lemmen@hereon.de>
+  Copyright: 2022 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/Makefile:
   License: CC0-1.0
@@ -849,7 +822,7 @@ the license applicable to an individual file:
 
 - ./netlogo/ReadMe.md:
   License: CC0-1.0
-  Copyright: 2022 Carsten Lemmen <carsten.lemmen@hereon.de>
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/behavior/effort-map.xml:
   License: Apache-2.0
@@ -873,11 +846,11 @@ the license applicable to an individual file:
 
 - ./netlogo/include/cache-wms.nls:
   License: CC-BY-4.0
-  Copyright: 2022 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/include/calendar.nls:
   License: Apache-2.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/include/gear.nls:
   License: Apache-2.0
@@ -889,7 +862,7 @@ the license applicable to an individual file:
 
 - ./netlogo/include/import-png.nls:
   License: Apache-2.0
-  Copyright: 2022 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/include/plot.nls:
   License: Apache-2.0
@@ -905,11 +878,11 @@ the license applicable to an individual file:
 
 - ./netlogo/include/prey.nls:
   License: Apache-2.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/include/time-series.nls:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/include/utilities.nls:
   License: Apache-2.0
@@ -921,7 +894,7 @@ the license applicable to an individual file:
 
 - ./netlogo/results/.gitignore:
   License: CC0-1.0
-  Copyright: 2022 Carsten Lemmen <carsten.lemmen@hereon.de>
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/vinos.nlogo:
   License: Apache-2.0
@@ -929,11 +902,11 @@ the license applicable to an individual file:
 
 - ./poetry.lock:
   License: CC0-1.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./pyproject.toml:
   License: CC0-1.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./python/asc2gridspec.py:
   License: Apache-2.0
@@ -957,7 +930,7 @@ the license applicable to an individual file:
 
 - ./python/get_ble_statistics.py:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./python/get_holidays.py:
   License: Apache-2.0
@@ -965,7 +938,7 @@ the license applicable to an individual file:
 
 - ./python/plot_ble_statistics.py:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./python/reuse2txt.py:
   License: Apache-2.0
