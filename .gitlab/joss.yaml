@@ -38,7 +38,8 @@ joss-docker:
     - docker pull ${CONTAINER_REGISTRY_IMAGE}
     - docker run -v $(pwd):/data ${CONTAINER_REGISTRY_IMAGE} joss /data/doc/joss/paper.md
   needs: []
-  when: manual
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "docker"'
 
   artifacts:
     paths:
