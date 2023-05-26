@@ -17,6 +17,8 @@ joss-paper:
   #        - doc/joss/CITATION.cff
   needs: []
   stage: deploy
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "docker"'
 
 # This job generates the JOSS pdf paper and CITATION.cff
 # using our self-hosted joss docker, but needs very long
