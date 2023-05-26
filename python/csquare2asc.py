@@ -3,7 +3,7 @@
 This script creates from a C-Square point data file
 an ESRII ASCII (.asc) data file.
 
-SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: Apache-2.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 """
@@ -33,29 +33,29 @@ def create_asc(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
     ur_lon = df["lon"].max() + res/2
     ur_lat = df["lat"].max() + res/2
 
-    nlon = int(round((ur_lon - ll_lon) / res)) 
-    nlat = int(round((ur_lat - ll_lat) / res))   
+    nlon = int(round((ur_lon - ll_lon) / res))
+    nlat = int(round((ur_lat - ll_lat) / res))
 
-    header = {'NCOLS': nlon, 'NROWS': nlat, 'XLLCORNER': ll_lon, 'YLLCORNER': ll_lat, 
+    header = {'NCOLS': nlon, 'NROWS': nlat, 'XLLCORNER': ll_lon, 'YLLCORNER': ll_lat,
               'CELLSIZE': res, 'NODATA_VALUE': fill_value}
 
     basename  =  pathlib.Path(str(filename).replace(".csv", ".asc"))
 
-    license = {'Original file': str(filename), 
+    license = {'Original file': str(filename),
               'History': f'Created {time.ctime(time.time())}  by {sys.argv[0]}',
               'SPDX-FileContributor': 'Carsten Lemmen <carsten.lemmen@hereon.de',
               'SPDX-FileCopyrightText': '2023 Helmholtz-Zentrum hereon GmbH (Hereon)',
               'SPDX-FileCopyrightText': '2021-203 International Council for the Exploration of the Seas (ICES)',
               'SPDX-License-Identifier': 'CC-by-4.0',
               'Units': 'km km-1 a-1',
-              'Institution-ID':  'https://ror.org/03qjp1d79', 
+              'Institution-ID':  'https://ror.org/03qjp1d79',
               'Institution-ID':  'https://ror.org/03hg53255',
             }
 
     # define the index
     df["ilon"] = np.round((df["lon"] - res/2 - ll_lon) / res).astype(int)
     df["ilat"] = np.round((df["lat"] - res/2 - ll_lat) / res).astype(int)
-   
+
     if "metier" in str(filename):
         metiers = df["benthisMet"].unique()
     elif "fishing_category" in str(filename):
@@ -84,7 +84,7 @@ def create_asc(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
             if len(tdf) < 1: continue
 
             license["Year"] = year
-            
+
             print(f"... in year {year} with {len(tdf)} data points")
 
             for j, loc in enumerate(["sar", "subsar"]):
@@ -94,18 +94,18 @@ def create_asc(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
                 gvar = np.zeros((nlat, nlon)) + fill_value
                 for i in tdf.index:
                     gvar[tdf["ilat"][i],tdf["ilon"][i]] = tdf[loc][i]
-       
+
                 filename =  pathlib.Path(str(basename).replace(".asc", f'_{metier.upper()}_{loc}_{year}.asc'))
-                with open(filename, 'w') as fid: 
+                with open(filename, 'w') as fid:
                     [fid.writelines(f'{key}\t{str(value)}\n') for key,value in header.items()]
                     np.savetxt(fid, gvar, delimiter='\t')
                 filename =  pathlib.Path(str(basename).replace(".asc", ".asc.license"))
-                with open(filename, 'w') as fid: 
+                with open(filename, 'w') as fid:
                     [fid.writelines(f'{key}\t{str(value)}\n') for key,value in license.items()]
-                
+
 
 def main():
-    if len(sys.argv) < 2: 
+    if len(sys.argv) < 2:
        filename = pathlib.Path('/Users/Lemmen/Downloads/ICES.2021.OSPAR_production_of_spatial_fishing_pressure_data_layers/benthic_metiers.csv')
        #filename = pathlib.Path('/Users/Lemmen/Downloads/ICES.2021.OSPAR_production_of_spatial_fishing_pressure_data_layers/test.csv')
     else:
@@ -121,7 +121,7 @@ def main():
         usecols = {}
 
 
-    df = pd.read_csv(filename, usecols = usecols)   
+    df = pd.read_csv(filename, usecols = usecols)
     create_asc(df, filename)
 
 if __name__ == "__main__":

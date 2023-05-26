@@ -1,5 +1,20 @@
 Cannot identify license in row "{row}"
 Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
+Cannot identify license in row "{row}"
 
 <!--
 SPDX-FileCopyRightText: 2023 Helmholtz-Zentrum hereon GmbH
@@ -35,6 +50,7 @@ in the [LICENSES](./LICENSES/) folder:
 The following organizations and individuals own copyrights to (parts of) this project.
 You can find the full license text in the [LICENSES](./LICENSES/) folder:
 
+- , 2007 Hans Hillewaert
 - Bundesamt für Seeschifffahrt und Hydrographie (BSH)
 - Bundesministerium für Bildung und Forschung
 - Bundesministerium für Landwirtschaft und Ernährung
@@ -48,6 +64,7 @@ You can find the full license text in the [LICENSES](./LICENSES/) folder:
 - European Environmental Agency
 - European Environmental Agency, Helmholtz-Zentrum hereon GmbH
 - Food and Agriculture Organization of the United Nations
+- Free Software Foundation Europe e.V.
 - GEBCO
 - Georges Jansoone
 - Hans Hillewaert
@@ -65,6 +82,7 @@ You can find the full license text in the [LICENSES](./LICENSES/) folder:
 - International Earth Rotation Service
 - International Environmental Modelling and Software Society
 - JOSS
+- John McFarlane
 - MDPI
 - NLWKN
 - NOAA National Centers for Environmental Information
@@ -74,7 +92,6 @@ You can find the full license text in the [LICENSES](./LICENSES/) folder:
 - Thuenen Institut
 - United Nations Convention on the Law of the Sea
 - Universität Hamburg
-- Universität Hamburg (UHH)
 
 ## License and copyright by file name
 
@@ -96,6 +113,10 @@ the license applicable to an individual file:
 - ./.github/workflows/joss-draft.yaml:
   License: CC0-1.0
   Copyright: 2023 Helmholtz-Zentrum hereon
+
+- ./.github/workflows/reuse.yaml:
+  License: CC0-1.0
+  Copyright: 2022 Free Software Foundation Europe e.V.
 
 - ./.gitignore:
   License: CC0-1.0
@@ -217,6 +238,10 @@ the license applicable to an individual file:
   License: CC-BY-SA-4.0
   Copyright: 2022-23 Hochschule Bremerhaven
 
+- ./assets/agents.pdf:
+  License: CC-BY-SA-4.0
+  Copyright: 2005, 2007 Hans Hillewaert
+
 - ./assets/dis.20102014.winter.crangon_all.png:
   License: DL-DE-BY-2.0
   Copyright: 2022 Thuenen Institut
@@ -273,6 +298,10 @@ the license applicable to an individual file:
   License: CC0-1.0
   Copyright: 2023 Universität Hamburg
 
+- ./assets/vinos_screenshot.png:
+  License: CC0-1.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+
 - ./codemeta.json:
   License: CC0-1.0
   Copyright: 2023 Helmholtz-Zentrum hereon GmbH
@@ -288,6 +317,18 @@ the license applicable to an individual file:
 - ./data/ble/ReadMe.md:
   License: CC0-1.0
   Copyright: 2023 Helmholtz-Zentrum hereon GmbH
+
+- ./data/ble/ble_national_landings_monthly.csv:
+  License: DL-DE-BY-2.0
+  Copyright: 2023 Bundesministerium für Landwirtschaft und Ernährung
+
+- ./data/ble/ble_national_landings_smallcoastal.csv:
+  License: DL-DE-BY-2.0
+  Copyright: 2023 Bundesministerium für Landwirtschaft und Ernährung
+
+- ./data/ble/ble_national_landings_total.csv:
+  License: DL-DE-BY-2.0
+  Copyright: 2023 Bundesministerium für Landwirtschaft und Ernährung
 
 - ./data/bsh/.gitignore:
   License: CC0-1.0
@@ -416,6 +457,14 @@ the license applicable to an individual file:
 - ./data/gebco/gebco_2021_n56.0_s53.0_w2.0_e10.0.prj:
   License: GEBCO-1.0
   Copyright: 2022 GEBCO
+
+- ./data/holidays/holidays_DE.csv:
+  License: CC0-1.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
+
+- ./data/holidays/holidays_MA.csv:
+  License: CC0-1.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./data/ices/ICES_Statistical_Rectangles_Eco.cpg:
   License: ICES-1.0
@@ -757,13 +806,41 @@ the license applicable to an individual file:
   License: CC-BY-4.0
   Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
+- ./doc/odd/paper.md.bak:
+  License: CC-BY-4.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
+
+- ./doc/sesmo/Makefile:
+  License: CC0-1.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)#
+
 - ./doc/sesmo/ReadMe.md:
   License: CC-BY-NC-4.0
   Copyright: 2023 International Environmental Modelling and Software Society
 
-- ./doc/sesmo/figures/logo-sesmo.png:
+- ./doc/sesmo/assets/logo-sesmo.png:
   License: CC-BY-NC-4.0
   Copyright: 2023 International Environmental Modelling and Software Society
+
+- ./doc/sesmo/pandoc-scholar.docx:
+  License: CC-BY-4.0
+  Copyright: 2006-2023 John McFarlane
+
+- ./doc/sesmo/paper.bib:
+  License: CC0-1.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
+
+- ./doc/sesmo/paper.md:
+  License: CC-BY-4.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
+
+- ./doc/sesmo/sesmo-template.tex:
+  License: CC-BY-SA-3.0
+  Copyright: 2018-2023 MDPI
+
+- ./doc/sesmo/sesmo.cls:
+  License: CC-BY-SA-4.0
+  Copyright: Copyright and citebox
 
 - ./netlogo/.gitignore:
   License: CC0-1.0
@@ -795,7 +872,7 @@ the license applicable to an individual file:
 
 - ./netlogo/include/boat.nls:
   License: Apache-2.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/include/cache-wms.nls:
   License: CC-BY-4.0
@@ -807,11 +884,11 @@ the license applicable to an individual file:
 
 - ./netlogo/include/gear.nls:
   License: Apache-2.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/include/geodata.nls:
   License: Apache-2.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/include/import-png.nls:
   License: Apache-2.0
@@ -819,11 +896,11 @@ the license applicable to an individual file:
 
 - ./netlogo/include/plot.nls:
   License: Apache-2.0
-  Copyright: 2022 Universität Hamburg (UHH)
+  Copyright: 2022 Universität Hamburg
 
 - ./netlogo/include/port.nls:
   License: CC-BY-4.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/include/prey.csv:
   License: CC-BY-3.0-IGO
@@ -831,6 +908,10 @@ the license applicable to an individual file:
 
 - ./netlogo/include/prey.nls:
   License: Apache-2.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+
+- ./netlogo/include/time-series.nls:
+  License: CC0-1.0
   Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
 
 - ./netlogo/include/utilities.nls:
@@ -847,7 +928,7 @@ the license applicable to an individual file:
 
 - ./netlogo/vinos.nlogo:
   License: Apache-2.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./poetry.lock:
   License: CC0-1.0
@@ -878,6 +959,14 @@ the license applicable to an individual file:
   Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./python/get_ble_statistics.py:
+  License: CC0-1.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
+
+- ./python/get_holidays.py:
+  License: Apache-2.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
+
+- ./python/plot_ble_statistics.py:
   License: CC0-1.0
   Copyright: 2023 Helmholtz-Zentrum hereon GmbH (hereon)
 

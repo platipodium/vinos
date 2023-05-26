@@ -1,5 +1,5 @@
-; SPDX-FileCopyrightText: 2022 Universität Hamburg (UHH)
-; SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH (hereon)
+; SPDX-FileCopyrightText: 2022 Universität Hamburg
+; SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
 ; SPDX-License-Identifier: Apache-2.0
 ; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
@@ -12,9 +12,9 @@ to plot-setup-catch-by-gear
     let pen-name  item i gear-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
-    ifelse i != 4  
+    ifelse i != 4
     [ set-plot-pen-color 125 - 20 * i]
-    [set-plot-pen-color 45 ]   
+    [set-plot-pen-color 45 ]
     set-plot-pen-interval 1
     auto-plot-on
     set-plot-pen-mode 0 ; line
@@ -40,9 +40,9 @@ to plot-setup-gain-by-gear
     let pen-name  item i gear-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
-    ifelse i != 4  
+    ifelse i != 4
     [ set-plot-pen-color 135 - 20 * i]
-    [set-plot-pen-color 45 ] 
+    [set-plot-pen-color 45 ]
     set-plot-pen-interval 1
     auto-plot-on
     set-plot-pen-mode 0 ; line
@@ -88,9 +88,9 @@ to plot-setup-priority-by-gear
     let pen-name  item i gear-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
-    ifelse i != 4  
+    ifelse i != 4
     [ set-plot-pen-color 135 - 20 * i]
-    [set-plot-pen-color 45 ] 
+    [set-plot-pen-color 45 ]
     auto-plot-on
     set-plot-x-range 0 1
     set-histogram-num-bars 9

@@ -1,5 +1,5 @@
-; SPDX-FileCopyrightText: 2022-2023 Universität Hamburg (UHH)
-; SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+; SPDX-FileCopyrightText: 2022-2023 Universität Hamburg
+; SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
 ; SPDX-License-Identifier: Apache-2.0
 ;
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
