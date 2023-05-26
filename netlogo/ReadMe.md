@@ -1,6 +1,6 @@
 <!--
 SPDX-FileCopyrightText: 2022 Carsten Lemmen <carsten.lemmen@hereon.de>
-SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon (Hereon)
+SPDX-FileCopyrightText: 2022 Helmholtz-Zentrum hereon GmbH
 
 SPDX-License-Identifier: CC0-1.0
 -->
@@ -55,15 +55,7 @@ From the NetCDF, the range was restricted to -82 .. 0 m, then exported to `.ps` 
 - gear has properties: gear-width => influences catch, gear-drag => influences fuel cost
 - after two trips, we compare the value (income - cost)\*value_factor between two trips
 
-### License
-
-Copyright: Universität Hamburg and Helmholtz-Zentrum Hereon,
-Authors: Carsten Lemmen, Sascha Hokamp
-License: Apache 2.0
-
 ## TODO
 
 - Feedback on resource by fishery
 - Oil price effect on costs
-- Add sole and plaice
-- Add vessel trait distribution from Serra's data

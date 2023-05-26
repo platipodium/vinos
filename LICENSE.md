@@ -69,11 +69,8 @@ You can find the full license text in the [LICENSES](./LICENSES/) folder:
 - Georges Jansoone
 - Hans Hillewaert
 - Helmholtz-Zentrum Geesthacht
-- Helmholtz-Zentrum Hereon 2021, 2022
 - Helmholtz-Zentrum hereon
-- Helmholtz-Zentrum hereon (Hereon)
 - Helmholtz-Zentrum hereon GmbH
-- Helmholtz-Zentrum hereon GmbH (Hereon)
 - Helmholtz-Zentrum hereon GmbH (hereon)
 - Helmholtz-Zentrum hereon GmbH (hereon)#
 - Hochschule Bremerhaven
@@ -184,7 +181,7 @@ the license applicable to an individual file:
 
 - ./R/convert-grd-tiff.r:
   License: Apache-2.0
-  Copyright: Helmholtz-Zentrum Hereon 2021, 2022
+  Copyright: 2021-2022 Helmholtz-Zentrum hereon GmbH
 
 - ./R/netcdf_import_script_PBS.r:
   License: Apache-2.0
@@ -748,7 +745,7 @@ the license applicable to an individual file:
 
 - ./doc/joss/ReadMe.md:
   License: CC0-1.0
-  Copyright: 2023 Helmholtz-Zentrum hereon (Hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./doc/joss/joss-template.tex:
   License: CC-BY-SA-4.0
@@ -856,15 +853,15 @@ the license applicable to an individual file:
 
 - ./netlogo/behavior/effort-map.xml:
   License: Apache-2.0
-  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/behavior/profile.xml:
   License: Apache-2.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/behavior/unit-tests.xml:
   License: Apache-2.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/cloc/netlogo.def:
   License: CC0-1.0
@@ -916,11 +913,11 @@ the license applicable to an individual file:
 
 - ./netlogo/include/utilities.nls:
   License: Apache-2.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/include/view.nls:
   License: Apache-2.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/results/.gitignore:
   License: CC0-1.0
@@ -948,11 +945,11 @@ the license applicable to an individual file:
 
 - ./python/csquare2asc.py:
   License: Apache-2.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./python/csquare2gridspec.py:
   License: Apache-2.0
-  Copyright: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./python/fake_port_data.py:
   License: Apache-2.0, CC0-1.0

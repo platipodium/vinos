@@ -3,7 +3,7 @@
 # This script creates from an ESRII ASC raster data file
 # a SCRIP compliant NetCDF file.
 #
-SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
 SPDX-FileCopyrightText: 2014-2021 Helmholtz-Zentrum Geesthacht
 SPDX-License-Identifier: Apache-2.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
@@ -22,7 +22,7 @@ def create_scrip(header, data):
     ll_lat = header["YLLCORNER"]
     delta_lon = header["CELLSIZE"]
     delta_lat = header["CELLSIZE"] # always square
-    
+
     filename  = header["NAME"].replace(".asc", "_scrip.nc")
 
     nc = netCDF4.Dataset(filename, "w", format="NETCDF3_CLASSIC")
@@ -93,9 +93,9 @@ def create_scrip(header, data):
 def asc_reader(filename):
 
     header_rows = 6 # six rows for header information
-    header = {"NAME": filename, "VARIABLE": "var"} 
+    header = {"NAME": filename, "VARIABLE": "var"}
     row_ite = 1
-    
+
     with open(filename, 'rt') as fid:
       for line in fid:
         if row_ite <= header_rows:

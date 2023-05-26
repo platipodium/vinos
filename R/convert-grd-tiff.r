@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# SPDX-FileCopyrightText: Helmholtz-Zentrum Hereon 2021, 2022
+# SPDX-FileCopyrightText: 2021-2022 Helmholtz-Zentrum hereon GmbH
 
 #install.packages('raster')
 #install.packages('rgdal')

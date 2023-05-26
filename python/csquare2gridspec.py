@@ -3,7 +3,7 @@
 This script creates from a C-Square point data file
 a GRIDSPEC compliant NetCDF file.
 
-SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH (Hereon)
+SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: Apache-2.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 """
@@ -33,8 +33,8 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
     ur_lon = df["lon"].max() + res/2
     ur_lat = df["lat"].max() + res/2
 
-    nlon = int(round((ur_lon - ll_lon) / res)) 
-    nlat = int(round((ur_lat - ll_lat) / res))   
+    nlon = int(round((ur_lon - ll_lon) / res))
+    nlat = int(round((ur_lat - ll_lat) / res))
 
     filename  =  pathlib.Path(str(filename).replace(".csv", "_gridspec.nc"))
 
@@ -74,7 +74,7 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
     lon[:]=ll_lon+(ilon+0.5)*res
     lon_bnds[:,0]=lon[:]-0.5*res
     lon_bnds[:,1]=lon[:]+0.5*res
- 
+
     lat[:]=ll_lat+(jlat+0.5)*res
     lat_bnds[:,0]=lat[:]-0.5*res
     lat_bnds[:,1]=lat[:]+0.5*res
@@ -82,7 +82,7 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
     # define the index
     df["ilon"] = np.round((df["lon"] - res/2 - ll_lon) / res).astype(int)
     df["ilat"] = np.round((df["lat"] - res/2 - ll_lat) / res).astype(int)
-   
+
     if "metier" in str(filename):
         metiers = df["benthisMet"].unique()
     elif "fishing" in str(filename):
@@ -118,7 +118,7 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
         for y, year in enumerate(years):
             tdf = mdf[mdf["Year"] == year]
             if len(tdf) < 1: continue
-            
+
             print(f"... in year {year} with {len(tdf)} data points")
 
             for j, loc in enumerate(["sar", "subsar"]):
@@ -126,14 +126,14 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
                 for i in tdf.index:
                     gvar[tdf["ilat"][i],tdf["ilon"][i]] = tdf[loc][i]
                     #print(gvar[tdf["ilat"][i],tdf["ilon"][i]])
-       
+
                 var = nc.variables.get(f'{metier.lower()}_{loc}')
                 var[y,:,:] = gvar
 
     nc.close()
 
 def main():
-    if len(sys.argv) < 2: 
+    if len(sys.argv) < 2:
        filename = pathlib.Path('/Users/Lemmen/Downloads/ICES.2021.OSPAR_production_of_spatial_fishing_pressure_data_layers/benthic_metiers.csv')
        #filename = pathlib.Path('/Users/Lemmen/Downloads/ICES.2021.OSPAR_production_of_spatial_fishing_pressure_data_layers/test.csv')
     else:
@@ -149,7 +149,7 @@ def main():
         usecols = {}
 
 
-    df = pd.read_csv(filename, usecols = usecols)   
+    df = pd.read_csv(filename, usecols = usecols)
     create_gridspec(df, filename)
 
 if __name__ == "__main__":
