@@ -27,8 +27,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{comses}[2023 Comses paper class]
 
-%%%% Copyright and citebox
- \AtEndDocument{\par \cright \par \vspace{12pt} \citebox}
+\AtEndDocument{\par \cright \par \vspace{12pt} \citebox}
  
 %% PRELIMINARY DECLARATIONS
 \LoadClass[10pt]{article}

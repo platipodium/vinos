@@ -1,4 +1,5 @@
-% SPDX-FileCopyrightText: 2018-2023 Multidisciplinary Digital Publishing Institute
+ 
+ % SPDX-FileCopyrightText: 2018-2023 Multidisciplinary Digital Publishing Institute
 % SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 % SPDX-License-Identifier: CC-BY-SA-4.0
 % SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
@@ -27,8 +28,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{sesmo}[2023 SESMO paper class]
 
-%%%% Copyright and citebox
- \AtEndDocument{\par \cright \par \vspace{12pt} \citebox}
+\AtEndDocument{\par \cright \par \vspace{12pt} \citebox}
  
 %% PRELIMINARY DECLARATIONS
 \LoadClass[10pt]{article}

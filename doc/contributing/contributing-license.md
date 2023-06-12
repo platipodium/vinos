@@ -32,7 +32,7 @@ any Legal Entity on behalf of whom a Contribution has been received by Us.
 
 ## Grant of Rights
 
-### Copyright License
+### Copyright and License
 
 (a) You retain ownership of the Copyright in Your Contribution and have the same rights to use or license the Contribution which You would have had without entering into the Agreement.
 
