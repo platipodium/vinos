@@ -162,20 +162,20 @@ to-report formatted-number [number n-significant]
 
   ; This does not work for negative numbers or zero as we use the log_10
   if number <= 0 [ report number ]
-  let order log number 10
+  let _order order number
 
   ; of the number is too large, it needs scientific notation.
   ; @todo this needs some checks on order > 9
-  if (order >= n-significant) [
-    report (word int(number / (10 ^ int(order - n-significant + 3) )) "E" int(order - 1))
+  if (_order >= n-significant) [
+    report (word int(number / (10 ^ int(_order - n-significant + 3) )) "E" int(_order - 1))
   ]
   ; for exactly fitting numbers or one less (trailing comma), nothing is done
-  if (order >= n-significant - 2) [
+  if (_order >= n-significant - 2) [
     report (word round(number))
   ]
   ; for mixed integer/floating numbers use precision to curtail
-  if (order > 0) [
-    report (word precision number (n-significant - order - 1))
+  if (_order > 0) [
+    report (word precision number (n-significant - _order - 1))
   ]
 
   ; for values < 1, remove leading 0 @todo
@@ -183,7 +183,7 @@ to-report formatted-number [number n-significant]
   ;  report (word "." int(number * 10 ^ (n-significant ) ))
   ;]
 
-  report (word int(number / (10 ^ int(order - n-significant + 2) )) "e" int(2 - order))
+  report (word int(number / (10 ^ int(_order - n-significant + 2) )) "e" int(2 - _order))
 
 end
 
@@ -219,7 +219,8 @@ to  unit-test
   let tests (list  __test-boolean2int __test_csv_property __test-load-dataset
     __test_five-number-summary __test_haversine-distance __test-value-from-distribution
     __test-normalize __test-quantile-thresholds __test-quantile-thresholds-number
-  __test-quantiles __test-formatted-number __test-index-max-one-of  __test-formatted-int)
+  __test-quantiles __test-formatted-number __test-index-max-one-of  __test-formatted-int
+  __test-sign __test-order)
   foreach tests [
     t -> ifelse t [print (sentence "Test passed")][error  "Test failed"]
   ]
@@ -264,5 +265,32 @@ to-report __test-formatted-int
   if formatted-int  23 4 != "0023" [report false]
   if formatted-int  23 1 != "*" [report false]
   if formatted-int -23 3 != "***" [report false]
+  report true
+end
+
+to-report order [number]
+  if number = 0 [report 0]
+  let _log log abs number 10
+  report int _log + sign _log
+end
+
+to-report __test-order
+  if order 0 != 0 [report false]
+  if order 2 != 1 [report false]
+  if order 6.789 != 1 [report false]
+  if order -6.57 != 1 [report false]
+  if order 2019805 != 7 [report false]
+  if order 0.12 != -1 [report false]
+  report true
+end
+
+to-report sign [number]
+  ifelse number < 0 [report -1][report 1]
+end
+
+to-report __test-sign
+  if sign -0.1 != -1 [report false]
+  if sign -0 != 1 [report false]
+  if sign 100 != 1 [report false]
   report true
 end
