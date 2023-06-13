@@ -28,7 +28,7 @@ to plot-update-catch-by-gear
     let pen-name  item i gear-names
     set-current-plot-pen pen-name
     ;set-plot-x-range 0 max
-    plotxy ticks sum [item i boat-gear-catches] of boats
+    plotxy ticks sum [item i boat-trip-gear-catches] of boats
   ]
 end
 

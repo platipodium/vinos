@@ -505,7 +505,7 @@ end
 ;          set fishing-effort-hours fishing-effort-hours + time-step
 ;        ]
 ;        forward fishing-speed * time-step
-;        set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i new-catch)]
+;        set boat-trip-gear-catches n-values (number-of-gears) [i -> (item i boat-trip-gear-catches + item i new-catch)]
 ;
 ;      ]
 ;      set time-left max (list (time-left - haul-time) 0 )
@@ -531,7 +531,7 @@ end
 ;      ; Evaluate whether to go home based on different criteria, i.e.
 ;      ; capacity exceeded, too far from home port, or
 ;
-;      if (item 1 boat-gear-catches > boat-capacity) [
+;      if (item 1 boat-trip-gear-catches > boat-capacity) [
 ;        print (list "Boat" who "full. Needs to go back to port")
 ;        set need-to-go-to-port? true
 ;      ]
@@ -565,7 +565,7 @@ end
 ;        set time-left time-left - gis-distance s-patch / boat-steaming-speed
 ;      ]
 ;
-;      print (list "Boat" who "t=" boat-time-at-sea "t-=" time-left "dh=" (gis-distance l-patch) "d=" boat-distance-at-sea "d-=" distance-left "c1=" (item 1 boat-gear-catches) )
+;      print (list "Boat" who "t=" boat-time-at-sea "t-=" time-left "dh=" (gis-distance l-patch) "d=" boat-distance-at-sea "d-=" distance-left "c1=" (item 1 boat-trip-gear-catches) )
 ;      ;print (list who ([depth] of patch-here))
 ;    ]
 ;  ]
@@ -613,8 +613,8 @@ end
 ;  set boat-operating-costs wage * boat-time-at-sea ; is typically 4000 €
 ;
 ;
-;  if (sum boat-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
-;    (boat-transportation-costs * item i boat-gear-catches +  boat-operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
+;  if (sum boat-trip-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
+;    (boat-transportation-costs * item i boat-trip-gear-catches +  boat-operating-costs * item i boat-trip-gear-catches) / sum boat-trip-gear-catches]
 ;  ]
 ;
 ;  ; Find the position of the target gear-species in prey-names and return the index of the species,
@@ -623,7 +623,7 @@ end
 ;  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
 ;
 ;  ; Calculate the boat revenue depending on the landed species and the port
-;  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
+;  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
 ;
 ;  ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
 ;  print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)
@@ -656,8 +656,8 @@ end
 ;
 ;
 ;  ; old implemenation for species
-;  ;set costs-boat n-values (number-of-species - 1) [ i -> (boat-transportation-costs * item i boat-gear-catches +  boat-operating-costs * item i boat-gear-catches) / sum boat-gear-catches]
-;  ;set revenue-boat n-values (number-of-species - 1)[i -> (item i boat-gear-catches * price-species)] ; @todo needs to be solved, price is related to home-port
+;  ;set costs-boat n-values (number-of-species - 1) [ i -> (boat-transportation-costs * item i boat-trip-gear-catches +  boat-operating-costs * item i boat-trip-gear-catches) / sum boat-trip-gear-catches]
+;  ;set revenue-boat n-values (number-of-species - 1)[i -> (item i boat-trip-gear-catches * price-species)] ; @todo needs to be solved, price is related to home-port
 ;  ;set boat-delta-gains n-values (number-of-species - 1) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
 ;  ;set boat-gains n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
 ;  ;set delta-boat-gear-priorities n-values (number-of-species - 1) [i -> adaptation * (item i boat-delta-gains) / (item i boat-gear-priorities)]

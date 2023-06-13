@@ -15,11 +15,25 @@ breed [boats boat]
 breed [markers marker]
 
 boats-own [
-  boat-gear-catches              ; for each boat a vector of fish catches (per patch or tick)
-  harvest-boat                 ; for each boat a vector of total harvest of the fish species
+  ; Static properties individual to each boat
+  boat-capacity           ; size of the boat, @todo should be in kg
+  boat-steaming-speed     ; speed when steaming
+  fishing-speed           ; speed when fishing (replaced by gear-speed later on)
+  boat-landing-port       ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
+  boat-home-port          ; Home Port (in the current state only German home ports are considered
+  pathways                ; possible pathways which boats learn
+  boat-gears              ; set of available gears on this boat
+  boat-type               ; Number 1-4 of the named cluster
+  boat-length             ; length of boat in m, related (yet unknown) to capacity.
+  boat-engine             ; power of the engine in kW
+
+  boat-max-distance
+  boat-max-duration  ; cluster-dependent typical trip length
+
+
+  boat-trip-gear-catches       ; for each boat a vector of fish catches accumulated during a trip
+  ;boat-history-prey-catches    ; for each boat a vector of total harvest of the fish species
   catch-efficiency-boat        ; how much fish is effectively catched
-  boat-capacity                ; size of the boat
-  ;boat-engine-power
 
   revenue-boat             ; revenue for the fishing trip of the boat
   costs-boat               ; costs for the fishing trip of the boat
@@ -29,8 +43,6 @@ boats-own [
   boat-gear-priorities            ; priority for the pathway
   priority-weighted-average  ; priority weighted average of gain
 
-  fishing-speed            ; speed when fishing (replaced by gear-speed later on)
-  boat-steaming-speed           ; speed when steaming
 
   ; @todo make into a vector for the species
   solea-catch-kg          ; catch of solea in kg for a fishing trip
@@ -47,17 +59,6 @@ boats-own [
   boat-operating-costs         ; cost for opertating the boat, not known, work with a parameter
                           ; comment: approximately 50 percent of the revenue
   target-species          ; species primarily tragetted (solea, platessa, crangon)
-
-  boat-landing-port       ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
-  boat-home-port          ; Home Port (in the current state only German home ports are considered
-  pathways                ; possible pathways which boats learn
-  boat-gears              ; set of available gears on this boat
-  boat-type               ; Number 1-4 of the named cluster
-  boat-length             ; length of boat in m, related (yet unknown) to capacity.
-  boat-engine             ; power of the engine in kW
-
-  boat-max-distance
-  boat-max-duration  ; cluster-dependent typical trip length
 
   boat-time-at-sea
   boat-time-at-sea-left
@@ -134,7 +135,7 @@ to setup-boats
       set  boat-capacity 100000                                  ; kg of storage
 
 
-      set  boat-gear-catches         n-values number-of-gears  [?1 -> 0 ]
+      set  boat-trip-gear-catches         n-values number-of-gears  [?1 -> 0 ]
       set  catch-efficiency-boat   n-values number-of-gears  [?1 -> (0.15 + random-float 0.20) ]
       set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
       set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
@@ -242,8 +243,8 @@ to boat-land-port
   set boat-operating-costs wage * boat-time-at-sea ; is typically 4000 €
 
   ;does this make any sense? can it be not to catch anything?
-  if (sum boat-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
-    ;((boat-transportation-costs + boat-operating-costs) * item i boat-gear-catches) / sum boat-gear-catches]
+  if (sum boat-trip-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
+    ;((boat-transportation-costs + boat-operating-costs) * item i boat-trip-gear-catches) / sum boat-trip-gear-catches]
     boat-transportation-costs + boat-operating-costs]
   ]
 
@@ -252,13 +253,13 @@ to boat-land-port
   ;[0 1 2 2 0 0 1
   ;let _index-prey-ger]
   ;(foreach ispecieslist (range number-of-gears)[ [iprey igear] ->
-  ;  replace-item iprey _boat-prey-catches (item iprey _boat-prey-catches) + (item igear boat-gear-catches)
+  ;  replace-item iprey _boat-prey-catches (item iprey _boat-prey-catches) + (item igear boat-trip-gear-catches)
   ;])
 
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
-  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-gear-catches *  1000 * (item (item igear gear-prey-indices) prey-prices))]
+  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches *  1000 * (item (item igear gear-prey-indices) prey-prices))]
 
-  ;print (sentence "X: " revenue-boat boat-gear-catches)
+  ;print (sentence "X: " revenue-boat boat-trip-gear-catches)
 
   set boat-gains n-values (number-of-gears ) [i -> item i revenue-boat - item i costs-boat]
   let sum-boat-gains sum boat-gains
@@ -282,7 +283,7 @@ to boat-land-port
   print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)
 
 
-  set boat-gear-catches map [i -> 0] boat-gear-catches
+  set boat-trip-gear-catches map [i -> 0] boat-trip-gear-catches
 
   set boat-distance-at-sea 0
   set boat-time-at-sea  0
@@ -457,10 +458,10 @@ to boat-make-haul
         set boat-time-at-sea-left 24
       ]
     ]
-    set boat-gear-catches n-values (number-of-gears) [i -> (item i boat-gear-catches + item i _haul-catches)]
+    set boat-trip-gear-catches n-values (number-of-gears) [i -> (item i boat-trip-gear-catches + item i _haul-catches)]
 
     ; If the boat is full, also need to return
-    if item (index-max-one-of boat-gear-priorities) boat-gear-catches > boat-capacity [ set boat-trip-phase 4]
+    if item (index-max-one-of boat-gear-priorities) boat-trip-gear-catches > boat-capacity [ set boat-trip-phase 4]
   ][
     ; Could not find a straight-line haul from hear, so continue steaming
     set boat-trip-phase 2
