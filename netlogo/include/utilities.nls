@@ -294,3 +294,14 @@ to-report __test-sign
   if sign 100 != 1 [report false]
   report true
 end
+
+to-report gis-patch-area
+  let _coordinates gis:envelope-of self
+  let earth-radius 6371
+  let _area 4 * pi * earth-radius * earth-radius
+  let _dlon item 1 _coordinates - item 0 _coordinates
+  let _dlat item 3 _coordinates - item 2 _coordinates
+  let _clat (item 3 _coordinates + item 2 _coordinates) / 2.0
+
+  report _area * _dlon / 360.0 * _dlat / 360.0 * cos _clat
+end

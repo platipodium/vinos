@@ -71,26 +71,33 @@ globals [
 ]
 
 patches-own [
-  prey-biomasses                    ; vektor of biomass of the fish species
+
+  ; constant properties
+  patch-prey-names ; @todo let's get rid of this and only use a global prey-names variable
+
+  ; Prey biomasses
+  prey-biomasses                    ; current biomasses of the prey species
 
 
-  fishing-effort-hours                   ; fishing effort in hours
-  crangon-summer                         ; data from TI
+  crangon-summer                    ; data from TI @todo convert to vector of prey species
   crangon-winter
   platessa-summer
   platessa-winter
   solea-summer
   solea-winter
 
-  fish-abundance
-
+  ; Environmental boundary data
   pollution-exceedance
   depth
   owf-fraction
   accessible?             ; false if not accessible to fishery, i.e. close to port, too shallow, restricted area
   plaice-box?
 
-  patch-prey-names
+
+  ; Diagnostics
+  fishing-effort-hours              ; fishing effort in hours
+  area                              ; area of the patch
+  swept-area                        ; swept area of the patch, used to calculate SAR (swept area ratio)
 ]
 
 ; ------------------------------------------------------------------------------------------
@@ -280,11 +287,33 @@ to update-view
     if qv != nobody [draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])]
   ]
 
+  if view = "area"  [
+    set qv quantile-thresholds [area] of patches n
+    ask patches with [depth > 0][
+      carefully [
+        set pcolor palette:scale-scheme  "Sequential" "Blues" n (first quantile-scale qv  (list area)) 0 1
+      ][]
+    ]
+    draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 4])
+  ]
+
+  if (view = "swept area ratio") and ( ticks > 0 )[
+    let _sar [365.25 / ticks *  swept-area / area] of patches with [swept-area > 0]
+    set qv quantile-thresholds _sar n
+    ask patches with [swept-area > 0][
+      carefully [
+        set pcolor palette:scale-scheme  "Sequential" "Oranges" n (first quantile-scale qv  (list _sar)) 0 1
+      ][]
+    ]
+    draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 3])
+  ]
+
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   set n max [ fishing-effort-hours ] of patches
   if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
   if view = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
   if view = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
+
 
   ;if qv != nobody [
     ;draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
@@ -836,8 +865,8 @@ CHOOSER
 245
 view
 view
-"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?"
-4
+"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
+10
 
 BUTTON
 83
@@ -880,7 +909,7 @@ SWITCH
 152
 show-ports?
 show-ports?
-0
+1
 1
 -1000
 
@@ -1180,7 +1209,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-0
+1
 1
 -1000
 

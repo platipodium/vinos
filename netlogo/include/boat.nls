@@ -380,7 +380,7 @@ end
 to boat-make-haul
 
   ; A boat deploys the gear with the highest priority
-  let haul-width [gear-width] of item (index-max-one-of boat-gear-priorities) boat-gears
+  let _haul-width [gear-width] of item (index-max-one-of boat-gear-priorities) boat-gears
   let _fishing-speed [gear-speed] of item (index-max-one-of boat-gear-priorities) boat-gears
   let _haul-time 1 ; one hour
   let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing
@@ -418,7 +418,7 @@ to boat-make-haul
       set _new-catches boat-catch-species (_sub-step-time * _fishing-speed)
       ask patch-here [
         set fishing-effort-hours fishing-effort-hours + _sub-step-time
-        ;set swept-area swept-area + _haul-with * _sub-step-time * _fishing-speed
+        set swept-area swept-area + _haul-width * _sub-step-time * _fishing-speed
         ; @todo reduce fish on patch by amount taken out, allow for recovery
 
       ]
