@@ -42,15 +42,22 @@ to plot-setup-gain-by-gear
     set-current-plot-pen pen-name
     ifelse i != 4
     [ set-plot-pen-color 135 - 20 * i]
-    [set-plot-pen-color 45 ]
+    [set-plot-pen-color 45 ] ; @todo make the colors a property of gears, not numbers here
     set-plot-pen-interval 1
     auto-plot-on
     set-plot-pen-mode 0 ; line
   ]
+  let pen-name "zero"
+  if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
+  set-current-plot-pen pen-name
+  set-plot-pen-color grey
+  set-plot-pen-mode 0
 end
 
 to plot-update-gain-by-gear
   set-current-plot "gain-by-gear"
+  set-current-plot-pen "zero"
+  plotxy ticks 0
   ; foreach prey-names [0 1 2] [[s i] ->
   foreach range length gear-names [[i] ->
     let pen-name  item i gear-names
