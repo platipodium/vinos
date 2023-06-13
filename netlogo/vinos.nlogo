@@ -71,7 +71,7 @@ globals [
 ]
 
 patches-own [
-  fish-biomass                    ; vektor of biomass of the fish species
+  prey-biomasses                    ; vektor of biomass of the fish species
 
 
   fishing-effort-hours                   ; fishing effort in hours
@@ -393,7 +393,7 @@ to calc-fish
   ask patches [
     set prey-names (list "Solea" "Pleuronectes" "Crangon")
     set patch-prey-names (list "Solea" "Pleuronectes" "Crangon")
-    set fish-biomass (list solea platessa crangon)
+    set prey-biomasses (list solea platessa crangon)
     ;set fish-abundance (list 100 200 300 400) ; default values needs to be adjusted when data available
   ]
 end
@@ -401,13 +401,13 @@ end
 to-report catch-species [haul-length]
   ; calculate the values for each patch and every target species
   ;(solea, platessa and crangon), i.e. biomass cath in KG
-  ; @todo: negative values possible for fish-biomass
+  ; @todo: negative values possible for prey-biomasses
 
   let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
 
   report n-values (number-of-gears) [ igear ->
-     (item igear catch-efficiency-boat) * (item (item igear ispecieslist) fish-biomass)
-      * (([gear-width] of item igear boat-gears) * haul-length) * (boolean2int (item (item igear ispecieslist) fish-biomass > 0) )
+     (item igear catch-efficiency-boat) * (item (item igear ispecieslist) prey-biomasses)
+      * (([gear-width] of item igear boat-gears) * haul-length) * (boolean2int (item (item igear ispecieslist) prey-biomasses > 0) )
   ]
 
 end
