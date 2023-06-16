@@ -382,9 +382,12 @@ to boat-make-haul
   ; A boat deploys the gear with the highest priority
   let _haul-width [gear-width] of item (index-max-one-of boat-gear-priorities) boat-gears
   let _fishing-speed [gear-speed] of item (index-max-one-of boat-gear-priorities) boat-gears
+  let _prey [gear-species] of  item (index-max-one-of boat-gear-priorities) boat-gears
+  let _iprey position _prey prey-names
   let _haul-time 1 ; one hour
   let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing
   let _sub-step-time _haul-time * 1.0 / _sub-steps
+  let _cluster boat-type
 
   ; Calculate conversion factor netlogo units to km, needs to be recalculated after
   ; every change of heading
@@ -421,6 +424,11 @@ to boat-make-haul
         set swept-area swept-area + _haul-width * _sub-step-time * _fishing-speed
         ; @todo reduce fish on patch by amount taken out, allow for recovery
 
+        ;set cluster-fishing-efforts replace-item _cluster cluster-fishing-efforts ((item _cluster cluster-fishing-efforts) +  fishing-effort-hours + _sub-step-time)
+
+
+        ;  prey-catches                      ; annual prey catches
+        ; cluster-prey-catches              ; preys caught by cluster
       ]
       forward _sub-step-time * fishing-speed / _gis-scale
 

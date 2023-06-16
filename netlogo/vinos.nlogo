@@ -95,7 +95,10 @@ patches-own [
 
 
   ; Diagnostics
-  fishing-effort-hours              ; fishing effort in hours
+  fishing-effort-hours              ; anual fishing effort in hours
+  prey-catches                      ; annual prey catches
+  cluster-fishing-efforts           ; fishing effort by cluster in hours
+  cluster-prey-catches              ; preys caught by cluster
   area                              ; area of the patch
   swept-area                        ; swept area of the patch, used to calculate SAR (swept area ratio)
 ]
@@ -866,7 +869,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-10
+4
 
 BUTTON
 83

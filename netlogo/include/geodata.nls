@@ -54,7 +54,10 @@ to setup-maps
   gis:apply-raster platessa-winter-dataset platessa-winter
   ask patches with [not (platessa-winter < 0 or platessa-winter > -1) ] [ set platessa-winter -9999 ]
 
-  ask patches [set area gis-patch-area]
+  ask patches [
+    set area gis-patch-area
+  ]
+
 
 end
 

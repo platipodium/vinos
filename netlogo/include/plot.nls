@@ -133,27 +133,27 @@ to plot-update-boat-property
   ifelse (boat-property-chooser =  "trip-phase" ) or (boat-property-chooser =  "type" ) [
     if (boat-property-chooser = "trip-phase") [
       set _values [ boat-trip-phase] of boats
-      set-histogram-num-bars 5
+      set-histogram-num-bars 6
       set _x-range (list -.5 5.5)
     ]
     if (boat-property-chooser = "type") [
       set _values [ boat-type] of boats
-      set-histogram-num-bars 4
+      set-histogram-num-bars 5
       set _x-range (list -.5 3.5)
     ]
   ][
-    if ( boat-property-chooser =  "max-duration" ) [ set _values [ boat-max-duration] of boats ]
-    if ( boat-property-chooser =  "max-distance" ) [ set _values [ boat-max-distance] of boats ]
-    if ( boat-property-chooser =  "time-at-sea" ) [ set _values [ boat-time-at-sea] of boats ]
-    if ( boat-property-chooser =  "time-at-sea-left" ) [ set _values [ boat-time-at-sea-left] of boats ]
-    if ( boat-property-chooser =  "distance-at-sea" ) [ set _values [ boat-distance-at-sea] of boats ]
-    if ( boat-property-chooser =  "length" ) [ set _values [ boat-length] of boats ]
-    if ( boat-property-chooser =  "capacity" ) [ set _values [ boat-capacity] of boats ]
+    if ( boat-property-chooser =  "max-duration" ) [ set _values [ round boat-max-duration] of boats ]
+    if ( boat-property-chooser =  "max-distance" ) [ set _values [ round boat-max-distance] of boats ]
+    if ( boat-property-chooser =  "time-at-sea" ) [ set _values [ round boat-time-at-sea] of boats ]
+    if ( boat-property-chooser =  "time-at-sea-left" ) [ set _values [ round boat-time-at-sea-left] of boats ]
+    if ( boat-property-chooser =  "distance-at-sea" ) [ set _values [ round boat-distance-at-sea] of boats ]
+    if ( boat-property-chooser =  "length" ) [ set _values [ round boat-length] of boats ]
+    if ( boat-property-chooser =  "capacity" ) [ set _values [ round boat-capacity] of boats ]
     if ( boat-property-chooser =  "catch-efficiency" ) [ set _values [ catch-efficiency-boat] of boats ]
-    if ( boat-property-chooser =  "engine" ) [ set _values [ boat-engine] of boats ]
-    if ( boat-property-chooser =  "steaming-speed" ) [ set _values [ boat-steaming-speed] of boats ]
-    if ( boat-property-chooser =  "transportation-costs" ) [ set _values [ boat-transportation-costs] of boats ]
-    if ( boat-property-chooser =  "operating-costs" ) [ set _values [ boat-operating-costs] of boats ]
+    if ( boat-property-chooser =  "engine" ) [ set _values [ round boat-engine] of boats ]
+    if ( boat-property-chooser =  "steaming-speed" ) [ set _values [ precision 1 boat-steaming-speed] of boats ]
+    if ( boat-property-chooser =  "transportation-costs" ) [ set _values [ round boat-transportation-costs] of boats ]
+    if ( boat-property-chooser =  "operating-costs" ) [ set _values [ round boat-operating-costs] of boats ]
 
     set-histogram-num-bars 9
     set _x-range (list (min _values) (max _values))
