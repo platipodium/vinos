@@ -14,6 +14,12 @@ globals [
 ]
 
 to setup-calendar
+
+  ; for localization purposes, get the full month names
+  let _month-names n-values 12 [ i ->
+    time:show  time:create (word "2023/" (i + 1) "/01") "MMMM"
+  ]
+
   set days-in-months (list 31 28 31 30 31 30 31 31 30 31 30 31 )
 
   ; date-and-time gives a locale-dependent and JVM precision-dependent
@@ -29,11 +35,17 @@ to setup-calendar
   ; wrap it carefully and fallback to a preset time for now
 
   carefully [
+    set date time:create-with-format _ymd "dd-MM-yyyy"
     set date time:create-with-format _ymd "dd-MMM-yyyy"
+    set date time:create-with-format _ymd "dd-MMMM-yyyy"
+    set date time:create-with-format _ymd "d-MM-yyyy"
+    set date time:create-with-format _ymd "d-MMM-yyyy"
+    set date time:create-with-format _ymd "d-MMMM-yyyy"
   ][
     print (sentence "Could not parse date" _ymd)
     set date time:create "2023/06/01"
   ]
+
   ; Now add to the current time the offset
   set date time:plus date time-offset "months"
 

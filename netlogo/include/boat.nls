@@ -163,6 +163,7 @@ to setup-boats
       set boat-fishable-patches boat-accessible-patches
     ]
     ask my-links [set hidden? true]
+    set pathways (list)
   ]
 
 end
@@ -317,6 +318,9 @@ to boat-choose-start
 
   ;let _patch one-of boat-accessible-patches in-radius 30 ; @todo change this to max-distance
   let _patch one-of boat-fishable-patches in-radius 30
+
+  ; Instead of random choice, we could look at our list of pathways and choose ... based on some criteria
+  ; e.g. trade-off (marginal benefit) between proximity (additional cost for steaming there) and expected gain at target
 
   ; If there are not accessible patches found, go home and try again
   ifelse _patch = nobody [
@@ -474,6 +478,15 @@ to boat-make-haul
     ; Could not find a straight-line haul from hear, so continue steaming
     set boat-trip-phase 2
   ]
+
+  ; After a haul, create the action properties
+  ; -> patch location of the haul
+  ; -> gain during this haul
+  ; -> gear used during this haul
+
+  ; After the action is created
+  ; -> add to patthways if length pathways < memory-size
+  ; -> or, replace lowest-ranking (in terms of gain) item in pathways list
 
   ;print (sentence "Boat" who _distance _time distance-left boat-time-at-sea-left )
 
