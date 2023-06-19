@@ -19,6 +19,8 @@ to setup-calendar
   let _month-names n-values 12 [ i ->
     time:show  time:create (word "2023/" (i + 1) "/01") "MMMM"
   ]
+  let _time-formats (list "d-" "d-M" "d-MM" "dd-" "dd-M" "dd-MM" )
+  set _time-formats map [ _tf -> (word _tf "MM-yyyy") ] _time-formats
 
   set days-in-months (list 31 28 31 30 31 30 31 31 30 31 30 31 )
 
@@ -34,14 +36,9 @@ to setup-calendar
   ; there might be a problem with localization and your JVM_OPTS, thus
   ; wrap it carefully and fallback to a preset time for now
 
-  carefully [
-    set date time:create-with-format _ymd "dd-MM-yyyy"
-    set date time:create-with-format _ymd "dd-MMM-yyyy"
-    set date time:create-with-format _ymd "dd-MMMM-yyyy"
-    set date time:create-with-format _ymd "d-MM-yyyy"
-    set date time:create-with-format _ymd "d-MMM-yyyy"
-    set date time:create-with-format _ymd "d-MMMM-yyyy"
-  ][
+  let _dates filter [ _item -> _item != nobody ] (map [ _f -> logodate-from-format  _ymd _f ] _time-formats)
+  print _dates
+  ifelse length _dates > 0 [set date item 0 _dates][
     print (sentence "Could not parse date" _ymd)
     set date time:create "2023/06/01"
   ]
@@ -87,4 +84,14 @@ end
 
 to-report is-holiday?
   report ts-member? holidays-germany date
+end
+
+
+to-report logodate-from-format [ date-string format-string ]
+  let _logodate nobody
+  carefully [
+    set _logodate time:create-with-format date-string format-string
+  ][
+  ]
+  report _logodate
 end
