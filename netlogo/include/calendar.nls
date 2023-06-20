@@ -24,24 +24,7 @@ to setup-calendar
 
   set days-in-months (list 31 28 31 30 31 30 31 31 30 31 30 31 )
 
-  ; date-and-time gives a locale-dependent and JVM precision-dependent
-  ; output.  The YMD is the last part of the string in format
-  ; dd-MMM-yyyy  (MMM as a localized three-letter string)
-  let _now date-and-time
-  let _len length _now
-  let _ymd substring _now (_len - 11) _len
-
-  ; Use the time exension to read from this formatted string into
-  ; a logotime object and extract the numeric YMD info
-  ; there might be a problem with localization and your JVM_OPTS, thus
-  ; wrap it carefully and fallback to a preset time for now
-
-  let _dates filter [ _item -> _item != nobody ] (map [ _f -> logodate-from-format  _ymd _f ] _time-formats)
-  print _dates
-  ifelse length _dates > 0 [set date item 0 _dates][
-    print (sentence "Could not parse date" _ymd)
-    set date time:create "2023/06/01"
-  ]
+  set date logodate-from-datetime
 
   ; Now add to the current time the offset
   set date time:plus date time-offset "months"
@@ -94,4 +77,23 @@ to-report logodate-from-format [ date-string format-string ]
   ][
   ]
   report _logodate
+end
+
+to-report logodate-from-datetime
+  ; date-and-time gives a locale-dependent and JVM precision-dependent
+  ; output.  The YMD is the last part of the string in format
+  ; dd-MMM-yyyy  (MMM as a localized three-letter string)
+  ; but on some systems, d is single digits and M is MM or MMM
+  ; The date-and-time string's date information is the last item of a
+  ; space-separated string
+
+  let  _ymd last split " " date-and-time
+  set _ymd split "-" _ymd
+  let _format "d"
+  if length item 0 _ymd > 1 [set _format (word _format "d")]
+  set _format (word _format "-MM")
+  if length item 1 _ymd > 2 [set _format (word _format "M")]
+  if length item 1 _ymd > 3 [set _format (word _format "M")]
+  set _format (word _format "-YYYY")
+  report time:create-with-format (last split " " date-and-time) _format
 end
