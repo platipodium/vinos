@@ -161,9 +161,9 @@ to setup-boats
       set boat-needs-return? false
       set boat-hour 0
       set boat-fishable-patches boat-accessible-patches
+      set pathways (list)
     ]
     ask my-links [set hidden? true]
-    set pathways (list)
   ]
 
 end
