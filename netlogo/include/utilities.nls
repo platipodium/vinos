@@ -220,7 +220,7 @@ to  unit-test
     __test_five-number-summary __test_haversine-distance __test-value-from-distribution
     __test-normalize __test-quantile-thresholds __test-quantile-thresholds-number
   __test-quantiles __test-formatted-number __test-index-max-one-of  __test-formatted-int
-  __test-sign __test-order)
+  __test-sign __test-order __test-split )
   foreach tests [
     t -> ifelse t [print (sentence "Test passed")][error  "Test failed"]
   ]
@@ -304,4 +304,26 @@ to-report gis-patch-area
   let _clat (item 3 _coordinates + item 2 _coordinates) / 2.0
 
   report _area * _dlon / 360.0 * _dlat / 360.0 * cos _clat
+end
+
+; split a string along occurences of character char and return
+; a list
+to-report split [char string]
+
+  let _string string
+  let _list (list)
+  let _pos position char _string
+
+  while [is-number? _pos] [
+    set _list lput (substring _string 0 _pos) _list
+    set _string (substring _string (_pos + 1) (length _string))
+    set _pos position char _string
+  ]
+  set _list lput _string _list
+  report _list
+end
+
+to-report __test-split
+  if split ";" "I;have;a;;dream" != (list "I" "have" "a" "" "dream") [report false]
+  report true
 end
