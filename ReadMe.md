@@ -41,7 +41,7 @@ to recreate some of the input data.
 To use the model, please install NetLogo from https://ccl.northwestern.edu/netlogo/download.shtml. On
 Windows and macOS systems, double-clicking the NetLogo application or the code (in the projects's
 `netlogo` folder) with the extension `.nlogo` will open NetLogo's integrated development environment.
-On Linux, start NetLogo with the `netlogo-gui.sh` shell script provided by NetLogo.
+On Linux, start NetLogo with the `netlogo-gui.sh` shell script provided by NetLogo. If NetLogo gets stuck during startup on macOS with Apple Silicon, you might have run into a Java problem. See https://github.com/NetLogo/NetLogo/issues/2080, install an updated Java runtime, export `JAVA_HOME` and start NetLogo with the `netlogo-gui.sh` shell script.
 
 Please refer to the `Info` tab in the graphical NetLogo model to learn quickly more about the model, it's
 mathematical implementation and how to use it. There is a full documentation in ODD format available in
