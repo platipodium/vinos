@@ -145,7 +145,6 @@ to setup-boats
       set  boat-transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  boat-operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
-      set  boat-steaming-speed 19                                  ; range 10  to 12
       set label ""                                             ; ????
 
       ; Serra: About 160 boats of the entire fleet don't change at all, make them have available only 1 gear
