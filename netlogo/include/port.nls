@@ -49,14 +49,6 @@ to setup-ports
   set home-ports ports with [ port-kind = "favorite"]
 end
 
-;to-report sum-of-landings [species unit port-type]
-;  ifelse unit = "euro" [
-;    report sum  [item (position species port-prey-names) port-landings-euro] of ports with  [port-kind = port-type and member? species port-prey-names]
-;  ][
-;    report sum  [item (position species port-prey-names) port-landings-kg] of ports with  [port-kind = port-type and member? species port-prey-names]
-;  ]
-;end
-
 ; sub_grp,fav_lan,n_vessels,X,ISO3_Country_Code,full_name,Coordinates,Latitude,Longitude,EU_Fish_Port,Port,Region
 to port-read
 
