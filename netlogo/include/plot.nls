@@ -41,12 +41,13 @@ to plot-setup-gain-by-gear
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
     ifelse i != 4
-    [ set-plot-pen-color 135 - 20 * i]
-    [set-plot-pen-color 45 ] ; @todo make the colors a property of gears, not numbers here
+     [ set-plot-pen-color 125 - 20 * i]
+    [set-plot-pen-color 45 ]; @todo make the colors a property of gears, not numbers here
     set-plot-pen-interval 1
     auto-plot-on
     set-plot-pen-mode 0 ; line
   ]
+ 
   let pen-name "zero"
   if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
   set-current-plot-pen pen-name
@@ -110,7 +111,8 @@ to plot-update-priority-by-gear
    foreach range number-of-gears [[i] ->
     let pen-name  item i gear-names
     set-current-plot-pen pen-name
-    histogram [item i boat-gear-priorities] of boats ;@to do problem wrong message recipient
+    histogram [item i boat-gear-priorities] of boats ;@todo maybe manage to show the distribution of the highest priorities
+   ; for the boats instead of the distribution of the priority for all gears (e.g. max-one-of boat-gear-priotities
   ]
 end
 
@@ -163,6 +165,7 @@ to plot-update-boat-property
   histogram _values
 
 end
+
 
 to update-drawings
   clear-drawing
