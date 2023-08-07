@@ -70,8 +70,6 @@ end
 
 to plot-setup-catch-by-trip
   set-current-plot "catch-by-trip"
-  ;set-plot-x-range min-pxcor max-pxcor
-  ;set-plot-y-range 0 10
   auto-plot-on
   set-histogram-num-bars 9
   let pen-name "hist"
