@@ -107,7 +107,8 @@ patches-own [
 ; The startup procedure is called when the model is opened by NetLogo.  This automates
 ; the execution of setup
 to startup
-   setup
+  random-seed 123456789
+  setup
 end
 
 to setup
