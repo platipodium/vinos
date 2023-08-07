@@ -28,6 +28,7 @@ __includes [
   "include/time-series.nls"
 ]
 
+; The following breeds are defined in include files
 ; breed [gears gear] ; defined in gear.nls
 ; breed [boats boat] ; defined in boat.nls
 ; breed [legends legend] ; defined in view.nls
@@ -62,8 +63,7 @@ globals [
   day-of-year
   days-in-months
 
-  home-ports                 ; agentset of breed ports
-  ;favorite-landing-ports     ; agentset of breed ports
+  home-ports                         ; agentset of breed ports
 
   view-legend-n
   view-legend-thresholds
@@ -117,9 +117,6 @@ to setup
   setup-globals
   setup-gears
 
-  ;set harbor-stage (list "stay" "go")
-  ;set weather-stage (list "good" "bad")
-
   setup-maps ; in "geodata.nls"
 
   calc-pollution
@@ -159,13 +156,9 @@ end
 to setup-logo
   let _logo  bitmap:import "../assets/logo-mussel.png"
   set _logo bitmap:scaled _logo ( 0.5 * bitmap:width _logo) (0.5 * bitmap:height _logo)
-  ;bitmap:copy-to-drawing _logo  0.1 * max-pycor
   bitmap:copy-to-drawing _logo 0.01 * max-pxcor  2.65 * max-pycor
 end
 
-; This new go procedure used discrete event simulation within a 24 hour tick
-; It is more efficient than the oritinal 72-h based go procedure but does not
-; yet contain the priority calculation
 to go
 
   advance-calendar
@@ -237,7 +230,6 @@ to update-view
   let qv nobody
   ask patches [set pcolor grey - 2]
   ask patches with [ accessible? = True ][set pcolor grey]
-
 
   if view = "Crangon"  [
     set qv quantile-thresholds [crangon] of patches with [crangon > 0] n
@@ -317,13 +309,7 @@ to update-view
   if view = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
   if view = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
 
-
-  ;if qv != nobody [
-    ;draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
-  ;]
-
 end
-
 
 to update-view-legend
 
@@ -345,7 +331,7 @@ to update-view-legend
          set shape "square"
          set size 0.1
          setxy min-pxcor + 4 + 13 max-pycor - 20 - 3 * view-legend-n + 1 + 3 * i - 1
-         set label-color black ; item i view-legend-colors
+         set label-color black ; if you want to color it, use item i view-legend-colors
          set label formatted-number (item i view-legend-thresholds) 5
     ]
   ]
@@ -381,22 +367,6 @@ to-report grayscale [x]
   report (round (10 * (x mod 10))) / 10
 end
 
-; turtle procedure
-;to move
-;  ifelse (boat-time-at-sea > 300) [
-;    pen-up
-;    move-to [landing-patch] of one-of link-neighbors
-;    set boat-time-at-sea 0
-;    pen-down
-;  ] [
-;   let target-patch one-of neighbors with [ depth > navigable-depth]
-;    ifelse target-patch = nobody [ die ][ face target-patch]
-;   ]
-;
-;  set boat-time-at-sea boat-time-at-sea + 1
-;  fd 1
-;end
-
 ; Patch procedures crangon, solea, and platessa report the seasonally-weighted
 ; area concentration of the three species calculated from their winter and summer
 ; values and weighted by day of year
@@ -426,14 +396,12 @@ to calc-fish
     set prey-names (list "Solea" "Pleuronectes" "Crangon")
     set patch-prey-names (list "Solea" "Pleuronectes" "Crangon")
     set prey-biomasses (list solea platessa crangon)
-    ;set fish-abundance (list 100 200 300 400) ; default values needs to be adjusted when data available
   ]
 end
 
 to-report catch-species [haul-length]
   ; calculate the values for each patch and every target species
-  ;(solea, platessa and crangon), i.e. biomass cath in KG
-  ; @todo: negative values possible for prey-biomasses
+  ;(solea, platessa and crangon), i.e. biomass cath in kg
 
   let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
 
@@ -451,274 +419,11 @@ to-report should-go-fishing?
   ; a boat decides to go on a fishing trip.
 
   set port-prob-bad-weather random-float 1.00
-  if random-float 1.00 < port-prob-bad-weather
-    [ if boat-gains < 1.000 [
-      report true]
+  if random-float 1.00 < port-prob-bad-weather [
+    if boat-gains < 1.000 [ report true ]
   ]
+  report false
 end
-
-
-
-; This is a boat procedure
-; it describes a detailed single fishing trip starting and ending in the
-; port.
-;to go-on-fishing-trip
-;
-;  boat-leave-port
-;
-;  let s-patch patch-here
-;  let l-patch patch-here
-;
-;  let navigable-patches boat-accessible-patches
-;
-;  let time-step 0.1 ; in hours  (let's say 6 min)
-;  let time-left boat-max-duration
-;  let haul-time 2   ; 2 hours for a typical haul time without change of direction
-;  let distance-left boat-steaming-speed * time-left ; at typical speed of 19 km / h this is 1368 km
-;  let new-catch n-values (length prey-names - 1) [i -> 0]
-;  let distance-to-alternative-patch 40 ;
-;
-;  ; Sascha suggests to use favorite-port instead of home-port in the next 10 lines
-;  let home-port one-of link-neighbors  ; home-port of boats
-;  let boat-plaice-box? false
-;  let need-to-go-to-port? false
-;
-;  ; Move the boat from home port to the starting patch and assume it steams there,
-;  ; thereby adding to trip time/length and subtracting from time and
-;  ; distance left
-;  pen-up
-;  move-to home-port
-;  set boat-distance-at-sea gis-distance s-patch
-;  ; Suggestion to calculate distance-left based on "gis-distance min dist [ s-patch of landing-ports ]"
-;  ; Carsten cautions that then boats might converge in the center (Cuxhaven) due to edge effect.
-;  set distance-left max  (list (distance-left - gis-distance s-patch) 0 )
-;  set boat-time-at-sea gis-distance s-patch / boat-steaming-speed
-;  set time-left  max (list (time-left - gis-distance s-patch / boat-steaming-speed) 0 )
-;  move-to s-patch
-;  pen-down
-;
-;  ; A boat deploys the gear with the highest priority
-;  let haul-width [gear-width] of item (index-max-one-of boat-gear-priorities) boat-gears
-;
-;  while [not need-to-go-to-port?] [
-;
-;    let found? false
-;    let counter 0
-;
-;    ; Look around for a patch that is accessible
-;    while [not found?] [
-;      set heading random 360
-;      set counter counter + 1
-;      let t-patch patch-ahead (boat-steaming-speed * time-step)
-;      if (t-patch != nobody) [
-;        if ([accessible?] of t-patch) [set found? true]
-;        if (boat-plaice-box? and [plaice-box?] of t-patch) [set found? false]
-;      ]
-;      if counter > 20 [set found? true]
-;    ]
-;
-;    let t-patch patch-ahead (boat-steaming-speed * time-step)
-;    if (t-patch = nobody or [not accessible?] of t-patch) [
-;      print "Cannot find navigable patches ahead, going home"
-;      set need-to-go-to-port? true ; Is there the need to go to port? E.g. time is running out, catch is higher than capacity of the boat
-;    ]
-;    if (boat-plaice-box? and [plaice-box?] of t-patch)  [
-;      print "Cannot find patches outside plaice box ahead, going home"
-;      set need-to-go-to-port? true
-;    ]
-;
-;    if (not need-to-go-to-port?) [
-;      ; Deploy the gear for haul-time and go in a straight direction,
-;      ; observing every time step a possible change in the patch the
-;      ; boat is on
-;      repeat (haul-time / time-step) [
-;        set new-catch catch-species (time-step * fishing-speed)
-;        ask patch-here [
-;          set fishing-effort-hours fishing-effort-hours + time-step
-;        ]
-;        forward fishing-speed * time-step
-;        set boat-trip-gear-catches n-values (number-of-gears) [i -> (item i boat-trip-gear-catches + item i new-catch)]
-;
-;      ]
-;      set time-left max (list (time-left - haul-time) 0 )
-;      set distance-left max (list (distance-left - boat-steaming-speed * haul-time) 0 )
-;      set boat-time-at-sea boat-time-at-sea  + haul-time
-;      set boat-distance-at-sea boat-distance-at-sea + haul-time * fishing-speed
-;      ;print (sentence boat-distance-at-sea boat-time-at-sea fishing-speed)
-;
-;      ; If the catch is not worth keeping it, discard it entirely and
-;      ; reset the time left. Fishers don't want to keep the bad haul, as this
-;      ; would restrict their left time
-;      ; @todo could this lead to infinite stay at sea?
-;      if (item 1 new-catch < min-fresh-catch and time-left < 24)[
-;        set time-left 24
-;      ]
-;      ; But if the catch is successful, then make
-;      ; sure that the timeout is maximum 24 hours (to keep the fish fresh)
-;      ; @todo this is not properly implemented yet
-;      if (item 1 new-catch > min-fresh-catch and time-left > 24)[
-;        set time-left 24
-;      ]
-;
-;      ; Evaluate whether to go home based on different criteria, i.e.
-;      ; capacity exceeded, too far from home port, or
-;
-;      if (item 1 boat-trip-gear-catches > boat-capacity) [
-;        print (list "Boat" who "full. Needs to go back to port")
-;        set need-to-go-to-port? true
-;      ]
-;      if (gis-distance l-patch > distance-left) [
-;        print (list "Boat" who "went far enough, needs to go home to reach port")
-;        set need-to-go-to-port? true
-;      ]
-;      if (time-left < gis-distance l-patch / boat-steaming-speed) [
-;        print (list "Boat" who "is running out of time, needs to go home to reach port")
-;        set need-to-go-to-port? true
-;      ]
-;
-;      ; in case of a bad haul, select a different patch.
-;      ; for now, we choose a  neighbor patch, later we have to implement
-;      ; a procedure to find a patch approx 20 km away
-;      ; @todo check units
-;      ;if (false) [
-;      if (item 1 new-catch < min-fresh-catch) [
-;        let my-neighbors patches  with [accessible? and gis-distance l-patch < distance-left and gis-distance myself < distance-to-alternative-patch and gis-distance home-port > 5 ] ; @todo: currently set to 20, revise with respect to memorx
-;        ifelse any? my-neighbors [
-;          set s-patch one-of my-neighbors
-;          print (list "Boat" who "start a new haul at a different patch with depth" ([depth] of s-patch))
-;        ][
-;          print (list "Boat" who "could not find any navigable water, going home")
-;          set need-to-go-to-port? true
-;        ]
-;        move-to s-patch
-;        set boat-distance-at-sea boat-distance-at-sea + gis-distance s-patch
-;        set distance-left distance-left - gis-distance s-patch
-;        set boat-time-at-sea boat-time-at-sea + gis-distance s-patch / boat-steaming-speed
-;        set time-left time-left - gis-distance s-patch / boat-steaming-speed
-;      ]
-;
-;      print (list "Boat" who "t=" boat-time-at-sea "t-=" time-left "dh=" (gis-distance l-patch) "d=" boat-distance-at-sea "d-=" distance-left "c1=" (item 1 boat-trip-gear-catches) )
-;      ;print (list who ([depth] of patch-here))
-;    ]
-;  ]
-;
-;  print "Returning to harbor..."
-;
-;  pen-up
-;
-;
-;  set boat-distance-at-sea boat-distance-at-sea + gis-distance l-patch
-;  set boat-time-at-sea boat-time-at-sea + gis-distance l-patch / boat-steaming-speed
-;  move-to l-patch
-;  set boat-distance-at-sea boat-distance-at-sea + gis-distance home-port
-;  set boat-time-at-sea boat-time-at-sea + gis-distance home-port / boat-steaming-speed
-;  move-to home-port
-;
-;  ; At typical trip would be to travel 48 hours, 300 km travelled
-;  ; This might have to be updated for higher speeds and longer trips if such gear
-;  ; becomes available
-;  if boat-distance-at-sea  >  1000 [
-;    print (list "ERROR: Boat" who "t=" boat-time-at-sea "t-=" time-left "dh=" (gis-distance l-patch) "d=" boat-distance-at-sea "d-=" distance-left )
-;    stop
-;  ]
-;
-;  set size 1
-;  ;calculate costs, revenue and profit
-;
-;  ; for all gears, we calculate the value
-;
-;
-;  ; "Eins bleibt immer gleich: Pro Stunde rechnet man pro PS mit einem Konsum von 0,21 Liter bei einem
-;  ; Diesel und 0,29 Liter bei Benzin als Treibstoff.” https://www.boatsandstories.com/verbrauch_1-3-2/
-;  ; At 150 PS and 48 h trip covering 300 km, the efficiency is 150*48*0,21/300 = 5 l km-1
-;  ; @todo we can adjust this to boat-engine power
-;  ; we scale the fuel-efficiency (0 to 1) with boat-fuel-consumption
-;  let boat-fuel-consumption 48 * boat-engine *  1.35962 * 0.21 / 300 ; is typically 5 l km-1
-;
-;  ; Diesel for shipping is usually 0.5 € l-1
-;  ; In the end tranpsortatino costs should be 15% of crangon reenvu, up to 30% for platessa/sole
-;  set boat-transportation-costs boat-fuel-consumption * oil-price * boat-distance-at-sea; typically 750 €
-;
-;  ; Typically there are 3 people aboard, i.e. 150 * 3 work hours per month.  Average wage is 5000+2*2000 per
-;  ; gross salary per month, adding 40% costs gives 12600 EUR, i.e. 84 € h-1, there is slider wage
-;  ; in the end operating costs should be around 50% of revenue
-;  set boat-operating-costs wage * boat-time-at-sea ; is typically 4000 €
-;
-;
-;  if (sum boat-trip-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
-;    (boat-transportation-costs * item i boat-trip-gear-catches +  boat-operating-costs * item i boat-trip-gear-catches) / sum boat-trip-gear-catches]
-;  ]
-;
-;  ; Find the position of the target gear-species in prey-names and return the index of the species,
-;  ; save this in a temporary list of size number-of-gears, resulting in the gear-species index map ispecieslist
-;  ; @todo move this to gear.nls as global
-;  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
-;
-;  ; Calculate the boat revenue depending on the landed species and the port
-;  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches * ([item (item igear ispecieslist) port-prices] of boat-home-port))]
-;
-;  ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
-;  print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)
-;
-;
-;
-;  set boat-delta-gains n-values (number-of-gears) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
-;  set boat-gains n-values (number-of-gears) [i ->  item i revenue-boat - item i costs-boat]
-;  let delta-adjust sum map [ i -> abs i ] boat-delta-gains ; fix minus boat priority ; in cast that the boat-gains decreases a lot, big minus values of delta-priorities make boat-gear-priorities minus
-;  ifelse delta-adjust != 0 [ ; if delta-adjust = 0, there is no change in fish catch between the previous and current trip
-;  set boat-delta-priorities n-values (number-of-gears) [i -> adaptation * (item i boat-delta-gains) * (item i boat-gear-priorities) / delta-adjust]
-;  ][
-;    set boat-delta-priorities map [i -> 0] boat-delta-priorities
-;  ]
-;  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
-;; Make sure that boat-gear-priorities always sum to 1
-;  set boat-gear-priorities map [i -> i / sum boat-gear-priorities] boat-gear-priorities
-;
-;  ; Correct such that sum (boat-delta-priorities = 0) ; introduced by cl as fix for negative priorities
-;  ;if sum boat-delta-priorities != 0 [
-;  ;  set boat-delta-priorities n-values (number-of-gears) [i -> item i boat-delta-priorities / sum boat-delta-priorities ]
-;  ;  set boat-delta-priorities n-values (number-of-gears) [i -> item i boat-delta-priorities - mean boat-delta-priorities ]
-;  ;]
-;
-;  set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities - item i boat-delta-priorities]
-;  ; Make sure that boat-gear-priorities always sum to 1
-;  if sum boat-gear-priorities != 0 [
-;    set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities / sum boat-gear-priorities ]
-;  ]
-;
-;
-;  ; old implemenation for species
-;  ;set costs-boat n-values (number-of-species - 1) [ i -> (boat-transportation-costs * item i boat-trip-gear-catches +  boat-operating-costs * item i boat-trip-gear-catches) / sum boat-trip-gear-catches]
-;  ;set revenue-boat n-values (number-of-species - 1)[i -> (item i boat-trip-gear-catches * price-species)] ; @todo needs to be solved, price is related to home-port
-;  ;set boat-delta-gains n-values (number-of-species - 1) [i -> (item i boat-gains) - (item i revenue-boat - item i costs-boat)]
-;  ;set boat-gains n-values (number-of-species - 1) [i ->  item i revenue-boat - item i costs-boat]
-;  ;set delta-boat-gear-priorities n-values (number-of-species - 1) [i -> adaptation * (item i boat-delta-gains) / (item i boat-gear-priorities)]
-;  ;set boat-gear-priorities n-values (number-of-species - 1) [i -> item i boat-gear-priorities - item i delta-boat-gear-priorities]
-;  print (list "Boat" who " has cost of " (boat-transportation-costs + boat-operating-costs) )
-;  print (list "Boat" who " has cost of " costs-boat )
-;  print (list "Boat" who " has dpriorities of" boat-delta-priorities)
-;  print (list "Boat" who " has priorities of" boat-gear-priorities)
-;  print (list "Boat" who " has priority weighted average of" priority-weighted-average)
-;
-;  ; Now we can make a decision, once enough experience is gained.  This could be a
-;  ; seasonal decision. Something that changes strategy.
-;  if (boat-type = 3 and month = 10 and day = 1) []
-;  if (boat-type = 2) [
-;   ; can change gear if opportune
-;   ; change typical trip length (less flexible, rather they would change the frequency)
-;   ; change typical trip frequency (from total_fishing_hours)
-;  ]
-;  if (boat-type = 4) [
-;    ; change gear a lot according with trip length  and frequency
-;  ]
-;  ; LPUE landing-per-unit-effort (i.e per time) t/h efficient ones
-;  ; know the area, this is also a fleet management harvest controle
-;
-;  ; Fishing hour range: Every fisher has a minimum/maximum of how much she
-;  ; expects to be active. If reached, they rest, if not reached they might
-;  ; work harder.
-;end
-
 
 ; This routine is to be called by CI
 to create-effort-map
@@ -760,8 +465,6 @@ to calc-accessibility
   ask patches [set accessible? false]
 
   let _sns load-dataset "SNS"
-  ;ask patches gis:intersecting [set accessible? true]
-  ;ask patches with [depth < depth-threshold] [set accessible? false]
 
   let _water-patches patches gis:intersecting  _sns
 
@@ -773,24 +476,12 @@ to calc-accessibility
   repeat max-pxcor * 2 [
     ask my-patches [
       set new-patches neighbors4 with [depth >= depth-threshold and not accessible?]
-      ;set new-patches neighbors4 with [not accessible?]
       ask new-patches [set accessible? true]
     ]
     set my-patches _water-patches with [accessible? and (count neighbors4 with [accessible?]) < 4]
-    ;print (sentence count patches with [accessible?] count my-patches)
   ]
 
   ask patches with [not accessible?] [set depth min (list -2 depth)]
-
-  ;ask patches with [ all? neighbors [not accessible?] ] [set accessible? false]
-
-
-  ; Also, fishing is not allowed nearby ports
-  ; @todo find the correct legal distance from ports in grid space
-  ; @todo ships still need to navigate through this channel?
-  ;ask ports [
-  ;  ask patches with [distance myself < 5]  [set accessible? false]
-  ;]
 
   ; Boats are not allowed within OWF areas
   ask patches with [owf-fraction > 0.5] [set accessible? false]
@@ -802,8 +493,6 @@ to calc-accessibility
   if year > 2023 or (year = 2023 and month > 4) [
     ask patches gis:intersecting load-dataset "Natura2000" [ set accessible? false ]
   ]
-
-  ; @todo add nature protection, mining etc areas.
 
 end
 
