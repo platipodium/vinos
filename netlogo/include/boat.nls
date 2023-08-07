@@ -97,11 +97,6 @@ to setup-boats
   let fishing-speed-mean 5.556 ; unit is km/h (= 3kn)
   let fishing-speed-sdev 0.926 ; unit is km/h (= 0.5kn)
 
-  ; print distance-distribution
-
-  ; @todo recreate the ports with new information from Serra
-  ; on the distribution of the 4 clusters in each port.
-
   ; @todo introduce quotas (=> Serra, asks Jonas)
   ask home-ports [
     (foreach (range 4) port-clusters [ [i j] ->
@@ -147,7 +142,7 @@ to setup-boats
       set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
       set label ""                                             ; ????
 
-      ; Serra: About 160 boats of the entire fleet don't change at all, make them have available only 1 gear
+      ; About 160 boats of the entire fleet don't change at all, make them have available only 1 gear
       ; there are smaller groups of boats that do different things.  Only for those allow to have multiple years available
       ; there are some seasonal changes, but likley not at monthly or sub-monthly scale. Let's try 3 months
       ; Also include every 3 months when gear change is deliberated the previous year's experience
@@ -242,34 +237,21 @@ to boat-land-port
   ; in the end operating costs should be around 50% of revenue
   set boat-operating-costs wage * boat-time-at-sea ; is typically 4000 €
 
-  ;does this make any sense? can it be not to catch anything?
-  if (sum boat-trip-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
-    ;((boat-transportation-costs + boat-operating-costs) * item i boat-trip-gear-catches) / sum boat-trip-gear-catches]
-    boat-transportation-costs + boat-operating-costs]
+  if (sum boat-trip-gear-catches > 0 ) [
+    set costs-boat n-values (number-of-gears) [
+      i -> boat-transportation-costs + boat-operating-costs
+    ]
   ]
 
   let _boat-prey-catches n-values count preys [ i -> 0]
 
-  ;[0 1 2 2 0 0 1
-  ;let _index-prey-ger]
-  ;(foreach ispecieslist (range number-of-gears)[ [iprey igear] ->
-  ;  replace-item iprey _boat-prey-catches (item iprey _boat-prey-catches) + (item igear boat-trip-gear-catches)
-  ;])
-
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
   set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches *  1000 * (item (item igear gear-prey-indices) prey-prices))]
-
-  ;print (sentence "X: " revenue-boat boat-trip-gear-catches)
 
   set boat-gains n-values (number-of-gears ) [i -> item i revenue-boat - item i costs-boat]
   let sum-boat-gains sum boat-gains
   let sum-boat-priorities-gains sum n-values (number-of-gears) [i -> item i boat-gear-priorities * item i boat-gains]
 
-  ;ifelse (sum-boat-gains = 0) [][
-  ;  set boat-delta-priorities n-values (number-of-gears) [
-  ;    i -> adaptation * (item i boat-gear-priorities) * (( item i boat-gains) - sum-boat-priorities-gains) / sum-boat-gains
-  ;  ]
-  ;]
   carefully [
     set boat-delta-priorities n-values (number-of-gears) [
       i -> adaptation * (item i boat-gear-priorities) * (( item i boat-gains) - sum-boat-priorities-gains) / sum-boat-gains
@@ -280,8 +262,7 @@ to boat-land-port
 
   ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
   ; At the moment, boat-tranpsortation cost are 70 k€, op-costs are 2000 € revenue is 0.0002
-  print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)
-
+  if one? [print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)]
 
   set boat-trip-gear-catches map [i -> 0] boat-trip-gear-catches
 
@@ -290,6 +271,7 @@ to boat-land-port
   set boat-time-at-sea-left 0
 
   set boat-trip-phase 0
+
   ; @todo find out how long it takes to land the catch and clean the boat, here, we assume 2 hours
   set boat-hour boat-hour + 2
 end
@@ -345,7 +327,7 @@ to boat-choose-start
   ]
 end
 
-; This is a boat procedure  where a boat
+; This is a boat procedure
 to boat-return-port
 
   let _patch [port-start-patch] of boat-home-port
@@ -428,8 +410,6 @@ to boat-make-haul
         ; @todo reduce fish on patch by amount taken out, allow for recovery
 
         ;set cluster-fishing-efforts replace-item _cluster cluster-fishing-efforts ((item _cluster cluster-fishing-efforts) +  fishing-effort-hours + _sub-step-time)
-
-
         ;  prey-catches                      ; annual prey catches
         ; cluster-prey-catches              ; preys caught by cluster
       ]
@@ -486,8 +466,6 @@ to boat-make-haul
   ; After the action is created
   ; -> add to patthways if length pathways < memory-size
   ; -> or, replace lowest-ranking (in terms of gain) item in pathways list
-
-  ;print (sentence "Boat" who _distance _time distance-left boat-time-at-sea-left )
 
 end
 
