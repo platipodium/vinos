@@ -38,8 +38,6 @@ to setup-calendar
   set holidays-morocco ts-load "../data/holidays/holidays_MA.csv"
 
   set holiday? is-holiday?
-  ;set holidays-germany ts-load-dates "../data/holidays/holidays_DE.csv"
-  ;set holidays-morocco ts-load-dates "../data/holidays/holidays_MA.csv"
 
 end
 
