@@ -82,18 +82,20 @@ end
 to-report logodate-from-datetime
   ; date-and-time gives a locale-dependent and JVM precision-dependent
   ; output.  The YMD is the last part of the string in format
-  ; dd-MMM-yyyy  (MMM as a localized three-letter string)
-  ; but on some systems, d is single digits and M is MM or MMM
+  ; dd-MMM-yyyy  (MMM as a localized three-letter string, but also allowing
+  ; a period at the end)
+  ; but on some systems, d is single digits and M is MM or MMM or MMM.
   ; The date-and-time string's date information is the last item of a
   ; space-separated string
 
-  let  _ymd last split " " date-and-time
-  set _ymd split "-" _ymd
+  let _ymd last split " " date-and-time
+  let _ymdlist split "-" _ymd
+  let _m item 1 _ymdlist
   let _format "d"
-  if length item 0 _ymd > 1 [set _format (word _format "d")]
+  if length item 0 _ymdlist > 1 [set _format (word _format "d")]
   set _format (word _format "-MM")
-  if length item 1 _ymd > 2 [set _format (word _format "M")]
-  if length item 1 _ymd > 3 [set _format (word _format "M")]
+  if length _m > 2 [set _format (word _format "M")]
+  if length _m > 3 and last _m != "."  [set _format (word _format "M")]
   set _format (word _format "-YYYY")
   report time:create-with-format (last split " " date-and-time) _format
 end
