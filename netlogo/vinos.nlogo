@@ -559,7 +559,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-4
+5
 
 BUTTON
 83
@@ -602,7 +602,7 @@ SWITCH
 152
 show-ports?
 show-ports?
-1
+0
 1
 -1000
 
@@ -615,7 +615,7 @@ adaptation
 adaptation
 0
 1
-0.58
+0.597
 0.001
 1
 NIL
@@ -645,7 +645,7 @@ operating-costs-of-boats
 operating-costs-of-boats
 0
 1
-0.227
+0.229
 0.001
 1
 NIL
@@ -893,7 +893,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "operating-costs" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase"
-0
+2
 
 SWITCH
 1241
@@ -960,11 +960,21 @@ time-offset
 time-offset
 -200
 200
-0.0
+2.0
 1
 1
 months from now
 HORIZONTAL
+
+TEXTBOX
+499
+570
+573
+610
+CSH = shrimp\nPLE = plaice\nSOL = sole\nTBB = beam trawl\nOTB = otter trawl
+6
+0.0
+1
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
