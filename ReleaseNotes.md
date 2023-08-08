@@ -4,9 +4,9 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
 
-# Release notes for version 1.1.01 - Aug 8, 2023
+# Release notes for version 1.1.1 - Aug 8, 2023
 
-This is a re-release of v1.1.0 to fix errors with Zenodo depositioning.
+This is a re-release of v1.1.1 to fix errors with Zenodo depositioning.
 
 - added zenodo metadata
 
