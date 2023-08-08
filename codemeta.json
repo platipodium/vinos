@@ -68,6 +68,7 @@
     },
     {
       "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-0450-2222",
       "givenName": "W. Nikolaus",
       "familyName": "Probst",
       "email": "nikolaus.probst@thuenen.de",
