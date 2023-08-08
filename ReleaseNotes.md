@@ -4,6 +4,12 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
 
+# Release notes for version 1.1.1 - Aug 8, 2023
+
+This is a re-release of v1.1.1 to fix errors with Zenodo depositioning.
+
+- added zenodo metadata
+
 # Release notes for version 1.1.0 - May 25, 2023
 
 Version 1.1.0 is a maintenance release of our Viable North Sea (ViNoS) software. The main purpose of this release is stabilize the software and the submission of the ODD.

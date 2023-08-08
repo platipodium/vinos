@@ -1,0 +1,45 @@
+{
+  "keywords": [
+    "NetLogo",
+    "North Sea",
+    "Fishery",
+    "Shrimp",
+    "Plaice",
+    "Sole",
+    "Agent-based Model",
+    "MuSSeL"
+  ],
+  "creators": [
+    {
+      "orcid": "0000-0003-3483-6036",
+      "name": "Lemmen, Carsten",
+      "affiliation": "Helmholtz-Zentrum Hereon"
+    },
+    {
+      "orcid": "0000-0002-2192-4013",
+      "name": "Hokamp, Sascha",
+      "affiliation": "University of Hamburg"
+    },
+    {
+      "orcid": "0000-0003-3483-6036",
+      "name": "Örey, Serra",
+      "affiliation": "Hochschule Bremerhaven"
+    },
+    {
+      "orcid": "0000-0002-7171-3062",
+      "name": "Scheffran, Jürgen",
+      "affiliation": "University of Hamburg"
+    }
+  ],
+  "contributors": [
+    {
+      "orcid": "0009-0000-0785-6811",
+      "name": "Mühlberger, Verena",
+      "affiliation": "University of Hamburg",
+      "type": "ProjectMember"
+    }
+  ],
+
+  "license": "Apache-2.0",
+  "title": "Viable North Sea (ViNoS)"
+}
