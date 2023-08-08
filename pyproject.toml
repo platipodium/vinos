@@ -4,7 +4,7 @@
 
 [tool.poetry]
 name = "Agent-based model of North Sea fisheries"
-version = "1.1.0"
+version = "1.1.01"
 description = "Agent-based model of North Sea fisheries"
 authors = [
     "Carsten Lemmen <carsten.lemmen@hereon.de>",
