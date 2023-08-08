@@ -41,5 +41,23 @@
   ],
 
   "license": "Apache-2.0",
-  "title": "Viable North Sea (ViNoS)"
+  "title": "Viable North Sea (ViNoS)",
+
+  "related_identifiers": [
+    {
+      "scheme": "url",
+      "identifier": "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/tree/v1.1.1?ref_type=tags",
+      "relation": "isSupplementTo"
+    },
+    {
+      "scheme": "url",
+      "identifier": "https://github.com/platipodium/vinos/tree/v1.2.0",
+      "relation": "isSupplementTo"
+    },
+    {
+      "scheme": "doi",
+      "identifier": "10.5281/zenodo.7928199",
+      "relation": "isVersionOf"
+    }
+  ]
 }
