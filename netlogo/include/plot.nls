@@ -128,7 +128,11 @@ to plot-update-boat-property
   let _x-range (list 0 1)
   set-current-plot-pen boat-property-chooser
   let _values [ boat-max-duration] of boats
-  ifelse (boat-property-chooser =  "trip-phase" ) or (boat-property-chooser =  "type" ) [
+
+  ; For categorical values, do not adjust the x-range automatically but choose according
+  ; to number of categories
+  ifelse (boat-property-chooser =  "trip-phase" ) or (boat-property-chooser =  "type" )
+  or (boat-property-chooser =  "prey" ) or (boat-property-chooser =  "gear" ) [
     if (boat-property-chooser = "trip-phase") [
       set _values [ boat-trip-phase] of boats
       set-histogram-num-bars 6
@@ -139,7 +143,22 @@ to plot-update-boat-property
       set-histogram-num-bars 4
       set _x-range (list -.5 3.5)
     ]
+    if (boat-property-chooser = "prey") [
+      let _categories [ boat-prey] of boats
+      set _values map [ i -> position i prey-names] _categories
+      print _values
+      set-histogram-num-bars length prey-names
+      set _x-range (list -.5 (length prey-names - 0.5))
+    ]
+    if (boat-property-chooser = "gear") [
+      let _categories [ boat-gear] of boats
+      set _values map [ i -> position i gear-names] _categories
+      print _values
+      set-histogram-num-bars length gear-names
+      set _x-range (list -.5 (length gear-names - 0.5))
+    ]
   ][
+    ; for numerical values, adjust x-range automatically
     if ( boat-property-chooser =  "max-duration" ) [ set _values [ round boat-max-duration] of boats ]
     if ( boat-property-chooser =  "max-distance" ) [ set _values [ round boat-max-distance] of boats ]
     if ( boat-property-chooser =  "time-at-sea" ) [ set _values [ round boat-time-at-sea] of boats ]
