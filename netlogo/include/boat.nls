@@ -203,7 +203,7 @@ to boat-leave-port
   move-to _patch
 
   if not [accessible?] of patch-here [
-    error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase)
+    error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase " (leaving port)")
     stop
   ]
 
@@ -314,7 +314,7 @@ to boat-choose-start
     if not one? [pen-up]
     move-to _patch
     if not [accessible?] of patch-here [
-      error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase)
+      error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(choose start)")
     ]
 
     set boat-distance-at-sea boat-distance-at-sea + _distance
@@ -400,6 +400,7 @@ to boat-make-haul
 
     let _new-catches n-values length boat-gears [i -> 0]
     let _haul-catches n-values length boat-gears [i -> 0]
+    let _step-size _sub-step-time * fishing-speed / _gis-scale
 
     pen-down
     repeat (_sub-steps) [
@@ -413,11 +414,12 @@ to boat-make-haul
         ;  prey-catches                      ; annual prey catches
         ; cluster-prey-catches              ; preys caught by cluster
       ]
-      forward _sub-step-time * fishing-speed / _gis-scale
+      while [not [accessible?] of patch-ahead _step-size] [rt random 90]
+      forward _step-size
 
       if not [accessible?] of patch-here [
         ; @todo make this an error
-        print (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase)
+        print (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(haul)")
       ]
       set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
     ]

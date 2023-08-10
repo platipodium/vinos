@@ -559,7 +559,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-5
+2
 
 BUTTON
 83
@@ -645,7 +645,7 @@ operating-costs-of-boats
 operating-costs-of-boats
 0
 1
-0.229
+0.233
 0.001
 1
 NIL
@@ -893,7 +893,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "operating-costs" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase"
-2
+0
 
 SWITCH
 1241
@@ -911,7 +911,7 @@ BUTTON
 498
 231
 542
-Update
+update
 plot-update-boat-property
 NIL
 1
@@ -960,7 +960,7 @@ time-offset
 time-offset
 -200
 200
-2.0
+-12.0
 1
 1
 months from now
