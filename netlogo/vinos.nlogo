@@ -105,7 +105,7 @@ patches-own [
 
 ; ------------------------------------------------------------------------------------------
 ; The startup procedure is called when the model is opened by NetLogo.  This automates
-; the execution of setup
+; the execution of setup.  We use a fixed random seed to enable replicable simulations
 to startup
   random-seed 123456789
   setup
@@ -118,7 +118,7 @@ to setup
   setup-globals
   setup-gears
 
-  setup-maps ; in "geodata.nls"
+  setup-maps
 
   calc-pollution
   calc-fish
@@ -128,9 +128,8 @@ to setup
 
   setup-ports
   calc-initial-values
-  setup-boats ; in "boat.nls"
+  setup-boats
 
-  set boat-property-chooser "distance-at-sea"
   setup-plots
 
   set view-legend-n 9
@@ -145,13 +144,14 @@ end
 to setup-globals
   set min-fresh-catch 10
   set navigable-depth 2
+  set boat-property-chooser "distance-at-sea"
   set view "bathymetry"
-  set date-patch patch (max-pxcor - 8) (min-pycor + 2)
-  ask date-patch [
-    set plabel-color ifelse-value holiday? [red][white]
-    set plabel datetime
-  ]
+  setup-date-patch
+end
 
+to setup-date-patch
+  set date-patch patch (max-pxcor - 8) (min-pycor + 2)
+  update-date-patch
 end
 
 to setup-logo
@@ -160,13 +160,18 @@ to setup-logo
   bitmap:copy-to-drawing _logo 0.01 * max-pxcor  2.65 * max-pycor
 end
 
-to go
-
-  advance-calendar
+;-----------------------
+to update-date-patch
   ask date-patch [
     set plabel-color ifelse-value holiday? [red][white]
     set plabel datetime
   ]
+end
+
+to go
+
+  advance-calendar
+  update-date-patch
 
   ;let _total-prey-landed sum ([port-prey-landed] of ports)
   ; Todo: adjust price, leave for next version
@@ -559,7 +564,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-2
+4
 
 BUTTON
 83
@@ -941,10 +946,10 @@ NIL
 1
 
 SWITCH
-1241
-397
-1344
-430
+1239
+394
+1342
+427
 one?
 one?
 1
