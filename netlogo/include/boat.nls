@@ -529,3 +529,15 @@ to-report gis-scale
 
   report  _gis-distance / 1.5
 end
+
+; Boat procedure reporting the active gear, i.e. that with the highest
+; priority
+to-report boat-gear
+  report [gear-name] of item (index-max-one-of boat-gear-priorities) boat-gears
+end
+
+; Boat procedure reporting the active prey, i.e. that caught with the highest
+; priority gear
+to-report boat-prey
+  report [gear-species] of item (index-max-one-of boat-gear-priorities) boat-gears
+end

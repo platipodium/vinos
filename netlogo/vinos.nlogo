@@ -897,7 +897,7 @@ CHOOSER
 542
 boat-property-chooser
 boat-property-chooser
-"distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "operating-costs" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase"
+"distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "operating-costs" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type"
 0
 
 SWITCH
@@ -965,7 +965,7 @@ time-offset
 time-offset
 -200
 200
--12.0
+26.0
 1
 1
 months from now
@@ -1012,8 +1012,7 @@ All data from third parties is licensed under various open source licenses.  The
 
 ### Acknowledgements
 
-We acknowledge contributions from Nikolaus Probst, Seong Jieun, and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A  "Multiple Stressors on North Sea Life" [4] within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit (FONA) program of the Germany Bundesministerium für Bildung und Forschung (BMBF).
-
+We acknowledge contributions from W. Nikolaus Probst, Seong Jieun, Verena Mühlberger, Kai Wirtz and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A  "Multiple Stressors on North Sea Life" [4] within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit (FONA) program of the Germany Bundesministerium für Bildung und Forschung (BMBF).
 
 
 ### License
@@ -1024,9 +1023,7 @@ License: Apache 2.0
 
 ![Hereon](../assets/logo-hereon.png)       ![UHH](../assets/logo-uhh.png)     ![HSB](../assets/logo-hsb.png)
 
-
 ## References
-
 
 [1]: Arn, Luke C, Javier Sandoval. 2018. “Netlogo How to Add a Legend?” Stackoverflow. 2018. https://stackoverflow.com/questions/51328633/netlo go-how-to-add-a-legend.
 

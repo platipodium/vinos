@@ -136,7 +136,7 @@ to plot-update-boat-property
     ]
     if (boat-property-chooser = "type") [
       set _values [ boat-type] of boats
-      set-histogram-num-bars 5
+      set-histogram-num-bars 4
       set _x-range (list -.5 3.5)
     ]
   ][
@@ -152,6 +152,7 @@ to plot-update-boat-property
     if ( boat-property-chooser =  "steaming-speed" ) [ set _values [ precision 1 boat-steaming-speed] of boats ]
     if ( boat-property-chooser =  "transportation-costs" ) [ set _values [ round boat-transportation-costs] of boats ]
     if ( boat-property-chooser =  "operating-costs" ) [ set _values [ round boat-operating-costs] of boats ]
+    if ( boat-property-chooser =  "type" ) [ set _values [ round boat-type] of boats ]
 
     set-histogram-num-bars 9
     set _x-range (list (min _values) (max _values))
