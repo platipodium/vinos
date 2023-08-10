@@ -650,7 +650,7 @@ operating-costs-of-boats
 operating-costs-of-boats
 0
 1
-0.233
+0.209
 0.001
 1
 NIL
@@ -710,7 +710,7 @@ fraction-transportation-costs
 fraction-transportation-costs
 0
 1
-0.47
+0.4
 0.01
 1
 NIL
@@ -898,7 +898,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type"
-0
+9
 
 SWITCH
 1241

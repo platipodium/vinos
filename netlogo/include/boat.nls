@@ -119,6 +119,22 @@ to setup-boats
       set boat-max-distance 0.001 * value-from-distribution butfirst butfirst item boat-type distance-distribution
       set boat-max-duration value-from-distribution butfirst butfirst item boat-type triplength-distribution
 
+      set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
+      set boat-gear-priorities n-values number-of-gears  [i -> random-float 1] ; initialize priority for the pathway
+
+      let _crangon-gear-index position "Crangon" gear-prey-names
+      ifelse boat-type < 3 [
+        ; shrimpers have only one gear
+        set boat-gear-priorities  n-values number-of-gears [i  -> 0 ]
+        set boat-gear-priorities replace-item _crangon-gear-index boat-gear-priorities  1
+      ][
+        ; non-shrimpers randomly choose between all other gears
+        set boat-gear-priorities replace-item _crangon-gear-index boat-gear-priorities 0
+        let _sum-priorities sum boat-gear-priorities
+        set boat-gear-priorities n-values number-of-gears [ i -> item i boat-gear-priorities / _sum-priorities ]
+      ]
+
+
       ;print (sentence "Boat" who boat-max-distance)
       ; Boat capacity is not relevant for shrimpers as freshness is key concern
       set  boat-capacity 100000                                  ; kg of storage
@@ -129,7 +145,6 @@ to setup-boats
       set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
       set  boat-gains               n-values number-of-gears  [?1 -> 0 ]    ; gain for the fishing trip of the boat
       set  boat-delta-priorities   n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
-      set  boat-gear-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
       set  boat-transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  boat-operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
@@ -140,8 +155,6 @@ to setup-boats
       ; there are some seasonal changes, but likley not at monthly or sub-monthly scale. Let's try 3 months
       ; Also include every 3 months when gear change is deliberated the previous year's experience
       ; Add location and fishing trip length in option pathways.
-
-      set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
 
       set boat-trip-phase 1 ; in port and available
       set boat-home-port myself
