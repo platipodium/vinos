@@ -146,14 +146,12 @@ to plot-update-boat-property
     if (boat-property-chooser = "prey") [
       let _categories [ boat-prey] of boats
       set _values map [ i -> position i prey-names] _categories
-      print _values
       set-histogram-num-bars length prey-names
       set _x-range (list -.5 (length prey-names - 0.5))
     ]
     if (boat-property-chooser = "gear") [
       let _categories [ boat-gear] of boats
       set _values map [ i -> position i gear-names] _categories
-      print _values
       set-histogram-num-bars length gear-names
       set _x-range (list -.5 (length gear-names - 0.5))
     ]

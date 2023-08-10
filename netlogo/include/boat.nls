@@ -65,12 +65,6 @@ boats-own [
   boat-distance-at-sea
 
   ; value encoding the state the boat is in during a fishing trip.
-  ; 0 in port not available, i.e. resting, refueling, grounded
-  ; 1 in port and available
-  ; 2 at sea and searching for place to start fishing
-  ; 3 at sea and ready to fish
-  ; 4 at sea, needing to go home
-  ; 5  in port, need to unload
   boat-trip-phase
 
   boat-needs-return?
@@ -129,7 +123,6 @@ to setup-boats
       ; Boat capacity is not relevant for shrimpers as freshness is key concern
       set  boat-capacity 100000                                  ; kg of storage
 
-
       set  boat-trip-gear-catches         n-values number-of-gears  [?1 -> 0 ]
       set  catch-efficiency-boat   n-values number-of-gears  [?1 -> (0.15 + random-float 0.20) ]
       set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
@@ -185,9 +178,37 @@ to-report __test_csv_property
   report true
 end
 
-; This is a boat procedure initializing a new
+
+; ---------------------------
+; The core of the boat movement are the boat trip phases from 0 (rest) to 5 (land)
+; 0 in port not available, i.e. resting, refueling, grounded
+; 1 in port and available
+; 2 at sea and searching for place to start fishing
+; 3 at sea and ready to fish
+; 4 at sea, needing to go home
+; 5  in port, need to unload
+
+; Boat phase 0.  Boat procedure to rest.  This is dependent on weekends and for
+; shrimpers also on Ramadan in Morocco.
+to boat-rest-port
+  let _day-of-week time:get "dayofweek" date
+
+  ; boats arriving in port on Saturday don't go out again, neither do boats go
+  ; out on a Sunday or before Monday 4 am.  Shrimpers don't go out during Ramadan.
+  ; On other days, just rest 11 hours.
+  ifelse _day-of-week = 6 or _day-of-week = 0 or holiday?
+  or (boat-prey = "Crangon" and is-ramadan?) [ set boat-hour 24 ][
+    ifelse  _day-of-week = 1 and boat-hour < 4 [ set boat-hour 4 ][
+       set boat-hour boat-hour + 11
+    ]
+    set boat-time-at-sea-left boat-max-duration
+    set boat-trip-phase 1 ; ready to leave port
+  ]
+ end
+
+; Boat trip phase 1. This is a boat procedure initializing a new
 ; fishing trip from the start patch of its associated
-; favorite port
+; favorite port.
 to boat-leave-port
 
   ; Determine start end end patches of fishing activity.  This is usually the start/landing
@@ -275,22 +296,6 @@ to boat-land-port
   ; @todo find out how long it takes to land the catch and clean the boat, here, we assume 2 hours
   set boat-hour boat-hour + 2
 end
-
-; Boat procedure to rest
-to boat-rest-port
-  let _day-of-week time:get "dayofweek" date
-
-  ; boats arriving in port on Saturday don't go out again, neither do boats go
-  ; out on a Sunday or before Monday 4 am.  On other days, just rest 11 hours.
-  ; On weekdays
-  ifelse _day-of-week = 6 or _day-of-week = 0 or holiday? [ set boat-hour 24 ][
-    ifelse  _day-of-week = 1 and boat-hour < 4 [ set boat-hour 4 ][
-       set boat-hour boat-hour + 11
-    ]
-    set boat-time-at-sea-left boat-max-duration
-    set boat-trip-phase 1 ; ready to leave port
-  ]
- end
 
 ; This is a boat procedure  where a boat
 ; steams from it's start patch to a preferred location for fishing

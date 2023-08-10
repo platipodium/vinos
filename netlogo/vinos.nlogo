@@ -620,7 +620,7 @@ adaptation
 adaptation
 0
 1
-0.597
+0.656
 0.001
 1
 NIL
@@ -665,7 +665,7 @@ oil-price
 oil-price
 25
 75
-35.0
+75.0
 5
 1
 ct l-1
@@ -710,7 +710,7 @@ fraction-transportation-costs
 fraction-transportation-costs
 0
 1
-0.85
+0.47
 0.01
 1
 NIL
@@ -897,7 +897,7 @@ CHOOSER
 542
 boat-property-chooser
 boat-property-chooser
-"distance-at-sea" "capacity" "catch-efficiency" "engine" "length" "max-distance" "max-duration" "operating-costs" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type"
+"distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type"
 0
 
 SWITCH
@@ -965,7 +965,7 @@ time-offset
 time-offset
 -200
 200
-26.0
+-101.0
 1
 1
 months from now
