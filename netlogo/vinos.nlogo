@@ -163,7 +163,9 @@ end
 ;-----------------------
 to update-date-patch
   ask date-patch [
-    set plabel-color ifelse-value holiday? [red][white]
+    set plabel-color ifelse-value holiday? [red][
+      ifelse-value is-ramadan? [yellow][white]
+    ]
     set plabel datetime
   ]
 end
@@ -620,7 +622,7 @@ adaptation
 adaptation
 0
 1
-0.656
+0.702
 0.001
 1
 NIL
@@ -721,7 +723,7 @@ PLOT
 547
 638
 697
-catch-by-gear
+catch
 days
 catch/kg
 0.0
@@ -867,7 +869,7 @@ wage
 wage
 50
 120
-85.0
+110.0
 5
 1
 € h-1
@@ -898,7 +900,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type"
-9
+0
 
 SWITCH
 1241
@@ -952,7 +954,7 @@ SWITCH
 427
 one?
 one?
-1
+0
 1
 -1000
 
