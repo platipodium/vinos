@@ -106,3 +106,12 @@ to-report logodate-from-datetime
   set _format (word _format "-YYYY")
   report time:create-with-format (last split " " date-and-time) _format
 end
+
+to-report is-storm?
+  ; Now introduce some weather, based on statistics of wind speeds exceeding
+  ; 38 mph from meteoblue.com
+  let _days-with-storm (list 2.6 2.7 1.9 0.3 0 0 0 0 0 0.1 0.6 2.0)
+  let _month-index  (time:get "month" date) - 1
+  let _threshold item _month-index _days-with-storm
+  report random-float (item _month-index days-in-months) < _threshold
+end

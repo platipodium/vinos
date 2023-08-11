@@ -9,9 +9,10 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 Version 1.2.0 is a maintenance release of our Viable North Sea (ViNoS) software. The
 main purpose of this release are improvments to the user interface and code cleanup
 
-- cleanup towards Clean Code
+- Cleanup towards Clean Code
 - UI clarifications in legends and labels
 - Reducing diagnostic output for production runs
+- Rest during bad weather and Ramadan (shrimpers)
 
 # Release notes for version 1.1.1 - Aug 8, 2023
 
