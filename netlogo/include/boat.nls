@@ -112,6 +112,13 @@ to setup-boats
         set boat-type i
       ]
     ])
+    
+    ;print ("this is the sum of each boat-type")
+    ;print  (count boats with [boat-type = 0])
+    ;print (count boats with [boat-type = 1])
+    ;print (count boats with [boat-type = 2])
+    ;print (count boats with [boat-type = 3])
+   
     ask link-neighbors [
       move-to [port-start-patch] of myself
 
@@ -136,12 +143,14 @@ to setup-boats
 
 
       set  boat-trip-gear-catches         n-values number-of-gears  [?1 -> 0 ]
-      set  catch-efficiency-boat   n-values number-of-gears  [?1 -> (0.15 + random-float 0.20) ]
+      set  catch-efficiency-boat   n-values number-of-gears  [igear -> (item igear gear-catch-efficancy) + random-float 0.20 - random-float 0.40]
+     
+      ;      set  catch-efficiency-boat   n-values number-of-gears  [?1 -> (0.15 + random-float 0.20)]
       set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
       set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
       set  boat-gains               n-values number-of-gears  [?1 -> 0 ]    ; gain for the fishing trip of the boat
       set  boat-delta-priorities   n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
-      set  boat-gear-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway
+      set  boat-gear-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway-->@todo: specify this proprity in accordance to the boat-type
       set  boat-transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  boat-operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
@@ -248,7 +257,7 @@ to boat-land-port
     boat-transportation-costs + boat-operating-costs]
   ]
 
-  let _boat-prey-catches n-values count preys [ i -> 0]
+  ;let _boat-prey-catches n-values count preys [ i -> 0]
 
   ;[0 1 2 2 0 0 1
   ;let _index-prey-ger]
@@ -258,6 +267,9 @@ to boat-land-port
 
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
   set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches *  1000 * (item (item igear gear-prey-indices) prey-prices))]
+  
+  
+  ;todo: procedure which also considers the other species which are caugth
 
   ;print (sentence "X: " revenue-boat boat-trip-gear-catches)
 
@@ -387,7 +399,7 @@ to boat-make-haul
   let _fishing-speed [gear-speed] of item (index-max-one-of boat-gear-priorities) boat-gears
   let _prey [gear-species] of  item (index-max-one-of boat-gear-priorities) boat-gears
   let _iprey position _prey prey-names
-  let _haul-time 1 ; one hour
+  let _haul-time 1 ; one hour @todo maybe set differnet haul-time depanding on gear? (crangon could be 1.5h?)
   let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing
   let _sub-step-time _haul-time * 1.0 / _sub-steps
   let _cluster boat-type
@@ -513,6 +525,7 @@ to-report boat-catch-species [haul-length]
   ;(solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for prey-biomasses
 
+  ;(I think here is a bug..not sure where exacly thougth...)
   let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) patch-prey-names ]
 
   report n-values (number-of-gears) [ igear ->

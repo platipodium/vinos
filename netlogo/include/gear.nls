@@ -14,12 +14,14 @@ gears-own [
   gear-installation-cost
   gear-purchase-cost
   gear-speed             ; speed when trawling
+  gear-efficancy         ; efficancy of catching crangon with the specific gear @tofo: use more realistic values
 ]
 
 globals [
   gear-names
   gear-prey-names
   number-of-gears
+  gear-catch-efficancy
 ]
 
 ; We define here a constant and predefined number of gears
@@ -36,61 +38,67 @@ to setup-gears
     set gear-installation-cost 1000 ; EUR for changing to this gear
     set gear-purchase-cost 25000 ;
     set gear-speed 9.26 ; 5 knots
+    set gear-efficancy 0.8
   ]
 
   ; On vessels <300 PS plaice are typically caught with a 2x4m beam trawl
   ; they typically remain within 25 km of the coast
   create-gears 1 [
     set gear-name "TBB08PLE"
-    set gear-species "Pleuronectes"
+    set gear-species "Crangon"
     set gear-width .008 ; width of beam in km
     set gear-drag 13 ; some number ... need more realism and unit
     set gear-installation-cost 1000 ; EUR for changing to this gear
     set gear-purchase-cost 25000 ;
     set gear-speed 9.26 ; 5 knots
+    set gear-efficancy 0.6
   ]
 
   ; On vessels <300 PS sole are typically caught with a 2x4m beam trawl
   ; they typically remain within 25 km of the coast
   create-gears 1 [
     set gear-name "TBB08SOL"
-    set gear-species "Solea"
+    set gear-species "Crangon"
     set gear-width .008 ; width of beam in km
     set gear-drag 13 ; some number ... need more realism and unit
     set gear-installation-cost 1000 ; EUR for changing to this gear
     set gear-purchase-cost 25000 ;
     set gear-speed 9.26 ; 5 knots
+    set gear-efficancy 0.6
   ]
 
   ; Larger vessels are found throughout the AWZ except plaice box
   create-gears 1 [
     set gear-name "TBB24PLE"
-    set gear-species "Pleuronectes"
+    set gear-species "Crangon"
     set gear-width .024 ; width of beam in km
     set gear-drag 20 ; some number ... need more realism and unit
     set gear-installation-cost 1000 ; EUR for changing to this gear
     set gear-purchase-cost 35000 ; EUR
     set gear-speed 12.96 ; 7 knots
+    set gear-efficancy 0.4
   ]
   create-gears 1 [
     set gear-name "TBB24SOL"
-    set gear-species "Solea"
+    set gear-species "Crangon"
     set gear-width .024 ; width of beam in km
     set gear-drag 30 ; some number ... need more realism and unit
     set gear-installation-cost 2000 ; EUR for changing to this gear
     set gear-purchase-cost 50000 ; EUR
     set gear-speed 12.96 ; 7 knots
+    set gear-efficancy 0.4
   ]
 
   ; Larger vessels are found throughout the AWZ
   create-gears 1 [
     set gear-name "OTB60PLE"
-    set gear-species "Pleuronectes"
+    set gear-species "Crangon"
     set gear-width .024 ; width of beam in km
     set gear-drag 20 ; some number ... need more realism and unit
     set gear-installation-cost 1000 ; EUR for changing to this gear
     set gear-purchase-cost 35000 ; EUR
     set gear-speed 9.26 ; 5 knots
+    set gear-efficancy 0.4
   ]
 
   ; Nephrops trawl
@@ -113,12 +121,16 @@ to setup-gears
   set number-of-gears count gears
   set gear-names n-values number-of-gears [i -> [gear-name] of gear item i my-gear-ids]
   set gear-prey-names n-values number-of-gears [i -> [gear-species] of gear item i my-gear-ids]
+  set gear-catch-efficancy n-values number-of-gears [i -> [gear-efficancy] of gear item i my-gear-ids]
 
 end
 
 to-report gear-prey-indices
   report n-values (count gears) [igear -> position (item igear gear-prey-names) prey-names ]
+  print (gear-prey-names)
 end
+
+
 
 
 ; sfdSAR R package
