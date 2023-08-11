@@ -5,16 +5,14 @@
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 to plot-setup-catch-by-gear
-  set-current-plot "catch-by-gear"
+  set-current-plot "catch"
   set-plot-background-color white
 
   foreach range length gear-names [ [i] ->
     let pen-name  item i gear-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
-    ifelse i != 4
-    [ set-plot-pen-color 125 - 20 * i]
-    [set-plot-pen-color 45 ]
+    ifelse i != 4 [ set-plot-pen-color 125 - 20 * i ][set-plot-pen-color 45 ]
     set-plot-pen-interval 1
     auto-plot-on
     set-plot-pen-mode 0 ; line
@@ -22,13 +20,11 @@ to plot-setup-catch-by-gear
 end
 
 to plot-update-catch-by-gear
-  set-current-plot "catch-by-gear"
-  ; foreach prey-names [0 1 2] [[s i] ->
+  set-current-plot "catch"
   foreach range length gear-names [[i] ->
     let pen-name  item i gear-names
     set-current-plot-pen pen-name
-    ;set-plot-x-range 0 max
-    plotxy ticks sum [item i boat-trip-gear-catches] of boats
+    plotxy ticks mean [item i boat-trip-gear-catches] of boats
   ]
 end
 
