@@ -46,7 +46,7 @@ mathematical implementation and how to use it. There is a full documentation in 
 
 ## Licenses
 
-The NetLogo model is copyrighted by [Helmholtz-Zentrum Hereon](https://www.hereon.de), [University of Hamburg](https://www.uni-hamburg.de), and [Hochschule Bremerhaven](https://www.hs-bremerhaven.de). It is available under
+The NetLogo model is copyrighted by [Helmholtz-Zentrum Hereon](https://www.hereon.de), [Universität Hamburg](https://www.uni-hamburg.de), and [Hochschule Bremerhaven](https://www.hs-bremerhaven.de). It is available under
 the open source Apache 2.0 license. You may freely use, distribute, and modify the model; if you
 do so, you must acknowledge us. Please find the full license terms under [./LICENSES/APACHE-2.0.txt](./LICENSES/APACHE-2.0.txt)
 
