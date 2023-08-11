@@ -31,14 +31,11 @@ available from https://ccl.northwestern.edu/netlogo/.
 
 ## Data and supplementary routines
 
-The simulation model uses open data available in the [./data](./data) folder. Some of the routines to convert
-data into a format usable by the NetLogo model are available as `R` routines the folder [./R](./R), and
-[./python](./python), respectively. You do not need `R` or `python` to run the simulation, unless you would like
-to recreate some of the input data.
+The simulation model uses open data available in the [./data](./data) folder. Some of the routines to convert data into a format usable by the NetLogo model are available as `R` or `python` routines in the folders [./R](./R), and [./python](./python), respectively. You do not need `R` or `python` to run the simulation, unless you would like to recreate some of the input data or project metadata.
 
 ## Using the model
 
-To use the model, please install NetLogo from https://ccl.northwestern.edu/netlogo/download.shtml. On
+To use the model, please install NetLogo version 6.3 or later from https://ccl.northwestern.edu/netlogo/download.shtml. On
 Windows and macOS systems, double-clicking the NetLogo application or the code (in the projects's
 `netlogo` folder) with the extension `.nlogo` will open NetLogo's integrated development environment.
 On Linux, start NetLogo with the `netlogo-gui.sh` shell script provided by NetLogo. If NetLogo gets stuck during startup on macOS with Apple Silicon, you might have run into a Java problem. See https://github.com/NetLogo/NetLogo/issues/2080, install an updated Java runtime, export `JAVA_HOME` and start NetLogo with the `netlogo-gui.sh` shell script.
