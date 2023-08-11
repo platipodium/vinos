@@ -1,3 +1,8 @@
+%% SPDX-FileCopyrightText:  2020 Giangiacomo Bravo
+%% SPDX-FileCopyrightText:  1994-2011 Patrick W Daly
+%% SPDX-FileContributor:  Giangiacomo Bravo
+%% SPDX-FileContributor:  Patrick W Daly
+%% SPDX-License-Identifier: LPPL-1.0
 %%
 %% This is file `jasss.bst',
 %% generated with the docstrip utility.

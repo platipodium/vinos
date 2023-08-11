@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText:  2020 Giangiacomo Bravo
+SPDX-License-Identifier: LPPL-1.0
+-->
+
 A CLASS AND TEMPLATE FOR JASSS ARTICLES v.0.6, 2020-11-19
 Author: Giangiacomo Bravo <giangiacomo.bravo@lnu.se>
 
@@ -9,7 +14,7 @@ In order to correctly build the output, the following packages should be install
 
 Please always use pdfLaTeX and BibTeX (not BibLaTeX).
 
-The font used is Source Sans Pro, normally included in Tex Live and other  major LaTeX distributions. In case of problems, the font location at CTAN is http://www.ctan.org/tex-archive/fonts/sourcesanspro/
+The font used is Source Sans Pro, normally included in Tex Live and other major LaTeX distributions. In case of problems, the font location at CTAN is http://www.ctan.org/tex-archive/fonts/sourcesanspro/
 See also: http://www.tug.dk/FontCatalogue/sourcesanspro/
 
 Remember to include the bibliographic database (the bib file) when submitting.

@@ -1,5 +1,7 @@
+% SPDX-FileCopyrightText:  2020 Giangiacomo Bravo
+% SPDX-FileContributor:  Giangiacomo Bravo
+% SPDX-License-Identifier: LPPL-1.0
 % class for the Journal of Artificial Societies and Social Simulation v.0.6, 2020-11-21
-% Author Giangiacomo Bravo <giangiacomo.bravo@lnu.se>
 \ProvidesClass{JASSS}
 
 \NeedsTeXFormat{LaTeX2e}
