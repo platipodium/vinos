@@ -11,6 +11,8 @@ globals [
   holidays-germany ; a logotime series with dates and names of holidays
   holidays-morocco ; a logotime series eid-al-fitr dates, ending Ramadan
   holiday?
+  storm?
+  ramadan?
 ]
 
 to setup-calendar
@@ -43,7 +45,8 @@ to setup-calendar
   set holidays-morocco ts-load "../data/holidays/eid-al-fitr.csv"
 
   set holiday? is-holiday?
-
+  set storm? is-storm?
+  set ramadan? is-ramadan?
 end
 
 ; Advance the calendar by one day
@@ -57,6 +60,8 @@ to advance-calendar
   set day-of-year time:get "dayofyear" date
 
   set holiday? is-holiday?
+  set storm? is-storm?
+  set ramadan? is-ramadan?
 
 end
 
@@ -69,7 +74,7 @@ to-report datetime-short
 end
 
 to-report is-holiday?
-  report ts-member? holidays-germany date
+  report (ts-member? holidays-germany date) or (time:get "dayofweek" date mod 7 = 0)
 end
 
 to-report is-ramadan?

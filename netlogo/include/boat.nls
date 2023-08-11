@@ -214,7 +214,7 @@ to boat-rest-port
   ; Boats arriving in port on Saturday don't go out again, neither do boats go
   ; out on a Sunday or before Monday 4 am.  Shrimpers don't go out during Ramadan.
   ; On other days, just rest 11 hours.
-  ifelse _day-of-week = 6 or _day-of-week = 0 or holiday?
+  ifelse _day-of-week = 6 or holiday?
   or (boat-prey = "Crangon" and is-ramadan?) [
     ; rest more
     set boat-hour 24
@@ -225,7 +225,7 @@ to boat-rest-port
 
   ; Now introduce some weather, based on statistics of wind speeds exceeding
   ; a threshold.  See calendar.nls for details of the implementation
-  if is-storm? [
+  if storm? [
     set boat-hour 24
     set boat-trip-phase 0
   ]

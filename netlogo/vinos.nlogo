@@ -163,8 +163,10 @@ end
 ;-----------------------
 to update-date-patch
   ask date-patch [
-    set plabel-color ifelse-value holiday? [red][
-      ifelse-value is-ramadan? [yellow][white]
+    set plabel-color ifelse-value storm? [blue + 3][
+      ifelse-value holiday? [red + 3][
+        ifelse-value ramadan? [yellow][white]
+      ]
     ]
     set plabel datetime
   ]
@@ -213,7 +215,7 @@ to go
   update-plots
 
   ; export the data every week on a Sunday (weekday 0)
-  if (time:get "dayofweek"  date) = 0 [export-patches]
+  if (time:get "dayofweek"  date mod 7) = 0 [export-patches]
 
   tick
 end
@@ -909,7 +911,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-1
+0
 1
 -1000
 
