@@ -9,8 +9,10 @@ extensions [ time ]
 globals [
   date ; a logotime object representing absolute date
   holidays-germany ; a logotime series with dates and names of holidays
-  holidays-morocco ; a logotime series with dates and names of holidays
+  holidays-morocco ; a logotime series eid-al-fitr dates, ending Ramadan
   holiday?
+  storm?
+  ramadan?
 ]
 
 to setup-calendar
@@ -35,12 +37,16 @@ to setup-calendar
   set day-of-year time:get "dayofyear" date
 
   set holidays-germany ts-load "../data/holidays/holidays_DE.csv"
-  set holidays-morocco ts-load "../data/holidays/holidays_MA.csv"
+
+  ; Moroccan holidays are not yet used, but it has been shown that
+  ; the Ramadan season does play a role in processing the shrimp.
+  ; The Moroccan factories, property of the commercialising firms,
+  ; shell currently 90% of the German catches [71]
+  set holidays-morocco ts-load "../data/holidays/eid-al-fitr.csv"
 
   set holiday? is-holiday?
-  ;set holidays-germany ts-load-dates "../data/holidays/holidays_DE.csv"
-  ;set holidays-morocco ts-load-dates "../data/holidays/holidays_MA.csv"
-
+  set storm? is-storm?
+  set ramadan? is-ramadan?
 end
 
 ; Advance the calendar by one day
@@ -54,6 +60,8 @@ to advance-calendar
   set day-of-year time:get "dayofyear" date
 
   set holiday? is-holiday?
+  set storm? is-storm?
+  set ramadan? is-ramadan?
 
 end
 
@@ -66,9 +74,13 @@ to-report datetime-short
 end
 
 to-report is-holiday?
-  report ts-member? holidays-germany date
+  report (ts-member? holidays-germany date) or (time:get "dayofweek" date mod 7 = 0)
 end
 
+to-report is-ramadan?
+  let _eid ts-nearest holidays-morocco date
+  report time:is-between? date (time:plus _eid -29 "day") _eid
+end
 
 to-report logodate-from-format [ date-string format-string ]
   let _logodate nobody
@@ -82,18 +94,29 @@ end
 to-report logodate-from-datetime
   ; date-and-time gives a locale-dependent and JVM precision-dependent
   ; output.  The YMD is the last part of the string in format
-  ; dd-MMM-yyyy  (MMM as a localized three-letter string)
-  ; but on some systems, d is single digits and M is MM or MMM
+  ; dd-MMM-yyyy  (MMM as a localized three-letter string, but also allowing
+  ; a period at the end)
+  ; but on some systems, d is single digits and M is MM or MMM or MMM.
   ; The date-and-time string's date information is the last item of a
   ; space-separated string
 
-  let  _ymd last split " " date-and-time
-  set _ymd split "-" _ymd
+  let _ymd last split " " date-and-time
+  let _ymdlist split "-" _ymd
+  let _m item 1 _ymdlist
   let _format "d"
-  if length item 0 _ymd > 1 [set _format (word _format "d")]
+  if length item 0 _ymdlist > 1 [set _format (word _format "d")]
   set _format (word _format "-MM")
-  if length item 1 _ymd > 2 [set _format (word _format "M")]
-  if length item 1 _ymd > 3 [set _format (word _format "M")]
+  if length _m > 2 [set _format (word _format "M")]
+  if length _m > 3 and last _m != "."  [set _format (word _format "M")]
   set _format (word _format "-YYYY")
   report time:create-with-format (last split " " date-and-time) _format
+end
+
+to-report is-storm?
+  ; Now introduce some weather, based on statistics of wind speeds exceeding
+  ; 38 mph from meteoblue.com
+  let _days-with-storm (list 2.6 2.7 1.9 0.3 0 0 0 0 0 0.1 0.6 2.0)
+  let _month-index  (time:get "month" date) - 1
+  let _threshold item _month-index _days-with-storm
+  report random-float (item _month-index days-in-months) < _threshold
 end

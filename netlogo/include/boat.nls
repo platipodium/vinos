@@ -65,12 +65,6 @@ boats-own [
   boat-distance-at-sea
 
   ; value encoding the state the boat is in during a fishing trip.
-  ; 0 in port not available, i.e. resting, refueling, grounded
-  ; 1 in port and available
-  ; 2 at sea and searching for place to start fishing
-  ; 3 at sea and ready to fish
-  ; 4 at sea, needing to go home
-  ; 5  in port, need to unload
   boat-trip-phase
 
   boat-needs-return?
@@ -96,11 +90,6 @@ to setup-boats
   ; @todo get th fishing speed from gear-speed
   let fishing-speed-mean 5.556 ; unit is km/h (= 3kn)
   let fishing-speed-sdev 0.926 ; unit is km/h (= 0.5kn)
-
-  ; print distance-distribution
-
-  ; @todo recreate the ports with new information from Serra
-  ; on the distribution of the 4 clusters in each port.
 
   ; @todo introduce quotas (=> Serra, asks Jonas)
   ask home-ports [
@@ -137,10 +126,23 @@ to setup-boats
       set boat-max-distance 0.001 * value-from-distribution butfirst butfirst item boat-type distance-distribution
       set boat-max-duration value-from-distribution butfirst butfirst item boat-type triplength-distribution
 
-      ;print (sentence "Boat" who boat-max-distance)
+      set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
+      set boat-gear-priorities n-values number-of-gears  [i -> random-float 1] ; initialize priority for the pathway
+
+      let _crangon-gear-index position "Crangon" gear-prey-names
+      ifelse boat-type < 3 [
+        ; shrimpers have only one gear
+        set boat-gear-priorities  n-values number-of-gears [i  -> 0 ]
+        set boat-gear-priorities replace-item _crangon-gear-index boat-gear-priorities  1
+      ][
+        ; non-shrimpers randomly choose between all other gears
+        set boat-gear-priorities replace-item _crangon-gear-index boat-gear-priorities 0
+        let _sum-priorities sum boat-gear-priorities
+        set boat-gear-priorities n-values number-of-gears [ i -> item i boat-gear-priorities / _sum-priorities ]
+      ]
+
       ; Boat capacity is not relevant for shrimpers as freshness is key concern
       set  boat-capacity 100000                                  ; kg of storage
-
 
       set  boat-trip-gear-catches         n-values number-of-gears  [?1 -> 0 ]
       set  catch-efficiency-boat   n-values number-of-gears  [igear -> (item igear gear-catch-efficancy) + random-float 0.20 - random-float 0.40]
@@ -150,19 +152,16 @@ to setup-boats
       set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
       set  boat-gains               n-values number-of-gears  [?1 -> 0 ]    ; gain for the fishing trip of the boat
       set  boat-delta-priorities   n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
-      set  boat-gear-priorities         n-values number-of-gears  [?1 -> 1 / number-of-gears ]    ; priority for the pathway-->@todo: specify this proprity in accordance to the boat-type
       set  boat-transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  boat-operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
       set label ""                                             ; ????
 
-      ; Serra: About 160 boats of the entire fleet don't change at all, make them have available only 1 gear
+      ; About 160 boats of the entire fleet don't change at all, make them have available only 1 gear
       ; there are smaller groups of boats that do different things.  Only for those allow to have multiple years available
       ; there are some seasonal changes, but likley not at monthly or sub-monthly scale. Let's try 3 months
       ; Also include every 3 months when gear change is deliberated the previous year's experience
       ; Add location and fishing trip length in option pathways.
-
-      set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
 
       set boat-trip-phase 1 ; in port and available
       set boat-home-port myself
@@ -199,9 +198,53 @@ to-report __test_csv_property
   report true
 end
 
-; This is a boat procedure initializing a new
+
+; ---------------------------------------------------------------------------------
+; The core of the boat movement are the boat trip phases from 0 (rest) to 5 (land)
+; 0 in port not available, i.e. resting, refueling, grounded
+; 1 in port and available
+; 2 at sea and searching for place to start fishing
+; 3 at sea and ready to fish
+; 4 at sea, needing to go home
+; 5  in port, need to unload
+
+; Boat phase 0.  Boat procedure to rest.  This is dependent on weekends and for
+; shrimpers also on Ramadan in Morocco, where 90% of landed shrimp is processed.
+to boat-rest-port
+
+  ; Boats rest for at least 11 hours and regain their ability to stay offshore
+  set boat-time-at-sea-left boat-max-duration
+  set boat-hour boat-hour + 11
+
+  ; If on Monday, rest at least until 4 am
+  let _day-of-week time:get "dayofweek" date
+  if  _day-of-week = 1 and boat-hour < 4 [ set boat-hour 4 ]
+
+  ; Boats arriving in port on Saturday don't go out again, neither do boats go
+  ; out on a Sunday or before Monday 4 am.  Shrimpers don't go out during Ramadan.
+  ; On other days, just rest 11 hours.
+  ifelse _day-of-week = 6 or holiday?
+  or (boat-prey = "Crangon" and is-ramadan?) [
+    ; rest more
+    set boat-hour 24
+  ][
+    ; take off
+    set boat-trip-phase 1 ; ready to leave port
+  ]
+
+  ; Now introduce some weather, based on statistics of wind speeds exceeding
+  ; a threshold.  See calendar.nls for details of the implementation
+  if storm? [
+    set boat-hour 24
+    set boat-trip-phase 0
+  ]
+
+
+ end
+
+; Boat trip phase 1. This is a boat procedure initializing a new
 ; fishing trip from the start patch of its associated
-; favorite port
+; favorite port.
 to boat-leave-port
 
   ; Determine start end end patches of fishing activity.  This is usually the start/landing
@@ -217,7 +260,7 @@ to boat-leave-port
   move-to _patch
 
   if not [accessible?] of patch-here [
-    error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase)
+    error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase " (leaving port)")
     stop
   ]
 
@@ -251,19 +294,13 @@ to boat-land-port
   ; in the end operating costs should be around 50% of revenue
   set boat-operating-costs wage * boat-time-at-sea ; is typically 4000 €
 
-  ;does this make any sense? can it be not to catch anything?
-  if (sum boat-trip-gear-catches > 0 ) [ set costs-boat n-values (number-of-gears) [ i ->
-    ;((boat-transportation-costs + boat-operating-costs) * item i boat-trip-gear-catches) / sum boat-trip-gear-catches]
-    boat-transportation-costs + boat-operating-costs]
+  if (sum boat-trip-gear-catches > 0 ) [
+    set costs-boat n-values (number-of-gears) [
+      i -> boat-transportation-costs + boat-operating-costs
+    ]
   ]
 
   ;let _boat-prey-catches n-values count preys [ i -> 0]
-
-  ;[0 1 2 2 0 0 1
-  ;let _index-prey-ger]
-  ;(foreach ispecieslist (range number-of-gears)[ [iprey igear] ->
-  ;  replace-item iprey _boat-prey-catches (item iprey _boat-prey-catches) + (item igear boat-trip-gear-catches)
-  ;])
 
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
   set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches *  1000 * (item (item igear gear-prey-indices) prey-prices))]
@@ -271,17 +308,10 @@ to boat-land-port
   
   ;todo: procedure which also considers the other species which are caugth
 
-  ;print (sentence "X: " revenue-boat boat-trip-gear-catches)
-
   set boat-gains n-values (number-of-gears ) [i -> item i revenue-boat - item i costs-boat]
   let sum-boat-gains sum boat-gains
   let sum-boat-priorities-gains sum n-values (number-of-gears) [i -> item i boat-gear-priorities * item i boat-gains]
 
-  ;ifelse (sum-boat-gains = 0) [][
-  ;  set boat-delta-priorities n-values (number-of-gears) [
-  ;    i -> adaptation * (item i boat-gear-priorities) * (( item i boat-gains) - sum-boat-priorities-gains) / sum-boat-gains
-  ;  ]
-  ;]
   carefully [
     set boat-delta-priorities n-values (number-of-gears) [
       i -> adaptation * (item i boat-gear-priorities) * (( item i boat-gains) - sum-boat-priorities-gains) / sum-boat-gains
@@ -292,8 +322,7 @@ to boat-land-port
 
   ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
   ; At the moment, boat-tranpsortation cost are 70 k€, op-costs are 2000 € revenue is 0.0002
-  print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)
-
+  if one? [print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)]
 
   set boat-trip-gear-catches map [i -> 0] boat-trip-gear-catches
 
@@ -302,25 +331,10 @@ to boat-land-port
   set boat-time-at-sea-left 0
 
   set boat-trip-phase 0
+
   ; @todo find out how long it takes to land the catch and clean the boat, here, we assume 2 hours
   set boat-hour boat-hour + 2
 end
-
-; Boat procedure to rest
-to boat-rest-port
-  let _day-of-week time:get "dayofweek" date
-
-  ; boats arriving in port on Saturday don't go out again, neither do boats go
-  ; out on a Sunday or before Monday 4 am.  On other days, just rest 11 hours.
-  ; On weekdays
-  ifelse _day-of-week = 6 or _day-of-week = 0 or holiday? [ set boat-hour 24 ][
-    ifelse  _day-of-week = 1 and boat-hour < 4 [ set boat-hour 4 ][
-       set boat-hour boat-hour + 11
-    ]
-    set boat-time-at-sea-left boat-max-duration
-    set boat-trip-phase 1 ; ready to leave port
-  ]
- end
 
 ; This is a boat procedure  where a boat
 ; steams from it's start patch to a preferred location for fishing
@@ -344,7 +358,7 @@ to boat-choose-start
     if not one? [pen-up]
     move-to _patch
     if not [accessible?] of patch-here [
-      error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase)
+      error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(choose start)")
     ]
 
     set boat-distance-at-sea boat-distance-at-sea + _distance
@@ -357,7 +371,7 @@ to boat-choose-start
   ]
 end
 
-; This is a boat procedure  where a boat
+; This is a boat procedure
 to boat-return-port
 
   let _patch [port-start-patch] of boat-home-port
@@ -430,6 +444,7 @@ to boat-make-haul
 
     let _new-catches n-values length boat-gears [i -> 0]
     let _haul-catches n-values length boat-gears [i -> 0]
+    let _step-size _sub-step-time * fishing-speed / _gis-scale
 
     pen-down
     repeat (_sub-steps) [
@@ -440,16 +455,15 @@ to boat-make-haul
         ; @todo reduce fish on patch by amount taken out, allow for recovery
 
         ;set cluster-fishing-efforts replace-item _cluster cluster-fishing-efforts ((item _cluster cluster-fishing-efforts) +  fishing-effort-hours + _sub-step-time)
-
-
         ;  prey-catches                      ; annual prey catches
         ; cluster-prey-catches              ; preys caught by cluster
       ]
-      forward _sub-step-time * fishing-speed / _gis-scale
+      while [not [accessible?] of patch-ahead _step-size] [rt random 90]
+      forward _step-size
 
       if not [accessible?] of patch-here [
         ; @todo make this an error
-        print (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase)
+        print (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(haul)")
       ]
       set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
     ]
@@ -498,8 +512,6 @@ to boat-make-haul
   ; After the action is created
   ; -> add to patthways if length pathways < memory-size
   ; -> or, replace lowest-ranking (in terms of gain) item in pathways list
-
-  ;print (sentence "Boat" who _distance _time distance-left boat-time-at-sea-left )
 
 end
 
@@ -561,4 +573,16 @@ to-report gis-scale
   ask _marker [die]
 
   report  _gis-distance / 1.5
+end
+
+; Boat procedure reporting the active gear, i.e. that with the highest
+; priority
+to-report boat-gear
+  report [gear-name] of item (index-max-one-of boat-gear-priorities) boat-gears
+end
+
+; Boat procedure reporting the active prey, i.e. that caught with the highest
+; priority gear
+to-report boat-prey
+  report [gear-species] of item (index-max-one-of boat-gear-priorities) boat-gears
 end

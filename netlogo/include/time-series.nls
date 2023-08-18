@@ -11,7 +11,13 @@ extensions [
   csv
 ]
 
-; This routine is added to original
+; The routines ts-nearest and ts-member? were added to original
+
+to-report ts-nearest [ltime-series logotime]
+  let closest-row ts-get ltime-series logotime "all"
+  report item 0 closest-row
+end
+
 
 to-report ts-member? [ltime-series logotime]
   let closest-row ts-get ltime-series logotime "all"

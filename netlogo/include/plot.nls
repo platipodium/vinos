@@ -5,16 +5,14 @@
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 to plot-setup-catch-by-gear
-  set-current-plot "catch-by-gear"
+  set-current-plot "catch"
   set-plot-background-color white
 
   foreach range length gear-names [ [i] ->
     let pen-name  item i gear-names
     if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
     set-current-plot-pen pen-name
-    ifelse i != 4
-    [ set-plot-pen-color 125 - 20 * i]
-    [set-plot-pen-color 45 ]
+    ifelse i != 4 [ set-plot-pen-color 125 - 20 * i ][set-plot-pen-color 45 ]
     set-plot-pen-interval 1
     auto-plot-on
     set-plot-pen-mode 0 ; line
@@ -22,13 +20,11 @@ to plot-setup-catch-by-gear
 end
 
 to plot-update-catch-by-gear
-  set-current-plot "catch-by-gear"
-  ; foreach prey-names [0 1 2] [[s i] ->
+  set-current-plot "catch"
   foreach range length gear-names [[i] ->
     let pen-name  item i gear-names
     set-current-plot-pen pen-name
-    ;set-plot-x-range 0 max
-    plotxy ticks sum [item i boat-trip-gear-catches] of boats
+    plotxy ticks mean [item i boat-trip-gear-catches] of boats
   ]
 end
 
@@ -71,8 +67,6 @@ end
 
 to plot-setup-catch-by-trip
   set-current-plot "catch-by-trip"
-  ;set-plot-x-range min-pxcor max-pxcor
-  ;set-plot-y-range 0 10
   auto-plot-on
   set-histogram-num-bars 9
   let pen-name "hist"
@@ -132,7 +126,11 @@ to plot-update-boat-property
   let _x-range (list 0 1)
   set-current-plot-pen boat-property-chooser
   let _values [ boat-max-duration] of boats
-  ifelse (boat-property-chooser =  "trip-phase" ) or (boat-property-chooser =  "type" ) [
+
+  ; For categorical values, do not adjust the x-range automatically but choose according
+  ; to number of categories
+  ifelse (boat-property-chooser =  "trip-phase" ) or (boat-property-chooser =  "type" )
+  or (boat-property-chooser =  "prey" ) or (boat-property-chooser =  "gear" ) [
     if (boat-property-chooser = "trip-phase") [
       set _values [ boat-trip-phase] of boats
       set-histogram-num-bars 6
@@ -140,10 +138,23 @@ to plot-update-boat-property
     ]
     if (boat-property-chooser = "type") [
       set _values [ boat-type] of boats
-      set-histogram-num-bars 5
+      set-histogram-num-bars 4
       set _x-range (list -.5 3.5)
     ]
+    if (boat-property-chooser = "prey") [
+      let _categories [ boat-prey] of boats
+      set _values map [ i -> position i prey-names] _categories
+      set-histogram-num-bars length prey-names
+      set _x-range (list -.5 (length prey-names - 0.5))
+    ]
+    if (boat-property-chooser = "gear") [
+      let _categories [ boat-gear] of boats
+      set _values map [ i -> position i gear-names] _categories
+      set-histogram-num-bars length gear-names
+      set _x-range (list -.5 (length gear-names - 0.5))
+    ]
   ][
+    ; for numerical values, adjust x-range automatically
     if ( boat-property-chooser =  "max-duration" ) [ set _values [ round boat-max-duration] of boats ]
     if ( boat-property-chooser =  "max-distance" ) [ set _values [ round boat-max-distance] of boats ]
     if ( boat-property-chooser =  "time-at-sea" ) [ set _values [ round boat-time-at-sea] of boats ]
@@ -156,6 +167,7 @@ to plot-update-boat-property
     if ( boat-property-chooser =  "steaming-speed" ) [ set _values [ precision 1 boat-steaming-speed] of boats ]
     if ( boat-property-chooser =  "transportation-costs" ) [ set _values [ round boat-transportation-costs] of boats ]
     if ( boat-property-chooser =  "operating-costs" ) [ set _values [ round boat-operating-costs] of boats ]
+    if ( boat-property-chooser =  "type" ) [ set _values [ round boat-type] of boats ]
 
     set-histogram-num-bars 9
     set _x-range (list (min _values) (max _values))

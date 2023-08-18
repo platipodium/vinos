@@ -30,12 +30,10 @@ in the [LICENSES](./LICENSES/) folder:
 ## Copyright holders
 
 The following organizations and individuals own copyrights to (parts of) this project.
-You can find the full license text in the [LICENSES](./LICENSES/) folder:
 
 - Bundesamt für Seeschifffahrt und Hydrographie
 - Bundesministerium für Bildung und Forschung
 - Bundesministerium für Landwirtschaft und Ernährung
-- COMSES
 - European Commission
 - European Environmental Agency
 - European Marine Observation and Data Network
@@ -53,9 +51,10 @@ You can find the full license text in the [LICENSES](./LICENSES/) folder:
 - International Environmental Modelling and Software Society
 - Johann Heinrich von Thünen-Institut
 - John McFarlane
+- Journal of Artificial Societies and Social Simulation
 - Multidisciplinary Digital Publishing Institute
-- NONE
 - National Oceanic and Atmospheric Administration National Centers for Environmental Information
+- Network for Computational Modeling in Social and Ecological Sciences
 - Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 - Open Researcher and Contributor ID.Inc
 - Organization for Ethical Source
@@ -135,6 +134,10 @@ the license applicable to an individual file:
 - ./.pre-commit-config.yaml:
   License: CC0-1.0
   Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
+
+- ./.zenodo.json:
+  License: CC0-1.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./CITATION.cff:
   License: CC0-1.0
@@ -428,11 +431,11 @@ the license applicable to an individual file:
   License: GEBCO-1.0
   Copyright: 2022 General Bathymetry Chart of the Oceans
 
-- ./data/holidays/holidays_DE.csv:
+- ./data/holidays/eid-al-fitr.csv:
   License: CC0-1.0
   Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
-- ./data/holidays/holidays_MA.csv:
+- ./data/holidays/holidays_DE.csv:
   License: CC0-1.0
   Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
@@ -706,7 +709,19 @@ the license applicable to an individual file:
 
 - ./doc/contributing/contributing-license.md:
   License: CC-BY-3.0
-  Copyright: Copyright License
+  Copyright: Copyright and License
+
+- ./doc/jasss/.gitignore:
+  License: CC0-1.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH
+
+- ./doc/jasss/assets/JASSS.png:
+  License: CC-BY-4.0
+  Copyright: 2023 Journal of Artificial Societies and Social Simulation
+
+- ./doc/jasss/assets/SectionIcon.png:
+  License: CC-BY-4.0
+  Copyright: 2023 Journal of Artificial Societies and Social Simulation
 
 - ./doc/joss/.gitignore:
   License: CC0-1.0
@@ -750,7 +765,7 @@ the license applicable to an individual file:
 
 - ./doc/odd/assets/logo-comses.png:
   License: CC0-1.0
-  Copyright: COMSES
+  Copyright: Network for Computational Modeling in Social and Ecological Sciences
 
 - ./doc/odd/assets/logo-orcid-eps-converted-to.pdf:
   License: CC0-1.0
@@ -762,7 +777,7 @@ the license applicable to an individual file:
 
 - ./doc/odd/comses.cls:
   License: CC-BY-SA-4.0
-  Copyright: Copyright and citebox
+  Copyright: 2018-2023 Multidisciplinary Digital Publishing Institute
 
 - ./doc/odd/mdpi.bst:
   License: CC-BY-SA-3.0
@@ -776,8 +791,8 @@ the license applicable to an individual file:
   License: CC-BY-4.0
   Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
-- ./doc/odd/paper.md.bak:
-  License: CC-BY-4.0
+- ./doc/sesmo/.gitignore:
+  License: CC0-1.0
   Copyright: 2023 Helmholtz-Zentrum hereon GmbH
 
 - ./doc/sesmo/Makefile:
@@ -810,11 +825,11 @@ the license applicable to an individual file:
 
 - ./doc/sesmo/sesmo.cls:
   License: CC-BY-SA-4.0
-  Copyright: Copyright and citebox
+  Copyright: 2018-2023 Multidisciplinary Digital Publishing Institute
 
 - ./netlogo/.gitignore:
   License: CC0-1.0
-  Copyright: 2022 Helmholtz-Zentrum hereon GmbH
+  Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH
 
 - ./netlogo/Makefile:
   License: CC0-1.0
@@ -943,3 +958,7 @@ the license applicable to an individual file:
 - ./python/reuse2txt.py:
   License: Apache-2.0
   Copyright: Copyright holders
+
+- ./python/zenodo.py:
+  License: Apache-2.0
+  Copyright: 2023 Helmholtz-Zentrum hereon GmbH

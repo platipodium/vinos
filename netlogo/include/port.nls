@@ -49,14 +49,6 @@ to setup-ports
   set home-ports ports with [ port-kind = "favorite"]
 end
 
-;to-report sum-of-landings [species unit port-type]
-;  ifelse unit = "euro" [
-;    report sum  [item (position species port-prey-names) port-landings-euro] of ports with  [port-kind = port-type and member? species port-prey-names]
-;  ][
-;    report sum  [item (position species port-prey-names) port-landings-kg] of ports with  [port-kind = port-type and member? species port-prey-names]
-;  ]
-;end
-
 ; sub_grp,fav_lan,n_vessels,X,ISO3_Country_Code,full_name,Coordinates,Latitude,Longitude,EU_Fish_Port,Port,Region
 to port-read
 
@@ -67,12 +59,12 @@ to port-read
   ; Read the first line and skip until not commented with '#'
   let _row csv:from-row file-read-line
   while [ starts-with _row "#" ][ set _row csv:from-row file-read-line ]
-  let header-row _row print header-row
+  let header-row _row
 
   set-default-shape ports "house"
 
   while [ not file-at-end? ] [
-    set _row csv:from-row file-read-line print _row
+    set _row csv:from-row file-read-line
 
     if  (item (position "Longitude" header-row) _row)  < 9.16 [
       ; In rows 7,8 there are decimal coordinates
@@ -98,15 +90,14 @@ to port-read
             set port-start-patch min-one-of patches with [depth > navigable-depth and distance myself > 2 and accessible?] [distance myself]
             set port-landing-patch port-start-patch
             set port-clusters (list 0 0 0 0)
-            print (sentence "Created" port-kind "port" port-name)
-
+            ;print (sentence "Created" port-kind "port" port-name)
 
             set port-prey-names (list "Crangon" "Pleuronectes" "Solea")
 
           ]; find a starting patch at least 3 nm from port away
         ]
         ask ports with [port-name = _port-name ][
-            print port-clusters
+            ;print port-clusters
             set port-clusters replace-item ((item (position "sub_grp" header-row) _row) - 1 ) port-clusters (item (position "n_vessels" header-row) _row)
         ]
       ]

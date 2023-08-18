@@ -14,7 +14,7 @@ date: submitted to SESMO, June 2022
 license: CC-BY-4.0
 bibliography: paper.bib
 SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
-SPDX-FileCopyrightText: 2023 University of Hamburg
+SPDX-FileCopyrightText: 2023 Universität Hamburg
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
 abstract: "Small-scale fishers in the German part of the North Sea are increasingly faced with area closures from regulation giving preference to nature protection and wind harvesting, demanded by EU policies for increased protection of our seas and for increased dependence on renewable energies: German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.  The small-scale trawling fishery is, however, an important part both of the cultural perception of the German North Sea coast and of its fishing industry.  We here use the Viable North Sea (ViNoS)Agent-based Model (ABM) of the German North Sea Small-scale Fisheries to describe the  adaptive behaviour of fishers facing those regulatory changes in fishing ground availability.  We demonstrate how fishing effort may be redistributed away from the current effort, and how this changed effort creates more environmental impact from the concentrated trawling activity."

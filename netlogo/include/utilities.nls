@@ -149,15 +149,6 @@ to-report __test-quantiles
   report quantiles distribution 4 = [0.125 0.125 0.125 0.125 0.375 0.375 0.375 0.375 0.625 0.625 0.875 0.875]
 end
 
-
-;  12345.6 12E3
-;  1234.56 1234
-;  123.456 123
-;  12.3456 12.3
-;  1.23456 1.23
-;  0.12345 .123
-;  0.01234 .012
-;  0.00123 12e4
 to-report formatted-number [number n-significant]
 
   ; This does not work for negative numbers or zero as we use the log_10
@@ -178,11 +169,6 @@ to-report formatted-number [number n-significant]
     report (word precision number (n-significant - _order - 1))
   ]
 
-  ; for values < 1, remove leading 0 @todo
-  ;if (order > (0 - n-significant + 2)) [
-  ;  report (word "." int(number * 10 ^ (n-significant ) ))
-  ;]
-
   report (word int(number / (10 ^ int(_order - n-significant + 2) )) "e" int(2 - _order))
 
 end
@@ -190,7 +176,6 @@ end
 to-report __test-formatted-number
   let input (list 12345.6 1234.56  123.456 12.3456  1.23456 0.12345 0.01234)
   report true
-  ; todo implement this
 end
 
 
