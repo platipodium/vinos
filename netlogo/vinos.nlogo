@@ -1016,7 +1016,7 @@ All data from third parties is licensed under various open source licenses.  The
 
 ### Acknowledgements
 
-We acknowledge contributions from W. Nikolaus Probst, Seong Jieun, Verena Mühlberger, Kai Wirtz and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A  "Multiple Stressors on North Sea Life" [4] within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit (FONA) program of the Germany Bundesministerium für Bildung und Forschung (BMBF).
+We acknowledge contributions from W. Nikolaus Probst, Seong Jieun, Verena Mühlberger, Kai Wirtz and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grants 03F0862A, 03F0862C, 03F0862D, 03F0862E  "Multiple Stressors on North Sea Life" [4] within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit (FONA) program of the Germany Bundesministerium für Bildung und Forschung (BMBF).
 
 
 ### License
