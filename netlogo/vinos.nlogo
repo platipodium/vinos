@@ -346,26 +346,26 @@ to calc-pollution
   ask n-of 100 patches with [platessa > 0] [set pollution-exceedance random-float 2.0]
 end
 
-to train
-  repeat 100 [
-    ask boats [ learn ]
-  ]
-end
+;to train
+;  repeat 100 [
+;    ask boats [ learn ]
+;  ]
+;end
 
-to learn
-  let home-port-boat one-of link-neighbors
-  let my-patch one-of patches with [accessible?]
-  let my-costs boat-transportation-costs * distance my-patch
+;to learn
+;  let home-port-boat one-of link-neighbors
+;  let my-patch one-of patches with [accessible?]
+;  let my-costs boat-transportation-costs * distance my-patch
   ; the following is still wrong
-  let my-revenue 0 ; catch-efficiency-boat * ([item 2 port-prices] of home-port-boat * [platessa-summer] of my-patch + [item 0 port-prices] of home-port-boat * [solea-summer] of my-patch + [item 1 port-prices] of home-port-boat * [crangon-summer] of my-patch)
-  let my-gain my-revenue - my-costs
-  let my-pathway one-of link-neighbors with [breed = actions and action-gain < my-gain]
-  if my-pathway != nobody [ask my-pathway [
-    set action-patch my-patch
-    set action-gain my-gain
-   ]
-  ]
-end
+;  let my-revenue 0 ; catch-efficiency-boat * ([item 2 port-prices] of home-port-boat * [platessa-summer] of my-patch + [item 0 port-prices] of home-port-boat * [solea-summer] of my-patch + [item 1 port-prices] of home-port-boat * [crangon-summer] of my-patch)
+;  let my-gain my-revenue - my-costs
+;  let my-pathway one-of link-neighbors with [breed = actions and action-gain < my-gain]
+;  if my-pathway != nobody [ask my-pathway [
+;    set action-patch my-patch
+;:    set action-gain my-gain
+;   ]
+;  ]
+;end
 
 to-report grayscale [x]
   report (round (10 * (x mod 10))) / 10
@@ -633,7 +633,7 @@ memory-size
 memory-size
 0
 100
-0.0
+5.0
 1
 1
 NIL

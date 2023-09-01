@@ -73,7 +73,7 @@ boats-own [
 
   boat-hour ; Internal hour of the day to facility event-based scheduling
   boat-fishable-patches ; large memory required, is this problematic?
-  boat-actions ; List of actions for this boat
+  boat-actions ; Agentset of actions for this boat
 
 ]
 
@@ -171,7 +171,7 @@ to setup-boats
       set boat-needs-return? false
       set boat-hour 0
       set boat-fishable-patches boat-accessible-patches
-      set boat-actions (list)
+      set boat-actions (turtle-set)
     ]
     ask my-links [set hidden? true]
   ]
@@ -324,7 +324,7 @@ to boat-land-port
 
   ; A typical revenue should be around 7500 € considering the relative relation to transport/operating costs.
   ; At the moment, boat-tranpsortation cost are 70 k€, op-costs are 2000 € revenue is 0.0002
-  if one? [print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)]
+  if one? [print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat [action-catch] of boat-actions)]
 
   set boat-trip-gear-catches map [i -> 0] boat-trip-gear-catches
 
@@ -338,14 +338,29 @@ to boat-land-port
   let _my-action nobody
   if boat-trip-best-catch > 0 [
 
-    if length boat-actions < memory-size [
+    ifelse count boat-actions < memory-size [
       hatch-actions 1 [
         set _my-action self
+        set action-gear [item 0 boat-gears] of myself
+        set action-catch [boat-trip-best-catch] of myself
+        set action-patch [boat-trip-best-patch] of myself
       ]
 
-      set boat-actions lput _my-action boat-actions
+      set boat-actions  (turtle-set _my-action boat-actions)
+    ][
+      let _catch boat-trip-best-catch
+      set _my-action one-of boat-actions with [action-catch < _catch]
+      if _my-action != nobody [
+        ; replace properties of that action
+        ask _my-action [
+          set action-gear [item 0 boat-gears] of myself
+          set action-catch [boat-trip-best-catch] of myself
+          set action-patch [boat-trip-best-patch] of myself
+        ]
+      ]
     ]
     set boat-trip-best-catch 0
+    set boat-trip-best-patch nobody
   ]
 
   ; @todo find out how long it takes to land the catch and clean the boat, here, we assume 2 hours
