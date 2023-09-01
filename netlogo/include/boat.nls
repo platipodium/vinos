@@ -21,7 +21,6 @@ boats-own [
   fishing-speed           ; speed when fishing (replaced by gear-speed later on)
   boat-landing-port       ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
   boat-home-port          ; Home Port (in the current state only German home ports are considered
-  pathways                ; possible pathways which boats learn
   boat-gears              ; set of available gears on this boat
   boat-type               ; Number 1-4 of the named cluster
   boat-length             ; length of boat in m, related (yet unknown) to capacity.
@@ -67,10 +66,14 @@ boats-own [
   ; value encoding the state the boat is in during a fishing trip.
   boat-trip-phase
 
+  boat-trip-best-patch   ; location of patch with the highest catch during a trip
+  boat-trip-best-catch
+
   boat-needs-return?
 
   boat-hour ; Internal hour of the day to facility event-based scheduling
   boat-fishable-patches ; large memory required, is this problematic?
+  boat-actions ; List of actions for this boat
 
 ]
 
@@ -101,13 +104,13 @@ to setup-boats
         set boat-type i
       ]
     ])
-    
+
     ;print ("this is the sum of each boat-type")
     ;print  (count boats with [boat-type = 0])
     ;print (count boats with [boat-type = 1])
     ;print (count boats with [boat-type = 2])
     ;print (count boats with [boat-type = 3])
-   
+
     ask link-neighbors [
       move-to [port-start-patch] of myself
 
@@ -146,7 +149,7 @@ to setup-boats
 
       set  boat-trip-gear-catches         n-values number-of-gears  [?1 -> 0 ]
       set  catch-efficiency-boat   n-values number-of-gears  [igear -> (item igear gear-catch-efficancy) + random-float 0.20 - random-float 0.40]
-     
+
       ;      set  catch-efficiency-boat   n-values number-of-gears  [?1 -> (0.15 + random-float 0.20)]
       set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat
       set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
@@ -168,7 +171,7 @@ to setup-boats
       set boat-needs-return? false
       set boat-hour 0
       set boat-fishable-patches boat-accessible-patches
-      set pathways (list)
+      set boat-actions (list)
     ]
     ask my-links [set hidden? true]
   ]
@@ -239,7 +242,6 @@ to boat-rest-port
     set boat-trip-phase 0
   ]
 
-
  end
 
 ; Boat trip phase 1. This is a boat procedure initializing a new
@@ -304,8 +306,8 @@ to boat-land-port
 
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
   set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches *  1000 * (item (item igear gear-prey-indices) prey-prices))]
-  
-  
+
+
   ;todo: procedure which also considers the other species which are caugth
 
   set boat-gains n-values (number-of-gears ) [i -> item i revenue-boat - item i costs-boat]
@@ -320,7 +322,7 @@ to boat-land-port
 
   set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities + item i boat-delta-priorities]
 
-  ; A typical revenue should be around 7500 € considereing the relative relation to tranposrt/operating costs.
+  ; A typical revenue should be around 7500 € considering the relative relation to transport/operating costs.
   ; At the moment, boat-tranpsortation cost are 70 k€, op-costs are 2000 € revenue is 0.0002
   if one? [print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat)]
 
@@ -331,6 +333,20 @@ to boat-land-port
   set boat-time-at-sea-left 0
 
   set boat-trip-phase 0
+
+  ; now update the memory
+  let _my-action nobody
+  if boat-trip-best-catch > 0 [
+
+    if length boat-actions < memory-size [
+      hatch-actions 1 [
+        set _my-action self
+      ]
+
+      set boat-actions lput _my-action boat-actions
+    ]
+    set boat-trip-best-catch 0
+  ]
 
   ; @todo find out how long it takes to land the catch and clean the boat, here, we assume 2 hours
   set boat-hour boat-hour + 2
@@ -466,6 +482,11 @@ to boat-make-haul
         print (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(haul)")
       ]
       set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
+
+      if item (index-max-one-of boat-gear-priorities) _new-catches > boat-trip-best-catch [
+        set boat-trip-best-catch item (index-max-one-of boat-gear-priorities) _new-catches
+        set boat-trip-best-patch patch-here
+      ]
     ]
 
     let _next-heading heading - 180 - 10 + random (21 + 1)

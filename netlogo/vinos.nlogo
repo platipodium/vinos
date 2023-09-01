@@ -25,6 +25,7 @@ __includes [
   "include/view.nls"
   "include/prey.nls"
   "include/port.nls"
+  "include/action.nls"
   "include/time-series.nls"
 ]
 
@@ -34,14 +35,7 @@ __includes [
 ; breed [legends legend] ; defined in view.nls
 ; breed [preys prey] ; defined in prey.nls
 ; breed [ports port] ; defined in port.nls
-
-breed [actions action]
-
-actions-own [
-  action-patch                       ; targeted patch id
-  action-gain                        ; gain for the fishing trip of the boat
-  action-gear
-]
+; breed [actions action] ; defined in action.nls
 
 globals [
   navigable-depth                    ; minimum depth where a boat can navigate
