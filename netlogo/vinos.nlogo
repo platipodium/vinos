@@ -209,6 +209,8 @@ to go
   ask boats [ set boat-hour boat-hour mod 24 ]
 
   update-plots
+  update-view
+  ;update-drawings
 
   ; export the data every week on a Sunday (weekday 0)
   if (time:get "dayofweek"  date mod 7) = 0 [export-patches]
@@ -446,7 +448,7 @@ to create-effort-map
   ; data storage
   let prefix  (word "results/effort-" substring date-and-time 0 12)
 
-  set view "effort (h)"
+  set view "effort (h a-1)"
   update-view
   clear-drawing
   ask links [set hidden? true]
@@ -623,7 +625,7 @@ adaptation
 adaptation
 0
 1
-0.702
+0.684
 0.001
 1
 NIL
@@ -910,7 +912,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-1
+0
 1
 -1000
 

@@ -378,7 +378,13 @@ to boat-choose-start
   let _patch nobody
   ifelse count boat-actions < memory-size [
     ; random patch if not sufficient memory accumulated yet (learning phase)
-    set _patch one-of boat-fishable-patches in-radius 30
+
+    ifelse patch-here =  [port-start-patch] of boat-home-port  [
+      set _patch one-of boat-fishable-patches in-radius boat-max-distance
+    ][
+      set _patch one-of boat-fishable-patches in-radius 30
+    ]
+
   ][
     ; Instead of random choice, we could look at our list of pathways and choose ... based on some criteria
     ; e.g. trade-off (marginal benefit) between proximity (additional cost for steaming there) and expected gain at target
@@ -493,7 +499,7 @@ to boat-make-haul
     let _haul-catches n-values length boat-gears [i -> 0]
     let _step-size _sub-step-time * fishing-speed / _gis-scale
 
-    pen-down
+    if show-boats? [pen-down]
     repeat (_sub-steps) [
       set _new-catches boat-catch-species (_sub-step-time * _fishing-speed)
       ask patch-here [

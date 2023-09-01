@@ -6,9 +6,12 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 # Release notes for version 1.2.0 - in development
 
-Version 1.2.0 is a maintenance release of our Viable North Sea (ViNoS) software. The
-main purpose of this release are improvments to the user interface and code cleanup
+Version 1.2.0 is a feature release of our Viable North Sea (ViNoS) software. The
+main purpose of this release are improvements to functionality of the trip
+optimization.
 
+- Keep gear fixed until it is explicitly changed, despite changing priorities
+- Keep a record of `memory-size` for revisiting successful catch locations
 - Cleanup towards Clean Code
 - UI clarifications in legends and labels
 - Reducing diagnostic output for production runs
