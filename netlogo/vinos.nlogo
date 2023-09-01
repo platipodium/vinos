@@ -567,7 +567,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-10
+4
 
 BUTTON
 83
@@ -787,7 +787,7 @@ SWITCH
 229
 owf?
 owf?
-0
+1
 1
 -1000
 
@@ -910,7 +910,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-0
+1
 1
 -1000
 

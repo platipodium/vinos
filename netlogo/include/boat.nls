@@ -75,6 +75,8 @@ boats-own [
   boat-fishable-patches ; large memory required, is this problematic?
   boat-actions ; Agentset of actions for this boat
 
+  boat-current-gear-index
+
 ]
 
 
@@ -137,11 +139,13 @@ to setup-boats
         ; shrimpers have only one gear
         set boat-gear-priorities  n-values number-of-gears [i  -> 0 ]
         set boat-gear-priorities replace-item _crangon-gear-index boat-gear-priorities  1
+        set boat-current-gear-index  _crangon-gear-index
       ][
         ; non-shrimpers randomly choose between all other gears
         set boat-gear-priorities replace-item _crangon-gear-index boat-gear-priorities 0
         let _sum-priorities sum boat-gear-priorities
         set boat-gear-priorities n-values number-of-gears [ i -> item i boat-gear-priorities / _sum-priorities ]
+        set boat-current-gear-index (index-max-one-of boat-gear-priorities)
       ]
 
       ; Boat capacity is not relevant for shrimpers as freshness is key concern
@@ -369,12 +373,11 @@ end
 
 ; This is a boat procedure  where a boat
 ; steams from it's start patch to a preferred location for fishing
-; @todo do this from memory, now random
 to boat-choose-start
 
   let _patch nobody
   ifelse count boat-actions < memory-size [
-    ; random patch if not sufficient memory accumulated
+    ; random patch if not sufficient memory accumulated yet (learning phase)
     set _patch one-of boat-fishable-patches in-radius 30
   ][
     ; Instead of random choice, we could look at our list of pathways and choose ... based on some criteria
@@ -386,7 +389,8 @@ to boat-choose-start
     ;]
 
     ; Introduce some random component
-    set _patch one-of neighbors with [accessible?]
+    let _nearby-patch one-of neighbors with [accessible?]
+    if _nearby-patch != nobody [set _patch _nearby-patch]
 
   ]
 
@@ -452,9 +456,9 @@ end
 to boat-make-haul
 
   ; A boat deploys the gear with the highest priority
-  let _haul-width [gear-width] of item (index-max-one-of boat-gear-priorities) boat-gears
-  let _fishing-speed [gear-speed] of item (index-max-one-of boat-gear-priorities) boat-gears
-  let _prey [gear-species] of  item (index-max-one-of boat-gear-priorities) boat-gears
+  let _haul-width [gear-width] of item boat-current-gear-index boat-gears
+  let _fishing-speed [gear-speed] of item boat-current-gear-index boat-gears
+  let _prey [gear-species] of  item boat-current-gear-index boat-gears
   let _iprey position _prey prey-names
   let _haul-time 1 ; one hour @todo maybe set differnet haul-time depanding on gear? (crangon could be 1.5h?)
   let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing
@@ -501,7 +505,7 @@ to boat-make-haul
         ;  prey-catches                      ; annual prey catches
         ; cluster-prey-catches              ; preys caught by cluster
       ]
-      while [not [accessible?] of patch-ahead _step-size] [rt random 90]
+      while [patch-ahead _step-size != nobody and (not [accessible?] of patch-ahead _step-size)] [rt random 90]
       forward _step-size
 
       if not [accessible?] of patch-here [
@@ -510,8 +514,8 @@ to boat-make-haul
       ]
       set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
 
-      if item (index-max-one-of boat-gear-priorities) _new-catches > boat-trip-best-catch [
-        set boat-trip-best-catch item (index-max-one-of boat-gear-priorities) _new-catches
+      if item boat-current-gear-index _new-catches > boat-trip-best-catch [
+        set boat-trip-best-catch item boat-current-gear-index _new-catches
         set boat-trip-best-patch patch-here
       ]
     ]
@@ -536,7 +540,7 @@ to boat-make-haul
     ; the bad haul, as this  would restrict their left time, but only there are > 24 hours left
     ; On the other hand, on good haul make sure to return within 24 hours to keep it fresh
     if (boat-time-at-sea-left > 24) [
-      ifelse item (index-max-one-of boat-gear-priorities) _haul-catches < min-fresh-catch [
+      ifelse item boat-current-gear-index _haul-catches < min-fresh-catch [
         set _haul-catches n-values length boat-gears [i -> 0]
         set boat-trip-phase 2
       ][
@@ -546,7 +550,7 @@ to boat-make-haul
     set boat-trip-gear-catches n-values (number-of-gears) [i -> (item i boat-trip-gear-catches + item i _haul-catches)]
 
     ; If the boat is full, also need to return
-    if item (index-max-one-of boat-gear-priorities) boat-trip-gear-catches > boat-capacity [ set boat-trip-phase 4]
+    if item boat-current-gear-index boat-trip-gear-catches > boat-capacity [ set boat-trip-phase 4]
   ][
     ; Could not find a straight-line haul from hear, so continue steaming
     set boat-trip-phase 2
@@ -570,7 +574,7 @@ to-report boat-accessible-patches
 
   let my-patches patches with [accessible?]
 
-  let my-target-species item (index-max-one-of boat-gear-priorities) gear-prey-names
+  let my-target-species item boat-current-gear-index gear-prey-names
   if my-target-species = nobody [ set my-target-species  "other" ]
   if (boat-engine > 221 and my-target-species = "Pleuronectes") [
     set my-patches my-patches with [not plaice-box?]
@@ -626,11 +630,11 @@ end
 ; Boat procedure reporting the active gear, i.e. that with the highest
 ; priority
 to-report boat-gear
-  report [gear-name] of item (index-max-one-of boat-gear-priorities) boat-gears
+  report [gear-name] of item boat-current-gear-index boat-gears
 end
 
 ; Boat procedure reporting the active prey, i.e. that caught with the highest
 ; priority gear
 to-report boat-prey
-  report [gear-species] of item (index-max-one-of boat-gear-priorities) boat-gears
+  report [gear-species] of item boat-current-gear-index boat-gears
 end
