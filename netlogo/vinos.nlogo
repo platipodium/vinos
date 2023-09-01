@@ -177,7 +177,9 @@ to go
   ; set price price - sum_boats (catch) * price-sensitivity
 
   calc-fish
-  let _active-boats n-of 10 boats
+  ;let _active-boats n-of 10 boats
+  let _active-boats boats
+
 
   ; Enable a simulation with only one active boat that can be closely
   ; followed.  This is off by default
@@ -562,7 +564,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-4
+5
 
 BUTTON
 83
@@ -605,7 +607,7 @@ SWITCH
 152
 show-ports?
 show-ports?
-0
+1
 1
 -1000
 
@@ -633,7 +635,7 @@ memory-size
 memory-size
 0
 100
-5.0
+25.0
 1
 1
 NIL
@@ -950,7 +952,7 @@ SWITCH
 427
 one?
 one?
-0
+1
 1
 -1000
 
@@ -963,7 +965,7 @@ time-offset
 time-offset
 -200
 200
--101.0
+13.0
 1
 1
 months from now

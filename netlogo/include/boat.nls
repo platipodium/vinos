@@ -372,11 +372,16 @@ end
 ; @todo do this from memory, now random
 to boat-choose-start
 
-  ;let _patch one-of boat-accessible-patches in-radius 30 ; @todo change this to max-distance
-  let _patch one-of boat-fishable-patches in-radius 30
-
-  ; Instead of random choice, we could look at our list of pathways and choose ... based on some criteria
-  ; e.g. trade-off (marginal benefit) between proximity (additional cost for steaming there) and expected gain at target
+  let _patch nobody
+  ifelse count boat-actions < memory-size [
+    ; random patch if not sufficient memory accumulated
+    set _patch one-of boat-fishable-patches in-radius 30
+  ][
+    ; Instead of random choice, we could look at our list of pathways and choose ... based on some criteria
+    ; e.g. trade-off (marginal benefit) between proximity (additional cost for steaming there) and expected gain at target
+    let _action one-of boat-actions ;[ action-catch ]
+    set _patch [ action-patch ] of _action
+  ]
 
   ; If there are not accessible patches found, go home and try again
   ifelse _patch = nobody [
