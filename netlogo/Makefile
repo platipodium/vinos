@@ -20,4 +20,6 @@ results/profiler_data.csv:
 	@echo "Please run 'profile' from within NetLogo"
 
 clean:
-	@rm -f results/* cloc/cloc.pl
+	@-rm -f *.json
+	@-rm -f cloc/cloc.pl
+	@-make -s -C results clean
