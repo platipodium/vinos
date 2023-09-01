@@ -278,15 +278,6 @@ to update-view
     draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 3])
   ]
 
-  if view = "effort (h)"  [
-    set qv quantile-thresholds [fishing-effort-hours] of patches with [fishing-effort-hours > 0] n
-    ask patches with [depth > 0][
-      carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Oranges" n (first quantile-scale qv  (list fishing-effort-hours)) 0 1
-      ][]
-    ]
-    if qv != nobody [draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])]
-  ]
 
   if view = "area"  [
     set qv quantile-thresholds [area] of patches n
@@ -308,6 +299,18 @@ to update-view
     ]
     draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 3])
   ]
+
+  if view = "effort (h a-1)"  and ticks > memory-size * 2 [
+    let _value [365.25 / ticks * fishing-effort-hours] of patches with [fishing-effort-hours > 0]
+    set qv quantile-thresholds _value n
+    ask patches with [fishing-effort-hours > 0][
+      carefully [
+        set pcolor palette:scale-scheme  "Sequential" "Oranges" n (first quantile-scale qv  (list fishing-effort-hours)) 0 1
+      ][]
+    ]
+    draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
+  ]
+
 
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   set n max [ fishing-effort-hours ] of patches
@@ -563,8 +566,8 @@ CHOOSER
 245
 view
 view
-"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-5
+"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
+10
 
 BUTTON
 83
@@ -965,7 +968,7 @@ time-offset
 time-offset
 -200
 200
-13.0
+-92.0
 1
 1
 months from now
