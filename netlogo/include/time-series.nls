@@ -84,10 +84,10 @@ to-report __sort-by-date [timeseries]
   report sort-by [[row1 row2] -> time:is-before? (item 0 row1) (item 0 row2)] timeseries
 end
 
-to-report __remove-comment-lines [data]
-  while [(first (first (first data)) = ";")]  ;; remove lines that start with a semicolon
-      [set data but-first data]
-  report data
+to-report __remove-comment-lines [input]
+  while [(first (first (first input)) = ";")]  ;; remove lines that start with a semicolon
+      [set input but-first input]
+  report input
 end
 
 to-report __convert-row-with-format [row format-string] ; helper

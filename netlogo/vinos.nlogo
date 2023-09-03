@@ -27,6 +27,7 @@ __includes [
   "include/port.nls"
   "include/action.nls"
   "include/time-series.nls"
+  "include/quantity.nls"
 ]
 
 ; The following breeds are defined in include files
@@ -238,6 +239,12 @@ to update-view
   let qv nobody
   ask patches [set pcolor grey - 2]
   ask patches with [ accessible? = True ][set pcolor grey]
+
+  if any? quantities with [name = view] [
+
+
+  ]
+
 
   if view = "Crangon"  [
     set qv quantile-thresholds [crangon] of patches with [crangon > 0] n

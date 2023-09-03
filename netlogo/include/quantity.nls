@@ -1,0 +1,47 @@
+; This file is part of ViNoS - Viable North Sea
+; Definition of physical quantities shown in the model
+;
+; SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+; SPDX-License-Identifier: Apache-2.0
+; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+breed [quantities quantity]
+
+quantities-own [
+  name
+  unit
+  minimum
+  maximum
+  scale
+  contours
+  palette
+  data
+]
+
+to setup-quantities
+  let _quantity-names (list "Crangon" "Pleuronectes" "Solea"
+    "pollution" "bathymetry" "effort" "accessible?" "owf"
+    "plaice-box?" "area" "swept area ratio"
+  )
+
+  foreach _quantity-names [ q ->
+    create-quantities 1 [
+      set name q
+      set unit ""
+      set minimum 0
+      set maximum nobody
+      set scale "quantile"
+      set contours (list )
+      set palette ""
+      set data nobody
+    ]
+  ]
+
+  if any? quantities with [name = "effort"] [
+    ask quantities with [name = "effort"] [
+      set unit "h a-1"
+      set scale "linear"
+      set data [fishing-effort-hours] of patches
+    ]
+  ]
+end

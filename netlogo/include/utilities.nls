@@ -72,12 +72,12 @@ to-report __test-value-from-distribution
 end
 
 
-to-report normalize [data]
-  if length data < 2 [report data]
-  let min-data min data
-  let max-data max data
-  if min-data = max-data [report data]
-  report map [i -> (i - min-data) / (max-data - min-data) ] data
+to-report normalize [x]
+  if length data < 2 [report x]
+  let min-data min x
+  let max-data max x
+  if min-data = max-data [report x]
+  report map [i -> (i - min-data) / (max-data - min-data) ] x
 end
 
 to-report __test-normalize
@@ -85,12 +85,12 @@ to-report __test-normalize
   report normalize distribution = (list 1 0.3 0.4 0)
 end
 
-to-report quantile-scale [indices data]
+to-report quantile-scale [indices input]
 
   let n length indices - 1
 
   let my-list n-values n [ j ->
-     map [ x -> 0.5 / n + j / n ] (filter [ i ->  ( i >= item j indices ) and (i < item (j + 1) indices)  ] sort data)
+     map [ x -> 0.5 / n + j / n ] (filter [ i ->  ( i >= item j indices ) and (i < item (j + 1) indices)  ] sort input)
   ]
   report reduce [[x  y] -> (sentence x y) ]  my-list
 end
