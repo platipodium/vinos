@@ -537,7 +537,7 @@ to-report boat-catch-species [haul-length]
   ;(solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for prey-biomasses
 
-  ;(I think here is a bug..not sure where exacly thougth...)
+
   let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) patch-prey-names ]
 
   report n-values (number-of-gears) [ igear ->
