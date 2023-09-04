@@ -25,6 +25,7 @@ __includes [
   "include/view.nls"
   "include/prey.nls"
   "include/port.nls"
+  "include/action.nls"
   "include/time-series.nls"
 ]
 
@@ -34,14 +35,7 @@ __includes [
 ; breed [legends legend] ; defined in view.nls
 ; breed [preys prey] ; defined in prey.nls
 ; breed [ports port] ; defined in port.nls
-
-breed [actions action]
-
-actions-own [
-  action-patch                       ; targeted patch id
-  action-gain                        ; gain for the fishing trip of the boat
-  action-gear
-]
+; breed [actions action] ; defined in action.nls
 
 globals [
   navigable-depth                    ; minimum depth where a boat can navigate
@@ -183,7 +177,9 @@ to go
   ; set price price - sum_boats (catch) * price-sensitivity
 
   calc-fish
-  let _active-boats n-of 10 boats
+  ;let _active-boats n-of 10 boats
+  let _active-boats boats
+
 
   ; Enable a simulation with only one active boat that can be closely
   ; followed.  This is off by default
@@ -213,6 +209,8 @@ to go
   ask boats [ set boat-hour boat-hour mod 24 ]
 
   update-plots
+  update-view
+  ;update-drawings
 
   ; export the data every week on a Sunday (weekday 0)
   if (time:get "dayofweek"  date mod 7) = 0 [export-patches]
@@ -282,15 +280,6 @@ to update-view
     draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 3])
   ]
 
-  if view = "effort (h)"  [
-    set qv quantile-thresholds [fishing-effort-hours] of patches with [fishing-effort-hours > 0] n
-    ask patches with [depth > 0][
-      carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Oranges" n (first quantile-scale qv  (list fishing-effort-hours)) 0 1
-      ][]
-    ]
-    if qv != nobody [draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])]
-  ]
 
   if view = "area"  [
     set qv quantile-thresholds [area] of patches n
@@ -312,6 +301,18 @@ to update-view
     ]
     draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 3])
   ]
+
+  if view = "effort (h a-1)"  and ticks > memory-size * 2 [
+    let _value [365.25 / ticks * fishing-effort-hours] of patches with [fishing-effort-hours > 0]
+    set qv quantile-thresholds _value n
+    ask patches with [fishing-effort-hours > 0][
+      carefully [
+        set pcolor palette:scale-scheme  "Sequential" "Oranges" n (first quantile-scale qv  (list fishing-effort-hours)) 0 1
+      ][]
+    ]
+    draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
+  ]
+
 
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   set n max [ fishing-effort-hours ] of patches
@@ -352,26 +353,26 @@ to calc-pollution
   ask n-of 100 patches with [platessa > 0] [set pollution-exceedance random-float 2.0]
 end
 
-to train
-  repeat 100 [
-    ask boats [ learn ]
-  ]
-end
+;to train
+;  repeat 100 [
+;    ask boats [ learn ]
+;  ]
+;end
 
-to learn
-  let home-port-boat one-of link-neighbors
-  let my-patch one-of patches with [accessible?]
-  let my-costs boat-transportation-costs * distance my-patch
+;to learn
+;  let home-port-boat one-of link-neighbors
+;  let my-patch one-of patches with [accessible?]
+;  let my-costs boat-transportation-costs * distance my-patch
   ; the following is still wrong
-  let my-revenue 0 ; catch-efficiency-boat * ([item 2 port-prices] of home-port-boat * [platessa-summer] of my-patch + [item 0 port-prices] of home-port-boat * [solea-summer] of my-patch + [item 1 port-prices] of home-port-boat * [crangon-summer] of my-patch)
-  let my-gain my-revenue - my-costs
-  let my-pathway one-of link-neighbors with [breed = actions and action-gain < my-gain]
-  if my-pathway != nobody [ask my-pathway [
-    set action-patch my-patch
-    set action-gain my-gain
-   ]
-  ]
-end
+;  let my-revenue 0 ; catch-efficiency-boat * ([item 2 port-prices] of home-port-boat * [platessa-summer] of my-patch + [item 0 port-prices] of home-port-boat * [solea-summer] of my-patch + [item 1 port-prices] of home-port-boat * [crangon-summer] of my-patch)
+;  let my-gain my-revenue - my-costs
+;  let my-pathway one-of link-neighbors with [breed = actions and action-gain < my-gain]
+;  if my-pathway != nobody [ask my-pathway [
+;    set action-patch my-patch
+;:    set action-gain my-gain
+;   ]
+;  ]
+;end
 
 to-report grayscale [x]
   report (round (10 * (x mod 10))) / 10
@@ -447,7 +448,7 @@ to create-effort-map
   ; data storage
   let prefix  (word "results/effort-" substring date-and-time 0 12)
 
-  set view "effort (h)"
+  set view "effort (h a-1)"
   update-view
   clear-drawing
   ask links [set hidden? true]
@@ -567,7 +568,7 @@ CHOOSER
 245
 view
 view
-"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
+"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
 4
 
 BUTTON
@@ -611,7 +612,7 @@ SWITCH
 152
 show-ports?
 show-ports?
-0
+1
 1
 -1000
 
@@ -624,7 +625,7 @@ adaptation
 adaptation
 0
 1
-0.702
+0.684
 0.001
 1
 NIL
@@ -639,7 +640,7 @@ memory-size
 memory-size
 0
 100
-0.0
+25.0
 1
 1
 NIL
@@ -788,7 +789,7 @@ SWITCH
 229
 owf?
 owf?
-0
+1
 1
 -1000
 
@@ -956,7 +957,7 @@ SWITCH
 427
 one?
 one?
-0
+1
 1
 -1000
 
@@ -969,7 +970,7 @@ time-offset
 time-offset
 -200
 200
--101.0
+-92.0
 1
 1
 months from now
@@ -1016,7 +1017,7 @@ All data from third parties is licensed under various open source licenses.  The
 
 ### Acknowledgements
 
-We acknowledge contributions from W. Nikolaus Probst, Seong Jieun, Verena Mühlberger, Kai Wirtz and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grant 03F0862A  "Multiple Stressors on North Sea Life" [4] within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit (FONA) program of the Germany Bundesministerium für Bildung und Forschung (BMBF).
+We acknowledge contributions from W. Nikolaus Probst, Seong Jieun, Verena Mühlberger, Kai Wirtz and Jürgen Scheffran for providing data, fruitful discussions and contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context.  The development of the model was made possible by the grants 03F0862A, 03F0862C, 03F0862D, 03F0862E  "Multiple Stressors on North Sea Life" [4] within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit (FONA) program of the Germany Bundesministerium für Bildung und Forschung (BMBF).
 
 
 ### License
