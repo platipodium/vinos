@@ -11,8 +11,15 @@ to setup-maps
   let bathymetry-dataset gis:load-dataset "../data/gebco/gebco_2021_n56.0_s53.0_w2.0_e10.0.asc"
   let platessa-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_pleuronectes.platessa_summer.asc"
   let platessa-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_pleuronectes.platessa_winter.asc"
-  let crangon-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_summer.asc"
-  let crangon-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_winter.asc" 
+
+  ;let crangon-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_summer.asc"
+  ;let crangon-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_winter.asc"
+
+  ;new crangon dataset (no summer and winter change anymore but year around data)
+  ;@todo change the gridsize of the data?
+  let crangon-summer-dataset gis:load-dataset "../data/thuenen/biomass_kg_km2_crangon.asc"
+  let crangon-winter-dataset gis:load-dataset "../data/thuenen/biomass_kg_km2_crangon.asc"
+
   let solea-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_solea.solea_summer.asc"
   let solea-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_solea.solea_winter.asc"
   
@@ -151,8 +158,8 @@ to draw-background [X]
 
   carefully [
     if X = "OSM" [gis:import-wms-drawing "https://ows.terrestris.de/osm/service?" "EPSG:4326" "OSM-WMS" 200]
-    if X = "SAR" [gis:import-wms-drawing "http://coastmap.hzg.de/server/services/NOAH_geoDB/TI_SARnested/MapServer/WMSServer?" "EPSG:4326" "0" 100]
-    if X = "CHL" [gis:import-wms-drawing "https://coastmap.hzg.de/server/services/MOSSCO/MOSSCO_chlorophyll/MapServer/WmsServer?" "EPSG:4326" "0" 200]
+    if X = "SAR" [gis:import-wms-drawing "https://hub.hereon.de/server/services/NOAH_geoDB/TI_SARnested/MapServer/WMSServer?" "EPSG:4326" "0" 100]
+    if X = "CHL" [gis:import-wms-drawing "https://hub.hereon.de/server/services/MOSSCO/MOSSCO_chlorophyll/MapServer/WmsServer?" "EPSG:4326" "0" 200]
   ][
     show word "Could not load " X
   ]
