@@ -95,17 +95,17 @@ to-report quantile-scale [indices input]
   report reduce [[x  y] -> (sentence x y) ]  my-list
 end
 
-to-report quantile-indices [data n]
-  let sorted sort data
-  let data-min first data
+to-report quantile-indices [input n]
+  let sorted sort input
+  let data-min first input
   let data-max last data
-  let indices n-values (n - 1) [ i -> round ( length data * (i + 1) / n) ]
-  set indices lput (length data - 1) (fput 0 indices)
+  let indices n-values (n - 1) [ i -> round ( length input * (i + 1) / n) ]
+  set indices lput (length input - 1) (fput 0 indices)
   report indices
 end
 
-to-report quantile-thresholds [data n]
-  let sorted sort data
+to-report quantile-thresholds [input n]
+  let sorted sort input
   if length sorted < (n + 1) [
     print (sentence "Error, the data is not diverse enough for" n "categories")
     report nobody
@@ -133,10 +133,10 @@ to-report __test-quantile-thresholds-number
   report true
 end
 
-to-report quantiles [data n]
-  let indices quantile-indices data n
+to-report quantiles [input n]
+  let indices quantile-indices input n
 
-  report quantile-scale indices data
+  report quantile-scale indices input
   ;let my-list n-values n [ j ->
   ;  map [ x -> 0.5 / n + j / n ] (filter [ i ->  ( i >= item j indices ) and (i < item (j + 1) indices)  ] sort data)
   ;]

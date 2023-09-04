@@ -24,6 +24,7 @@ to setup-quantities
     "plaice-box?" "area" "swept area ratio"
   )
 
+  if any? quantities [ ask quantities [ die ] ]
   foreach _quantity-names [ q ->
     create-quantities 1 [
       set name q
@@ -34,6 +35,7 @@ to setup-quantities
       set contours (list )
       set palette ""
       set data nobody
+      set hidden? true
     ]
   ]
 
@@ -44,4 +46,14 @@ to setup-quantities
       set data [fishing-effort-hours] of patches
     ]
   ]
+
+  if any? quantities with [name = "bathymetry"] [
+    ask quantities with [name = "bathymetry"] [
+      set unit "m"
+      set data [depth] of patches
+      set contours (list 1 3 5 10 20 30 40 80)
+      set minimum 0
+    ]
+  ]
+
 end

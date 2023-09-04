@@ -237,12 +237,24 @@ to update-view
   if any? legend-entries [ask legend-entries [die]]
   let n view-legend-n
   let qv nobody
+  let _data nobody
   ask patches [set pcolor grey - 2]
   ask patches with [ accessible? = True ][set pcolor grey]
 
   if any? quantities with [name = view] [
-
-
+    let _quantity one-of quantities with [name = view]
+    let _contours [contours] of _quantity
+    let _minimum [minimum] of _quantity
+    let _maximum [maximum] of _quantity
+    if (is-list? _contours and not empty? _contours) [
+      set n length _contours
+      if (is-number? _minimum and first _contours < _minimum) [set _contours filter [c -> c >= _minimum] _contours ]
+      if (is-number? _minimum and first _contours > _minimum) [set _contours fput _minimum _contours]
+      if (is-number? _maximum and last _contours  > _maximum) [set _contours filter [c -> c <= _maximum] _contours ]
+      if (is-number? _maximum and last _contours  < _maximum) [set _contours lput _maximum _contours]
+    ]
+    set _data read-from-string "[variable] of patches"
+    show (sentence _contours _minimum _maximum max _data)
   ]
 
 
@@ -647,7 +659,7 @@ memory-size
 memory-size
 0
 100
-25.0
+46.0
 1
 1
 NIL
@@ -919,7 +931,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-0
+1
 1
 -1000
 
