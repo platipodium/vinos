@@ -478,6 +478,30 @@ to create-effort-map
 
 end
 
+; This routine is to be called by CI, so after a setup is
+; automatically performed
+to ci-maps
+
+  ask links   [set hidden? true]
+  ask turtles [set hidden? true]
+
+  repeat 3 [ go ]
+
+  foreach (list "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)"
+    "accessible?" "owf" "plaice-box?" "swept area ratio") [ s ->
+
+    set view s
+    update-view
+    clear-drawing
+
+    let prefix  (word "results/"  first (split "? -" s) "-" time:show date "yyyy-MM-dd")
+    export-view (word prefix ".png")
+    ;let dataset gis:patch-dataset fishing-effort-hours
+    ;gis:store-dataset dataset prefix
+  ]
+end
+
+
 to calc-accessibility
 
   ask patches [set plaice-box? false]
@@ -582,7 +606,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-10
+4
 
 BUTTON
 83
@@ -925,7 +949,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-0
+1
 1
 -1000
 

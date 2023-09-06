@@ -225,7 +225,7 @@ to  unit-test
     __test_five-number-summary __test_haversine-distance __test-value-from-distribution
     __test-normalize __test-quantile-thresholds __test-quantile-thresholds-number
   __test-quantiles __test-formatted-number __test-index-max-one-of  __test-formatted-int
-  __test-sign __test-order __test-split )
+  __test-sign __test-order __test-split __test-position-one-of )
   foreach tests [
     t -> ifelse t [print (sentence "Test passed")][error  "Test failed"]
   ]
@@ -317,12 +317,12 @@ to-report split [char string]
 
   let _string string
   let _list (list)
-  let _pos position char _string
+  let _pos position-one-of char _string
 
   while [is-number? _pos] [
     set _list lput (substring _string 0 _pos) _list
     set _string (substring _string (_pos + 1) (length _string))
-    set _pos position char _string
+    set _pos position-one-of char _string
   ]
   set _list lput _string _list
   report _list
@@ -330,5 +330,24 @@ end
 
 to-report __test-split
   if split ";" "I;have;a;;dream" != (list "I" "have" "a" "" "dream") [report false]
+  if split "!?." "I.have?a.!dream" != (list "I" "have" "a" "" "dream") [report false]
   report true
+end
+
+to-report position-one-of [_charlist _string]
+  if is-string? _charlist [
+    set _charlist map [ i -> item i _charlist] (range length _charlist)
+  ]
+  let _poslist map [ c -> position c _string ] _charlist
+  set _poslist filter is-number? _poslist
+  if empty? _poslist [report false]
+  report min _poslist
+
+end
+
+to-report __test-position-one-of
+
+  if (position-one-of "; ?!" "Hello? hi! ; said Fred") != 5 [report false]
+  if (position-one-of ".X" "Hello? hi! ; said Fred") != false [report false]
+
 end
