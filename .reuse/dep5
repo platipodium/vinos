@@ -4,47 +4,51 @@ Upstream-Contact: Carsten Lemmen <carsten.lemmen@hereon.de
 Source: https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species
 
 Files: data/thuenen/dist_ran*asc
-Copyright: 2022 Johann Heinrich von Thünen-Institut
+Copyright: 2022-2023 Johann Heinrich von Thünen-Institut
+License: LicenseRef-DL-DE-BY-2.0
+
+Files: data/thuenen/sol.ple.cra.biomasses_new/*asc
+Copyright: 2023 Johann Heinrich von Thünen-Institut
 License: LicenseRef-DL-DE-BY-2.0
 
 Files: assets/dis.*.png
-Copyright: 2022 Johann Heinrich von Thünen-Institut
+Copyright: 2022-2023 Johann Heinrich von Thünen-Institut
 License: LicenseRef-DL-DE-BY-2.0
 
 Files: data/emodnet/EMODnet*
-Copyright: 2022 European Marine Observation and Data Network
+Copyright: 2022-2023 European Marine Observation and Data Network
 License: LicenseRef-EMODNET-1.0
 
 Files: data/gebco/gebco*
-Copyright: 2022 General Bathymetry Chart of the Oceans
+Copyright: 2022-2023 General Bathymetry Chart of the Oceans
 License: LicenseRef-GEBCO-1.0
 
 Files: assets/gebco*
-Copyright: 2022 General Bathymetry Chart of the Oceans
+Copyright: 2022-2023 General Bathymetry Chart of the Oceans
 License: LicenseRef-GEBCO-1.0
 
 Files: data/eez/*
-Copyright: United Nations Convention on the Law of the Sea
+Copyright: 2022-2023 United Nations Convention on the Law of the Sea
 License: CC0-1.0
 
 Files: data/ices/*
-Copyright: 2022 International Council for the Exploration of the Sea Spatial Facility
+Copyright: 2022-2023 International Council for the Exploration of the Sea Spatial Facility
 License: LicenseRef-ICES-1.0
 
 Files: data/plaicebox/*
-Copyright: European Commission
+Copyright: 2022-2023 European Commission
 License: CC0-1.0
 
 Files: data/wgs1984.prj
-Copyright: International Earth Rotation Service
+Copyright: 2022-2023 International Earth Rotation Service
 License: CC0-1.0
 
 Files: data/nlwkn/NLP/*
-Copyright: Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
+Copyright: 2022-2023 Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 License: LicenseRef-DL-DE-BY-2.0
 
 Files: netlogo/include/prey.csv
-Copyright: Food and Agriculture Organization of the United Nations
+Copyright: 2022-2023 Food and Agriculture Organization of the United Nations
 License: LicenseRef-CC-BY-3.0-IGO
 
 Files: data/natura2000/northsea/MPA*
