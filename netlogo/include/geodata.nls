@@ -12,17 +12,12 @@ to setup-maps
   let platessa-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_pleuronectes.platessa_summer.asc"
   let platessa-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_pleuronectes.platessa_winter.asc"
 
-  ;let crangon-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_summer.asc"
-  ;let crangon-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_winter.asc"
-
-  ;new crangon dataset (no summer and winter change anymore but year around data)
-  ;@todo change the gridsize of the data?
-  let crangon-summer-dataset gis:load-dataset "../data/thuenen/biomass_kg_km2_crangon.asc"
-  let crangon-winter-dataset gis:load-dataset "../data/thuenen/biomass_kg_km2_crangon.asc"
+  let crangon-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_summer.asc"
+  let crangon-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_winter.asc"
 
   let solea-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_solea.solea_summer.asc"
   let solea-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_solea.solea_winter.asc"
-  
+
   ;new crangon dataset (no summer and winter change anymore but year around data)
   ;for the solea and platessa only the biomass of fish > minimum conservation reference sizes (MCRS) is introduced
   ;let crangon-summer-dataset gis:load-dataset "../data/thuenen/sol.ple.cra.biomasses_new/dis.crangon.min.max.asc"

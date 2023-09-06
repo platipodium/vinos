@@ -62,6 +62,7 @@ globals [
   view-legend-n
   view-legend-thresholds
   date-patch
+  temp
 ]
 
 patches-own [
@@ -292,14 +293,19 @@ to update-view
   ]
 
   if (view = "swept area ratio") and ( ticks > 0 )[
-    let _sar [365.25 / ticks *  swept-area / area] of patches with [swept-area > 0]
+
+    let _patches [self] of patches with [swept-area > 0]
+
+    let _sar (map [ p -> [365.25 / ticks *  swept-area / area] of p ] _patches )
     set qv quantile-thresholds _sar n
-    ask patches with [swept-area > 0][
-      carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Oranges" n (first quantile-scale qv  (list _sar)) 0 1
-      ][]
+    set _sar quantile-scale-new qv _sar
+
+    let _colors palette:scheme-colors "Sequential" "Oranges" n
+
+    foreach  (range length _patches) [ i ->
+      ask item i _patches [ set pcolor palette:scale-gradient _colors (item i _sar) 0 1 ]
     ]
-    draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 3])
+    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
   ]
 
   if view = "effort (h a-1)"  and ticks > memory-size * 2 [
@@ -569,7 +575,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-4
+10
 
 BUTTON
 83
