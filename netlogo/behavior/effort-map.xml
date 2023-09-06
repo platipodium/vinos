@@ -12,7 +12,7 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
     <timeLimit steps="1"/>
     <metric>count turtles</metric>
     <enumeratedValueSet variable="view">
-      <value value="&quot;effort (h)&quot;"/>
+      <value value="&quot;effort (h a-1)&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="show-ports?">
       <value value="false"/>
