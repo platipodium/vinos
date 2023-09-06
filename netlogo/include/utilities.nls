@@ -98,19 +98,21 @@ end
 to-report quantile-scale-new [indices data]
 
   let n length indices - 1
-  let _data map [ x -> -1] data
+  let _missing int min data - 1
+  let _data map [ x -> _missing ] data
 
   foreach range n [ j ->
     set _data (map [ [ x y ] ->
-      ifelse-value (x >= item 0 indices and x < item (j + 1) indices and y = -1) [ 0.5 / n + j / n ][ y ]
+      ifelse-value (x >= item 0 indices and x < item (j + 1) indices and y = _missing) [ 0.5 / n + j / n ][ y ]
     ] data _data)
   ]
 
+  ; Now for uppermost category the exceeding values
+  set _data (map [ [ x y ] ->
+    ifelse-value (x > last indices ) [ 0.5 / n + (n - 1) / n ][ y ]
+  ] data _data)
+
   report _data
-  ;let my-list n-values n [ j ->
-  ;   map [ x -> 0.5 / n + j / n ] (filter [ i ->  ( i >= item j indices ) and (i < item (j + 1) indices)  ] sort data)
-  ;]
-  ; report reduce [[x  y] -> (sentence x y) ]  my-list
 end
 
 to-report quantile-indices [data n]

@@ -236,87 +236,94 @@ to update-view
   if any? legends [ask legends [die]]
   if any? legend-entries [ask legend-entries [die]]
   let n view-legend-n
-  let qv nobody
+  let _qt nobody
+  let _values nobody
+  let _patches nobody
+  let _colors nobody
+
   ask patches [set pcolor grey - 2]
   ask patches with [ accessible? = True ][set pcolor grey]
 
   if view = "Crangon"  [
-    set qv quantile-thresholds [crangon] of patches with [crangon > 0] n
+    set _qt quantile-thresholds [crangon] of patches with [crangon > 0] n
     ask patches with [crangon >= 0][
       carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list crangon)) 0 1
+        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale _qt  (list crangon)) 0 1
       ][]
     ]
-    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
+    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
   if view = "Solea"  [
-    set qv quantile-thresholds [solea] of patches with [solea > 0] n
+    set _qt quantile-thresholds [solea] of patches with [solea > 0] n
     ask patches with [solea > 0][
       carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list solea)) 0 1
+        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale _qt  (list solea)) 0 1
       ][]
     ]
-    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
+    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
    ]
 
   if view = "Pleuronectes"  [
-    set qv quantile-thresholds [platessa] of patches with [platessa > 0] n
-    set view-legend-thresholds qv
+    set _qt quantile-thresholds [platessa] of patches with [platessa > 0] n
+    set view-legend-thresholds _qt
     ask patches with [platessa > 0][
       carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale qv  (list platessa)) 0 1
+        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale _qt  (list platessa)) 0 1
       ][]
     ]
-    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
+    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
   if view = "bathymetry"  [
-    set qv quantile-thresholds [depth] of patches with [depth > 0 and depth < 80] n
+    set _qt quantile-thresholds [depth] of patches with [depth > 0 and depth < 80] n
     ask patches with [depth > 0][
       carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Blues" n (first quantile-scale qv  (list depth)) 0 1
+        set pcolor palette:scale-scheme  "Sequential" "Blues" n (first quantile-scale _qt  (list depth)) 0 1
       ][]
     ]
-    draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 3])
+    draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 3])
   ]
 
+  if (view = "area") [
 
-  if view = "area"  [
-    set qv quantile-thresholds [area] of patches n
-    ask patches with [depth > 0][
-      carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Blues" n (first quantile-scale qv  (list area)) 0 1
-      ][]
+    set _patches [self] of patches with [depth > 0]
+    set _values (map [ p -> [ area ] of p ] _patches )
+    set _qt quantile-thresholds _values n
+    set _values quantile-scale-new _qt _values
+    set _colors palette:scheme-colors "Sequential" "Blues" n
+
+    foreach  (range length _patches) [ i ->
+      ask item i _patches [ set pcolor palette:scale-gradient _colors (item i _values) 0 1 ]
     ]
-    draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 4])
+    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 4])
   ]
 
   if (view = "swept area ratio") and ( ticks > 0 )[
 
-    let _patches [self] of patches with [swept-area > 0]
-
-    let _sar (map [ p -> [365.25 / ticks *  swept-area / area] of p ] _patches )
-    set qv quantile-thresholds _sar n
-    set _sar quantile-scale-new qv _sar
-
-    let _colors palette:scheme-colors "Sequential" "Oranges" n
+    set _patches [self] of patches with [swept-area > 0]
+    set _values (map [ p -> [365.25 / ticks *  swept-area / area] of p ] _patches )
+    set _qt map [ x ->  x] (range (n + 1)) ; quantile-thresholds _values n
+    set _values quantile-scale-new _qt _values
+    set _colors palette:scheme-colors "Sequential" "Oranges" n
 
     foreach  (range length _patches) [ i ->
-      ask item i _patches [ set pcolor palette:scale-gradient _colors (item i _sar) 0 1 ]
+      ask item i _patches [
+        set pcolor palette:scale-gradient _colors (item i _values) 0 1
+      ]
     ]
-    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
+    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
   if view = "effort (h a-1)"  and ticks > memory-size * 2 [
     let _value [365.25 / ticks * fishing-effort-hours] of patches with [fishing-effort-hours > 0]
-    set qv quantile-thresholds _value n
+    set _qt quantile-thresholds _value n
     ask patches with [fishing-effort-hours > 0][
       carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Oranges" n (first quantile-scale qv  (list fishing-effort-hours)) 0 1
+        set pcolor palette:scale-scheme  "Sequential" "Oranges" n (first quantile-scale _qt  (list fishing-effort-hours)) 0 1
       ][]
     ]
-    draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i qv) 5])
+    draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
 
