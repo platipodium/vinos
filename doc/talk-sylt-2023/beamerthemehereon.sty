@@ -1,0 +1,134 @@
+%!TEX root = Lemmen2014_etal_estuaries_poster.tex
+\ProvidesPackage{beamerthemehereon}
+% this style was created by Carsten Lemmen, March 2012
+% Updated to new CI by Carsten Lemmen, August 2014
+% based on a style by David Vilar
+
+% Ensure compatibility to Corporate S (the CI font)
+\RequirePackage{helvet}
+\RequirePackage{pifont}
+
+\selectcolormodel{cmyk}
+
+%% Definition der corporate color
+\definecolor{hzgbluelight}{cmyk}{.85,.19,0,0}
+\definecolor{hzgblue}{cmyk}{1.0,.50,0,.18}
+\definecolor{hzgbluedark}{cmyk}{1.0,0.5,0,0.43}
+\definecolor{hzgbeige}{cmyk}{0,0,.3,.18}
+\definecolor{hzggrauverylight}{cmyk}{0.1,0,0,0.3}
+\definecolor{hzggraui}{cmyk}{0.1,0,0,0.4}
+\definecolor{hzggrauii}{cmyk}{0.23,0,0,0.63}
+\definecolor{hzggrauiii}{cmyk}{0.35,0,0,0.94}
+\definecolor{hzgrot}{cmyk}{0,.95,1,0}
+\definecolor{hzgorange}{cmyk}{0,.55,1,0.02}
+\definecolor{hzggelb}{cmyk}{0,.30,1,0}
+\definecolor{hzghellgruen}{cmyk}{.23,0,1,0.17}
+\definecolor{hzghalbschwarz}{cmyk}{0,0,0,.5}
+\definecolor{hzgblack}{cmyk}{0,0,0,1}
+
+\definecolor{hzgcolorscheme1}{cmyk}{0,.95,1,0} % e.g. for alert
+\definecolor{hzgcolorblockbg}{cmyk}{.85,.19,0,0} % for block title background
+\definecolor{hzgcolorblockfg}{cmyk}{.23,0,1,0.17} % block title text
+\definecolor{hzgcolorscheme2}{cmyk}{0,0,0,.5}  % e.g. title in headline
+\definecolor{hzgcolorscheme3}{cmyk}{0,0,.3,.18}  % for poster background
+\definecolor{hzgcolorschemeHeadline}{cmyk}{.23,0,1,0.17} % for headline background
+
+\mode<presentation>
+
+% headline colors and fonts
+\setbeamercolor{headline}{fg=black,bg=white}
+\setbeamercolor{title in headline}{fg=hzgblack}
+\setbeamerfont{title in headline}{size=\huge,series=\bfseries}
+
+\setbeamercolor{author in headline}{fg=hzgblack}
+\setbeamerfont{author in headline}{series=\bfseries}
+
+\setbeamercolor{institute in headline}{fg=hzgblack}
+\setbeamercolor{logo in headline}{fg=black,bg=white}
+\setbeamercolor{separation line}{bg=white,fg=hzgbluelight}
+
+% footline colors and fonts
+\setbeamercolor{footline}{fg=white,bg=hzggrauverylight}
+\setbeamerfont{footline}{size=\normalsize}
+
+% body colors and fonts
+\setbeamercolor*{normal text}{fg=black,bg=white}
+
+% block environment
+\setbeamercolor*{block body}{fg=black}
+\setbeamercolor*{block title}{fg=hzgbluelight}
+\setbeamerfont{block title}{size=\Large,series=\bfseries}
+
+% example environment
+\setbeamercolor*{example title}{fg=white,bg=hzgcolorscheme1}
+\setbeamerfont{example title}{size=\large,series=\bf}
+
+\setbeamercolor{alerted text}{fg=hzgrot}
+\setbeamercolor{structure}{fg=hzgbluelight}
+
+%\setbeamertemplate{itemize item}{$\rightarrow$}
+\setbeamertemplate{itemize item}{\ding{212}}
+\setbeamertemplate{navigation symbols}{}  % no navigation on a poster
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamertemplate{block begin}{%
+\vskip1cm\linespread{1.17}%
+\begin{beamercolorbox}[sep=0cm,rightskip=0pt plus 4em]{block title}%
+\usebeamerfont*{block title}\insertblocktitle%
+\end{beamercolorbox}%
+\vskip1cm
+\usebeamerfont{block body}%
+\begin{beamercolorbox}[sep=0cm,rightskip=0pt plus 4em]{block body}%
+}%
+
+\setbeamertemplate{block end}{%
+\end{beamercolorbox}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{headline}{%
+\begin{beamercolorbox}[sep=23mm]{headline}
+%\hspace*{2cm}
+\parbox[t]{.70\hsize}{%
+\parbox{\hsize}{\usebeamercolor{title in headline}\usebeamerfont{title in headline}\inserttitle}\\[8ex]
+\parbox{\hsize}{\usebeamercolor{author in headline}\usebeamerfont{author in headline}\insertauthor}\\[2ex]
+\parbox{\hsize}{\usebeamercolor{institute in headline}\insertinstitute}
+}\hspace*{.038\hsize}%
+\parbox[c]{0.20\hsize}{\hfill\includegraphics[width=\hsize]%{hzg_logo_helvetica_color_full_de.pdf}
+{grafik/hzg_rgb_mitzusatz_in_e_300dpi.pdf}
+}
+\vskip1ex
+\end{beamercolorbox}
+
+\begin{beamercolorbox}[sep=23mm,wd=.94\hsize]{lower separation line head}
+\vskip-3cm
+\begin{picture}(0,0)
+\setlength{\unitlength}{1mm}
+\put(0,0){\rule{\hsize}{2pt}}
+\put(0,-5){\rule{0.3\hsize}{30pt}}
+\end{picture}
+\end{beamercolorbox}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamertemplate{footline}{%
+\begin{beamercolorbox}[sep=20mm]{footline}%
+\vskip-1.5cm
+\hspace*{3mm}\parbox{0.8\hsize}{%
+\small
+Helmholtz-Zentrum Geesthacht $\cdot$ Max-Planck-Stra\ss{}e 1 $\cdot$ 21502 Geesthacht $\cdot$ Germany $\cdot$ www.hzg.de\\[1ex]
+Contact: Dr.\ Carsten Lemmen $\cdot$ E-Mail: \href{mailto:carsten.lemmen@hzg.de}{carsten.lemmen@hzg.de}  $\cdot$
+Phone +49 4152 87-2013 $\cdot$ Fax +49 4152 87-2020
+}\hfill
+\parbox{7ex}{
+\includegraphics[width=\hsize]{grafik/lemmen_vcard_qr.png}}\hspace*{3mm}
+\end{beamercolorbox}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "poster"
+%%% TeX-PDF-mode: t
+%%% End:
