@@ -485,7 +485,10 @@ to ci-maps
   ask links   [set hidden? true]
   ask turtles [set hidden? true]
 
-  repeat 3 [ go ]
+  repeat 365 [ go ]
+
+  let prefix ""
+  let dataset gis:patch-dataset fishing-effort-hours
 
   foreach (list "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)"
     "accessible?" "owf" "plaice-box?" "swept area ratio") [ s ->
@@ -494,11 +497,19 @@ to ci-maps
     update-view
     clear-drawing
 
-    let prefix  (word "results/"  first (split "? -" s) "-" time:show date "yyyy-MM-dd")
+    set prefix  (word "results/"  first (split "? -" s) "-" time:show date "yyyy-MM-dd")
     export-view (word prefix ".png")
-    ;let dataset gis:patch-dataset fishing-effort-hours
-    ;gis:store-dataset dataset prefix
+
   ]
+
+  set dataset gis:patch-dataset fishing-effort-hours
+  set prefix  (word "results/effort-" time:show date "yyyy-MM-dd")
+  gis:store-dataset dataset prefix
+
+  set dataset gis:patch-dataset swept-area
+  set prefix  (word "results/swept-" time:show date "yyyy-MM-dd")
+  gis:store-dataset dataset prefix
+
 end
 
 
@@ -606,7 +617,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-4
+10
 
 BUTTON
 83
