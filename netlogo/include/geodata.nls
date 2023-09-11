@@ -20,12 +20,12 @@ to setup-maps
 
   ;new crangon dataset (no summer and winter change anymore but year around data)
   ;for the solea and platessa only the biomass of fish > minimum conservation reference sizes (MCRS) is introduced
-  let crangon-summer-dataset gis:load-dataset "../data/thuenen/sol.ple.cra.biomasses_new/dis.crangon.min.max.asc"
-  let crangon-winter-dataset gis:load-dataset "../data/thuenen/sol.ple.cra.biomasses_new/dis.crangon.min.max.asc"
-  let platessa-summer-dataset gis:load-dataset "../data/thuenen/sol.ple.cra.biomasses_new/dis.pleuronectes.platessa.27.max.asc"
-  let platessa-winter-dataset gis:load-dataset "../data/thuenen/sol.ple.cra.biomasses_new/dis.pleuronectes.platessa.27.max.asc"
-  let solea-summer-dataset gis:load-dataset "../data/thuenen/sol.ple.cra.biomasses_new/dis.solea.24.max.asc"
-  let solea-winter-dataset gis:load-dataset "../data/thuenen/sol.ple.cra.biomasses_new/dis.solea.24.max.asc"
+  let crangon-summer-dataset gis:load-dataset "../data/thuenen/dis.crangon.min.max.asc"
+  let crangon-winter-dataset gis:load-dataset "../data/thuenen/dis.crangon.min.max.asc"
+  let platessa-summer-dataset gis:load-dataset "../data/thuenen/dis.pleuronectes.platessa.27.max.asc"
+  let platessa-winter-dataset gis:load-dataset "../data/thuenen/dis.pleuronectes.platessa.27.max.asc"
+  let solea-summer-dataset gis:load-dataset "../data/thuenen/dis.solea.24.max.asc"
+  let solea-winter-dataset gis:load-dataset "../data/thuenen/dis.solea.24.max.asc"
 
   ; Set the world envelope to the union of all of our dataset's envelopes
   gis:set-world-envelope (gis:envelope-union-of (gis:envelope-of bathymetry-dataset)
@@ -49,6 +49,19 @@ to setup-maps
 
   gis:apply-raster crangon-summer-dataset crangon-summer
   ask patches with [not (crangon-summer < 0 or crangon-summer > -1) ] [ set crangon-summer -9999 ]
+
+  ; Creep-fill with nearest neighbor
+  let new-patches patches with [crangon-summer < 0]
+  repeat 0 [ ;max-pxcor * 2 [
+    ask new-patches [
+      let _neighbors neighbors with [crangon-summer >= 0]
+      if any? _neighbors [
+        set crangon-summer  mean [crangon-summer] of _neighbors
+      ]
+    ]
+    set new-patches patches with [crangon-summer < 0]
+  ]
+
 
   gis:apply-raster crangon-winter-dataset crangon-winter
   ask patches with [not (crangon-winter < 0 or crangon-winter > -1) ] [ set crangon-winter -9999 ]
