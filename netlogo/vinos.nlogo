@@ -255,9 +255,25 @@ to update-view
   let _colors nobody
 
   ask patches [set pcolor grey - 2]
-  ask patches with [ accessible? = True ][set pcolor grey]
+  ask patches with [ accessible? ][set pcolor grey]
 
-  if view = "Crangon"  [
+  if (view = "Crangon") [
+
+    set _patches [self] of patches with [crangon > 0]
+    set _values (map [ p -> [crangon] of p ] _patches )
+    set _qt quantile-thresholds _values n
+    set _values quantile-scale-new _qt _values
+    set _colors palette:scheme-colors "Sequential" "Reds" n
+
+    foreach  (range length _patches) [ i ->
+      ask item i _patches [
+        set pcolor palette:scale-gradient _colors (item i _values) 0 1
+      ]
+    ]
+    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
+  ]
+
+  if view = "CrangoXXn"  [
     set _qt quantile-thresholds [crangon] of patches with [crangon > 0] n
     ask patches with [crangon >= 0][
       carefully [
@@ -634,7 +650,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-5
+0
 
 BUTTON
 83
