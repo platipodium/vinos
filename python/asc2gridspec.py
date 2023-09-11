@@ -22,6 +22,7 @@ def create_gridspec(header, data):
     ll_lat = header["YLLCORNER"]
     delta_lon = header["CELLSIZE"]
     delta_lat = header["CELLSIZE"] # always square
+    missing_value = header["NODATA_VALUE"]
 
     filename  = header["NAME"].replace(".asc", "_gridspec.nc")
 
@@ -62,13 +63,14 @@ def create_gridspec(header, data):
     lon_bnds[:,0]=lon[:]-0.5*delta_lon
     lon_bnds[:,1]=lon[:]+0.5*delta_lon
 
-    lat[:]=ll_lat+(jlat+0.5)*delta_lat
+    lat[:]=np.flip(ll_lat+(jlat+0.5)*delta_lat)
     lat_bnds[:,0]=lat[:]-0.5*delta_lat
     lat_bnds[:,1]=lat[:]+0.5*delta_lat
 
     var = nc.createVariable(header["VARIABLE"],'f4',('lat','lon'))
     var.coordinates='lon lat'
     var.units=''
+    var.missing_value = missing_value
     var[:] = data
 
     nc.close()

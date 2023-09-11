@@ -12,7 +12,6 @@ import seaborn as sns
 from statsmodels.tsa.arima.model import ARIMA
 import datetime
 
-
 def extrapolate_timeseries(df: pd.DataFrame) -> pd.DataFrame:
 
     model = ARIMA(df['Crangon'], order=(1, 0, 0))  # You can adjust the order of the model as needed

@@ -103,6 +103,16 @@ def create_asc(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
                 with open(filename, 'w') as fid:
                     [fid.writelines(f'{key}\t{str(value)}\n') for key,value in license.items()]
 
+        # Here aggregate over years
+        # ydf = df.groupby('Year').agg('mean', 'benthisMetydf)
+        # for loc in ['subsurface','surface','sar','subsar','kWH_low','kWH_upp','kWH_cov',
+        #             'Hour_low','Hour_upp','Hour_cov','TotWt_low','TotWt_upp','TotWt_cov',
+        #             'TotVal_low','TotVal_upp','TotVal_cov'] :
+
+        #     gvar = np.zeros((nlat, nlon)) + fill_value
+        #     for i in ydf.index:
+        #             gvar[ydf["ilat"][i],ydf["ilon"][i]] = ydf[loc][i]
+
 
 def main():
     if len(sys.argv) < 2:
@@ -112,7 +122,10 @@ def main():
        filename = pathlib.Path(sys.argv[1])
 
     if 'metiers' in str(filename):
-        usecols = {'Year', 'lat', 'lon', 'benthisMet', 'sar', 'subsar',}
+        usecols = {'Year', 'lat', 'lon', 'benthisMet',
+                  'subsurface','surface','sar','subsar','kWH_low','kWH_upp','kWH_cov',
+                   'Hour_low','Hour_upp','Hour_cov','TotWt_low','TotWt_upp','TotWt_cov',
+                   'TotVal_low','TotVal_upp','TotVal_cov',}
     elif 'total' in str(filename):
         usecols = {'Year', 'lat', 'lon', 'sar', 'subsar',}
     elif 'fishing_category' in str(filename):
