@@ -1,0 +1,51 @@
+; SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+; SPDX-License-Identifier: Apache-2.0
+;
+; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+extensions [ py ]
+
+globals [
+  has-python?
+]
+
+to setup-python
+  set has-python? true
+
+  carefully [
+    ;py:setup py:python3 ; for Python 3
+    py:setup "/opt/conda/envs/netlogo/bin/python"
+  ][  set has-python? false ]
+
+
+end
+
+to-report python-version
+  ifelse has-python? [report py:python][report false]
+end
+
+to asc2gridspec
+
+  (
+    py:run
+
+    "import importlib.machinery"
+    "import importlib.util"
+
+    "from pathlib import Path"
+
+    "asc2gridspec_path = str('../python/asc2gridspec.py')"
+
+    "loader = importlib.machinery.SourceFileLoader( 'asc2gridspec', asc2gridspec_path)"
+    "spec = importlib.util.spec_from_loader( 'asc2gridspec', loader )"
+    "asc2gridspec = importlib.util.module_from_spec( spec )"
+    "loader.exec_module( asc2gridspec )"
+    )
+
+  (
+    py:run
+    "header, data = asc2gridspec.asc_reader('./results/effort-2017-01-10.asc')"
+    "#asc2gridspec.create_gridspec(header, data)"
+  )
+
+end

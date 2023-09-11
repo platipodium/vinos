@@ -27,6 +27,7 @@ __includes [
   "include/port.nls"
   "include/action.nls"
   "include/time-series.nls"
+  "include/python.nls"
 ]
 
 ; The following breeds are defined in include files
@@ -135,6 +136,18 @@ to setup
 
   reset-ticks
 end
+
+; this procedures resets all sliders to a reasonable default value
+to setup-defaults
+  set fraction-transportation-costs 0.5
+  set memory-size 25
+  set adaptation 0.6
+  set operating-costs-of-boats 0.2
+  set time-offset -92 ; months from today
+  set oil-price 62 ; ct l-1
+  set wage 80 ; € h-1
+end
+
 
 to setup-globals
   set min-fresh-catch 10
@@ -617,7 +630,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-10
+4
 
 BUTTON
 83
@@ -763,7 +776,7 @@ fraction-transportation-costs
 fraction-transportation-costs
 0
 1
-0.4
+0.5
 0.01
 1
 NIL
