@@ -72,7 +72,7 @@ patches-own [
   patch-prey-names ; @todo let's get rid of this and only use a global prey-names variable
 
   ; Prey biomasses
-  prey-biomasses                    ; current biomasses of the prey species
+  prey-biomasses   ; current biomasses of the prey species
 
 
   crangon-summer                    ; data from TI @todo convert to vector of prey species
@@ -650,7 +650,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-0
+4
 
 BUTTON
 83
@@ -1051,7 +1051,7 @@ time-offset
 time-offset
 -200
 200
-60.0
+-92.0
 1
 1
 months from now

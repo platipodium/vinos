@@ -7,16 +7,9 @@
 to setup-maps
 
   no-display
+  let _patches nobody
 
   let bathymetry-dataset gis:load-dataset "../data/gebco/gebco_2021_n56.0_s53.0_w2.0_e10.0.asc"
-  ;let platessa-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_pleuronectes.platessa_summer.asc"
-  ;let platessa-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_pleuronectes.platessa_winter.asc"
-
-  ;let crangon-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_summer.asc"
-  ;let crangon-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_crangon.crangon_winter.asc"
-
-  ;let solea-summer-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_solea.solea_summer.asc"
-  ;let solea-winter-dataset gis:load-dataset "../data/thuenen/dist_ran.forest_solea.solea_winter.asc"
 
   ;new crangon dataset (no summer and winter change anymore but year around data)
   ;for the solea and platessa only the biomass of fish > minimum conservation reference sizes (MCRS) is introduced
@@ -51,32 +44,86 @@ to setup-maps
   ask patches with [not (crangon-summer < 0 or crangon-summer > -1) ] [ set crangon-summer -9999 ]
 
   ; Creep-fill with nearest neighbor
-  let new-patches patches with [crangon-summer < 0]
-  repeat 0 [ ;max-pxcor * 2 [
-    ask new-patches [
+  set _patches patches with [crangon-summer < 0 and depth > 0]
+  repeat max-pxcor * 2 [
+    ask _patches [
       let _neighbors neighbors with [crangon-summer >= 0]
       if any? _neighbors [
         set crangon-summer  mean [crangon-summer] of _neighbors
       ]
     ]
-    set new-patches patches with [crangon-summer < 0]
+    set _patches patches with [crangon-summer < 0 and depth > 0]
   ]
 
 
   gis:apply-raster crangon-winter-dataset crangon-winter
   ask patches with [not (crangon-winter < 0 or crangon-winter > -1) ] [ set crangon-winter -9999 ]
 
+
+  ; Creep-fill with nearest neighbor
+  set _patches patches with [crangon-winter < 0 and depth > 0]
+  repeat max-pxcor * 2 [
+    ask _patches [
+      let _neighbors neighbors with [crangon-winter >= 0]
+      if any? _neighbors [
+        set crangon-winter  mean [crangon-winter] of _neighbors
+      ]
+    ]
+    set _patches patches with [crangon-winter < 0 and depth > 0]
+  ]
+
+
   gis:apply-raster solea-summer-dataset solea-summer
   ask patches with [not (solea-summer < 0 or solea-summer > -1) ] [ set solea-summer -9999 ]
+  set _patches patches with [solea-summer < 0 and depth > 0]
+  repeat max-pxcor * 2 [
+    ask _patches [
+      let _neighbors neighbors with [solea-summer >= 0]
+      if any? _neighbors [
+        set solea-summer  mean [solea-summer] of _neighbors
+      ]
+    ]
+    set _patches patches with [solea-summer < 0 and depth > 0]
+  ]
 
   gis:apply-raster solea-winter-dataset solea-winter
   ask patches with [not (solea-winter < 0 or solea-winter > -1) ] [ set solea-winter -9999 ]
+  set _patches patches with [solea-winter < 0 and depth > 0]
+  repeat max-pxcor * 2 [
+    ask _patches [
+      let _neighbors neighbors with [solea-winter >= 0]
+      if any? _neighbors [
+        set solea-winter  mean [solea-winter] of _neighbors
+      ]
+    ]
+    set _patches patches with [solea-winter < 0 and depth > 0]
+  ]
 
   gis:apply-raster platessa-summer-dataset platessa-summer
   ask patches with [not (platessa-summer < 0 or platessa-summer > -1) ] [ set platessa-summer -9999 ]
+  set _patches patches with [platessa-summer < 0 and depth > 0]
+  repeat max-pxcor * 2 [
+    ask _patches [
+      let _neighbors neighbors with [platessa-summer >= 0]
+      if any? _neighbors [
+        set platessa-summer  mean [platessa-summer] of _neighbors
+      ]
+    ]
+    set _patches patches with [platessa-summer < 0 and depth > 0]
+  ]
 
   gis:apply-raster platessa-winter-dataset platessa-winter
   ask patches with [not (platessa-winter < 0 or platessa-winter > -1) ] [ set platessa-winter -9999 ]
+  set _patches patches with [platessa-winter < 0 and depth > 0]
+  repeat max-pxcor * 2 [
+    ask _patches [
+      let _neighbors neighbors with [platessa-winter >= 0]
+      if any? _neighbors [
+        set platessa-winter  mean [platessa-winter] of _neighbors
+      ]
+    ]
+    set _patches patches with [platessa-winter < 0 and depth > 0]
+  ]
 
   ask patches [
     set area gis-patch-area
