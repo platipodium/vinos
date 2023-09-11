@@ -328,17 +328,21 @@ to update-view
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
-  if view = "effort (h a-1)"  and ticks > memory-size * 2 [
-    let _value [365.25 / ticks * fishing-effort-hours] of patches with [fishing-effort-hours > 0]
-    set _qt quantile-thresholds _value n
-    ask patches with [fishing-effort-hours > 0][
-      carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Oranges" n (first quantile-scale _qt  (list fishing-effort-hours)) 0 1
-      ][]
-    ]
-    draw-legend (palette:scheme-colors "Sequential" "Oranges" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
-  ]
+  if (view = "effort (h a-1)") and ( ticks > 0 )[
 
+    set _patches [self] of patches with [fishing-effort-hours > 0]
+    set _values (map [ p -> [365.25 / ticks *  fishing-effort-hours] of p ] _patches )
+    set _qt quantile-thresholds _values n
+    set _values quantile-scale-new _qt _values
+    set _colors palette:scheme-colors "Sequential" "Oranges" n
+
+    foreach  (range length _patches) [ i ->
+      ask item i _patches [
+        set pcolor palette:scale-gradient _colors (item i _values) 0 1
+      ]
+    ]
+    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
+  ]
 
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   set n max [ fishing-effort-hours ] of patches
@@ -630,7 +634,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-4
+5
 
 BUTTON
 83
@@ -686,7 +690,7 @@ adaptation
 adaptation
 0
 1
-0.684
+0.6
 0.001
 1
 NIL
@@ -716,7 +720,7 @@ operating-costs-of-boats
 operating-costs-of-boats
 0
 1
-0.209
+0.2
 0.001
 1
 NIL
@@ -731,7 +735,7 @@ oil-price
 oil-price
 25
 75
-75.0
+62.0
 5
 1
 ct l-1
@@ -933,7 +937,7 @@ wage
 wage
 50
 120
-110.0
+80.0
 5
 1
 € h-1
@@ -1018,7 +1022,7 @@ SWITCH
 427
 one?
 one?
-1
+0
 1
 -1000
 
@@ -1031,7 +1035,7 @@ time-offset
 time-offset
 -200
 200
--92.0
+60.0
 1
 1
 months from now

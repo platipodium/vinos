@@ -380,7 +380,7 @@ to boat-choose-start
     ; random patch if not sufficient memory accumulated yet (learning phase)
 
     ifelse patch-here =  [port-start-patch] of boat-home-port  [
-      set _patch one-of boat-fishable-patches in-radius boat-max-distance
+      set _patch one-of boat-fishable-patches in-radius boat-max-distance ; with [ count boats-here = 0 and distance myself < boat-max-distance]
     ][
       set _patch one-of boat-fishable-patches in-radius 30
     ]
@@ -395,7 +395,7 @@ to boat-choose-start
 
     ; Introduce some random component
     ;let _nearby-patch one-of neighbors with [accessible?]
-    let _nearby-patch one-of boat-fishable-patches with [ distance myself < 6 ]
+    let _nearby-patch one-of boat-fishable-patches with [ count boats-here = 0 and distance myself < 6 ]
     if _nearby-patch != nobody [set _patch _nearby-patch]
 
   ]
