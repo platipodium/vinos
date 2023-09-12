@@ -751,7 +751,7 @@ oil-price
 oil-price
 25
 75
-62.0
+25.0
 5
 1
 ct l-1
@@ -796,7 +796,7 @@ fraction-transportation-costs
 fraction-transportation-costs
 0
 1
-0.5
+0.29
 0.01
 1
 NIL
@@ -979,11 +979,11 @@ PENS
 CHOOSER
 15
 497
-161
+244
 542
 boat-property-chooser
 boat-property-chooser
-"distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type"
+"distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
 0
 
 SWITCH
@@ -1038,7 +1038,7 @@ SWITCH
 427
 one?
 one?
-0
+1
 1
 -1000
 

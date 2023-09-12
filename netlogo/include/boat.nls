@@ -77,6 +77,12 @@ boats-own [
 
   boat-current-gear-index
 
+  ; Diagnostic facilties for
+  ; Fuel intensity, i.e. Liters consumed per kg of catch l kg-1, should be 0.5-1
+  ; LPUE  Landing Per Unit Effort as catch per seaday,  kg d-1, should be 300-900
+  boat-total-days-at-sea
+  boat-total-fuel-consumption
+  boat-total-landings
 ]
 
 
@@ -176,6 +182,10 @@ to setup-boats
       set boat-hour 0
       set boat-fishable-patches boat-accessible-patches
       set boat-actions (turtle-set)
+
+      set boat-total-days-at-sea 0
+      set boat-total-landings 0
+      set boat-total-fuel-consumption 0
     ]
     ask my-links [set hidden? true]
   ]
@@ -333,8 +343,15 @@ to boat-land-port
   set boat-trip-gear-catches map [i -> 0] boat-trip-gear-catches
 
   set boat-distance-at-sea 0
+
+  ; Boat time is in hours, add the trip's hours to the total boat sea days and
+  ; reset the trip data
+  set boat-total-days-at-sea boat-total-days-at-sea + ceiling (boat-time-at-sea / 24.0)
   set boat-time-at-sea  0
   set boat-time-at-sea-left 0
+
+  set boat-total-fuel-consumption boat-total-fuel-consumption +  _boat-fuel-consumption
+  set boat-total-landings boat-total-landings +  item boat-current-gear-index boat-trip-gear-catches
 
   set boat-trip-phase 0
 
