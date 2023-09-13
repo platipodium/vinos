@@ -340,9 +340,6 @@ to boat-land-port
   ; At the moment, boat-tranpsortation cost are 70 k€, op-costs are 2000 € revenue is 0.0002
   if one? [print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat [action-catch] of boat-actions)]
 
-  set boat-trip-gear-catches map [i -> 0] boat-trip-gear-catches
-
-  set boat-distance-at-sea 0
 
   ; Boat time is in hours, add the trip's hours to the total boat sea days and
   ; reset the trip data
@@ -352,6 +349,11 @@ to boat-land-port
 
   set boat-total-fuel-consumption boat-total-fuel-consumption +  _boat-fuel-consumption
   set boat-total-landings boat-total-landings +  item boat-current-gear-index boat-trip-gear-catches
+
+
+  set boat-trip-gear-catches map [i -> 0] boat-trip-gear-catches
+
+  set boat-distance-at-sea 0
 
   set boat-trip-phase 0
 

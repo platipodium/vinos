@@ -43,7 +43,7 @@ to plot-setup-gain-by-gear
     auto-plot-on
     set-plot-pen-mode 0 ; line
   ]
- 
+
   let pen-name "zero"
   if not plot-pen-exists?  pen-name [ create-temporary-plot-pen pen-name ]
   set-current-plot-pen pen-name
@@ -168,6 +168,9 @@ to plot-update-boat-property
     if ( boat-property-chooser =  "transportation-costs" ) [ set _values [ round boat-transportation-costs] of boats ]
     if ( boat-property-chooser =  "operating-costs" ) [ set _values [ round boat-operating-costs] of boats ]
     if ( boat-property-chooser =  "type" ) [ set _values [ round boat-type] of boats ]
+    if ( boat-property-chooser =  "boat-total-days-at-sea" ) [ set _values [ round boat-total-days-at-sea] of boats ]
+    if ( boat-property-chooser =  "boat-total-fuel-consumption" ) [ set _values [ round boat-total-fuel-consumption] of boats ]
+    if ( boat-property-chooser =  "boat-total-landings" ) [ set _values [ round boat-total-landings] of boats ]
 
     set-histogram-num-bars 9
     set _x-range (list (min _values) (max _values))

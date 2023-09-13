@@ -228,6 +228,7 @@ to go
 
   ; export the data every week on a Sunday (weekday 0)
   if (time:get "dayofweek"  date mod 7) = 0 [export-patches]
+  save-totals
 
   tick
 end
@@ -588,6 +589,37 @@ to calc-accessibility
 
 end
 
+
+to save-totals
+
+  let _boats boats with [boat-total-days-at-sea > 0] ; and  boat-total-landings > 0]
+  let _count count _boats
+  let _file "results/total_avg.csv"
+
+  if ticks = 0 [
+    carefully [file-delete _file][]
+    file-open _file
+    file-print (word "# tick,year,month,day,doy,at-sea,fuel,landings,lpue")
+    file-print (word "#     ,    ,     ,   ,   , d    , l  ,   kg   , kg d-1")
+    file-close
+  ]
+
+  if any? _boats [
+    file-open _file
+    file-print csv:to-row (list ticks
+      (time:get "year" date)   (time:get "month" date) (time:get "day" date) (time:get "dayofyear" date)
+      (sum [boat-total-days-at-sea ] of _boats / _count )
+      (sum [boat-total-fuel-consumption] of _boats / _count )
+      (sum [boat-total-landings] of _boats / _count )
+      ;(sum [boat-total-fuel-consumption / boat-total-landings] of _boats / _count ) ; Fuel intensity
+      (sum [boat-total-landings / boat-total-days-at-sea] of _boats / _count) ; LPUE
+    )
+    file-close
+   ]
+end
+
+
+
 ; The profile routine is called manually from the command line while we test
 to profile
   setup
@@ -706,7 +738,7 @@ adaptation
 adaptation
 0
 1
-0.6
+0.642
 0.001
 1
 NIL
@@ -953,7 +985,7 @@ wage
 wage
 50
 120
-80.0
+50.0
 5
 1
 € h-1
