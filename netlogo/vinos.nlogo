@@ -1016,7 +1016,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
-18
+0
 
 SWITCH
 1241
@@ -1064,13 +1064,13 @@ NIL
 1
 
 SWITCH
-1239
-394
-1342
-427
+156
+102
+259
+135
 one?
 one?
-1
+0
 1
 -1000
 
