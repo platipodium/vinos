@@ -76,6 +76,7 @@ boats-own [
   boat-actions ; Agentset of actions for this boat
 
   boat-current-gear-index
+  boat-current-prey-index
 
   ; Diagnostic facilties for
   ; Fuel intensity, i.e. Liters consumed per kg of catch l kg-1, should be 0.5-1
@@ -153,6 +154,8 @@ to setup-boats
         set boat-gear-priorities n-values number-of-gears [ i -> item i boat-gear-priorities / _sum-priorities ]
         set boat-current-gear-index (index-max-one-of boat-gear-priorities)
       ]
+
+      set boat-current-prey-index position prey-names [gear-species] of item boat-current-gear-index boat-gears
 
       ; Boat capacity is not relevant for shrimpers as freshness is key concern
       set  boat-capacity 100000                                  ; kg of storage
@@ -340,7 +343,7 @@ to boat-land-port
   ; At the moment, boat-tranpsortation cost are 70 k€, op-costs are 2000 € revenue is 0.0002
   ;if one? [print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat [action-catch] of boat-actions)]
   if one? [print (word "R: " round item boat-current-gear-index boat-trip-gear-catches " kg-"
-    item boat-current-gear-index gear-prey-names "-"
+    item boat-current-prey-index prey-names "-"
     [gear-name] of item boat-current-gear-index boat-gears " "
     round item boat-current-gear-index revenue-boat  "€ - "
     round boat-transportation-costs "€ - " round boat-operating-costs "€ = "
@@ -621,14 +624,14 @@ end
 to-report boat-catch-species [haul-length]
   ; calculate the values for each patch and every target species
   ;(solea, platessa and crangon), i.e. biomass cath in KG
-  ; @todo: negative values possible for prey-biomasses
+  ; @todo: negative values possible for patch-prey-biomasses
 
 
   let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) patch-prey-names ]
 
   report n-values (number-of-gears) [ igear ->
-     (item igear catch-efficiency-boat) * (item (item igear ispecieslist) prey-biomasses)
-      * (([gear-width] of item igear boat-gears) * haul-length) * (boolean2int (item (item igear ispecieslist) prey-biomasses > 0) )
+     (item igear catch-efficiency-boat) * (item (item igear ispecieslist) patch-prey-biomasses)
+      * (([gear-width] of item igear boat-gears) * haul-length) * (boolean2int (item (item igear ispecieslist) patch-prey-biomasses > 0) )
   ]
 
 end

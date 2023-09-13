@@ -72,7 +72,7 @@ patches-own [
   patch-prey-names ; @todo let's get rid of this and only use a global prey-names variable
 
   ; Prey biomasses
-  prey-biomasses   ; current biomasses of the prey species
+  patch-prey-biomasses   ; current biomasses of the prey species
 
 
   crangon-summer                    ; data from TI @todo convert to vector of prey species
@@ -453,7 +453,7 @@ to calc-fish
   ask patches [
     set prey-names (list "Solea" "Pleuronectes" "Crangon")
     set patch-prey-names (list "Solea" "Pleuronectes" "Crangon")
-    set prey-biomasses (list solea platessa crangon)
+    set patch-prey-biomasses (list solea platessa crangon)
   ]
 end
 
@@ -682,7 +682,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-4
+0
 
 BUTTON
 83
@@ -1016,7 +1016,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
-0
+18
 
 SWITCH
 1241
@@ -1025,7 +1025,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-0
+1
 1
 -1000
 
