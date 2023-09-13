@@ -90,6 +90,12 @@ boats-own [
 to setup-boats
 
   set-default-shape boats "boat top"
+  if any? boats [
+    ask boats [
+      ask boat-actions [die]
+      die
+    ]
+  ]
 
   ; read distribution of boat properties
   let lpue-distribution csv-property "LPUE"
@@ -155,7 +161,9 @@ to setup-boats
         set boat-current-gear-index (index-max-one-of boat-gear-priorities)
       ]
 
-      set boat-current-prey-index position prey-names [gear-species] of item boat-current-gear-index boat-gears
+      ;print (sentence boat-current-gear-index item boat-current-gear-index gear-names item  boat-current-gear-index gear-prey-names
+
+      set boat-current-prey-index position (item boat-current-gear-index gear-prey-names)  prey-names
 
       ; Boat capacity is not relevant for shrimpers as freshness is key concern
       set  boat-capacity 100000                                  ; kg of storage
@@ -322,7 +330,7 @@ to boat-land-port
   ;let _boat-prey-catches n-values count preys [ i -> 0]
 
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
-  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches  * (item (item igear gear-prey-indices) prey-prices))]
+  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches  * (item boat-current-prey-index prey-prices))]
 
 
   ;todo: procedure which also considers the other species which are caugth
@@ -496,7 +504,6 @@ to boat-make-haul
   let _haul-width [gear-width] of item boat-current-gear-index boat-gears
   let _fishing-speed [gear-speed] of item boat-current-gear-index boat-gears
   let _prey [gear-species] of  item boat-current-gear-index boat-gears
-  let _iprey position _prey prey-names
   let _haul-time 1 ; one hour @todo maybe set differnet haul-time depanding on gear? (crangon could be 1.5h?)
   let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing
   let _sub-step-time _haul-time * 1.0 / _sub-steps
@@ -611,9 +618,8 @@ to-report boat-accessible-patches
 
   let my-patches patches with [accessible?]
 
-  let my-target-species item boat-current-gear-index gear-prey-names
-  if my-target-species = nobody [ set my-target-species  "other" ]
-  if (boat-engine > 221 and my-target-species = "Pleuronectes") [
+  let _prey item boat-current-prey-index prey-names
+  if (boat-engine > 221 and _prey = "Pleuronectes") [
     set my-patches my-patches with [not plaice-box?]
   ]
 
@@ -625,7 +631,6 @@ to-report boat-catch-species [haul-length]
   ; calculate the values for each patch and every target species
   ;(solea, platessa and crangon), i.e. biomass cath in KG
   ; @todo: negative values possible for patch-prey-biomasses
-
 
   let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) patch-prey-names ]
 
