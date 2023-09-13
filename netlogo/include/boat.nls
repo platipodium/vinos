@@ -509,6 +509,9 @@ to boat-make-haul
   let _sub-step-time _haul-time * 1.0 / _sub-steps
   let _cluster boat-type
 
+  let _boat-gear-index boat-current-gear-index
+  let _patch-prey-index position (item boat-current-prey-index prey-names) patch-prey-names
+
   ; Calculate conversion factor netlogo units to km, needs to be recalculated after
   ; every change of heading
   let _gis-scale gis-scale
@@ -540,10 +543,17 @@ to boat-make-haul
     if show-boats? [pen-down]
     repeat (_sub-steps) [
       set _new-catches boat-catch-species (_sub-step-time * _fishing-speed)
+
+
       ask patch-here [
         set fishing-effort-hours fishing-effort-hours + _sub-step-time
         set swept-area swept-area + _haul-width * _sub-step-time * _fishing-speed
+
         ; @todo reduce fish on patch by amount taken out, allow for recovery
+        if _patch-prey-index > -1 [
+          set  patch-prey-biomasses replace-item _patch-prey-index patch-prey-biomasses  (
+            ((item _patch-prey-index  patch-prey-biomasses ) * area - (item _boat-gear-index _new-catches) )/ area
+        )]
 
         ;set cluster-fishing-efforts replace-item _cluster cluster-fishing-efforts ((item _cluster cluster-fishing-efforts) +  fishing-effort-hours + _sub-step-time)
         ;  prey-catches                      ; annual prey catches
