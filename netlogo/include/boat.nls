@@ -319,7 +319,7 @@ to boat-land-port
   ;let _boat-prey-catches n-values count preys [ i -> 0]
 
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
-  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches *  1000 * (item (item igear gear-prey-indices) prey-prices))]
+  set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches  * (item (item igear gear-prey-indices) prey-prices))]
 
 
   ;todo: procedure which also considers the other species which are caugth
@@ -338,7 +338,16 @@ to boat-land-port
 
   ; A typical revenue should be around 7500 € considering the relative relation to transport/operating costs.
   ; At the moment, boat-tranpsortation cost are 70 k€, op-costs are 2000 € revenue is 0.0002
-  if one? [print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat [action-catch] of boat-actions)]
+  ;if one? [print (sentence "R:" boat-transportation-costs boat-operating-costs revenue-boat [action-catch] of boat-actions)]
+  if one? [print (word "R: " round item boat-current-gear-index boat-trip-gear-catches " kg-"
+    item boat-current-gear-index gear-prey-names "-"
+    [gear-name] of item boat-current-gear-index boat-gears " "
+    round item boat-current-gear-index revenue-boat  "€ - "
+    round boat-transportation-costs "€ - " round boat-operating-costs "€ = "
+    round item boat-current-gear-index boat-gains "€"
+    ;[action-catch] of boat-actions
+    )
+  ]
 
 
   ; Boat time is in hours, add the trip's hours to the total boat sea days and

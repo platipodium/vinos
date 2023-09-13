@@ -768,7 +768,7 @@ operating-costs-of-boats
 operating-costs-of-boats
 0
 1
-0.2
+0.38
 0.001
 1
 NIL
@@ -924,7 +924,7 @@ SWITCH
 312
 sar?
 sar?
-1
+0
 1
 -1000
 
@@ -1025,7 +1025,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-1
+0
 1
 -1000
 
