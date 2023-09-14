@@ -13,6 +13,7 @@ optimization.
 - fill entire domain with species biomass data
 - revisit location based on estimated gain
 - tabular output of totals for analysis of LPUE and fuel intensity
+- updated OWF data
 
 # Release notes for version 1.2.0
 
