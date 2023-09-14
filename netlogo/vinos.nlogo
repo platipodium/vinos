@@ -816,7 +816,7 @@ oil-price
 oil-price
 25
 75
-25.0
+40.0
 5
 1
 ct l-1
@@ -861,7 +861,7 @@ fraction-transportation-costs
 fraction-transportation-costs
 0
 1
-0.29
+0.99
 0.01
 1
 NIL
@@ -1018,7 +1018,7 @@ wage
 wage
 50
 120
-50.0
+80.0
 5
 1
 € h-1
@@ -1103,7 +1103,7 @@ SWITCH
 135
 one?
 one?
-0
+1
 1
 -1000
 
@@ -1116,7 +1116,7 @@ time-offset
 time-offset
 -200
 200
--92.0
+-46.0
 1
 1
 months from now

@@ -129,9 +129,45 @@ to setup-maps
     set area gis-patch-area
   ]
 
+  update-owf
+end
+
+to update-owf
+
   set owf-dataset load-dataset "OWF"
-  gis:apply-coverage owf-dataset "POWER_MW" owf-fraction
+
+  let _owf-properties gis:property-names owf-dataset
+  let _owf-list (list)
+  let _year time:get  "year" date
+
+  ; Use the existing "SHAPE_AREA" property to manipulate and filter data,
+  ; by default set all to zero
+  foreach gis:feature-list-of owf-dataset [ f ->
+    gis:set-property-value f "SHAPE_AREA" 0
+  ]
+
+  ifelse  (_year > 2025) [
+    set _owf-list (sentence
+      gis:find-features owf-dataset "STATUS" "Production"
+      gis:find-features owf-dataset "STATUS" "Construction"
+      gis:find-features owf-dataset "STATUS" "Planned"
+    )
+  ][
+    set _owf-list (sentence
+      gis:find-features owf-dataset "STATUS" "Production"
+      gis:find-features owf-dataset "STATUS" "Construction"
+    )
+    set _owf-list filter [ f -> gis:property-value f "year" <= year ] _owf-list
+
+  ]
+
+  ; Use the filtered list to set the shape area property and that area
+  ; to calculate frational coverage
+  foreach _owf-list [ f ->  gis:set-property-value f "SHAPE_AREA"  1 ]
+  gis:apply-coverage owf-dataset "SHAPE_AREA" owf-fraction
+
   ask patches with [not (owf-fraction < 0 or owf-fraction > -1) ] [ set owf-fraction 0 ]
+
 
 end
 
