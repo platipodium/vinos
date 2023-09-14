@@ -408,6 +408,9 @@ end
 to boat-choose-start
 
   let _patch nobody
+  let _boat-cost-per-km (boat-fuel-consumption * oil-price / 100  + wage / boat-steaming-speed)
+  let _boat-prey-price item boat-current-prey-index prey-prices
+
   ifelse count boat-actions < memory-size [
     ; random patch if not sufficient memory accumulated yet (learning phase)
 
@@ -418,23 +421,18 @@ to boat-choose-start
     ]
 
   ][
-    ; Instead of random choice, we could look at our list of pathways and choose ... based on some criteria
-    ; e.g. trade-off (marginal benefit) between proximity (additional cost for steaming there) and expected gain at target
-    let _action-catches [action-catch] of boat-actions
-    let _action-patches [action-patch] of boat-actions
+    ask boat-actions [
+      ; @todo improve heading-dependent gis-scale calculation
+      let _action-distance  gis-scale * distance myself
+      set action-gain action-catch * _boat-prey-price - _action-distance * _boat-cost-per-km
+    ]
 
-    let _action-distances n-values memory-size [i -> distance item i _action-patches]
-    ;let _action-costs
+    let _mean-gain sum [action-gain] of boat-actions / count boat-actions
 
-    print _action-distances
-
-    let _action one-of boat-actions ;[ action-catch ]
-
-
+    let _action one-of boat-actions with [ action-gain > _mean-gain ]
     set _patch [ action-patch ] of _action
 
     ; Introduce some random component
-    ;let _nearby-patch one-of neighbors with [accessible?]
     let _nearby-patch one-of boat-fishable-patches with [ count other boats-here = 0 and distance myself < 6 ]
     if _nearby-patch != nobody [set _patch _nearby-patch]
 
@@ -511,7 +509,7 @@ to boat-make-haul
   let _cluster boat-type
 
   let _boat-gear-index boat-current-gear-index
-  let _patch-prey-index position (item boat-current-prey-index prey-names) patch-prey-names
+  let _patch-prey-index position _prey patch-prey-names
 
   ; Calculate conversion factor netlogo units to km, needs to be recalculated after
   ; every change of heading
@@ -668,16 +666,12 @@ to-report gis-scale
   ]
   let _marker one-of link-neighbors with [breed = markers]
 
-  ask _marker [forward 2] ; must be more than sqrt 2 to cover diagonal of square
+  if patch-ahead 1 = nobody [ask _marker [right 180]]
+  ask _marker [forward 1]
   let _gis-distance gis-envelope-distance (turtle-set self  _marker)
-  if _gis-distance = 0 [
-    ask _marker [ move-to self forward -2 ]
-    set _gis-distance gis-envelope-distance (turtle-set self  _marker)
-  ]
   ask my-out-links with [breed = markers][die]
   ask _marker [die]
-
-  report  _gis-distance / 1.5
+  report  _gis-distance
 end
 
 ; Boat procedure reporting the active gear, i.e. that with the highest
@@ -691,7 +685,6 @@ end
 to-report boat-prey
   report [gear-species] of item boat-current-gear-index boat-gears
 end
-
 
 to-report boat-fuel-consumption
   ; "Eins bleibt immer gleich: Pro Stunde rechnet man pro PS mit einem Konsum von 0,21 Liter bei einem
