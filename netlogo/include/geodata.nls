@@ -129,14 +129,15 @@ to setup-maps
     set area gis-patch-area
   ]
 
+  set owf-dataset load-dataset "OWF"
+  gis:apply-coverage owf-dataset "POWER_MW" owf-fraction
+  ask patches with [not (owf-fraction < 0 or owf-fraction > -1) ] [ set owf-fraction 0 ]
 
 end
 
 ; EmodNet provides human activities at https://www.emodnet-humanactivities.eu/download-data.php.
 ; After providing your country and sector, the wind farm polygon areas are freely available.
 to show-windfarms
-
-  set owf-dataset load-dataset "OWF"
 
   ;foreach gis:feature-list-of owf-dataset [
   ;  this-owf-vector-feature -> gis:set-property-value this-owf-vector-feature "POWER_MW" read-from-string gis:property-value this-owf-vector-feature "POWER_MW"
@@ -171,7 +172,7 @@ to-report load-dataset [_dataset-name]
   if _dataset-name = "ICES" [ report gis:load-dataset "../data/ices/ICES_Statistical_Rectangles_Eco.shp"]
   if _dataset-name = "EEZ" [ report gis:load-dataset "../data/eez/eez.shp"]
   if _dataset-name = "Plaicebox" [ report gis:load-dataset "../data/plaicebox/DB_PlaiceBox_WGS84_vTIwi_Jan2001_G.shp"]
-  if _dataset-name = "OWF" [ report gis:load-dataset "../data/emodnet/EMODnet_HA_WindFarms_pg_20220324.shp"]
+  if _dataset-name = "OWF" [ report gis:load-dataset "../data/emodnet/EMODnet_HA_Energy_WindFarms_pg_20230605.shp"]
   if _dataset-name = "SNS" [ report gis:load-dataset "../data/coastline/sns_waterbody.shp"]
 
   print (sentence "Invalid dataset name" _dataset-name ".  Valid are 'Natura2000', 'NP', 'ICES','Plaicebox','EEZ','OWF','SNS'")
