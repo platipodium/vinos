@@ -40,7 +40,7 @@ __includes [
 
 globals [
   navigable-depth                    ; minimum depth where a boat can navigate
-  min-fresh-catch                    ; wether the boat decides to go back to harbor, maybe change name
+  min-fresh-catch                    ; wether the boat decides togo back to harbor, maybe change name
 
   sum-ports-total-landings-kg        ; overall sum of total landings per period
   percentage-landings-kg             ; percentage of other landing over total landings per period
@@ -182,6 +182,9 @@ to go
 
   advance-calendar
   update-date-patch
+
+  ; Every new year recompute exclusion area from OWF
+  if (time:get "dayofyear" date = 1) [ update-owf calc-accessibility ]
 
   ;let _total-prey-landed sum ([port-prey-landed] of ports)
   ; Todo: adjust price, leave for next version
@@ -507,7 +510,7 @@ end
 to-report should-go-fishing?
   ; if the weather is good and
   ; if this month's harvest is not sufficent
-  ; a boat decides to go on a fishing trip.
+  ; a boat decides to start a fishing trip.
 
   set port-prob-bad-weather random-float 1.00
   if random-float 1.00 < port-prob-bad-weather [
