@@ -64,16 +64,14 @@ globals [
   view-legend-thresholds
   date-patch
   temp
+  patch-prey-names
+
 ]
 
 patches-own [
 
-  ; constant properties
-  patch-prey-names ; @todo let's get rid of this and only use a global prey-names variable
-
   ; Prey biomasses
   patch-prey-biomasses   ; current biomasses of the prey species
-
 
   crangon-summer                    ; data from TI @todo convert to vector of prey species
   crangon-winter
@@ -429,13 +427,48 @@ end
 ; area concentration of the three species calculated from their winter and summer
 ; values and weighted by day of year
 to-report crangon
-  report summer-weight * crangon-summer * 1000 + (1 - summer-weight) * crangon-winter * 1000
+  let _correction-factor 500
+
+  ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
+    let _prey-index position "Solea" patch-prey-names
+    report 0.9 * _correction-factor * (
+      (summer-weight * crangon-summer + (1 - summer-weight) * crangon-winter )
+    ) + 0.1 * item _prey-index patch-prey-biomasses
+  ][
+    report _correction-factor * (
+      (summer-weight * crangon-summer + (1 - summer-weight) * crangon-winter )
+    )
+  ]
 end
+
 to-report solea
-  report summer-weight * solea-summer +  (1 - summer-weight) * solea-winter
+  let _correction-factor 1
+
+  ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
+    let _prey-index position "Solea" patch-prey-names
+    report 0.9 * _correction-factor * (
+      (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
+    ) + 0.1 * item _prey-index patch-prey-biomasses
+  ][
+    report _correction-factor * (
+      (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
+    )
+  ]
 end
+
 to-report platessa
-  report summer-weight * platessa-summer +  (1 - summer-weight) * platessa-winter
+  let _correction-factor 1
+
+  ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
+    let _prey-index position "Pleuronectes" patch-prey-names
+    report 0.9 * _correction-factor * (
+      (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
+    ) + 0.1 * item _prey-index patch-prey-biomasses
+  ][
+    report _correction-factor * (
+      (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
+    )
+  ]
 end
 
 to-report summer-weight
@@ -682,7 +715,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-0
+4
 
 BUTTON
 83
@@ -924,7 +957,7 @@ SWITCH
 312
 sar?
 sar?
-0
+1
 1
 -1000
 
