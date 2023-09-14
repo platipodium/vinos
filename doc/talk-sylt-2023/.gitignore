@@ -1,9 +1,0 @@
-# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
-# SPDX-License-Identifier: CC0-1.0
-# SPDX-FieContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
-*aux
-*log
-*synctex.gz
-*-slides.pdf
-Lemmen2023_sylt.pdf
-Lemmen2023_sylt.tex
