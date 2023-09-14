@@ -305,16 +305,9 @@ end
 ; here the optimization is done and the memory update
 to boat-land-port
 
-  ; "Eins bleibt immer gleich: Pro Stunde rechnet man pro PS mit einem Konsum von 0,21 Liter bei einem
-  ; Diesel und 0,29 Liter bei Benzin als Treibstoff.” https://www.boatsandstories.com/verbrauch_1-3-2/
-  ; At 150 PS and 48 h trip covering 300 km, the efficiency is 150*48*0,21/300 = 5 l km-1
-  ; @todo we can adjust this to boat-engine power
-  ; we scale the fuel-efficiency (0 to 1) with boat-fuel-consumption
-  let _boat-fuel-consumption 48 * boat-engine *  1.35962 * 0.21 / 300 ; is typically 5 l km-1
-
   ; Diesel for shipping is usually 0.5 € l-1
   ; In the end tranpsortatino costs should be 15% of crangon reenvu, up to 30% for platessa/sole
-  set boat-transportation-costs _boat-fuel-consumption * oil-price / 100 * boat-distance-at-sea; typically 750 €
+  set boat-transportation-costs boat-fuel-consumption * oil-price / 100 * boat-distance-at-sea; typically 750 €
 
   ; Typically there are 3 people aboard, i.e. 150 * 3 work hours per month.  Average wage is 5000+2*2000 per
   ; gross salary per month, adding 40% costs gives 12600 EUR, i.e. 84 € h-1, there is slider wage
@@ -367,7 +360,7 @@ to boat-land-port
   set boat-time-at-sea  0
   set boat-time-at-sea-left 0
 
-  set boat-total-fuel-consumption boat-total-fuel-consumption +  _boat-fuel-consumption
+  set boat-total-fuel-consumption boat-total-fuel-consumption +  boat-fuel-consumption
   set boat-total-landings boat-total-landings +  item boat-current-gear-index boat-trip-gear-catches
 
 
@@ -427,14 +420,22 @@ to boat-choose-start
   ][
     ; Instead of random choice, we could look at our list of pathways and choose ... based on some criteria
     ; e.g. trade-off (marginal benefit) between proximity (additional cost for steaming there) and expected gain at target
-    let _action one-of boat-actions ;[ action-catch ]
-    set _patch [ action-patch ] of _action
+    let _action-catches [action-catch] of boat-actions
+    let _action-patches [action-patch] of boat-actions
 
-    ;  set _patch one-of boat-fishable-patches with [ distance myself < 6 ]
+    let _action-distances n-values memory-size [i -> distance item i _action-patches]
+    ;let _action-costs
+
+    print _action-distances
+
+    let _action one-of boat-actions ;[ action-catch ]
+
+
+    set _patch [ action-patch ] of _action
 
     ; Introduce some random component
     ;let _nearby-patch one-of neighbors with [accessible?]
-    let _nearby-patch one-of boat-fishable-patches with [ count boats-here = 0 and distance myself < 6 ]
+    let _nearby-patch one-of boat-fishable-patches with [ count other boats-here = 0 and distance myself < 6 ]
     if _nearby-patch != nobody [set _patch _nearby-patch]
 
   ]
@@ -689,4 +690,14 @@ end
 ; priority gear
 to-report boat-prey
   report [gear-species] of item boat-current-gear-index boat-gears
+end
+
+
+to-report boat-fuel-consumption
+  ; "Eins bleibt immer gleich: Pro Stunde rechnet man pro PS mit einem Konsum von 0,21 Liter bei einem
+  ; Diesel und 0,29 Liter bei Benzin als Treibstoff.” https://www.boatsandstories.com/verbrauch_1-3-2/
+  ; At 150 PS and 48 h trip covering 300 km, the efficiency is 150*48*0,21/300 = 5 l km-1
+  ; @todo we can adjust this to boat-engine power
+  ; we scale the fuel-efficiency (0 to 1) with boat-fuel-consumption
+  report 48 * boat-engine *  1.35962 * 0.21 / 300 ; is typically 5 l km-1
 end
