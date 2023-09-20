@@ -22,27 +22,31 @@ Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German Small-scale
 
 Fishers in the North Sea face area competition with other uses of the sea---long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF). German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water. And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet.
 
-## Implementation
+## Installation
 
-The simulation model is implemented in the NetLogo framework, a graphical simulator and programming
-environment developed for educational purposes. The main application of the model is found in [./netlogo/vinos.nlogo](./netlogo/vinos.nlogo) and
-can be started with a double-click on most operating systems after installation of NetLogo, freely
-available from https://ccl.northwestern.edu/netlogo/.
+The simulation model is implemented in the NetLogo framework, a graphical simulator and programming environment developed for educational purposes. Please install NetLogo version 6.3 or later from https://ccl.northwestern.edu/netlogo/download.shtml. On
+Windows and macOS systems, double-clicking the NetLogo application or the model code [./netlogo/vinos.nlogo](./netlogo/vinos.nlogo) will open NetLogo's integrated development environment. On Linux, start NetLogo with the `netlogo-gui.sh` shell script provided by NetLogo.
+
+> If NetLogo gets stuck during startup on macOS with Apple Silicon, you might have run into a Java problem. See https://github.com/NetLogo/NetLogo/issues/2080, install an updated Java runtime, export `JAVA_HOME` and start NetLogo with the `netlogo-gui.sh` shell script.
+
+## Using the model
+
+Upon opening the model, all data are loaded, variables are initialized with default values and the `Interface` tab of the IDE is shown, with a map shown in the `view` panel, and sliders and switches to change parameters. Upon clicking the `go` button, the model advances and the `view` as well as the line and bar plots are updated.
+
+Different spatial results can be shown by selecting in the chooser (NetLogo's term for dropdown menus) other variables than bathymetry. We typically look at fishing effort. Different statistical results about the boats can be shown by selection in the chooser for boat properties. You need to hit the `update` button after changing a chooser's value.
+
+Please refer to the `Info` tab in the graphical NetLogo model to learn quickly more about the model and it's mathematical implementation. There is a full documentation of the agent-based model in ODD format available in
+[./doc/odd/paper.md](./doc/odd/paper.md).
+
+## Evaluating a model simulation
+
+The typical evaluation of a NetLogo model is visual inspection, as its canonical use is for education or participatory modeling. So go explore the changes in the map and the line and bar plots as you change parameters (a rising oil price, perhaps?).
+
+The model does write out geospatial data for later analysis with third-party GIS software in the directory [./netlogo/results/](./netlogo/results/). Currently, static maps for water depth, accessibility, and OWF fraction are written out, as well as weekly maps of fishing effort. The output format is ESRII ASCII `.asc` raster data. Fleet statistical data is written out as [./netlogo/results/total_avg.csv](./netlogo/results/total_avg.csv) comma-separated value tabular format.
 
 ## Data and supplementary routines
 
 The simulation model uses open data available in the [./data](./data) folder. Some of the routines to convert data into a format usable by the NetLogo model are available as `R` or `python` routines in the folders [./R](./R), and [./python](./python), respectively. You do not need `R` or `python` to run the simulation, unless you would like to recreate some of the input data or project metadata.
-
-## Using the model
-
-To use the model, please install NetLogo version 6.3 or later from https://ccl.northwestern.edu/netlogo/download.shtml. On
-Windows and macOS systems, double-clicking the NetLogo application or the code (in the projects's
-`netlogo` folder) with the extension `.nlogo` will open NetLogo's integrated development environment.
-On Linux, start NetLogo with the `netlogo-gui.sh` shell script provided by NetLogo. If NetLogo gets stuck during startup on macOS with Apple Silicon, you might have run into a Java problem. See https://github.com/NetLogo/NetLogo/issues/2080, install an updated Java runtime, export `JAVA_HOME` and start NetLogo with the `netlogo-gui.sh` shell script.
-
-Please refer to the `Info` tab in the graphical NetLogo model to learn quickly more about the model, it's
-mathematical implementation and how to use it. There is a full documentation of the agent-based model in ODD format available in
-[./doc/odd/paper.md](./doc/odd/paper.md).
 
 ## Licenses
 
