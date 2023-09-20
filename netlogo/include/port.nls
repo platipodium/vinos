@@ -54,7 +54,7 @@ to port-read
 
   carefully [file-close][]
   file-open "../data/orey_etal_data/musselabm-harbor_vessel.csv"  ; Data of German fleet per landing port and cluster
-  gis:load-coordinate-system "../data/wgs1984.prj"
+  ;gis:load-coordinate-system "../data/wgs1984.prj"
 
   ; Read the first line and skip until not commented with '#'
   let _row csv:from-row file-read-line
