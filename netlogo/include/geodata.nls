@@ -9,6 +9,7 @@ to setup-maps
   no-display
   let _patches nobody
 
+  gis:load-coordinate-system "../data/wgs1984.prj"
   let bathymetry-dataset gis:load-dataset "../data/gebco/gebco_2021_n56.0_s53.0_w2.0_e10.0.asc"
 
   ;new crangon dataset (no summer and winter change anymore but year around data)
