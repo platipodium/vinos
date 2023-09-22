@@ -740,9 +740,9 @@ NIL
 BUTTON
 107
 201
-162
+209
 245
-update
+update-base
 update-view
 NIL
 1
@@ -811,10 +811,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-258
-469
-430
-502
+334
+471
+506
+504
 oil-price
 oil-price
 25
@@ -850,7 +850,7 @@ TEXTBOX
 153
 177
 195
-Change the background information here and hit \"update\"
+Change the information for the basemap here and hit \"update-base\"
 11
 0.0
 1
@@ -926,7 +926,7 @@ TEXTBOX
 58
 1394
 114
-Select what to\nshow as \nbackground\ninformation
+Select additional \nbackground\ninformation and\nhit update-background
 11
 0.0
 1
@@ -967,9 +967,9 @@ sar?
 BUTTON
 1238
 317
-1343
+1380
 350
-update
+update-background
 update-drawings
 NIL
 1
@@ -993,30 +993,30 @@ viewed
 11
 
 TEXTBOX
-262
-438
-454
-477
+338
+440
+530
+479
 Diesel for ships is tax-exempt and \ncosts on average 0.5 € l-1
 10
 0.0
 1
 
 TEXTBOX
-450
-439
-600
-467
+526
+440
+676
+468
 Staff costs are usually around 80 € h-1
 11
 0.0
 1
 
 SLIDER
-448
-469
-620
-502
+524
+470
+696
+503
 wage
 wage
 50
@@ -1045,10 +1045,10 @@ true
 PENS
 
 CHOOSER
-15
-497
-244
-542
+12
+495
+241
+540
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
@@ -1061,16 +1061,16 @@ SWITCH
 189
 show-boats?
 show-boats?
-1
+0
 1
 -1000
 
 BUTTON
-169
-498
-231
-542
-update
+250
+496
+322
+540
+update-plot
 plot-update-boat-property
 NIL
 1
@@ -1106,7 +1106,7 @@ SWITCH
 135
 one?
 one?
-1
+0
 1
 -1000
 
