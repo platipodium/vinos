@@ -3,9 +3,6 @@
 # SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 # SPDX-License-Identifier: Apache-2.0
 
-stages:
-  - lint
-
 variables:
   SW_NAME:
     description: |
