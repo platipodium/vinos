@@ -1,9 +1,10 @@
 ---
 # SPDX-FileCopyrightText: 2020 The ORT Project Authors
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
 # SPDX-License-Identifier: Apache-2.0
 
 stages:
-  - ort-scan
+  - lint
 
 variables:
   SW_NAME:
