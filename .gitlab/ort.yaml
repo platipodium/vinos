@@ -128,7 +128,7 @@ variables:
 
 ort-scan:
   image: $ORT_DOCKER_IMAGE
-  stage: ort-scan
+  stage: lint
   extends: .ort-scan
   variables:
     ORT_DOCKER_IMAGE: "ghcr.io/alliander-opensource/ort-container:latest"
