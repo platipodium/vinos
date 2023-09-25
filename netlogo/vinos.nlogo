@@ -97,6 +97,7 @@ patches-own [
   swept-area                        ; swept area of the patch, used to calculate SAR (swept area ratio)
   distance-to-coast                 ; distance to nearest land
   distance-to-port                  ; distance to nearest port
+  temporary                         ; temporary variable storage
 ]
 
 ; ------------------------------------------------------------------------------------------
@@ -736,7 +737,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity"
-11
+4
 
 BUTTON
 83
