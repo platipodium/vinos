@@ -74,7 +74,7 @@ pages:
     - cp -r .gitlab/public .
     - cp ./doc/odd/paper.pdf public/odd.pdf
     - cp ./doc/joss/paper.pdf public/joss.pdf
-    - cp ./netlogo/results/effort*png public/effort.png
+  #    - cp ./netlogo/results/effort*png public/effort.png
   artifacts:
     paths:
       - public/
