@@ -12,7 +12,11 @@ Copyright: 2022-2023 Johann Heinrich von Thünen-Institut
 License: LicenseRef-DL-DE-BY-2.0
 
 Files: data/emodnet/EMODnet*
-Copyright: 2022-2023 European Marine Observation and Data Network
+Copyright: 2023 European Marine Observation and Data Network
+License: LicenseRef-EMODNET-1.0
+
+Files: data/emodnet/fishingbeamtrawlsPolygon.*
+Copyright: 2023 European Marine Observation and Data Network
 License: LicenseRef-EMODNET-1.0
 
 Files: data/gebco/gebco*
