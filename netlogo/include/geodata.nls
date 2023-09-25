@@ -220,7 +220,7 @@ to show-dataset [_dataset-name]
 
   ask patches with [ accessible? ][set pcolor grey]
 
-  if _dataset-name = "EMODNET TBB effort" [
+  if _dataset-name = "EMODnet TBB effort" [
     let _dataset gis:load-dataset "../data/emodnet/fishingbeamtrawlsPolygon.shp"
     gis:apply-coverage  _dataset "MW_FSHN" temporary
     set _qt (list 1 10 50 100 250 400 600  800 1000)
@@ -235,8 +235,24 @@ to show-dataset [_dataset-name]
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
 
+  if _dataset-name = "Bathymetry" [
+    ask patches [set temporary depth]
+    set _qt (list 0 1 2 5 10 20 30 40  80)
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Sequential" "Blues" n
+  ]
+
+  if _dataset-name = "Depth" [
+
+    calculate-tidal-depth
+    set _qt (list 0 1 2 5 10 20 30 40  80)
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Sequential" "Blues" n
+  ]
+
+
   ask patches with [not (temporary < _min or temporary > _min - 1) ] [ set temporary 0 ]
-  set _patches [self] of patches with [temporary > _min]
+  set _patches [self] of patches with [temporary >= _min]
 
   set _values (map [ p -> [temporary] of p ] _patches )
 
@@ -336,5 +352,19 @@ to calculate-distance-to-port
   ask patches  [
     let _port min-one-of ports [distance myself]
     set distance-to-coast gis-envelope-distance (patch-set self [patch-here] of _port)
+  ]
+end
+
+to calculate-tidal-depth
+  let _patches patches with [accessible? or depth > 10]
+
+  ; identify patches influenced by tides
+  let _tidal-patches _patches with [depth <= 4 and distance-to-coast < 5 ]
+
+  ask _patches [set temporary depth]
+
+  ; Assume a 12:25 h lunar tide with 2 m amplitude in all Wadden patches
+  ask _tidal-patches [
+    set temporary depth + 2 * sin ( 2 * pi * (time:get "hours" date + 24 * time:get "dayofyear" date + 365.25 * time:get "year" date) / 12.42)
   ]
 end

@@ -383,6 +383,8 @@ to update-view
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
+  if (view = "depth") [ show-dataset "Depth" ]
+
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   set n max [ fishing-effort-hours ] of patches
   if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
@@ -738,8 +740,8 @@ CHOOSER
 245
 view
 view
-"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity"
-9
+"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity" "depth"
+12
 
 BUTTON
 83
@@ -981,7 +983,7 @@ SWITCH
 312
 sar?
 sar?
-0
+1
 1
 -1000
 
