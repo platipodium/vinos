@@ -220,13 +220,20 @@ to show-dataset [_dataset-name]
 
   ask patches with [ accessible? ][set pcolor grey]
 
-  if _dataset-name = "TBB effort" [
+  if _dataset-name = "EMODNET TBB effort" [
     let _dataset gis:load-dataset "../data/emodnet/fishingbeamtrawlsPolygon.shp"
     gis:apply-coverage  _dataset "MW_FSHN" temporary
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
-]
+  ]
+
+  if _dataset-name = "Effort" [
+    ask patches [set temporary 365.25 / ticks *  fishing-effort-hours / area]
+    set _qt (list 1 10 50 100 250 400 600  800 1000)
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Sequential" "Oranges" n
+  ]
 
   ask patches with [not (temporary < _min or temporary > _min - 1) ] [ set temporary 0 ]
   set _patches [self] of patches with [temporary > _min]

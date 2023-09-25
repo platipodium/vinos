@@ -352,7 +352,7 @@ to update-view
   if (view = "effort (h a-1)") and ( ticks > 0 )[
 
     set _patches [self] of patches with [fishing-effort-hours > 0]
-    set _values (map [ p -> [365.25 / ticks *  fishing-effort-hours] of p ] _patches )
+    set _values (map [ p -> [365.25 / ticks *  fishing-effort-hours / area] of p ] _patches )
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set n (length _qt) - 1
     ;set _qt quantile-thresholds _values n
@@ -739,7 +739,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity"
-5
+9
 
 BUTTON
 83
