@@ -364,6 +364,22 @@ to update-view
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
+  if (view = "shore proximity")[
+
+    set _patches [self] of patches with [accessible?]
+    set _values (map [p -> [distance-to-coast] of p] _patches)
+    set _qt (list 0 1 2 5 10 15 20 30 40 80)
+    set _values quantile-scale-new _qt _values
+    set _colors palette:scheme-colors "Sequential" "Oranges" n
+
+    foreach  (range length _patches) [ i ->
+      ask item i _patches [
+        set pcolor palette:scale-gradient _colors (item i _values) 0 1
+      ]
+    ]
+    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
+  ]
+
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   set n max [ fishing-effort-hours ] of patches
   if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
