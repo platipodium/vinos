@@ -188,6 +188,7 @@ to update-drawings
   ask boats [set hidden? not show-boats?]
   if owf? [ show-windfarms]
   if sar? [ draw-background "SAR" ]
+  if box? [ load-plaice-box]
   setup-logo
   display
 end
