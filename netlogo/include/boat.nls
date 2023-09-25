@@ -507,6 +507,7 @@ to boat-make-haul
   let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing
   let _sub-step-time _haul-time * 1.0 / _sub-steps
   let _cluster boat-type
+  let _power boat-engine
 
   let _boat-gear-index boat-current-gear-index
   let _patch-prey-index position _prey patch-prey-names
@@ -545,7 +546,8 @@ to boat-make-haul
 
 
       ask patch-here [
-        set fishing-effort-hours fishing-effort-hours + _sub-step-time
+        ; Fishing effort is measured as Megawatt hours
+        set fishing-effort-hours fishing-effort-hours + _sub-step-time * _power / 1000.0
         set swept-area swept-area + _haul-width * _sub-step-time * _fishing-speed
 
         ; @todo reduce fish on patch by amount taken out, allow for recovery
