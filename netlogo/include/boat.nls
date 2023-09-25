@@ -379,7 +379,8 @@ to boat-land-port
         set _my-action self
         set action-gear [item 0 boat-gears] of myself
         set action-catch [boat-trip-best-catch] of myself
-        set action-patch [boat-trip-best-patch] of myself
+        ;set action-patch [boat-trip-best-patch] of myself  ; should be removed
+        move-to [boat-trip-best-patch] of myself
       ]
 
       set boat-actions  (turtle-set _my-action boat-actions)
@@ -391,7 +392,8 @@ to boat-land-port
         ask _my-action [
           set action-gear [item 0 boat-gears] of myself
           set action-catch [boat-trip-best-catch] of myself
-          set action-patch [boat-trip-best-patch] of myself
+          ;set action-patch [boat-trip-best-patch] of myself  ; should be removed
+          move-to [boat-trip-best-patch] of myself
         ]
       ]
     ]
@@ -423,6 +425,7 @@ to boat-choose-start
   ][
     ask boat-actions [
       ; @todo improve heading-dependent gis-scale calculation
+      ; @todo make actions be located
       let _action-distance  gis-scale * distance myself
       set action-gain action-catch * _boat-prey-price - _action-distance * _boat-cost-per-km
     ]
@@ -430,7 +433,7 @@ to boat-choose-start
     let _mean-gain sum [action-gain] of boat-actions / count boat-actions
 
     let _action one-of boat-actions with [ action-gain > _mean-gain ]
-    set _patch [ action-patch ] of _action
+    if _action != nobody [set _patch [ patch-here ] of _action ]
 
     ; Introduce some random component
     let _nearby-patch one-of boat-fishable-patches with [ count other boats-here = 0 and distance myself < 6 ]

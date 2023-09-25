@@ -218,7 +218,8 @@ to show-dataset [_dataset-name]
   let _colors nobody
   let _min 0
 
-  ask patches with [ accessible? ][set pcolor grey]
+  set water-patches patches with [depth > 1]
+  ask water-patches [set pcolor grey]
 
   if _dataset-name = "EMODnet TBB effort" [
     let _dataset gis:load-dataset "../data/emodnet/fishingbeamtrawlsPolygon.shp"
@@ -228,9 +229,9 @@ to show-dataset [_dataset-name]
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
 
-  if _dataset-name = "Effort" [
+  if _dataset-name = "Effort" and ticks > 0 [
     ask patches [set temporary 365.25 / ticks *  fishing-effort-hours / area]
-    set _qt (list 1 10 50 100 250 400 600  800 1000)
+    set _qt (list  10 50 100 250 400 600  800 1000)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
@@ -243,16 +244,14 @@ to show-dataset [_dataset-name]
   ]
 
   if _dataset-name = "Depth" [
-
     calculate-tidal-depth
     set _qt (list 0 1 2 5 10 20 30 40  80)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Blues" n
   ]
 
-
-  ask patches with [not (temporary < _min or temporary > _min - 1) ] [ set temporary 0 ]
-  set _patches [self] of patches with [temporary >= _min]
+  ask water-patches with [not (temporary < _min or temporary > _min - 1) ] [ set temporary 0 ]
+  set _patches [self] of water-patches with [temporary >= _min]
 
   set _values (map [ p -> [temporary] of p ] _patches )
 
@@ -336,8 +335,8 @@ end
 
 
 to calculate-distance-to-coast
-  let _water-patches patches with [depth >= 0]
-  let _land-patches patches with [depth < 0]
+  let _land-patches patches with [depth <= -1]
+  let _water-patches patches with [depth > -1]
   ask _water-patches  [
     let _coast-patch min-one-of _land-patches [distance myself]
     set distance-to-coast gis-envelope-distance (patch-set self _coast-patch)
@@ -356,15 +355,30 @@ to calculate-distance-to-port
 end
 
 to calculate-tidal-depth
-  let _patches patches with [accessible? or depth > 10]
 
-  ; identify patches influenced by tides
-  let _tidal-patches _patches with [depth <= 4 and distance-to-coast < 5 ]
-
-  ask _patches [set temporary depth]
-
-  ; Assume a 12:25 h lunar tide with 2 m amplitude in all Wadden patches
-  ask _tidal-patches [
-    set temporary depth + 2 * sin ( 2 * pi * (time:get "hours" date + 24 * time:get "dayofyear" date + 365.25 * time:get "year" date) / 12.42)
+  ; create the amphidromic point
+  create-turtles 1 [
+    set hidden? true
+    let _xy gis:project-lat-lon 55.5 5.1
+    setxy item 0 _xy item 1 _xy
+    set label "amphidrome"
   ]
+
+  let _amphidrome one-of turtles with [label = "amphidrome"]
+
+  ask water-patches [
+    ;let _coords gis:envelope-of (self)
+    ;let _distance haversine-distance (list 5.1 ((item 0 _coords + item 1 _coords) / 2) 55.5 ((item 2 _coords + item 3 _coords) / 2))
+    ; Distance amphidromic point to Cuxhaven is 260 km, and tidal range there is about 3 m, so linear model gives
+
+    let _distance gis-envelope-distance (patch-set [patch-here] of _amphidrome self)
+    let _range _distance / 260.0 * 3.0
+
+    ask _amphidrome [face myself]
+
+    ; assume 12.4167 lunar semidurnal (M2) tide
+    let _phase ([heading] of _amphidrome) / 360 * 12.4167
+    set temporary depth + _range * sin ( 2 * pi * (time:get "hours" date + 24 * time:get "dayofyear" date + 365.25 * time:get "year" date + _phase) / 12.4167)
+  ]
+
 end

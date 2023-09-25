@@ -184,8 +184,9 @@ end
 
 to update-drawings
   clear-drawing
-  ask ports [set hidden? not show-ports?]
-  ask boats [set hidden? not show-boats?]
+  ask ports   [set hidden? not show-ports?]
+  ask boats   [set hidden? not show-boats?]
+  ask actions [set hidden? not show-actions?]
   if owf? [ show-windfarms]
   if sar? [ draw-background "SAR" ]
   setup-logo

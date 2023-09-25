@@ -66,6 +66,7 @@ globals [
   temp
   patch-prey-names
 
+  water-patches
 ]
 
 patches-own [
@@ -634,6 +635,7 @@ to calc-accessibility
   ]
 
   ask patches with [not accessible?] [set depth min (list -2 depth)]
+  set water-patches my-patches
 
   ; Boats are not allowed within OWF areas
   ask patches with [owf-fraction > 0.5] [set accessible? false]
@@ -842,7 +844,7 @@ oil-price
 oil-price
 25
 75
-40.0
+30.0
 5
 1
 ct l-1
@@ -956,9 +958,9 @@ Select additional \nbackground\ninformation and\nhit update-background
 
 SWITCH
 1242
-196
+235
 1344
-229
+268
 owf?
 owf?
 1
@@ -967,9 +969,9 @@ owf?
 
 SWITCH
 1241
-238
+277
 1344
-271
+310
 box?
 box?
 1
@@ -978,9 +980,9 @@ box?
 
 SWITCH
 1240
-279
+318
 1343
-312
+351
 sar?
 sar?
 1
@@ -989,9 +991,9 @@ sar?
 
 BUTTON
 1238
-317
+356
 1380
-350
+389
 update-background
 update-drawings
 NIL
@@ -1107,9 +1109,9 @@ NIL
 
 BUTTON
 1239
-355
+394
 1344
-388
+427
 clear
 clear-drawing
 NIL
@@ -1157,6 +1159,17 @@ CSH = shrimp\nPLE = plaice\nSOL = sole\nTBB = beam trawl\nOTB = otter trawl
 6
 0.0
 1
+
+SWITCH
+1242
+192
+1379
+225
+show-actions?
+show-actions?
+1
+1
+-1000
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
