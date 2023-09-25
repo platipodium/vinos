@@ -353,7 +353,9 @@ to update-view
 
     set _patches [self] of patches with [fishing-effort-hours > 0]
     set _values (map [ p -> [365.25 / ticks *  fishing-effort-hours] of p ] _patches )
-    set _qt quantile-thresholds _values n
+    set _qt (list 1 10 50 100 250 400 600  800 1000)
+    set n (length _qt) - 1
+    ;set _qt quantile-thresholds _values n
     set _values quantile-scale-new _qt _values
     set _colors palette:scheme-colors "Sequential" "Oranges" n
 
@@ -737,7 +739,7 @@ CHOOSER
 view
 view
 "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity"
-4
+5
 
 BUTTON
 83
@@ -979,7 +981,7 @@ SWITCH
 312
 sar?
 sar?
-1
+0
 1
 -1000
 
@@ -1080,7 +1082,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-0
+1
 1
 -1000
 
@@ -1125,7 +1127,7 @@ SWITCH
 135
 one?
 one?
-0
+1
 1
 -1000
 
