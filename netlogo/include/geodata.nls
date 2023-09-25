@@ -131,6 +131,9 @@ to setup-maps
   ]
 
   update-owf
+
+  calculate-distance-to-coast
+  ; calculate-distance-to-port  ; needs ports defined, so do it later
 end
 
 to update-owf
@@ -265,4 +268,25 @@ to export-patches
   gis:store-dataset gis:patch-dataset owf-fraction "results/owf-fraction"
   gis:store-dataset gis:patch-dataset accessible? "results/accessible"
   gis:store-dataset gis:patch-dataset plaice-box? "results/plaice-box"
+end
+
+
+to calculate-distance-to-coast
+  let _water-patches patches with [depth >= 0]
+  let _land-patches patches with [depth < 0]
+  ask _water-patches  [
+    let _coast-patch min-one-of _land-patches [distance myself]
+    set distance-to-coast gis-envelope-distance (patch-set self _coast-patch)
+  ]
+  ask _land-patches  [
+    let _coast-patch min-one-of _water-patches [distance myself]
+    set distance-to-coast gis-envelope-distance (patch-set self _coast-patch)
+  ]
+end
+
+to calculate-distance-to-port
+  ask patches  [
+    let _port min-one-of ports [distance myself]
+    set distance-to-coast gis-envelope-distance (patch-set self [patch-here] of _port)
+  ]
 end

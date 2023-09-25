@@ -95,6 +95,8 @@ patches-own [
   cluster-prey-catches              ; preys caught by cluster
   area                              ; area of the patch
   swept-area                        ; swept area of the patch, used to calculate SAR (swept area ratio)
+  distance-to-coast                 ; distance to nearest land
+  distance-to-port                  ; distance to nearest port
 ]
 
 ; ------------------------------------------------------------------------------------------
@@ -717,8 +719,8 @@ CHOOSER
 245
 view
 view
-"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-4
+"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity"
+11
 
 BUTTON
 83
