@@ -378,7 +378,9 @@ to calculate-tidal-depth
 
     ; assume 12.4167 lunar semidurnal (M2) tide
     let _phase ([heading] of _amphidrome) / 360 * 12.4167
-    set temporary depth + _range * sin ( 2 * pi * (time:get "hours" date + 24 * time:get "dayofyear" date + 365.25 * time:get "year" date + _phase) / 12.4167)
+    set temporary  depth + _range * sin ( 2 * pi * (time:get "hours" date + 24 * time:get "dayofyear" date + 365.25 * time:get "year" date + _phase) / 12.4167)
+
+    ;if _distance > 90 and _distance < 91 [print (sentence _distance _range _phase temporary)]
   ]
 
 end

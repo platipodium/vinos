@@ -98,6 +98,8 @@ end
 to-report quantile-scale-new [indices data]
 
   let n length indices - 1
+  if length data < 1 [report nobody]
+
   let _missing int min data - 1
   let _data map [ x -> _missing ] data
 
