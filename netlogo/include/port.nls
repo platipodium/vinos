@@ -92,7 +92,7 @@ to port-read
             set port-clusters (list 0 0 0 0)
             ;print (sentence "Created" port-kind "port" port-name)
 
-            set port-prey-names (list "Crangon" "Pleuronectes" "Solea")
+            set port-prey-names (list "Shrimp" "Plaice" "Sole")
 
           ]; find a starting patch at least 3 nm from port away
         ]

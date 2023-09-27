@@ -89,10 +89,12 @@ boats-own [
 
 to setup-boats
 
+  if any? actions [ask actions [die]]
+
   set-default-shape boats "boat top"
   if any? boats [
     ask boats [
-      ask boat-actions [die]
+      set boat-actions (turtle-set)
       die
     ]
   ]
@@ -147,7 +149,7 @@ to setup-boats
       set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
       set boat-gear-priorities n-values number-of-gears  [i -> random-float 1] ; initialize priority for the pathway
 
-      let _crangon-gear-index position "Crangon" gear-prey-names
+      let _crangon-gear-index position "Shrimp" gear-prey-names
       ifelse boat-type < 3 [
         ; shrimpers have only one gear
         set boat-gear-priorities  n-values number-of-gears [i  -> 0 ]
@@ -645,7 +647,7 @@ to-report boat-accessible-patches
   ;set _patches patches with [accessible? and temporary > 2]
 
   let _prey item boat-current-prey-index prey-names
-  if (boat-engine > 221 and _prey = "Pleuronectes") [
+  if (boat-engine > 221 and _prey = "Plaice") [
     set _patches _patches with [not plaice-box?]
   ]
 

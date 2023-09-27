@@ -683,11 +683,12 @@ end
 
 ; The profile routine is called manually from the command line while we test
 to profile
-  setup
+  ;setup
   profiler:start
-  repeat 20 [ go ]
+  ; repeat 20 [ go ]
+  setup
   profiler:stop
-  ;csv:to-file "results/profiler_data.csv" profiler:data
+  csv:to-file "results/profiler_data.csv" profiler:data
   profiler:reset
 end
 @#$#@#$#@
