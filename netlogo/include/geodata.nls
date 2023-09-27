@@ -334,15 +334,18 @@ to export-patches
 end
 
 
+; This procedure is very costly.
 to calculate-distance-to-coast
   let _land-patches patches with [depth <= -1]
   let _water-patches patches with [depth > -1]
+  let _coast-patches _land-patches with [ max [depth] of neighbors4 > -1]
+
   ask _water-patches  [
-    let _coast-patch min-one-of _land-patches [distance myself]
+    let _coast-patch min-one-of _coast-patches [distance myself]
     set distance-to-coast gis-envelope-distance (patch-set self _coast-patch)
   ]
   ask _land-patches  [
-    let _coast-patch min-one-of _water-patches [distance myself]
+    let _coast-patch min-one-of _coast-patches [distance myself]
     set distance-to-coast gis-envelope-distance (patch-set self _coast-patch)
   ]
 end
