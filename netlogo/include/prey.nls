@@ -6,7 +6,7 @@ extensions [ csv ]
 breed [preys prey]
 
 preys-own [
-  prey-name         ; name, here the latin lowercase family name, e.g. crangon, platessa, solea, ..
+  prey-name         ; name, here the latin Uppercase englsish name, e.g. Shrimp, Plaice, ...
   prey-scientific        ; scientific name, e.g. Crangon crangon
   prey-english
   prey-german
@@ -30,13 +30,13 @@ to setup-preys
   read-prey-csv
 
   ask preys [
-    if prey-name = "Crangon" [ set prey-german "Nordseekrabbe" set prey-picture "../figures/320px-Crangon_crangon.jpg" ]
-    if prey-name = "Pleuronectes" [ set prey-german "Scholle" set prey-picture "../figures/319px-Pleuronectes_platessa.jpg" ]
-    if prey-name = "Solea" [ set prey-german "Seezunge" set prey-picture "../figures/Solea_solea_1.jpg" ]
-    if prey-name = "Merlangius" [ set prey-german "Wittling" set prey-picture "../figures/320px-Wijting002.jpg" ]
-    if prey-name = "Sprattus" [ set prey-german "Sprotte" set prey-picture "../figures/320px-Sprattus_sprattus.jpg" ]
-    if prey-name = "Limanda" [ set prey-german "Kliesche" set prey-picture "../figures/319px-Limanda_limanda.jpg" ]
-    if prey-name = "Nephrops" [ set prey-german "Kaisergranat" set prey-picture "../figures/320px-Nephrops_norvegicus.jpg" ]
+    if prey-name = "Shrimp" [ set prey-german "Nordseekrabbe" set prey-picture "../figures/320px-Crangon_crangon.jpg" ]
+    if prey-name = "Plaice" [ set prey-german "Scholle" set prey-picture "../figures/319px-Pleuronectes_platessa.jpg" ]
+    if prey-name = "Sole" [ set prey-german "Seezunge" set prey-picture "../figures/Solea_solea_1.jpg" ]
+    if prey-name = "Whiting" [ set prey-german "Wittling" set prey-picture "../figures/320px-Wijting002.jpg" ]
+    if prey-name = "Sprat" [ set prey-german "Sprotte" set prey-picture "../figures/320px-Sprattus_sprattus.jpg" ]
+    if prey-name = "Dab" [ set prey-german "Kliesche" set prey-picture "../figures/319px-Limanda_limanda.jpg" ]
+    if prey-name = "Lobster" [ set prey-german "Kaisergranat" set prey-picture "../figures/320px-Nephrops_norvegicus.jpg" ]
   ]
 
   ; Report global variables, make sure to keep the order of the preys
@@ -46,16 +46,18 @@ to setup-preys
   set prey-number count preys
   set prey-names n-values prey-number [i -> [prey-name] of prey item i my-prey-ids]
   set prey-prices n-values prey-number [ i -> 5] ; default value is 5 EUR kg-1
-  set prey-prices replace-item (position "Crangon" prey-names) prey-prices 7
-  set prey-prices replace-item (position "Pleuronectes" prey-names) prey-prices 1 ; should be lower
-  set prey-prices replace-item (position "Solea" prey-names) prey-prices 11
+  set prey-prices replace-item (position "Shrimp" prey-names) prey-prices 7
+  set prey-prices replace-item (position "Plaice" prey-names) prey-prices 1 ; should be lower
+  set prey-prices replace-item (position "Sole" prey-names) prey-prices 11
 end
 
 to read-prey-csv
 
   file-open "./include/prey.csv"
   ; Read the first row without doing anything, the ASFIS column headers are
-  ; "3A_Code","Taxonomic_Code","CPC_Group","Identifier","Name_En","Name_Fr","Name_Es","Name_Ar","Name_Cn","Name_Ru","Scientific_Name","Author","Major_Group","Yearbook_Group","ISSCAAP_Group","CPC_Class"
+  ; "3A_Code","Taxonomic_Code","CPC_Group","Identifier","Name_En","Name_Fr","Name_Es","Name_Ar","Name_Cn",
+  ; "Name_Ru","Scientific_Name","Author","Major_Group","Yearbook_Group","ISSCAAP_Group","CPC_Class","short_name"
+  ; and were extended by the last column "short_name"
   let row csv:from-row file-read-line
 
   while [ not file-at-end? ] [
@@ -63,7 +65,7 @@ to read-prey-csv
 
     create-preys 1 [
       let my-name item 10 row
-      set prey-name substring my-name 0 position " " my-name ; @todo lowercase
+      set prey-name last row
       set prey-three-code item 0 row
       set prey-english item 4 row
       set prey-scientific my-name
@@ -81,8 +83,8 @@ to read-prey-csv
 end
 
 to-report prey-gear-indices
-  ; gear-prey-names ["Crangon" "Pleuronectes" "Solea" "Pleuronectes" "Solea" "Pleuronectes"]
-  ; prey-names  ["Nephrops" "Crangon" "Merlangius" "Pleuronectes" "Solea" "Limanda" "Sprattus"]
+  ; gear-prey-names ["Shrimp" "Plaice" "Sole" "Plaice" "Sole" "Plaice"]
+  ; prey-names  ["Lobster" "Shrimp" "Whiting" "Plaice" "Sole" "Dab" "Sprat"]
 
   report n-values count preys [ iprey ->
     filter [ igear -> (item igear gear-prey-names) = (item iprey prey-names) ] (range count gears)

@@ -22,7 +22,7 @@ __includes [
   "include/plot.nls"
   "include/utilities.nls"
   "include/boat.nls"
-  "include/view.nls"
+  "include/scene.nls"
   "include/prey.nls"
   "include/port.nls"
   "include/action.nls"
@@ -60,12 +60,13 @@ globals [
 
   home-ports                         ; agentset of breed ports
 
-  view-legend-n
-  view-legend-thresholds
+  scene-legend-n
+  scene-legend-thresholds
   date-patch
   temp
   patch-prey-names
 
+  water-patches
 ]
 
 patches-own [
@@ -95,6 +96,9 @@ patches-own [
   cluster-prey-catches              ; preys caught by cluster
   area                              ; area of the patch
   swept-area                        ; swept area of the patch, used to calculate SAR (swept area ratio)
+  distance-to-coast                 ; distance to nearest land
+  distance-to-port                  ; distance to nearest port
+  temporary                         ; temporary variable storage
 ]
 
 ; ------------------------------------------------------------------------------------------
@@ -126,8 +130,8 @@ to setup
 
   setup-plots
 
-  set view-legend-n 9
-  update-view
+  set scene-legend-n 9
+  update-scene
   update-drawings
   setup-logo
   display
@@ -151,7 +155,7 @@ to setup-globals
   set min-fresh-catch 10
   set navigable-depth 2
   set boat-property-chooser "distance-at-sea"
-  set view "bathymetry"
+  set scene "bathymetry"
   setup-date-patch
 end
 
@@ -224,7 +228,7 @@ to go
   ask boats [ set boat-hour boat-hour mod 24 ]
 
   update-plots
-  update-view
+  update-scene
   ;update-drawings
 
   ; export the data every week on a Sunday (weekday 0)
@@ -242,15 +246,15 @@ end
 ;---------------------------------
 
 
-to-report viewed
-  report view
+to-report displayed
+  report scene
 end
 
-to update-view
+to update-scene
 
   if any? legends [ask legends [die]]
   if any? legend-entries [ask legend-entries [die]]
-  let n view-legend-n
+  let n scene-legend-n
   let _qt nobody
   let _values nobody
   let _patches nobody
@@ -259,7 +263,7 @@ to update-view
   ask patches [set pcolor grey - 2]
   ask patches with [ accessible? ][set pcolor grey]
 
-  if (view = "Crangon") [
+  if (scene = "Shrimp") [
 
     set _patches [self] of patches with [crangon > 0]
     set _values (map [ p -> [crangon] of p ] _patches )
@@ -275,7 +279,7 @@ to update-view
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
-  if view = "CrangoXXn"  [
+  if scene = "CrangoXXn"  [
     set _qt quantile-thresholds [crangon] of patches with [crangon > 0] n
     ask patches with [crangon >= 0][
       carefully [
@@ -285,7 +289,7 @@ to update-view
     draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
-  if view = "Solea"  [
+  if scene = "Sole"  [
     set _qt quantile-thresholds [solea] of patches with [solea > 0] n
     ask patches with [solea > 0][
       carefully [
@@ -295,9 +299,9 @@ to update-view
     draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
    ]
 
-  if view = "Pleuronectes"  [
+  if scene = "Plaice"  [
     set _qt quantile-thresholds [platessa] of patches with [platessa > 0] n
-    set view-legend-thresholds _qt
+    set scene-legend-thresholds _qt
     ask patches with [platessa > 0][
       carefully [
         set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale _qt  (list platessa)) 0 1
@@ -306,7 +310,7 @@ to update-view
     draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
-  if view = "bathymetry"  [
+  if scene = "bathymetry"  [
     set _qt quantile-thresholds [depth] of patches with [depth > 0 and depth < 80] n
     ask patches with [depth > 0][
       carefully [
@@ -316,7 +320,7 @@ to update-view
     draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 3])
   ]
 
-  if (view = "area") [
+  if (scene = "area") [
 
     set _patches [self] of patches with [depth > 0]
     set _values (map [ p -> [ area ] of p ] _patches )
@@ -330,7 +334,7 @@ to update-view
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 4])
   ]
 
-  if (view = "swept area ratio") and ( ticks > 0 )[
+  if (scene = "swept area ratio") and ( ticks > 0 )[
 
     set _patches [self] of patches with [swept-area > 0]
     set _values (map [ p -> [365.25 / ticks *  swept-area / area] of p ] _patches )
@@ -346,11 +350,13 @@ to update-view
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
-  if (view = "effort (h a-1)") and ( ticks > 0 )[
+  if (scene = "effort (h a-1)") and ( ticks > 0 )[
 
     set _patches [self] of patches with [fishing-effort-hours > 0]
-    set _values (map [ p -> [365.25 / ticks *  fishing-effort-hours] of p ] _patches )
-    set _qt quantile-thresholds _values n
+    set _values (map [ p -> [365.25 / ticks *  fishing-effort-hours / area] of p ] _patches )
+    set _qt (list 1 10 50 100 250 400 600  800 1000)
+    set n (length _qt) - 1
+    ;set _qt quantile-thresholds _values n
     set _values quantile-scale-new _qt _values
     set _colors palette:scheme-colors "Sequential" "Oranges" n
 
@@ -362,36 +368,54 @@ to update-view
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
-  if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
+  if (scene = "shore proximity")[
+
+    set _patches [self] of patches with [accessible?]
+    set _values (map [p -> [distance-to-coast] of p] _patches)
+    set _qt (list 0 1 2 5 10 15 20 30 40 80)
+    set _values quantile-scale-new _qt _values
+    set _colors palette:scheme-colors "Sequential" "Oranges" n
+
+    foreach  (range length _patches) [ i ->
+      ask item i _patches [
+        set pcolor palette:scale-gradient _colors (item i _values) 0 1
+      ]
+    ]
+    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
+  ]
+
+  if (scene = "depth") [ show-dataset "Depth" ]
+
+  if scene = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   set n max [ fishing-effort-hours ] of patches
-  if view = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
-  if view = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
-  if view = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
+  if scene = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
+  if scene = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
+  if scene = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
 
 end
 
-to update-view-legend
+to update-scene-legend
 
   ; Create a background for drawing the legend
   ask patches with [pxcor >= min-pxcor + 2 and pxcor <= min-pxcor + 20
-       and pycor > max-pycor - 22 - 3 * view-legend-n and pycor < max-pycor - 20][set pcolor grey]
+       and pycor > max-pycor - 22 - 3 * scene-legend-n and pycor < max-pycor - 20][set pcolor grey]
 
-  let view-legend-colors palette:scheme-colors "Sequential" "Reds" view-legend-n
+  let scene-legend-colors palette:scheme-colors "Sequential" "Reds" scene-legend-n
 
   if any? legends [ask legends [die]]
-  foreach range view-legend-n [ i ->
+  foreach range scene-legend-n [ i ->
     create-legends 1 [
          set shape "square"
          set size 3
-         setxy min-pxcor + 4  max-pycor - 20 - 3 * view-legend-n + 1  + 3 * i
-         set color item i view-legend-colors
+         setxy min-pxcor + 4  max-pycor - 20 - 3 * scene-legend-n + 1  + 3 * i
+         set color item i scene-legend-colors
     ]
     create-legends 1 [
          set shape "square"
          set size 0.1
-         setxy min-pxcor + 4 + 13 max-pycor - 20 - 3 * view-legend-n + 1 + 3 * i - 1
-         set label-color black ; if you want to color it, use item i view-legend-colors
-         set label formatted-number (item i view-legend-thresholds) 5
+         setxy min-pxcor + 4 + 13 max-pycor - 20 - 3 * scene-legend-n + 1 + 3 * i - 1
+         set label-color black ; if you want to color it, use item i scene-legend-colors
+         set label formatted-number (item i scene-legend-thresholds) 5
     ]
   ]
 end
@@ -433,7 +457,7 @@ to-report crangon
   let _correction-factor 500
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
-    let _prey-index position "Solea" patch-prey-names
+    let _prey-index position "Sole" patch-prey-names
     report 0.9 * _correction-factor * (
       (summer-weight * crangon-summer + (1 - summer-weight) * crangon-winter )
     ) + 0.1 * item _prey-index patch-prey-biomasses
@@ -448,7 +472,7 @@ to-report solea
   let _correction-factor 1
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
-    let _prey-index position "Solea" patch-prey-names
+    let _prey-index position "Sole" patch-prey-names
     report 0.9 * _correction-factor * (
       (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
     ) + 0.1 * item _prey-index patch-prey-biomasses
@@ -463,7 +487,7 @@ to-report platessa
   let _correction-factor 1
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
-    let _prey-index position "Pleuronectes" patch-prey-names
+    let _prey-index position "Plaice" patch-prey-names
     report 0.9 * _correction-factor * (
       (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
     ) + 0.1 * item _prey-index patch-prey-biomasses
@@ -487,8 +511,8 @@ end
 
 to calc-fish
   ask patches [
-    set prey-names (list "Solea" "Pleuronectes" "Crangon")
-    set patch-prey-names (list "Solea" "Pleuronectes" "Crangon")
+    set prey-names (list "Sole" "Plaice" "Shrimp")
+    set patch-prey-names (list "Sole" "Plaice" "Shrimp")
     set patch-prey-biomasses (list solea platessa crangon)
   ]
 end
@@ -531,8 +555,8 @@ to create-effort-map
   ; data storage
   let prefix  (word "results/effort-" substring date-and-time 0 12)
 
-  set view "effort (h a-1)"
-  update-view
+  set scene "effort (h a-1)"
+  update-scene
   clear-drawing
   ask links [set hidden? true]
   ask boats [set hidden? true]
@@ -560,11 +584,11 @@ to ci-maps
   let prefix ""
   let dataset gis:patch-dataset fishing-effort-hours
 
-  foreach (list "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)"
+  foreach (list "Shrimp" "Plaice" "Sole" "pollution (random)" "bathymetry" "effort (h a-1)"
     "accessible?" "owf" "plaice-box?" "swept area ratio") [ s ->
 
-    set view s
-    update-view
+    set scene s
+    update-scene
     clear-drawing
 
     set prefix  (word "results/"  first (split "? -" s) "-" time:show date "yyyy-MM-dd")
@@ -611,6 +635,7 @@ to calc-accessibility
   ]
 
   ask patches with [not accessible?] [set depth min (list -2 depth)]
+  set water-patches my-patches
 
   ; Boats are not allowed within OWF areas
   ask patches with [owf-fraction > 0.5] [set accessible? false]
@@ -658,11 +683,12 @@ end
 
 ; The profile routine is called manually from the command line while we test
 to profile
-  setup
+  ;setup
   profiler:start
-  repeat 20 [ go ]
+  ; repeat 20 [ go ]
+  setup
   profiler:stop
-  ;csv:to-file "results/profiler_data.csv" profiler:data
+  csv:to-file "results/profiler_data.csv" profiler:data
   profiler:reset
 end
 @#$#@#$#@
@@ -715,9 +741,9 @@ CHOOSER
 200
 103
 245
-view
-view
-"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
+scene
+scene
+"Shrimp" "Plaice" "Sole" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity" "depth"
 4
 
 BUTTON
@@ -743,7 +769,7 @@ BUTTON
 209
 245
 update-base
-update-view
+update-scene
 NIL
 1
 T
@@ -819,7 +845,7 @@ oil-price
 oil-price
 25
 75
-40.0
+30.0
 5
 1
 ct l-1
@@ -933,9 +959,9 @@ Select additional \nbackground\ninformation and\nhit update-background
 
 SWITCH
 1242
-196
+235
 1344
-229
+268
 owf?
 owf?
 1
@@ -944,9 +970,9 @@ owf?
 
 SWITCH
 1241
-238
+277
 1344
-271
+310
 box?
 box?
 1
@@ -955,9 +981,9 @@ box?
 
 SWITCH
 1240
-279
+318
 1343
-312
+351
 sar?
 sar?
 1
@@ -966,9 +992,9 @@ sar?
 
 BUTTON
 1238
-317
+356
 1380
-350
+389
 update-background
 update-drawings
 NIL
@@ -987,7 +1013,7 @@ MONITOR
 379
 116
 NIL
-viewed
+displayed
 17
 1
 11
@@ -1061,7 +1087,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-0
+1
 1
 -1000
 
@@ -1084,9 +1110,9 @@ NIL
 
 BUTTON
 1239
-355
+394
 1344
-388
+427
 clear
 clear-drawing
 NIL
@@ -1106,7 +1132,7 @@ SWITCH
 135
 one?
 one?
-0
+1
 1
 -1000
 
@@ -1134,6 +1160,17 @@ CSH = shrimp\nPLE = plaice\nSOL = sole\nTBB = beam trawl\nOTB = otter trawl
 6
 0.0
 1
+
+SWITCH
+1242
+192
+1379
+225
+show-actions?
+show-actions?
+1
+1
+-1000
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
