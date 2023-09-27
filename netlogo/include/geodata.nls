@@ -211,7 +211,7 @@ to show-dataset [_dataset-name]
 
   if any? legends [ask legends [die]]
   if any? legend-entries [ask legend-entries [die]]
-  let n view-legend-n
+  let n scene-legend-n
   let _qt nobody
   let _values nobody
   let _patches nobody
