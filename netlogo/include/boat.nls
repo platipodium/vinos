@@ -379,7 +379,8 @@ to boat-land-port
         set _my-action self
         set action-gear [item 0 boat-gears] of myself
         set action-catch [boat-trip-best-catch] of myself
-        set action-patch [boat-trip-best-patch] of myself
+        ;set action-patch [boat-trip-best-patch] of myself  ; should be removed
+        move-to [boat-trip-best-patch] of myself
       ]
 
       set boat-actions  (turtle-set _my-action boat-actions)
@@ -391,7 +392,8 @@ to boat-land-port
         ask _my-action [
           set action-gear [item 0 boat-gears] of myself
           set action-catch [boat-trip-best-catch] of myself
-          set action-patch [boat-trip-best-patch] of myself
+          ;set action-patch [boat-trip-best-patch] of myself  ; should be removed
+          move-to [boat-trip-best-patch] of myself
         ]
       ]
     ]
@@ -423,6 +425,7 @@ to boat-choose-start
   ][
     ask boat-actions [
       ; @todo improve heading-dependent gis-scale calculation
+      ; @todo make actions be located
       let _action-distance  gis-scale * distance myself
       set action-gain action-catch * _boat-prey-price - _action-distance * _boat-cost-per-km
     ]
@@ -430,7 +433,7 @@ to boat-choose-start
     let _mean-gain sum [action-gain] of boat-actions / count boat-actions
 
     let _action one-of boat-actions with [ action-gain > _mean-gain ]
-    set _patch [ action-patch ] of _action
+    if _action != nobody [set _patch [ patch-here ] of _action ]
 
     ; Introduce some random component
     let _nearby-patch one-of boat-fishable-patches with [ count other boats-here = 0 and distance myself < 6 ]
@@ -439,7 +442,7 @@ to boat-choose-start
   ]
 
   ; If there are not accessible patches found, go home and try again
-  ifelse _patch = nobody [
+  ifelse (_patch = nobody or [not accessible?] of _patch) [
     set boat-trip-phase 4 ; need to go home
   ][
     face _patch
@@ -507,6 +510,7 @@ to boat-make-haul
   let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing
   let _sub-step-time _haul-time * 1.0 / _sub-steps
   let _cluster boat-type
+  let _power boat-engine
 
   let _boat-gear-index boat-current-gear-index
   let _patch-prey-index position _prey patch-prey-names
@@ -545,7 +549,8 @@ to boat-make-haul
 
 
       ask patch-here [
-        set fishing-effort-hours fishing-effort-hours + _sub-step-time
+        ; Fishing effort is measured as Megawatt hours
+        set fishing-effort-hours fishing-effort-hours + _sub-step-time * _power / 1000.0
         set swept-area swept-area + _haul-width * _sub-step-time * _fishing-speed
 
         ; @todo reduce fish on patch by amount taken out, allow for recovery
@@ -625,14 +630,26 @@ end
 ; the plaice box restriction if highest priority gear's prey is plaice.
 to-report boat-accessible-patches
 
-  let my-patches patches with [accessible?]
+  let _patches patches with [accessible?]
+
+  ; identify patches influenced by tides
+  let _tidal-patches _patches with [depth <= 4 and distance-to-coast < 5 ]
+
+  ask _patches [set temporary depth]
+
+  ; Assume a 12:25 h lunar tide with 2 m amplitude in all Wadden patches
+  ask _tidal-patches [
+    set temporary depth + 2 * sin ( 2 * pi * (time:get "hours" date + 24 * time:get "dayofyear" date + 365.25 * time:get "year" date) / 12.42)
+  ]
+
+  ;set _patches patches with [accessible? and temporary > 2]
 
   let _prey item boat-current-prey-index prey-names
   if (boat-engine > 221 and _prey = "Pleuronectes") [
-    set my-patches my-patches with [not plaice-box?]
+    set _patches _patches with [not plaice-box?]
   ]
 
-  report my-patches
+  report _patches
 
 end
 

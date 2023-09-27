@@ -66,6 +66,7 @@ globals [
   temp
   patch-prey-names
 
+  water-patches
 ]
 
 patches-own [
@@ -95,6 +96,9 @@ patches-own [
   cluster-prey-catches              ; preys caught by cluster
   area                              ; area of the patch
   swept-area                        ; swept area of the patch, used to calculate SAR (swept area ratio)
+  distance-to-coast                 ; distance to nearest land
+  distance-to-port                  ; distance to nearest port
+  temporary                         ; temporary variable storage
 ]
 
 ; ------------------------------------------------------------------------------------------
@@ -349,8 +353,10 @@ to update-view
   if (view = "effort (h a-1)") and ( ticks > 0 )[
 
     set _patches [self] of patches with [fishing-effort-hours > 0]
-    set _values (map [ p -> [365.25 / ticks *  fishing-effort-hours] of p ] _patches )
-    set _qt quantile-thresholds _values n
+    set _values (map [ p -> [365.25 / ticks *  fishing-effort-hours / area] of p ] _patches )
+    set _qt (list 1 10 50 100 250 400 600  800 1000)
+    set n (length _qt) - 1
+    ;set _qt quantile-thresholds _values n
     set _values quantile-scale-new _qt _values
     set _colors palette:scheme-colors "Sequential" "Oranges" n
 
@@ -361,6 +367,24 @@ to update-view
     ]
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
+
+  if (view = "shore proximity")[
+
+    set _patches [self] of patches with [accessible?]
+    set _values (map [p -> [distance-to-coast] of p] _patches)
+    set _qt (list 0 1 2 5 10 15 20 30 40 80)
+    set _values quantile-scale-new _qt _values
+    set _colors palette:scheme-colors "Sequential" "Oranges" n
+
+    foreach  (range length _patches) [ i ->
+      ask item i _patches [
+        set pcolor palette:scale-gradient _colors (item i _values) 0 1
+      ]
+    ]
+    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
+  ]
+
+  if (view = "depth") [ show-dataset "Depth" ]
 
   if view = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   set n max [ fishing-effort-hours ] of patches
@@ -611,6 +635,7 @@ to calc-accessibility
   ]
 
   ask patches with [not accessible?] [set depth min (list -2 depth)]
+  set water-patches my-patches
 
   ; Boats are not allowed within OWF areas
   ask patches with [owf-fraction > 0.5] [set accessible? false]
@@ -717,8 +742,8 @@ CHOOSER
 245
 view
 view
-"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio"
-4
+"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity" "depth"
+12
 
 BUTTON
 83
@@ -819,7 +844,7 @@ oil-price
 oil-price
 25
 75
-40.0
+30.0
 5
 1
 ct l-1
@@ -933,9 +958,9 @@ Select additional \nbackground\ninformation and\nhit update-background
 
 SWITCH
 1242
-196
+235
 1344
-229
+268
 owf?
 owf?
 1
@@ -944,9 +969,9 @@ owf?
 
 SWITCH
 1241
-238
+277
 1344
-271
+310
 box?
 box?
 1
@@ -955,9 +980,9 @@ box?
 
 SWITCH
 1240
-279
+318
 1343
-312
+351
 sar?
 sar?
 1
@@ -966,9 +991,9 @@ sar?
 
 BUTTON
 1238
-317
+356
 1380
-350
+389
 update-background
 update-drawings
 NIL
@@ -1061,7 +1086,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-0
+1
 1
 -1000
 
@@ -1084,9 +1109,9 @@ NIL
 
 BUTTON
 1239
-355
+394
 1344
-388
+427
 clear
 clear-drawing
 NIL
@@ -1106,7 +1131,7 @@ SWITCH
 135
 one?
 one?
-0
+1
 1
 -1000
 
@@ -1134,6 +1159,17 @@ CSH = shrimp\nPLE = plaice\nSOL = sole\nTBB = beam trawl\nOTB = otter trawl
 6
 0.0
 1
+
+SWITCH
+1242
+192
+1379
+225
+show-actions?
+show-actions?
+1
+1
+-1000
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
