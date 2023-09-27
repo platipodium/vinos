@@ -4,7 +4,14 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
 
-# Release notes for version 1.2.1
+# Release notes for version 1.2.2 - in development
+
+Version 1.2.1 is a maintenance release of our Viable North Sea (ViNoS) software. The
+main purpose of this release are improvements to the User Interface
+
+- consistent naming of species (now changed to English short form)
+
+# Release notes for version 1.2.1 - Sep 27, 2023
 
 Version 1.2.1 is a maintenance release of our Viable North Sea (ViNoS) software. The
 main purpose of this release are improvements to functionality of the trip
@@ -16,7 +23,7 @@ optimization.
 - tabular output of totals for analysis of LPUE and fuel intensity
 - updated OWF data and historic timeline of extent
 
-# Release notes for version 1.2.0
+# Release notes for version 1.2.0 - Sep 6, 2023
 
 Version 1.2.0 is a feature release of our Viable North Sea (ViNoS) software. The
 main purpose of this release are improvements to functionality of the trip
