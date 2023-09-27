@@ -47,12 +47,6 @@ Files: data/nlwkn/NLP/*
 Copyright: 2022-2023 Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 License: LicenseRef-DL-DE-BY-2.0
 
-Files: netlogo/include/prey.csv
-Copyright: 2022-2023 Food and Agriculture Organization of the United Nations
-Copyright: 2023 Universität Hamburg
-Copyright: 2023 Helmholtz-Zentrum hereon GmbH
-License: LicenseRef-CC-BY-3.0-IGO
-
 Files: data/natura2000/northsea/MPA*
 Copyright: 2023 European Environmental Agency, Helmholtz-Zentrum hereon GmbH
 License: CC0-1.0
