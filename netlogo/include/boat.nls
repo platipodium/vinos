@@ -657,7 +657,7 @@ end
 
 to-report boat-catch-species [haul-length]
   ; calculate the values for each patch and every target species
-  ;(solea, platessa and crangon), i.e. biomass cath in KG
+  ;(sole, plaice and shrimp), i.e. biomass cath in KG
   ; @todo: negative values possible for patch-prey-biomasses
 
   let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) patch-prey-names ]

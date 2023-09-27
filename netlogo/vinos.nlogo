@@ -263,7 +263,7 @@ to update-scene
   ask patches [set pcolor grey - 2]
   ask patches with [ accessible? ][set pcolor grey]
 
-  if (scene = "Crangon") [
+  if (scene = "Shrimp") [
 
     set _patches [self] of patches with [crangon > 0]
     set _values (map [ p -> [crangon] of p ] _patches )
@@ -289,7 +289,7 @@ to update-scene
     draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
-  if scene = "Solea"  [
+  if scene = "Sole"  [
     set _qt quantile-thresholds [solea] of patches with [solea > 0] n
     ask patches with [solea > 0][
       carefully [
@@ -299,7 +299,7 @@ to update-scene
     draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
    ]
 
-  if scene = "Pleuronectes"  [
+  if scene = "Plaice"  [
     set _qt quantile-thresholds [platessa] of patches with [platessa > 0] n
     set scene-legend-thresholds _qt
     ask patches with [platessa > 0][
@@ -457,7 +457,7 @@ to-report crangon
   let _correction-factor 500
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
-    let _prey-index position "Solea" patch-prey-names
+    let _prey-index position "Sole" patch-prey-names
     report 0.9 * _correction-factor * (
       (summer-weight * crangon-summer + (1 - summer-weight) * crangon-winter )
     ) + 0.1 * item _prey-index patch-prey-biomasses
@@ -472,7 +472,7 @@ to-report solea
   let _correction-factor 1
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
-    let _prey-index position "Solea" patch-prey-names
+    let _prey-index position "Sole" patch-prey-names
     report 0.9 * _correction-factor * (
       (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
     ) + 0.1 * item _prey-index patch-prey-biomasses
@@ -487,7 +487,7 @@ to-report platessa
   let _correction-factor 1
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
-    let _prey-index position "Pleuronectes" patch-prey-names
+    let _prey-index position "Plaice" patch-prey-names
     report 0.9 * _correction-factor * (
       (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
     ) + 0.1 * item _prey-index patch-prey-biomasses
@@ -511,8 +511,8 @@ end
 
 to calc-fish
   ask patches [
-    set prey-names (list "Solea" "Pleuronectes" "Crangon")
-    set patch-prey-names (list "Solea" "Pleuronectes" "Crangon")
+    set prey-names (list "Sole" "Plaice" "Shrimp")
+    set patch-prey-names (list "Sole" "Plaice" "Shrimp")
     set patch-prey-biomasses (list solea platessa crangon)
   ]
 end
@@ -584,7 +584,7 @@ to ci-maps
   let prefix ""
   let dataset gis:patch-dataset fishing-effort-hours
 
-  foreach (list "Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)"
+  foreach (list "Shrimp" "Plaice" "Sole" "pollution (random)" "bathymetry" "effort (h a-1)"
     "accessible?" "owf" "plaice-box?" "swept area ratio") [ s ->
 
     set scene s
@@ -743,7 +743,7 @@ CHOOSER
 245
 scene
 scene
-"Crangon" "Pleuronectes" "Solea" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity" "depth"
+"Shrimp" "Plaice" "Sole" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity" "depth"
 4
 
 BUTTON
