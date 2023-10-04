@@ -26,13 +26,13 @@ authors:
     affiliation: 2
     orcid: 0000-0002-7171-3062
 affiliations:
-  - name: Helmholtz-Zentrum Hereon, Institute of Coastal Systems Modeling and Analysis, Germany, carsten.lemmen@hereon.de
+  - name: Helmholtz-Zentrum Hereon, Institute of Coastal Systems - Modeling and Analysis, Germany, carsten.lemmen@hereon.de
     index: 1
   - name: Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Germany
     index: 2
   - name: Hochschule Bremerhaven, Research Cluster Life Sciences, Bremerhaven, Germany
     index: 3
-date: 9 August 2023
+date: 4 Oct 2023
 year: 2023
 bibliography: paper.bib
 SPDX-FileCopyrightText: 2022-2023  Helmholtz-Zentrum hereon GmbH
@@ -44,7 +44,7 @@ SPDX-FileContributor: Carsten Lemmen
 
 Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German Small-scale Fisheries. As a Social-Ecological Systems model it focusses on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, and brown shrimp.
 
-Fishers in the North Sea face area competition with other uses of the sea---long practiced ones like shipping, gas exploration and sand extraction, and currently increasing ones like marine protection and offshore wind farming (OWF). German authorities have just released a new maritime spatial plan implementing (1) the need for 30% of protection areas demanded by the United Nations High Seas Treaty and(2) aiming at up to 70 GW of domestic offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water. And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet.
+Fishers in the North Sea face area competition with other uses of the sea---long practiced ones like shipping, gas exploration and sand extraction, and currently increasing ones like marine protection and offshore wind farming: German authorities released a maritime spatial plan implementing (1) the need for 30% of protection areas demanded by the United Nations High Seas Treaty and(2) aiming at up to 70 GW of domestic offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water. And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet.
 
 # Statement of need
 
@@ -76,12 +76,12 @@ To date, most NetLogo models have not exploited continuous integration (CI) and 
 
 # Model documentation and license
 
-The model is documented in short form the NetLogo IDE's `info` section. A full documentation following the Overview, Design, and Details [ODD, @Grimm2020] standard protocol for ABMs is available in the repository as `doc/odd/paper.md`. Data from third parties is licensed under various open source licenses. The model, its results and own proprietary data are released under open source licenses, mostly Apache 2.0 and CC-by-SA-4.0. A comprehensive documentation of all licenses is provided via @FSF2023.
+The model is documented in short form in the IDE's `info` section. A full documentation following the Overview, Design, and Details [ODD, @Grimm2020] standard protocol for ABMs is available in the repository as `doc/odd/paper.md`. Data from third parties is licensed under a multitude of open source licenses. The model, its results and own proprietary data are released under open source licenses, mostly Apache 2.0 and CC-by-SA-4.0. A comprehensive documentation of all licenses is provided via @FSF2023.
 
 <!-- @todo Refer to the published ODD version (once this is published) -->
 
 # Acknowledgements
 
-We acknowledge contributions from W. Nikolaus Probst, Marie Ryan, Jieun Seo, Verena Mühlberger and Kai W. Wirtz for providing feedback, data, fruitful discussions and for contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context. The development of the model was made possible by the grants 03F0862A, 03F0862C, 03F0862D, 03F0862E "Multiple Stressors on North Sea Life" (MuSSeL) within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit program of the Germany Bundesministerium für Bildung und Forschung (BMBF). We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX.
+We acknowledge contributions from W. Nikolaus Probst, Marie Ryan, Jieun Seo, Verena Mühlberger and Kai W. Wirtz for providing feedback, data, fruitful discussions and for contributing to the ODD document. We thank all members of the MuSSeL consortium making this software relevant in a research context. The development of the model was made possible by the grants 03F0862A, 03F0862C, 03F0862D, 03F0862E "Multiple Stressors on North Sea Life" (MuSSeL) within the 3rd Küstenforschung Nord-Ostsee (KüNO) call of the Forschung für Nachhaltigkeit program of the Germany Bundesministerium für Bildung und Forschung (BMBF). We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, and $\LaTeX$.
 
 # References
