@@ -98,6 +98,8 @@ patches-own [
   swept-area                        ; swept area of the patch, used to calculate SAR (swept area ratio)
   distance-to-coast                 ; distance to nearest land
   distance-to-port                  ; distance to nearest port
+  traffic-suitability               ; relative suitability due to traffic
+
   temporary                         ; temporary variable storage
 ]
 
@@ -747,7 +749,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity" "depth"
-1
+4
 
 BUTTON
 83
@@ -1081,7 +1083,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
-9
+0
 
 SWITCH
 1241

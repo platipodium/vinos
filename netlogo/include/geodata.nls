@@ -126,6 +126,11 @@ to setup-maps
     set _patches patches with [platessa-winter < 0 and depth > 0]
   ]
 
+  ; add traffic data
+  show-dataset "Traffic"
+  ask patches [ set traffic-suitability 1 ]
+  ask water-patches with [temporary > 1000] [ set traffic-suitability 0 ]
+
   ask patches [
     set area gis-patch-area
   ]
@@ -259,6 +264,7 @@ to show-dataset [_dataset-name]
   ]
 
   ask water-patches with [not (temporary < _min or temporary > _min - 1) ] [ set temporary 0 ]
+  ask patches with [not (temporary < _min or temporary > _min - 1) ] [ set temporary -9999 ]
   set _patches [self] of water-patches with [temporary >= _min]
 
   set _values (map [ p -> [temporary] of p ] _patches )

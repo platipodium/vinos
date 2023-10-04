@@ -143,7 +143,7 @@ to setup-boats
       ; boat-max-distance and boat-max-duration are adaptable, but
       ; rather the fishers prefer boat-tripfrequency by budgeting
       ; against their boat-total-fishing-hours
-      set boat-max-distance 0.001 * value-from-distribution butfirst butfirst item boat-type distance-distribution
+      set boat-max-distance 2 * 0.001 * value-from-distribution butfirst butfirst item boat-type distance-distribution
       set boat-max-duration value-from-distribution butfirst butfirst item boat-type triplength-distribution
 
       set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
@@ -669,6 +669,7 @@ to-report boat-catch-species [haul-length]
   report n-values (number-of-gears) [ igear ->
      (item igear catch-efficiency-boat) * (item (item igear ispecieslist) patch-prey-biomasses)
       * (([gear-width] of item igear boat-gears) * haul-length) * (boolean2int (item (item igear ispecieslist) patch-prey-biomasses > 0) )
+      * [traffic-suitability] of patch-here
   ]
 
 end
