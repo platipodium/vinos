@@ -250,6 +250,14 @@ to show-dataset [_dataset-name]
     set _colors palette:scheme-colors "Sequential" "Blues" n
   ]
 
+  if _dataset-name = "Traffic" [
+    let _dataset gis:load-dataset "../data/emodnet/EMODnet_HA_cargo-all_europe-yearly-2021.asc"
+    gis:apply-raster  _dataset temporary
+    set _qt (list 1 10 50 100 250 400 600  800 1000)
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Sequential" "Blues" n
+  ]
+
   ask water-patches with [not (temporary < _min or temporary > _min - 1) ] [ set temporary 0 ]
   set _patches [self] of water-patches with [temporary >= _min]
 
