@@ -455,7 +455,7 @@ end
 ; values and weighted by day of year
 to-report crangon
   let _correction-factor 500
-  let _resupply 1
+  let _resupply 0.9
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Sole" patch-prey-names
@@ -471,7 +471,7 @@ end
 
 to-report solea
   let _correction-factor 1
-  let _resupply 0.1
+  let _resupply 0.9
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Sole" patch-prey-names
@@ -487,7 +487,7 @@ end
 
 to-report platessa
   let _correction-factor 1
-  let _resupply 0.1
+  let _resupply 0.9
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Plaice" patch-prey-names
@@ -747,7 +747,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity" "depth"
-5
+1
 
 BUTTON
 83
@@ -1081,7 +1081,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
-0
+9
 
 SWITCH
 1241
