@@ -455,12 +455,13 @@ end
 ; values and weighted by day of year
 to-report crangon
   let _correction-factor 500
+  let _resupply 1
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Sole" patch-prey-names
-    report 0.9 * _correction-factor * (
+    report _resupply * _correction-factor * (
       (summer-weight * crangon-summer + (1 - summer-weight) * crangon-winter )
-    ) + 0.1 * item _prey-index patch-prey-biomasses
+    ) +  (1 - _resupply) * item _prey-index patch-prey-biomasses
   ][
     report _correction-factor * (
       (summer-weight * crangon-summer + (1 - summer-weight) * crangon-winter )
@@ -470,12 +471,13 @@ end
 
 to-report solea
   let _correction-factor 1
+  let _resupply 0.1
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Sole" patch-prey-names
-    report 0.9 * _correction-factor * (
+    report _resupply * _correction-factor * (
       (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
-    ) + 0.1 * item _prey-index patch-prey-biomasses
+    ) + (1 - _resupply) * item _prey-index patch-prey-biomasses
   ][
     report _correction-factor * (
       (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
@@ -485,15 +487,16 @@ end
 
 to-report platessa
   let _correction-factor 1
+  let _resupply 0.1
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Plaice" patch-prey-names
-    report 0.9 * _correction-factor * (
-      (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
-    ) + 0.1 * item _prey-index patch-prey-biomasses
+    report _resupply  * _correction-factor * (
+      (summer-weight * platessa-summer + (1 - summer-weight) * platessa-winter )
+    ) + (1 - _resupply) * item _prey-index patch-prey-biomasses
   ][
     report _correction-factor * (
-      (summer-weight * solea-summer + (1 - summer-weight) * solea-winter )
+      (summer-weight * platessa-summer + (1 - summer-weight) * platessa-winter )
     )
   ]
 end
@@ -744,7 +747,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity" "depth"
-4
+5
 
 BUTTON
 83
@@ -964,7 +967,7 @@ SWITCH
 268
 owf?
 owf?
-1
+0
 1
 -1000
 
@@ -975,7 +978,7 @@ SWITCH
 310
 box?
 box?
-1
+0
 1
 -1000
 

@@ -434,7 +434,11 @@ to boat-choose-start
 
     let _mean-gain sum [action-gain] of boat-actions / count boat-actions
 
-    let _action one-of boat-actions with [ action-gain > _mean-gain ]
+    ; How do we choose our next action, this could be a random action better than
+    ; average, or it could be simply the best action at hand.
+;    let _action one-of boat-actions with [ action-gain > _mean-gain ]
+    let _action max-one-of boat-actions [action-gain]
+
     if _action != nobody [set _patch [ patch-here ] of _action ]
 
     ; Introduce some random component
