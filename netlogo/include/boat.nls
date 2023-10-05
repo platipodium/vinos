@@ -193,7 +193,7 @@ to setup-boats
       set boat-home-port myself
       set boat-needs-return? false
       set boat-hour 0
-      set boat-fishable-patches boat-accessible-patches
+      set boat-fishable-patches boat-accessible-patches with [traffic-suitability > 0.9]
       set boat-actions (turtle-set)
 
       set boat-total-days-at-sea 0
