@@ -4,7 +4,25 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
 
-# Welcome to MkDocs
+# ViNoS - Viable North Sea
+
+> For now, these pages are under development and subject to frequent change and expansion.
+
+## Maps
+
+|            Bathymetry            |                Accessibility                 |
+| :------------------------------: | :------------------------------------------: |
+| ![Depth / m](./assets/Depth.png) | ![Accessibility](./assets/Accessibility.png) |
+
+|            Traffic            |               Shore proximity               |           Area            |
+| :---------------------------: | :-----------------------------------------: | :-----------------------: |
+| ![unit](./assets/Traffic.png) | ![kg km-2](<./assets/Shore\ proximity.png>) | ![km2](./assets/Area.png) |
+
+|             Shrimp             |             Plaice             |              Sole              |
+| :----------------------------: | :----------------------------: | :----------------------------: |
+| ![kg km-2](./assets/Depth.png) | ![kg km-2](./assets/Depth.png) | ![kg km-2](./assets/Depth.png) |
+
+## mkdocs
 
 For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 

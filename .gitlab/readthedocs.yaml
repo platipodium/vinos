@@ -6,11 +6,28 @@ readthedocs:
   image: alpine:latest
   stage: deploy
   before_script:
-    - apk add curl
+    - apk add curl rsync
+    - rsync ./netlogo/results/*png ./doc/mkdocs/assets/
   script:
     - 'curl -X POST -H "Authorization: Token ${RTD_TOKEN}" https://readthedocs.org/api/v3/projects/viable-north-sea/versions/latest/builds/'
   rules:
     # Only run the job on the default branch and not in forks.
     #- if: $CI_COMMIT_BRANCH == ${CI_DEFAULT_BRANCH}
-  needs: []
+  needs:
+    - create-map
   allow_failure: true
+
+pages:
+  stage: deploy
+  script:
+    - cp -r .gitlab/public .
+    - cp ./doc/odd/paper.pdf public/odd.pdf
+    - cp ./doc/joss/paper.pdf public/joss.pdf
+  #    - cp ./netlogo/results/effort*png public/effort.png
+  artifacts:
+    paths:
+      - public/
+  needs:
+    - joss-inara
+    - odd-paper
+    - create-map
