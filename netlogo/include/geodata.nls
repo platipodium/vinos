@@ -282,6 +282,29 @@ to show-dataset [_dataset-name]
 
 end
 
+to save-dataset [_dataset-name]
+  show-dataset _dataset-name
+  export-view (word "results" "/" _dataset-name ".png")
+end
+
+to save-datasets
+
+  let _static (list "Traffic" "Bathymetry" "EMODnet TBB effort")
+  let _dynamic (list "Effort" "Depth")
+
+  foreach _static [ s ->
+    show-dataset s
+    export-view (word "results" "/" s ".png")
+  ]
+
+  foreach _dynamic [ s ->
+    show-dataset s
+    export-view (word "results" "/" s "_" (substring date-and-time 0 12) ".png")
+  ]
+
+end
+
+
 to-report load-dataset [_dataset-name]
 
   if _dataset-name = "Natura2000" [ report gis:load-dataset "../data/natura2000/northsea/MPA_NorthSea_Shapes.shp"]
