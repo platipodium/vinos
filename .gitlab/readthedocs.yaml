@@ -8,7 +8,7 @@ readthedocs:
   before_script:
     - apk add curl
   script:
-    - 'curl -X POST -H "Authorization: Token ${RTD_TOKEN}" https://readthedocs.org/api/v3/projects/my-readthedocs-demo/versions/latest/builds/'
+    - 'curl -X POST -H "Authorization: Token ${RTD_TOKEN}" https://readthedocs.org/api/v3/projects/viable-north-sea/versions/latest/builds/'
   rules:
     # Only run the job on the default branch and not in forks.
     #- if: $CI_COMMIT_BRANCH == ${CI_DEFAULT_BRANCH}
