@@ -11,7 +11,7 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
     <go>create-effort-map</go>
     <timeLimit steps="1"/>
     <metric>count turtles</metric>
-    <enumeratedValueSet variable="view">
+    <enumeratedValueSet variable="scene">
       <value value="&quot;effort (h a-1)&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="show-ports?">
