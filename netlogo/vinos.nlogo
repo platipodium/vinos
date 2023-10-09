@@ -158,7 +158,7 @@ to setup-globals
   set min-fresh-catch 10
   set navigable-depth 2
   set boat-property-chooser "distance-at-sea"
-  set scene "bathymetry"
+  set scene "Bathymetry"
   setup-date-patch
 end
 
@@ -661,7 +661,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "effort (h a-1)" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth"
-4
+0
 
 BUTTON
 83
