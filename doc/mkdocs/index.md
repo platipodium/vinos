@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+SPDX-License-Identifier: CC0-1.0
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+-->
+
 # Welcome to MkDocs
 
 For full documentation visit [mkdocs.org](https://www.mkdocs.org).
@@ -12,6 +18,6 @@ For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 ## Project layout
 
     mkdocs.yml    # The configuration file.
-    docs/
+    doc/mkdocs/
         index.md  # The documentation homepage.
         ...       # Other markdown pages, images and other files.
