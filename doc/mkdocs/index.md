@@ -10,17 +10,25 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 ## Maps
 
-|              Bathymetry               |                Accessibility                 |
-| :-----------------------------------: | :------------------------------------------: |
-| ![Depth / m](./assets/Bathymetry.png) | ![Accessibility](./assets/Accessibility.png) |
+|              Bathymetry               |                Accessibility                 | Plaiceboxe                           |
+| :-----------------------------------: | :------------------------------------------: | ------------------------------------ |
+| ![Depth / m](./assets/bathymetry.png) | ![Accessibility](./assets/accessibility.png) | ![Plaicebox](./assets/plaicebox.png) |
 
-|            Traffic            |               Shore proximity               |           Area            |
-| :---------------------------: | :-----------------------------------------: | :-----------------------: |
-| ![unit](./assets/Traffic.png) | ![kg km-2](<./assets/Shore\ proximity.png>) | ![km2](./assets/Area.png) |
+|              Bathymetry               |                Accessibility                 | OWF                      |
+| :-----------------------------------: | :------------------------------------------: | ------------------------ |
+| ![Depth / m](./assets/bathymetry.png) | ![Accessibility](./assets/accessibility.png) | ![OWF](./assets/owf.png) |
+
+|            Traffic            |             Shore proximity              |           Area            |
+| :---------------------------: | :--------------------------------------: | :-----------------------: |
+| ![unit](./assets/traffic.png) | ![kg km-2](./assets/shore_proximity.png) | ![km2](./assets/area.png) |
 
 |             Shrimp              |             Plaice              |             Sole              |
 | :-----------------------------: | :-----------------------------: | :---------------------------: |
-| ![kg km-2](./assets/Shrimp.png) | ![kg km-2](./assets/Plaice.png) | ![kg km-2](./assets/Sole.png) |
+| ![kg km-2](./assets/shrimp.png) | ![kg km-2](./assets/plaice.png) | ![kg km-2](./assets/sole.png) |
+
+|                 TBB effort                  |     |
+| :-----------------------------------------: | :-: |
+| ![kg km-2](./assets/emodnet_tbb_effort.png) |     |
 
 ## mkdocs
 

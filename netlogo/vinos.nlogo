@@ -255,19 +255,21 @@ end
 
 to update-scene
 
+
   if any? legends [ask legends [die]]
   if any? legend-entries [ask legend-entries [die]]
   let n scene-legend-n
+
+  carefully [show-dataset scene][
+
+
   let _qt nobody
   let _values nobody
   let _patches nobody
   let _colors nobody
 
-
-
   ask patches [set pcolor grey - 2]
   ask patches with [ accessible? ][set pcolor grey]
-
 
   if (scene = "swept area ratio") and ( ticks > 0 )[
 
@@ -302,15 +304,7 @@ to update-scene
     ]
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
-
-  if scene = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
-  set n max [ fishing-effort-hours ] of patches
-  if scene = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
-  if scene = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
-  if scene = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
-
-
-  carefully [show-dataset scene][]
+  ]
 
 end
 
@@ -662,12 +656,12 @@ NIL
 CHOOSER
 11
 200
-103
+159
 245
 scene
 scene
-"Shrimp" "Plaice" "Sole" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity" "depth"
-2
+"Shrimp" "Plaice" "Sole" "Bathymetry" "effort (h a-1)" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth"
+4
 
 BUTTON
 83
@@ -687,11 +681,11 @@ NIL
 0
 
 BUTTON
-107
-201
-209
-245
-update-base
+160
+200
+215
+244
+update
 update-scene
 NIL
 1
@@ -799,7 +793,7 @@ TEXTBOX
 153
 177
 195
-Change the information for the basemap here and hit \"update-base\"
+Change the information for the basemap here and hit `update`
 11
 0.0
 1

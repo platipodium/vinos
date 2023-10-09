@@ -227,7 +227,8 @@ to  unit-test
     __test_five-number-summary __test_haversine-distance __test-value-from-distribution
     __test-normalize __test-quantile-thresholds __test-quantile-thresholds-number
   __test-quantiles __test-formatted-number __test-index-max-one-of  __test-formatted-int
-  __test-sign __test-order __test-split __test-position-one-of __test-replace-pattern)
+  __test-sign __test-order __test-split __test-position-one-of __test-replace-pattern
+  __test-lower )
   foreach tests [
     t -> ifelse t [print (sentence "Test passed")][error  "Test failed"]
   ]

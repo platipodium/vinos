@@ -289,6 +289,7 @@ to show-dataset [_dataset-name]
   if _dataset-name = "Shore proximity" [
     ask water-patches [ set temporary distance-to-coast ]
     set _qt (list 0 1 2 5 10 15 20 30 40 80)
+    set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
 
@@ -298,6 +299,26 @@ to show-dataset [_dataset-name]
     set _qt quantile-thresholds _values n
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
+
+  if _dataset-name = "Accessibility" [
+    ask water-patches [ set temporary boolean2int accessible? ]
+    set _qt (list 0 1)
+    set n (length _qt) - 1
+  ]
+
+  if _dataset-name = "Plaicebox" [
+    ask water-patches [ set temporary boolean2int (accessible? and not plaice-box?)]
+    set _qt (list 0 1)
+    set n (length _qt) - 1
+  ]
+
+  if _dataset-name = "OWF" [
+    ask water-patches [ set temporary owf-fraction ]
+    set _qt (list -1 0.2 0.5 0.8 1.0)
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Sequential" "Blues" n
+  ]
+
 
   ask water-patches with [not (temporary < _min or temporary > _min - 1) ] [ set temporary 0 ]
   ask patches with [not (temporary < _min or temporary > _min - 1) ] [ set temporary -9999 ]
@@ -309,12 +330,20 @@ to show-dataset [_dataset-name]
 
   set _values quantile-scale-new _qt _values
 
-  foreach  (range length _patches) [ i ->
-    ask item i _patches [
-      set pcolor palette:scale-gradient _colors (item i _values) 0 1
+  ifelse n > 2 [
+    foreach  (range length _patches) [ i ->
+      ask item i _patches [
+        set pcolor palette:scale-gradient _colors (item i _values) 0 1
+      ]
+    ]
+    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
+  ][
+    foreach  (range length _patches) [ i ->
+      ask item i _patches [
+        set pcolor scale-color blue temporary 1 0
+      ]
     ]
   ]
-  draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
 
 end
 
@@ -325,12 +354,17 @@ end
 
 to save-datasets
 
-  let _static (list "Traffic" "Bathymetry" "EMODnet TBB effort" "Area" "Shore proximity" "Shrimp" "Plaice" "Sole")
+  let _static (list "Traffic" "Bathymetry" "EMODnet TBB effort" "Area" "Shore proximity" "Shrimp" "Plaice"
+    "Sole" "OWF" "Accessibility" "Plaicebox"
+  )
   let _dynamic (list "Effort" "Depth")
 
   foreach _static [ s ->
     show-dataset s
-    export-view (word "results" "/" s ".png")
+    let _name lower s
+    set _name replace-pattern _name " -" "_"
+    print (sentence s _name)
+    export-view (word "results" "/" _name ".png")
   ]
 
   foreach _dynamic [ s ->
