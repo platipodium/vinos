@@ -85,7 +85,8 @@ patches-own [
   pollution-exceedance
   depth
   owf-fraction
-  accessible?             ; false if not accessible to fishery, i.e. close to port, too shallow, restricted area
+  accessible?                     ; false if not accessible to fishery for steaming
+  unrestricted?                   ; false if close to port, too shallow, restricted area
   plaice-box?
 
 
@@ -262,79 +263,11 @@ to update-scene
   let _patches nobody
   let _colors nobody
 
+
+
   ask patches [set pcolor grey - 2]
   ask patches with [ accessible? ][set pcolor grey]
 
-  if (scene = "Shrimp") [
-
-    set _patches [self] of patches with [crangon > 0]
-    set _values (map [ p -> [crangon] of p ] _patches )
-    set _qt quantile-thresholds _values n
-    set _values quantile-scale-new _qt _values
-    set _colors palette:scheme-colors "Sequential" "Reds" n
-
-    foreach  (range length _patches) [ i ->
-      ask item i _patches [
-        set pcolor palette:scale-gradient _colors (item i _values) 0 1
-      ]
-    ]
-    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
-  ]
-
-  if scene = "CrangoXXn"  [
-    set _qt quantile-thresholds [crangon] of patches with [crangon > 0] n
-    ask patches with [crangon >= 0][
-      carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale _qt  (list crangon)) 0 1
-      ][]
-    ]
-    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
-  ]
-
-  if scene = "Sole"  [
-    set _qt quantile-thresholds [solea] of patches with [solea > 0] n
-    ask patches with [solea > 0][
-      carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale _qt  (list solea)) 0 1
-      ][]
-    ]
-    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
-   ]
-
-  if scene = "Plaice"  [
-    set _qt quantile-thresholds [platessa] of patches with [platessa > 0] n
-    set scene-legend-thresholds _qt
-    ask patches with [platessa > 0][
-      carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Reds" n (first quantile-scale _qt  (list platessa)) 0 1
-      ][]
-    ]
-    draw-legend (palette:scheme-colors "Sequential" "Reds" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
-  ]
-
-  if scene = "bathymetry"  [
-    set _qt quantile-thresholds [depth] of patches with [depth > 0 and depth < 80] n
-    ask patches with [depth > 0][
-      carefully [
-        set pcolor palette:scale-scheme  "Sequential" "Blues" n (first quantile-scale _qt  (list depth)) 0 1
-      ][]
-    ]
-    draw-legend (palette:scheme-colors "Sequential" "Blues" n)  (n-values (n + 1) [ i -> formatted-number (item i _qt) 3])
-  ]
-
-  if (scene = "area") [
-
-    set _patches [self] of patches with [depth > 0]
-    set _values (map [ p -> [ area ] of p ] _patches )
-    set _qt quantile-thresholds _values n
-    set _values quantile-scale-new _qt _values
-    set _colors palette:scheme-colors "Sequential" "Blues" n
-
-    foreach  (range length _patches) [ i ->
-      ask item i _patches [ set pcolor palette:scale-gradient _colors (item i _values) 0 1 ]
-    ]
-    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 4])
-  ]
 
   if (scene = "swept area ratio") and ( ticks > 0 )[
 
@@ -370,29 +303,14 @@ to update-scene
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
-  if (scene = "shore proximity")[
-
-    set _patches [self] of patches with [accessible?]
-    set _values (map [p -> [distance-to-coast] of p] _patches)
-    set _qt (list 0 1 2 5 10 15 20 30 40 80)
-    set _values quantile-scale-new _qt _values
-    set _colors palette:scheme-colors "Sequential" "Oranges" n
-
-    foreach  (range length _patches) [ i ->
-      ask item i _patches [
-        set pcolor palette:scale-gradient _colors (item i _values) 0 1
-      ]
-    ]
-    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
-  ]
-
-  if (scene = "depth") [ show-dataset "Depth" ]
-
   if scene = "pollution (random)" [ask patches [set pcolor scale-color red pollution-exceedance 0 2]]
   set n max [ fishing-effort-hours ] of patches
   if scene = "accessible?" [ask patches [set pcolor scale-color blue boolean2int accessible? 1 0 ]]
   if scene = "owf" [ask patches [set pcolor scale-color blue owf-fraction 2 0 ]]
   if scene = "plaice-box?" [ask patches [set pcolor scale-color blue boolean2int (plaice-box? and accessible?) 1 0 ]]
+
+
+  carefully [show-dataset scene][]
 
 end
 
@@ -624,10 +542,10 @@ to calc-accessibility
 
   let _sns load-dataset "SNS"
 
-  let _water-patches patches gis:intersecting  _sns
+  set water-patches patches gis:intersecting  _sns
 
   ; Creep-fill from maximum depth, assumed in the North Sea
-  let my-patches max-one-of _water-patches [depth]
+  let my-patches max-one-of water-patches [depth]
   ask my-patches [set accessible? true]
 
   let new-patches nobody
@@ -636,11 +554,11 @@ to calc-accessibility
       set new-patches neighbors4 with [depth >= depth-threshold and not accessible?]
       ask new-patches [set accessible? true]
     ]
-    set my-patches _water-patches with [accessible? and (count neighbors4 with [accessible?]) < 4]
+    set my-patches water-patches with [accessible? and (count neighbors4 with [accessible?]) < 4]
   ]
 
   ask patches with [not accessible?] [set depth min (list -2 depth)]
-  set water-patches my-patches
+  set water-patches patches with [accessible?]
 
   ; Boats are not allowed within OWF areas
   ask patches with [owf-fraction > 0.5] [set accessible? false]
@@ -749,7 +667,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "pollution (random)" "bathymetry" "effort (h a-1)" "accessible?" "owf" "plaice-box?" "area" "swept area ratio" "shore proximity" "depth"
-4
+2
 
 BUTTON
 83
@@ -850,7 +768,7 @@ oil-price
 oil-price
 25
 75
-30.0
+75.0
 5
 1
 ct l-1
@@ -969,7 +887,7 @@ SWITCH
 268
 owf?
 owf?
-0
+1
 1
 -1000
 
@@ -980,7 +898,7 @@ SWITCH
 310
 box?
 box?
-0
+1
 1
 -1000
 

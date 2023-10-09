@@ -126,19 +126,21 @@ to setup-maps
     set _patches patches with [platessa-winter < 0 and depth > 0]
   ]
 
-  ; add traffic data
-  show-dataset "Traffic"
-  ask patches [ set traffic-suitability 1 ]
-  ask water-patches with [temporary > 1000] [ set traffic-suitability 0 ]
-
   ask patches [
     set area gis-patch-area
   ]
 
   update-owf
 
+  calc-accessibility
   calculate-distance-to-coast
   ; calculate-distance-to-port  ; needs ports defined, so do it later
+
+  ; add traffic data
+  show-dataset "Traffic"
+  ask patches [ set traffic-suitability 1 ]
+  ask water-patches with [temporary > 1000] [ set traffic-suitability 0 ]
+
 end
 
 to update-owf
@@ -223,7 +225,7 @@ to show-dataset [_dataset-name]
   let _colors nobody
   let _min 0
 
-  set water-patches patches with [depth > 1]
+  ask patches [set pcolor grey - 2]
   ask water-patches [set pcolor grey]
 
   if _dataset-name = "EMODnet TBB effort" [
@@ -263,6 +265,40 @@ to show-dataset [_dataset-name]
     set _colors palette:scheme-colors "Sequential" "Blues" n
   ]
 
+  if _dataset-name = "Shrimp" [
+    ask water-patches [set temporary crangon]
+    set _qt (list 1 10 50 100 250 400 600 800 1000)
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Sequential" "Reds" n
+  ]
+
+  if _dataset-name = "Sole" [
+    ask water-patches [set temporary solea]
+    set _qt (list 1 10 50 100 250 400 600 800 1000)
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Sequential" "Reds" n
+  ]
+
+  if _dataset-name = "Plaice" [
+    ask water-patches [set temporary platessa]
+    set _qt (list 1 10 50 100 250 400 600 800 1000)
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Sequential" "Reds" n
+  ]
+
+  if _dataset-name = "Shore proximity" [
+    ask water-patches [ set temporary distance-to-coast ]
+    set _qt (list 0 1 2 5 10 15 20 30 40 80)
+    set _colors palette:scheme-colors "Sequential" "Oranges" n
+  ]
+
+  if _dataset-name = "Area" [
+    ask water-patches [ set temporary area ]
+    set _values sort [ temporary ] of water-patches
+    set _qt quantile-thresholds _values n
+    set _colors palette:scheme-colors "Sequential" "Oranges" n
+  ]
+
   ask water-patches with [not (temporary < _min or temporary > _min - 1) ] [ set temporary 0 ]
   ask patches with [not (temporary < _min or temporary > _min - 1) ] [ set temporary -9999 ]
   set _patches [self] of water-patches with [temporary >= _min]
@@ -289,7 +325,7 @@ end
 
 to save-datasets
 
-  let _static (list "Traffic" "Bathymetry" "EMODnet TBB effort")
+  let _static (list "Traffic" "Bathymetry" "EMODnet TBB effort" "Area" "Shore proximity" "Shrimp" "Plaice" "Sole")
   let _dynamic (list "Effort" "Depth")
 
   foreach _static [ s ->
@@ -298,9 +334,10 @@ to save-datasets
   ]
 
   foreach _dynamic [ s ->
-    show-dataset s
-    export-view (word "results" "/" s "_" (substring date-and-time 0 12) ".png")
+    ;show-dataset s
+    ;export-view (word "results" "/" s "_" (substring date-and-time 0 12) ".png")
   ]
+
 
 end
 
@@ -374,10 +411,9 @@ end
 ; This procedure is very costly.
 to calculate-distance-to-coast
   let _land-patches patches with [depth <= -1]
-  let _water-patches patches with [depth > -1]
-  let _coast-patches _land-patches with [ max [depth] of neighbors4 > -1]
+  let _coast-patches _land-patches with [ max [depth] of neighbors4 > 0]
 
-  ask _water-patches  [
+  ask water-patches  [
     let _coast-patch min-one-of _coast-patches [distance myself]
     set distance-to-coast gis-envelope-distance (patch-set self _coast-patch)
   ]
