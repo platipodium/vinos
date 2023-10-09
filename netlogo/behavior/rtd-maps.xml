@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+SPDX-License-Identifier: Apache-2.0
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+-->
+<!DOCTYPE experiments SYSTEM "behaviorspace.dtd">
+<experiments>
+  <experiment name="rtd-maps" repetitions="1" sequentialRunOrder="false" runMetricsEveryStep="false">
+    <setup>setup save-datasets</setup>
+    <go>ci-maps</go>
+    <timeLimit steps="1"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="view">
+      <value value="&quot;effort (h a-1)&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-ports?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Oil-Price">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="operating-costs-of-boats">
+      <value value="0.203"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="memory-size">
+      <value value="47"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="Adaptation">
+      <value value="0.489"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fraction-transportation-costs">
+      <value value="0.198"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>

@@ -14,20 +14,23 @@ readthedocs:
     # Only run the job on the default branch and not in forks.
     #- if: $CI_COMMIT_BRANCH == ${CI_DEFAULT_BRANCH}
   needs:
-    - create-map
+    - rtd-maps
   allow_failure: true
 
-pages:
+rtd-maps:
+  image: comses/netlogo
   stage: deploy
   script:
-    - cp -r .gitlab/public .
-    - cp ./doc/odd/paper.pdf public/odd.pdf
-    - cp ./doc/joss/paper.pdf public/joss.pdf
-  #    - cp ./netlogo/results/effort*png public/effort.png
+    - echo "Trying to run in working directory and headless mode"
+    - echo "Java HOME is ${JAVA_HOME}"
+    - cd ${CI_PROJECT_DIR}/netlogo
+    - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' vinos.nlogo
+    - 'bash /opt/netlogo/netlogo-headless.sh --model ./vinos.nlogo --setup-file ./behavior/rtd-maps.xml
+      --experiment "rtd-maps" --table - '
   artifacts:
     paths:
-      - public/
-  needs:
-    - joss-inara
-    - odd-paper
-    - create-map
+      - "./netlogo/results/*png"
+  needs: []
+  allow_failure: true
+  interruptible: true
+  timeout: 10 min
