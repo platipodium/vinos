@@ -35,5 +35,8 @@ docker-shell:
 	  -w /home/model \
 	  --net host -t netlogo /bin/bash
 
+readthedocs:
+	curl -X POST -H "Authorization: Token $(RTD_TOKEN)" https://readthedocs.org/api/v3/projects/viable-north-sea/versions/latest/builds/
+
 clean:
 	@rm -f LICENSE.md
