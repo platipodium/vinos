@@ -10,17 +10,17 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 ## Maps
 
-|            Bathymetry            |                Accessibility                 |
-| :------------------------------: | :------------------------------------------: |
-| ![Depth / m](./assets/Depth.png) | ![Accessibility](./assets/Accessibility.png) |
+|              Bathymetry               |                Accessibility                 |
+| :-----------------------------------: | :------------------------------------------: |
+| ![Depth / m](./assets/Bathymetry.png) | ![Accessibility](./assets/Accessibility.png) |
 
 |            Traffic            |               Shore proximity               |           Area            |
 | :---------------------------: | :-----------------------------------------: | :-----------------------: |
 | ![unit](./assets/Traffic.png) | ![kg km-2](<./assets/Shore\ proximity.png>) | ![km2](./assets/Area.png) |
 
-|             Shrimp             |             Plaice             |              Sole              |
-| :----------------------------: | :----------------------------: | :----------------------------: |
-| ![kg km-2](./assets/Depth.png) | ![kg km-2](./assets/Depth.png) | ![kg km-2](./assets/Depth.png) |
+|             Shrimp              |             Plaice              |             Sole              |
+| :-----------------------------: | :-----------------------------: | :---------------------------: |
+| ![kg km-2](./assets/Shrimp.png) | ![kg km-2](./assets/Plaice.png) | ![kg km-2](./assets/Sole.png) |
 
 ## mkdocs
 

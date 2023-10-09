@@ -227,7 +227,7 @@ to  unit-test
     __test_five-number-summary __test_haversine-distance __test-value-from-distribution
     __test-normalize __test-quantile-thresholds __test-quantile-thresholds-number
   __test-quantiles __test-formatted-number __test-index-max-one-of  __test-formatted-int
-  __test-sign __test-order __test-split __test-position-one-of )
+  __test-sign __test-order __test-split __test-position-one-of __test-replace-pattern)
   foreach tests [
     t -> ifelse t [print (sentence "Test passed")][error  "Test failed"]
   ]
@@ -351,5 +351,51 @@ to-report __test-position-one-of
 
   if (position-one-of "; ?!" "Hello? hi! ; said Fred") != 5 [report false]
   if (position-one-of ".X" "Hello? hi! ; said Fred") != false [report false]
+  report true
 
+end
+
+to-report lower [string]
+  let _lowercase ""
+  let _upper "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  let _lower "abcdefghijklmnopqrstuvwxyz"
+
+  foreach range length string [ i ->
+    let _c item i string
+    let _position position _c _upper
+    ifelse ( is-number? _position) [
+      set _lowercase (word _lowercase item _position _lower)
+    ][
+      set _lowercase (word _lowercase _c)
+    ]
+  ]
+  report _lowercase
+end
+
+to-report __test-lower
+  if lower "AlHam1Br!a" != "alham1br!a" [ report false ]
+  report true
+end
+
+
+to-report replace-pattern [string pattern char]
+
+  let _replaced ""
+
+  foreach range length string [ i ->
+    let _c item i string
+    let _position position _c pattern
+    ifelse ( is-number? _position) [
+      set _replaced (word _replaced char)
+    ][
+      set _replaced (word _replaced _c)
+    ]
+  ]
+  report _replaced
+end
+
+to-report __test-replace-pattern
+  if replace-pattern "AlHam1Br!a"  "!1" "X" !=  "AlHamXBrXa" [ report false ]
+  if replace-pattern "AlHam1Br!a"  "!1" "" != "AlHamBra" [ report false ]
+  report true
 end
