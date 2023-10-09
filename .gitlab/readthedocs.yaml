@@ -12,5 +12,5 @@ readthedocs:
   rules:
     # Only run the job on the default branch and not in forks.
     #- if: $CI_COMMIT_BRANCH == ${CI_DEFAULT_BRANCH}
-  need: []
+  needs: []
   allow_failure: true
