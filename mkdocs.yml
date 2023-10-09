@@ -7,7 +7,7 @@ docs_dir: ./doc/mkdocs
 theme: readthedocs
 plugins:
   - search
-markdown_extensions:
-  - markdown_include.include:
-      base_path: .
-  - admonition
+#markdown_extensions:
+#  - markdown_include.include:
+#      base_path: .
+#  - admonition
