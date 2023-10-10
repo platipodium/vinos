@@ -139,7 +139,7 @@ to setup-maps
   ; add traffic data
   show-dataset "Traffic"
   ask patches [ set traffic-suitability 1 ]
-  ask water-patches with [temporary > 1000] [ set traffic-suitability 0 ]
+  ask water-patches with [temporary > 200] [ set traffic-suitability 0.05 ]
 
 end
 

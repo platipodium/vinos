@@ -633,7 +633,7 @@ GRAPHICS-WINDOW
 1
 1
 1
-ticks
+days
 30.0
 
 BUTTON
@@ -661,7 +661,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "effort (h a-1)" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth"
-0
+3
 
 BUTTON
 83

@@ -193,7 +193,7 @@ to setup-boats
       set boat-home-port myself
       set boat-needs-return? false
       set boat-hour 0
-      set boat-fishable-patches boat-accessible-patches with [traffic-suitability > 0.9]
+      set boat-fishable-patches boat-accessible-patches ;with [traffic-suitability > 0.9]
       set boat-actions (turtle-set)
 
       set boat-total-days-at-sea 0
@@ -388,11 +388,20 @@ to boat-land-port
       set boat-actions  (turtle-set _my-action boat-actions)
     ][
       let _catch boat-trip-best-catch
-      set _my-action one-of boat-actions with [action-catch < _catch]
+      let _patch boat-trip-best-patch
+
+      ; Check whether the boat already remembers this patch and
+      ; update its catch accordingly, otherwise choose one with
+      ; lower previous catch
+      ifelse any? boat-actions with [action-patch = _patch] [
+        set _my-action one-of boat-actions with [action-patch = _patch]
+      ][
+        set _my-action one-of boat-actions with [action-catch < _catch]
+      ]
       if _my-action != nobody [
         ; replace properties of that action
         ask _my-action [
-          set action-gear [item 0 boat-gears] of myself
+          set action-gear [item 0 boat-gears] of myself ; @todo update index
           set action-catch [boat-trip-best-catch] of myself
           ;set action-patch [boat-trip-best-patch] of myself  ; should be removed
           move-to [boat-trip-best-patch] of myself
