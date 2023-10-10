@@ -848,10 +848,10 @@ false
 PENS
 
 PLOT
-931
-547
-1197
-696
+932
+548
+1145
+697
 priority-by-gear
 NIL
 NIL
@@ -973,7 +973,7 @@ HORIZONTAL
 PLOT
 15
 547
-231
+244
 697
 boat-property
 NIL
@@ -990,7 +990,7 @@ PENS
 CHOOSER
 12
 495
-241
+167
 540
 boat-property-chooser
 boat-property-chooser
@@ -1009,9 +1009,9 @@ show-boats?
 -1000
 
 BUTTON
-250
+170
 496
-322
+242
 540
 update-plot
 plot-update-boat-property
@@ -1088,6 +1088,50 @@ show-actions?
 1
 1
 -1000
+
+PLOT
+1160
+545
+1373
+695
+action
+NIL
+# action
+0.0
+10.0
+0.0
+10.0
+true
+false
+"plot-setup-action-histogram" "plot-update-action-histogram"
+PENS
+
+CHOOSER
+1159
+495
+1297
+540
+action-chooser
+action-chooser
+"gain" "boats" "gear"
+0
+
+BUTTON
+1299
+495
+1373
+541
+update
+plot-update-action-histogram
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries

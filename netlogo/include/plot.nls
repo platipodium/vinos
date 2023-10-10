@@ -64,7 +64,6 @@ to plot-update-gain-by-gear
   ]
 end
 
-
 to plot-setup-catch-by-trip
   set-current-plot "catch-by-trip"
   auto-plot-on
@@ -178,6 +177,53 @@ to plot-update-boat-property
   if (item 0 _x-range) = (item 1 _x-range) [set _x-range replace-item 1 _x-range (item 1 _x-range + 1)]
   set-plot-x-range item 0 _x-range item 1 _x-range
   histogram _values
+
+end
+
+to plot-setup-action-histogram
+  set-current-plot "action"
+  set-plot-background-color white
+  auto-plot-on
+end
+
+
+to plot-update-action-histogram
+  set-current-plot "action"
+  if not plot-pen-exists? action-chooser [
+    clear-plot
+    create-temporary-plot-pen action-chooser
+    set-plot-pen-mode 1 ; box
+  ]
+  let _x-range (list 0 1)
+  set-current-plot-pen action-chooser
+
+  if any? actions [
+    let _values [ action-gain ] of actions
+
+    ; For categorical values, do not adjust the x-range automatically but choose according
+    ; to number of categories
+    ifelse ( action-chooser =  "gear" ) [
+      if (boat-property-chooser = "gear") [
+        let _categories [ action-gear ] of actions
+        set _values map [ i -> position i gear-names] _categories
+        set-histogram-num-bars length gear-names
+        set _x-range (list -.5 (length gear-names - 0.5))
+      ]
+    ][
+      ; for numerical values, adjust x-range automatically
+      if ( action-chooser =  "gain" ) [ set _values [ round action-gain] of actions ]
+      if ( action-chooser =  "catch" ) [ set _values [ round action-catch] of actions ]
+      if ( action-chooser =  "coast" ) [ set _values [ round [distance-to-coast] of patch-here] of actions ]
+      if ( action-chooser =  "depth" ) [ set _values [ round [depth] of patch-here] of actions ]
+      if ( action-chooser =  "effort" ) [ set _values [ round [fishing-effort-hours] of patch-here] of actions ]
+
+      set-histogram-num-bars 9
+      set _x-range (list (min _values) (max _values))
+    ]
+    if (item 0 _x-range) = (item 1 _x-range) [set _x-range replace-item 1 _x-range (item 1 _x-range + 1)]
+    set-plot-x-range item 0 _x-range item 1 _x-range
+    histogram _values
+  ]
 
 end
 

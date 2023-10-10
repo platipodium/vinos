@@ -393,8 +393,8 @@ to boat-land-port
       ; Check whether the boat already remembers this patch and
       ; update its catch accordingly, otherwise choose one with
       ; lower previous catch
-      ifelse any? boat-actions with [action-patch = _patch] [
-        set _my-action one-of boat-actions with [action-patch = _patch]
+      ifelse any? boat-actions with [patch-here = _patch] [
+        set _my-action one-of boat-actions with [patch-here = _patch]
       ][
         set _my-action one-of boat-actions with [action-catch < _catch]
       ]

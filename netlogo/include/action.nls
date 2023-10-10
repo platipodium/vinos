@@ -6,7 +6,6 @@
 breed [actions action] ; defined in action.nls
 
 actions-own [
-  action-patch    ; targeted patch id
   action-catch    ; catch of the haul with the patch
   action-gear     ; gear used
   action-gain     ; temporary expected gain
