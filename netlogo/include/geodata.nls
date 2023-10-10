@@ -38,6 +38,12 @@ to setup-maps
   ; The following removes NaN values which are not allowed
   ask patches with [not (depth <= 0 or depth > -1) ] [ set depth 9999 ]
 
+
+  calc-accessibility
+  calculate-distance-to-coast
+  ; calculate-distance-to-port  ; needs ports defined, so do it later
+
+
   ; Convert from bathymetry to depth
   ask patches [ set depth ( - depth)]
 
@@ -45,7 +51,7 @@ to setup-maps
   ask patches with [not (crangon-summer < 0 or crangon-summer > -1) ] [ set crangon-summer -9999 ]
 
   ; Creep-fill with nearest neighbor
-  set _patches patches with [crangon-summer < 0 and depth > 0]
+  set _patches patches with [crangon-summer < 0 and accessible?]
   repeat max-pxcor * 2 [
     ask _patches [
       let _neighbors neighbors with [crangon-summer >= 0]
@@ -62,7 +68,7 @@ to setup-maps
 
 
   ; Creep-fill with nearest neighbor
-  set _patches patches with [crangon-winter < 0 and depth > 0]
+  set _patches patches with [crangon-winter < 0 and accessible?]
   repeat max-pxcor * 2 [
     ask _patches [
       let _neighbors neighbors with [crangon-winter >= 0]
@@ -76,7 +82,7 @@ to setup-maps
 
   gis:apply-raster solea-summer-dataset solea-summer
   ask patches with [not (solea-summer < 0 or solea-summer > -1) ] [ set solea-summer -9999 ]
-  set _patches patches with [solea-summer < 0 and depth > 0]
+  set _patches patches with [solea-summer < 0 and accessible?]
   repeat max-pxcor * 2 [
     ask _patches [
       let _neighbors neighbors with [solea-summer >= 0]
@@ -89,7 +95,7 @@ to setup-maps
 
   gis:apply-raster solea-winter-dataset solea-winter
   ask patches with [not (solea-winter < 0 or solea-winter > -1) ] [ set solea-winter -9999 ]
-  set _patches patches with [solea-winter < 0 and depth > 0]
+  set _patches patches with [solea-winter < 0 and accessible?]
   repeat max-pxcor * 2 [
     ask _patches [
       let _neighbors neighbors with [solea-winter >= 0]
@@ -102,7 +108,7 @@ to setup-maps
 
   gis:apply-raster platessa-summer-dataset platessa-summer
   ask patches with [not (platessa-summer < 0 or platessa-summer > -1) ] [ set platessa-summer -9999 ]
-  set _patches patches with [platessa-summer < 0 and depth > 0]
+  set _patches patches with [platessa-summer < 0 and accessible?]
   repeat max-pxcor * 2 [
     ask _patches [
       let _neighbors neighbors with [platessa-summer >= 0]
@@ -110,12 +116,12 @@ to setup-maps
         set platessa-summer  mean [platessa-summer] of _neighbors
       ]
     ]
-    set _patches patches with [platessa-summer < 0 and depth > 0]
+    set _patches patches with [platessa-summer < 0 and accessible?]
   ]
 
   gis:apply-raster platessa-winter-dataset platessa-winter
   ask patches with [not (platessa-winter < 0 or platessa-winter > -1) ] [ set platessa-winter -9999 ]
-  set _patches patches with [platessa-winter < 0 and depth > 0]
+  set _patches patches with [platessa-winter < 0 and accessible?]
   repeat max-pxcor * 2 [
     ask _patches [
       let _neighbors neighbors with [platessa-winter >= 0]
@@ -123,18 +129,12 @@ to setup-maps
         set platessa-winter  mean [platessa-winter] of _neighbors
       ]
     ]
-    set _patches patches with [platessa-winter < 0 and depth > 0]
+    set _patches patches with [platessa-winter < 0 and accessible?]
   ]
 
-  ask patches [
-    set area gis-patch-area
-  ]
+  ask patches [ set area gis-patch-area ]
 
   update-owf
-
-  calc-accessibility
-  calculate-distance-to-coast
-  ; calculate-distance-to-port  ; needs ports defined, so do it later
 
   ; add traffic data
   show-dataset "Traffic"
