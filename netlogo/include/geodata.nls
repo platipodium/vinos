@@ -244,7 +244,7 @@ to show-dataset [_dataset-name]
   ]
 
   if _dataset-name = "Bathymetry" [
-    ask patches [set temporary depth]
+    ask water-patches [set temporary depth]
     set _qt (list 0 1 2 5 10 20 30 40  80)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Blues" n
@@ -381,34 +381,34 @@ to show-dataset [_dataset-name]
 
 end
 
-to save-dataset [_dataset-name]
+to save-static-dataset [_dataset-name]
   show-dataset _dataset-name
-  export-view (word "results" "/" _dataset-name ".png")
+  let _name lower _dataset-name
+  set _name replace-pattern _name " -" "_"
+  export-view (word "./results/" _name ".png")
 end
 
-to save-datasets
+to save-dynamic-dataset [_dataset-name]
+  show-dataset _dataset-name
+  let _name lower _dataset-name
+  set _name replace-pattern _name " -" "_"
+  let _ticks ifelse-value ticks > 0 [ ticks ][ 0 ]
+  export-view (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short ".png")
+end
 
+to save-static-datasets
   let _static (list "Traffic" "Bathymetry" "EMODnet TBB effort" "Area" "Shore proximity" "Shrimp" "Plaice"
     "Sole" "OWF" "Accessibility" "Plaicebox"
   )
-  let _dynamic (list "Effort" "Depth" "Tide" "Action")
 
-  foreach _static [ s ->
-    show-dataset s
-    let _name lower s
-    set _name replace-pattern _name " -" "_"
-    print (sentence s _name)
-    export-view (word "results" "/" _name ".png")
-  ]
-
-  foreach _dynamic [ s ->
-    ;show-dataset s
-    ;export-view (word "results" "/" s "_" (substring date-and-time 0 12) ".png")
-  ]
-
-
+  foreach _static [ s -> save-static-dataset s]
 end
 
+to save-dynamic-datasets
+  let _dynamic (list "Effort" "Depth" "Tide" "Action" "Catch")
+
+  foreach _dynamic [ s -> save-dynamic-dataset s]
+end
 
 to-report load-dataset [_dataset-name]
 

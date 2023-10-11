@@ -430,8 +430,10 @@ to boat-choose-start
 
     ifelse patch-here = [port-start-patch] of boat-home-port  [
       set _patch one-of boat-fishable-patches in-radius boat-max-distance ; with [ count boats-here = 0 and distance myself < boat-max-distance]
+      if one? [ print (sentence "Boat" who "leaves from home and searches in radius"  boat-max-distance)]
     ][
       set _patch one-of boat-fishable-patches in-radius (boat-max-distance / 2)
+      if one? [ print (sentence "Boat" who "leaves from " patch-here "and searches in radius"  boat-max-distance)]
     ]
 
   ][
@@ -441,18 +443,24 @@ to boat-choose-start
       set action-gain action-catch * _boat-prey-price - _action-distance * _boat-cost-per-km
     ]
 
-    let _mean-gain sum [action-gain] of boat-actions / count boat-actions
+    let _mean-gain median [action-gain] of boat-actions
 
     ; How do we choose our next action, this could be a random action better than
     ; average, or it could be simply the best action at hand.
-;    let _action one-of boat-actions with [ action-gain > _mean-gain ]
-    let _action max-one-of boat-actions [action-gain]
+    let _action one-of boat-actions with [ action-gain > _mean-gain ]
+    ;let _action max-one-of boat-actions [action-gain]
 
-    if _action != nobody [set _patch [ patch-here ] of _action ]
+    if _action != nobody [
+      set _patch [ patch-here ] of _action
+      if one? [ print (sentence "Boat" who "leaves from " patch-here "to memorized " _patch "with expected gain" [action-gain] of _action)]
+    ]
 
     ; Introduce some random component
     let _nearby-patch one-of boat-fishable-patches with [ count other boats-here = 0 and distance myself < 6 ]
-    if _nearby-patch != nobody [set _patch _nearby-patch]
+    if _nearby-patch != nobody [
+      set _patch _nearby-patch
+      if one? [ print (sentence "Boat" who "corrects position to " _patch )]
+    ]
 
   ]
 
