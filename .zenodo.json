@@ -52,12 +52,12 @@
   "related_identifiers": [
     {
       "scheme": "url",
-      "identifier": "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/tree/v1.1.1?ref_type=tags",
+      "identifier": "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/tree/v1.2.2?ref_type=tags",
       "relation": "isSupplementTo"
     },
     {
       "scheme": "url",
-      "identifier": "https://github.com/platipodium/vinos/tree/v1.2.0",
+      "identifier": "https://github.com/platipodium/vinos/tree/v1.2.2",
       "relation": "isSupplementTo"
     },
     {
