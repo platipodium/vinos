@@ -7,6 +7,7 @@ SPDX-License-Identifier: CC0-1.0
 <!-- The open code badge takes up too much space
 [![Open Code Badge](https://www.comses.net/static/images/icons/open-code-badge.png)](https://www.comses.net/codebases/f654945f-8129-46a8-9c2d-f2a1b923f543/releases/1.1.0/) -->
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8430014.svg)](https://doi.org/10.5281/zenodo.8430014)
 [![status](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138/status.svg)](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7240/badge)](https://bestpractices.coreinfrastructure.org/projects/7240)

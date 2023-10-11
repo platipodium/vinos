@@ -4,9 +4,14 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
 
+# Release notes for version 1.2.3 - in development
+
+Version 1.2.3 is a maintenance release of our Viable North Sea (ViNoS) software. The
+main purpose of this release are further improvements to the User Interface
+
 # Release notes for version 1.2.2 - Oct 11
 
-Version 1.2.1 is a maintenance release of our Viable North Sea (ViNoS) software. The
+Version 1.2.2 is a maintenance release of our Viable North Sea (ViNoS) software. The
 main purpose of this release are improvements to the User Interface
 
 - consistent naming of species (now changed to English short form)
