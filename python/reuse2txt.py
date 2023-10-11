@@ -24,6 +24,7 @@ def get_copyright_list(df: pd.DataFrame) -> list[str]:
             pattern = re.compile(r'^\s*\d+(?:-\d*)?\s*')
             copyright = pattern.sub("",copyright)
 
+            if copyright=="NONE": continue
             #print(row.get('FileCopy'+'rightText'), row.get('FileName'))
         except:
             continue
