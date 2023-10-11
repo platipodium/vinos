@@ -1113,8 +1113,8 @@ CHOOSER
 540
 action-chooser
 action-chooser
-"gain" "boats" "gear"
-0
+"gain" "catch" "gear" "depth" "coast"
+4
 
 BUTTON
 1299

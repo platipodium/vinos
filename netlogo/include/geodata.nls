@@ -319,6 +319,17 @@ to show-dataset [_dataset-name]
     set _colors palette:scheme-colors "Sequential" "Blues" n
   ]
 
+  if _dataset-name = "Tide" [
+    calculate-tidal-depth
+    ask water-patches [ set temporary (temporary - depth)]
+    ;set _values sort [ temporary ] of water-patches
+    ;set _qt quantile-thresholds _values n
+    set _qt n-values 9 [ i -> i * 0.5 - 2 ]
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Divergent" "RdBu" n
+    set _min min _qt
+  ]
+
   if _dataset-name = "Gain" [
     ask water-patches [set temporary -9999]
     ask water-patches with [any? actions-here] [

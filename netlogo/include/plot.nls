@@ -203,7 +203,7 @@ to plot-update-action-histogram
     ; For categorical values, do not adjust the x-range automatically but choose according
     ; to number of categories
     ifelse ( action-chooser =  "gear" ) [
-      if (boat-property-chooser = "gear") [
+      if (action-chooser = "gear") [
         let _categories [ action-gear ] of actions
         set _values map [ i -> position i gear-names] _categories
         set-histogram-num-bars length gear-names
