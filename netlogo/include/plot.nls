@@ -216,6 +216,7 @@ to plot-update-action-histogram
       if ( action-chooser =  "coast" ) [ set _values [ round [distance-to-coast] of patch-here] of actions ]
       if ( action-chooser =  "depth" ) [ set _values [ round [depth] of patch-here] of actions ]
       if ( action-chooser =  "effort" ) [ set _values [ round [fishing-effort-hours] of patch-here] of actions ]
+      if ( action-chooser =  "age" ) [ set _values [ action-age ] of actions ]
 
       set-histogram-num-bars 9
       set _x-range (list (min _values) (max _values))

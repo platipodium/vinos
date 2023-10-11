@@ -389,6 +389,7 @@ to boat-land-port
         ; @todo fix gear selection (has no impact yet)
         set action-gear [item 0 boat-gears] of myself
         set action-catch _catch
+        set action-age 0
         move-to _patch
       ]
 

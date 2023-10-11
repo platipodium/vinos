@@ -5,8 +5,18 @@
 
 breed [actions action] ; defined in action.nls
 
+globals [
+  action-max-age
+]
+
 actions-own [
   action-catch    ; catch of the haul with the patch
   action-gear     ; gear used
   action-gain     ; temporary expected gain
+  action-age      ; age of last visiting this action's patch
 ]
+
+to update-actions
+  ask actions [set action-age action-age + 1]
+  ;ask actions with [action-age > 100] [die]
+end

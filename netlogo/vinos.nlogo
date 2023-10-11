@@ -233,6 +233,7 @@ to go
   update-plots
   update-scene
   ;update-drawings
+  update-actions
 
   ; export the data every week on a Sunday (weekday 0)
   if (time:get "dayofweek"  date mod 7) = 0 [export-patches]
@@ -644,7 +645,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-10
+3
 
 BUTTON
 83
@@ -715,7 +716,7 @@ memory-size
 memory-size
 0
 50
-5.0
+16.0
 1
 1
 NIL
@@ -1074,7 +1075,7 @@ NIL
 0.0
 10.0
 true
-false
+true
 "plot-setup-action-histogram" "plot-update-action-histogram"
 PENS
 
@@ -1085,8 +1086,8 @@ CHOOSER
 540
 action-chooser
 action-chooser
-"gain" "catch" "gear" "depth" "coast"
-0
+"gain" "catch" "gear" "depth" "coast" "age"
+5
 
 BUTTON
 1299
