@@ -44,7 +44,7 @@ def get_license_list(df: pd.DataFrame) -> list[str]:
           else:
             license = li.replace(" ","")
             #licensestring = f'![OSI approved](https://149753425.v2.pressablecdn.com/wp-content/uploads/2009/06/OSIApproved_100X125.png){{width=10%}} [{license}](./LICENSES/{li.replace(" ","")}.txt)'
-            licensestring = f'![]() <img src=https://149753425.v2.pressablecdn.com/wp-content/uploads/2009/06/OSIApproved_100X125.png width=10px height=12.5px> [{license}](./LICENSES/{li.replace(" ","")}.txt)'
+            licensestring = f'<img src=https://149753425.v2.pressablecdn.com/wp-content/uploads/2009/06/OSIApproved_100X125.png width=10px height=12.5px> [{license}](./LICENSES/{li.replace(" ","")}.txt)'
           licenses.add(licensestring)
 
     return sorted(list(licenses))
@@ -136,12 +136,14 @@ and most of them under open source licenses approved by the Open Software
 Initiative.
 
 You can find the full license text for each license used
-in the  [LICENSES](./LICENSES/) folder:
+in the  [LICENSES](./LICENSES/) folder.
 ''')
 
     licenses = get_license_list(df)
-    for l in licenses:
-        print(f'* {l}')
+    for l in licenses[:-1]:
+        print(f'{l}', end='; ')
+    print(f'{licenses[-1]}.')
+
 
     print(f'''
 ## Copyright holders
