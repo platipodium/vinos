@@ -17,7 +17,7 @@ Initiative.
 You can find the full license text for each license used
 in the [LICENSES](./LICENSES/) folder:
 
-- ![]() <img src=https://149753425.v2.pressablecdn.com/wp-content/uploads/2009/06/OSIApproved_100X125.png width=10px height=12.5px> [Apache-2.0](./LICENSES/Apache-2.0.txt)
+- <img src=https://149753425.v2.pressablecdn.com/wp-content/uploads/2009/06/OSIApproved_100X125.png width=10px height=12.5px> [Apache-2.0](./LICENSES/Apache-2.0.txt)
 - ![]() <img src=https://149753425.v2.pressablecdn.com/wp-content/uploads/2009/06/OSIApproved_100X125.png width=10px height=12.5px> [CC-BY-3.0](./LICENSES/CC-BY-3.0.txt)
 - ![]() <img src=https://149753425.v2.pressablecdn.com/wp-content/uploads/2009/06/OSIApproved_100X125.png width=10px height=12.5px> [CC-BY-4.0](./LICENSES/CC-BY-4.0.txt)
 - ![]() <img src=https://149753425.v2.pressablecdn.com/wp-content/uploads/2009/06/OSIApproved_100X125.png width=10px height=12.5px> [CC-BY-NC-4.0](./LICENSES/CC-BY-NC-4.0.txt)
