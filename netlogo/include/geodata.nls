@@ -502,6 +502,8 @@ to calculate-tidal-depth
 
   let _amphidrome one-of turtles with [label = "amphidrome"]
 
+  ; This calculation could be made more efficient by only effecting
+  ; water patches with insufficient depth, i.e. depth < tide + 3 m (latter is submerge depth of largest vessel)
   ask water-patches [
     ;let _coords gis:envelope-of (self)
     ;let _distance haversine-distance (list 5.1 ((item 0 _coords + item 1 _coords) / 2) 55.5 ((item 2 _coords + item 3 _coords) / 2))
@@ -512,11 +514,13 @@ to calculate-tidal-depth
 
     ask _amphidrome [face myself]
 
-    ; assume 12.4167 lunar semidurnal (M2) tide
-    let _phase ([heading] of _amphidrome) / 360 * 12.4167
-    set temporary  depth + _range * sin ( 2 * pi * (time:get "hours" date + 24 * time:get "dayofyear" date + 365.25 * time:get "year" date + _phase) / 12.4167)
+    ; assume 12.4167 lunar semidurnal (M2) tide, and convert from hours to degree, than add heading
+    let _phase (time:get "hours" date + 24 * time:get "dayofyear" date + 365.25 * time:get "year" date)  / 12.4167 * 360
+    set temporary  depth + _range * cos ( _phase - [heading] of _amphidrome )
 
-    ;if _distance > 90 and _distance < 91 [print (sentence _distance _range _phase temporary)]
+    ;print (sentence [heading] of _amphidrome _phase sin ( _phase + [heading] of _amphidrome ))
   ]
+
+
 
 end

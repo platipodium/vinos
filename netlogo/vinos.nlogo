@@ -660,8 +660,8 @@ CHOOSER
 245
 scene
 scene
-"Shrimp" "Plaice" "Sole" "Bathymetry" "effort (h a-1)" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth"
-3
+"Shrimp" "Plaice" "Sole" "Bathymetry" "effort (h a-1)" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide"
+12
 
 BUTTON
 83
