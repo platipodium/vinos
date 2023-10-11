@@ -374,11 +374,12 @@ to boat-land-port
 
   ; now update the memory
   let _my-action nobody
-  if boat-trip-best-catch > 0 [
+  if boat-trip-best-catch > 0 and count actions-on boat-trip-best-patch < 10[
 
     ifelse count boat-actions < memory-size [
       hatch-actions 1 [
         set _my-action self
+        ; @todo fix gear selection (has no impact yet)
         set action-gear [item 0 boat-gears] of myself
         set action-catch [boat-trip-best-catch] of myself
         ;set action-patch [boat-trip-best-patch] of myself  ; should be removed
@@ -408,9 +409,9 @@ to boat-land-port
         ]
       ]
     ]
-    set boat-trip-best-catch 0
-    set boat-trip-best-patch nobody
   ]
+  set boat-trip-best-catch 0
+  set boat-trip-best-patch nobody
 
   ; @todo find out how long it takes to land the catch and clean the boat, here, we assume 2 hours
   set boat-hour boat-hour + 2
@@ -424,19 +425,18 @@ to boat-choose-start
   let _boat-cost-per-km (boat-fuel-consumption * oil-price / 100  + wage / boat-steaming-speed)
   let _boat-prey-price item boat-current-prey-index prey-prices
 
-  ifelse count boat-actions < memory-size [
+  ifelse count boat-actions < memory-size  or memory-size < 1 [
     ; random patch if not sufficient memory accumulated yet (learning phase)
 
-    ifelse patch-here =  [port-start-patch] of boat-home-port  [
+    ifelse patch-here = [port-start-patch] of boat-home-port  [
       set _patch one-of boat-fishable-patches in-radius boat-max-distance ; with [ count boats-here = 0 and distance myself < boat-max-distance]
     ][
-      set _patch one-of boat-fishable-patches in-radius 30
+      set _patch one-of boat-fishable-patches in-radius (boat-max-distance / 2)
     ]
 
   ][
     ask boat-actions [
       ; @todo improve heading-dependent gis-scale calculation
-      ; @todo make actions be located
       let _action-distance  gis-scale * distance myself
       set action-gain action-catch * _boat-prey-price - _action-distance * _boat-cost-per-km
     ]

@@ -660,8 +660,8 @@ CHOOSER
 245
 scene
 scene
-"Shrimp" "Plaice" "Sole" "Bathymetry" "effort (h a-1)" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide"
-12
+"Shrimp" "Plaice" "Sole" "Bathymetry" "effort (h a-1)" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic"
+4
 
 BUTTON
 83
@@ -732,7 +732,7 @@ memory-size
 memory-size
 0
 100
-25.0
+0.0
 1
 1
 NIL
@@ -1114,7 +1114,7 @@ CHOOSER
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast"
-4
+1
 
 BUTTON
 1299
