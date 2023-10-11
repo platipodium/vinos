@@ -321,10 +321,10 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Tide" [
     calculate-tidal-depth
-    ask water-patches [ set temporary (temporary - depth)]
+    ask water-patches with [temporary > -9999][ set temporary (temporary - depth)]
     ;set _values sort [ temporary ] of water-patches
     ;set _qt quantile-thresholds _values n
-    set _qt n-values 9 [ i -> i * 0.5 - 2 ]
+    set _qt n-values 9 [ i -> i / 2 - 2 ]
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Divergent" "RdBu" n
     set _min min _qt
@@ -502,9 +502,9 @@ to calculate-tidal-depth
 
   let _amphidrome one-of turtles with [label = "amphidrome"]
 
-  ; This calculation could be made more efficient by only effecting
-  ; water patches with insufficient depth, i.e. depth < tide + 3 m (latter is submerge depth of largest vessel)
-  ask water-patches [
+  ; water patches with insufficient depth only
+  ask water-patches [set temporary -9999]
+  ask water-patches with [depth < 10] [
     ;let _coords gis:envelope-of (self)
     ;let _distance haversine-distance (list 5.1 ((item 0 _coords + item 1 _coords) / 2) 55.5 ((item 2 _coords + item 3 _coords) / 2))
     ; Distance amphidromic point to Cuxhaven is 260 km, and tidal range there is about 3 m, so linear model gives
@@ -516,7 +516,7 @@ to calculate-tidal-depth
 
     ; assume 12.4167 lunar semidurnal (M2) tide, and convert from hours to degree, than add heading
     let _phase (time:get "hours" date + 24 * time:get "dayofyear" date + 365.25 * time:get "year" date)  / 12.4167 * 360
-    set temporary  depth + _range * cos ( _phase - [heading] of _amphidrome )
+    set temporary  depth + _range / 2 * cos ( _phase - [heading] of _amphidrome )
 
     ;print (sentence [heading] of _amphidrome _phase sin ( _phase + [heading] of _amphidrome ))
   ]
