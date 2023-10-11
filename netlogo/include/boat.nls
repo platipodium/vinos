@@ -372,23 +372,34 @@ to boat-land-port
 
   set boat-trip-phase 0
 
-  ; now update the memory
+  ; now update the memory from this trip's best catch and only if
+  ; this location is not a preferred one for more than 10 other boats
   let _my-action nobody
-  if boat-trip-best-catch > 0 and count actions-on boat-trip-best-patch < 10[
+  if boat-trip-best-catch > 0 and count actions-on boat-trip-best-patch < 11 [
+
+    let _catch boat-trip-best-catch
+    let _patch boat-trip-best-patch
+    let _boat-prey-price item boat-current-prey-index prey-prices
+    let _boat-cost-per-km (boat-fuel-consumption * oil-price / 100  + wage / boat-steaming-speed)
 
     ifelse count boat-actions < memory-size [
+
       hatch-actions 1 [
         set _my-action self
         ; @todo fix gear selection (has no impact yet)
         set action-gear [item 0 boat-gears] of myself
-        set action-catch [boat-trip-best-catch] of myself
-        move-to [boat-trip-best-patch] of myself
+        set action-catch _catch
+        move-to _patch
       ]
 
       set boat-actions  (turtle-set _my-action boat-actions)
     ][
-      let _catch boat-trip-best-catch
-      let _patch boat-trip-best-patch
+
+      ask boat-actions [
+        ; @todo improve heading-dependent gis-scale calculation
+        let _action-distance  gis-scale * distance myself
+        set action-gain action-catch * _boat-prey-price - _action-distance * _boat-cost-per-km
+      ]
 
       ; Check whether the boat already remembers this patch and
       ; update its catch accordingly, otherwise choose one with
@@ -396,7 +407,8 @@ to boat-land-port
       ifelse any? boat-actions with [patch-here = _patch] [
         set _my-action one-of boat-actions with [patch-here = _patch]
       ][
-        set _my-action one-of boat-actions with [action-catch < _catch]
+        ;set _my-action one-of boat-actions with [action-catch < _catch]
+        set _my-action min-one-of boat-actions [action-gain]
       ]
       if _my-action != nobody [
         ; replace properties of that action
