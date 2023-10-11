@@ -43,7 +43,7 @@ def get_license_list(df: pd.DataFrame) -> list[str]:
             licensestring = f'[{license}](./LICENSES/{li.replace(" ","")}.txt)'
           else:
             license = li.replace(" ","")
-            licensestring = f'![OSI approved](https://149753425.v2.pressablecdn.com/wp-content/uploads/2009/06/OSIApproved_100X125.png){{ height: 12px; }} [{license}](./LICENSES/{li.replace(" ","")}.txt)'
+            licensestring = f'![OSI approved](https://149753425.v2.pressablecdn.com/wp-content/uploads/2009/06/OSIApproved_100X125.png){{width=1em}} [{license}](./LICENSES/{li.replace(" ","")}.txt)'
           licenses.add(licensestring)
 
     return sorted(list(licenses))
