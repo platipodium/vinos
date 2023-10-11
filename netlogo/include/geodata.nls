@@ -330,6 +330,16 @@ to show-dataset [_dataset-name]
     set _min min _qt
   ]
 
+  if _dataset-name = "Action" and any? actions [
+    ask water-patches [set temporary -9999]
+    let _max max  [count actions-here] of water-patches
+    ask water-patches with [any? actions-here] [ set temporary count actions-here]
+    set _values sort [ temporary ] of water-patches with [any? actions-here]
+    set _qt quantile-thresholds _values n
+    set _colors palette:scheme-colors "Sequential" "Greens" n
+  ]
+
+
   if _dataset-name = "Gain" [
     ask water-patches [set temporary -9999]
     ask water-patches with [any? actions-here] [
@@ -383,7 +393,7 @@ to save-datasets
   let _static (list "Traffic" "Bathymetry" "EMODnet TBB effort" "Area" "Shore proximity" "Shrimp" "Plaice"
     "Sole" "OWF" "Accessibility" "Plaicebox"
   )
-  let _dynamic (list "Effort" "Depth")
+  let _dynamic (list "Effort" "Depth" "Tide" "Action")
 
   foreach _static [ s ->
     show-dataset s
