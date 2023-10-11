@@ -97,6 +97,7 @@ end
 
 to-report quantile-scale-new [indices data]
 
+  if indices = nobody [report nobody]
   let n length indices - 1
   if length data < 1 [report nobody]
 
@@ -128,7 +129,7 @@ end
 
 to-report quantile-thresholds [data n]
   let sorted sort data
-  if length sorted < (n + 1) [
+  if length sorted < (n + 1) or n < 1 [
     print (sentence "Error, the data is not diverse enough for" n "categories")
     report nobody
   ]

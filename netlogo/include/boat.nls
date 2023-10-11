@@ -382,7 +382,6 @@ to boat-land-port
         ; @todo fix gear selection (has no impact yet)
         set action-gear [item 0 boat-gears] of myself
         set action-catch [boat-trip-best-catch] of myself
-        ;set action-patch [boat-trip-best-patch] of myself  ; should be removed
         move-to [boat-trip-best-patch] of myself
       ]
 
@@ -404,7 +403,6 @@ to boat-land-port
         ask _my-action [
           set action-gear [item 0 boat-gears] of myself ; @todo update index
           set action-catch [boat-trip-best-catch] of myself
-          ;set action-patch [boat-trip-best-patch] of myself  ; should be removed
           move-to [boat-trip-best-patch] of myself
         ]
       ]
@@ -422,6 +420,7 @@ end
 to boat-choose-start
 
   let _patch nobody
+  let _patches nobody
   let _boat-cost-per-km (boat-fuel-consumption * oil-price / 100  + wage / boat-steaming-speed)
   let _boat-prey-price item boat-current-prey-index prey-prices
 
@@ -429,10 +428,12 @@ to boat-choose-start
     ; random patch if not sufficient memory accumulated yet (learning phase)
 
     ifelse patch-here = [port-start-patch] of boat-home-port  [
-      set _patch one-of boat-fishable-patches in-radius boat-max-distance ; with [ count boats-here = 0 and distance myself < boat-max-distance]
+      set _patches n-of 10 boat-fishable-patches in-radius boat-max-distance ; with [ count boats-here = 0 and distance myself < boat-max-distance]
+      set _patch max-one-of _patches [traffic-suitability]
       if one? [ print (sentence "Boat" who "leaves from home and searches in radius"  boat-max-distance)]
     ][
-      set _patch one-of boat-fishable-patches in-radius (boat-max-distance / 2)
+      set _patches n-of 10 boat-fishable-patches in-radius (boat-max-distance / 2)
+      set _patch max-one-of _patches [traffic-suitability]
       if one? [ print (sentence "Boat" who "leaves from " patch-here "and searches in radius"  boat-max-distance)]
     ]
 
@@ -456,12 +457,15 @@ to boat-choose-start
     ]
 
     ; Introduce some random component
-    let _nearby-patch one-of boat-fishable-patches with [ count other boats-here = 0 and distance myself < 6 ]
-    if _nearby-patch != nobody [
-      set _patch _nearby-patch
-      if one? [ print (sentence "Boat" who "corrects position to " _patch )]
+    set _patches boat-fishable-patches with [ count other boats-here = 0 and distance myself < 6 ]
+    if _patches != nobody [
+      if count _patches > 10 [ set _patches n-of 10 _patches ]
+      let _nearby-patch max-one-of _patches [traffic-suitability]
+      if _nearby-patch != nobody [
+        set _patch _nearby-patch
+        if one? [ print (sentence "Boat" who "corrects position to " _patch )]
+      ]
     ]
-
   ]
 
   ; If there are not accessible patches found, go home and try again
@@ -693,7 +697,10 @@ end
 
 ; report true if all patches touched within distance d are accessible
 to-report boat-accessible-path [d]
-  foreach range d [ i -> if (not member? patch-ahead i boat-fishable-patches) [report false]]
+  foreach range d [ i ->
+    if (not member? patch-ahead i boat-fishable-patches) [report false]
+    if [traffic-suitability] of patch-ahead i < 0.1 [report false]
+  ]
   report true
   ;report all? (patch-set (n-values d [ i ->  patch-ahead i])) [accessible?]
 end

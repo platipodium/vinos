@@ -139,8 +139,9 @@ to setup-maps
   ; add traffic data
   show-dataset "Traffic"
   ask patches [ set traffic-suitability 1 ]
-  ask water-patches with [temporary > 200] [ set traffic-suitability 0.05 ]
-
+  ;ask water-patches with [temporary > 200] [ set traffic-suitability 0.05 ]
+  ask patches with [temporary > 200] [ set traffic-suitability exp (- (temporary - 200) / 200)  ]
+  ;ask water-patches [ set traffic-suitability exp (- temporary / 1000) ]
 end
 
 to update-owf
@@ -237,8 +238,9 @@ to show-dataset [_dataset-name]
   ]
 
   if _dataset-name = "Effort" and ticks > 0 [
-    ask patches [set temporary 365.25 / ticks *  fishing-effort-hours / area]
+    ask water-patches [set temporary 365.25 / ticks *  fishing-effort-hours / area]
     set _qt (list  10 50 100 250 400 600  800 1000)
+    set _min 0
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
@@ -264,6 +266,14 @@ to show-dataset [_dataset-name]
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Blues" n
   ]
+
+  if _dataset-name = "Suitability" [
+    ask water-patches [set temporary traffic-suitability]
+    set _values sort [ temporary ] of water-patches
+    set _qt quantile-thresholds _values n
+    set _colors palette:scheme-colors "Sequential" "Blues" n
+  ]
+
 
   if _dataset-name = "Shrimp" [
     ask water-patches [set temporary crangon]
@@ -364,7 +374,7 @@ to show-dataset [_dataset-name]
 
   set _values quantile-scale-new _qt _values
 
-  ifelse n > 2 [
+  ifelse n > 2 and _colors != nobody and _qt != nobody [
     foreach  (range length _patches) [ i ->
       ask item i _patches [
         set pcolor palette:scale-gradient _colors (item i _values) 0 1

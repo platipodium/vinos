@@ -287,23 +287,6 @@ to update-scene
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
   ]
 
-  if (scene = "effort (h a-1)") and ( ticks > 0 )[
-
-    set _patches [self] of patches with [fishing-effort-hours > 0]
-    set _values (map [ p -> [365.25 / ticks *  fishing-effort-hours / area] of p ] _patches )
-    set _qt (list 1 10 50 100 250 400 600  800 1000)
-    set n (length _qt) - 1
-    ;set _qt quantile-thresholds _values n
-    set _values quantile-scale-new _qt _values
-    set _colors palette:scheme-colors "Sequential" "Oranges" n
-
-    foreach  (range length _patches) [ i ->
-      ask item i _patches [
-        set pcolor palette:scale-gradient _colors (item i _values) 0 1
-      ]
-    ]
-    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
-  ]
   ]
 
 end
@@ -660,8 +643,8 @@ CHOOSER
 245
 scene
 scene
-"Shrimp" "Plaice" "Sole" "Bathymetry" "effort (h a-1)" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic"
-4
+"Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
+10
 
 BUTTON
 83
@@ -732,7 +715,7 @@ memory-size
 memory-size
 0
 50
-20.0
+5.0
 1
 1
 NIL
@@ -1078,17 +1061,6 @@ CSH = shrimp\nPLE = plaice\nSOL = sole\nTBB = beam trawl\nOTB = otter trawl
 0.0
 1
 
-SWITCH
-1242
-192
-1379
-225
-show-actions?
-show-actions?
-1
-1
--1000
-
 PLOT
 1160
 545
@@ -1114,7 +1086,7 @@ CHOOSER
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast"
-1
+0
 
 BUTTON
 1299
