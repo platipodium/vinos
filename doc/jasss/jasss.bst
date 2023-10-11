@@ -13,7 +13,6 @@
 %% ----------------------------------------
 %% *** Bibliographic style for JASSS ***
 %%
-%% Copyright 1994-2011 Patrick W Daly
  % ===============================================================
  % IMPORTANT NOTICE:
  % This bibliographic style (bst) file has been generated from one or

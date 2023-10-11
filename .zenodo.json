@@ -61,6 +61,16 @@
       "relation": "isSupplementTo"
     },
     {
+      "scheme": "url",
+      "identifier": "https://helmholtz.software/software/vinos",
+      "relation": "isSupplementTo"
+    },
+    {
+      "scheme": "url",
+      "identifier": "https://www.comses.net/codebases/f654945f-8129-46a8-9c2d-f2a1b923f543",
+      "relation": "isSupplementTo"
+    },
+    {
       "scheme": "doi",
       "identifier": "zenodo.8430014",
       "relation": "isNewVersionOf"

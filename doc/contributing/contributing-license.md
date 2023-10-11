@@ -16,9 +16,9 @@ This contributor agreement ("Agreement") documents the rights granted by contrib
 any Legal Entity on behalf of whom a Contribution has been received by Us.
 "Legal Entity" means an entity which is not a natural person. "Affiliates" means other Legal Entities that control, are controlled by, or under common control with that Legal Entity. For the purposes of this definition, "control" means (i) the power, direct or indirect, to cause the direction or management of such Legal Entity, whether by contract or otherwise, (ii) ownership of fifty percent (50%) or more of the outstanding shares or securities which vote to elect the management or other persons who direct such Legal Entity or (iii) beneficial ownership of such entity.
 
-"Contribution" means any work of authorship that is Submitted by You to Us in which You own or assert ownership of the Copyright.
+"Contribution" means any work of authorship that is Submitted by You to Us in which You own or assert ownership of the Copy<!-- /-->right.
 
-"Copyright" means all rights protecting works of authorship owned or controlled by You, including copyright, moral and neighboring rights, as appropriate, for the full term of their existence including any extensions by You.
+"Copy<!-- /-->right" means all rights protecting works of authorship owned or controlled by You, including copyright, moral and neighboring rights, as appropriate, for the full term of their existence including any extensions by You.
 
 "Material" means the work of authorship which is made available by Us to third parties. When this Agreement covers more than one software project, the Material means the work of authorship to which the Contribution was Submitted. After You Submit the Contribution, it may be included in the Material.
 
@@ -32,11 +32,11 @@ any Legal Entity on behalf of whom a Contribution has been received by Us.
 
 ## Grant of Rights
 
-### Copyright and License
+### Copy<!-- /-->right and License
 
-(a) You retain ownership of the Copyright in Your Contribution and have the same rights to use or license the Contribution which You would have had without entering into the Agreement.
+(a) You retain ownership of the Copy<!-- /-->right in Your Contribution and have the same rights to use or license the Contribution which You would have had without entering into the Agreement.
 
-(b) To the maximum extent permitted by the relevant law, You grant to Us a perpetual, worldwide, non-exclusive, transferable, royalty-free, irrevocable license under the Copyright covering the Contribution, with the right to sublicense such rights through multiple tiers of sublicensees, to reproduce, modify, display, perform and distribute the Contribution as part of the Material; provided that this license is conditioned upon compliance with Section 2.3.
+(b) To the maximum extent permitted by the relevant law, You grant to Us a perpetual, worldwide, non-exclusive, transferable, royalty-free, irrevocable license under the Copy<!-- /-->right covering the Contribution, with the right to sublicense such rights through multiple tiers of sublicensees, to reproduce, modify, display, perform and distribute the Contribution as part of the Material; provided that this license is conditioned upon compliance with Section 2.3.
 
 ### Outbound Licenses for non-open source Material
 
@@ -66,7 +66,7 @@ You confirm that:
 
 (a) You have the legal authority to enter into this Agreement.
 
-(b) You own the Copyright and patent claims covering the Contribution which are required to the Grant of Rights.
+(b) You own the Copy<!-- /-->right and patent claims covering the Contribution which are required to the Grant of Rights.
 
 (c)(Individual) The Grant of Rights does not violate any grant of rights which You have made to third parties, including Your employer. If You are an employee, You have had Your employer approve this Agreement or sign the Entity version of this document. If You are less than eighteen years old, please have Your parents or guardian sign the Agreement.
 
