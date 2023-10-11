@@ -339,16 +339,14 @@ to show-dataset [_dataset-name]
     set _colors palette:scheme-colors "Sequential" "Greens" n
   ]
 
-
-  if _dataset-name = "Gain" [
+  if _dataset-name = "Catch" [
     ask water-patches [set temporary -9999]
     ask water-patches with [any? actions-here] [
-      ;set temporary max-one-of actions-here [action-gain]
-      set temporary count actions-here
-      set _values sort [ temporary ] of water-patches
-      set _qt quantile-thresholds _values n
-      set _colors palette:scheme-colors "Sequential" "Greens" n
+      set temporary mean [action-catch] of actions-here
     ]
+    set _values sort [ temporary ] of water-patches with [any? actions-here]
+    set _qt quantile-thresholds _values n
+    set _colors palette:scheme-colors "Sequential" "Reds" n
   ]
 
   carefully [

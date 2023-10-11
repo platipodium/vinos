@@ -731,8 +731,8 @@ SLIDER
 memory-size
 memory-size
 0
-100
-0.0
+50
+20.0
 1
 1
 NIL
