@@ -6,13 +6,14 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 # Release notes for version 1.2.3 - in development
 
-Version 1.2.3 is a maintenance release of our Viable North Sea (ViNoS) software. The
-main purpose of this release are further improvements to the User Interface
+Version 1.2.3 is a maintenance release of our Viable North Sea (ViNoS) software. The main purpose of this release are further improvements to the user interface and trip optimization.
+
+- don't haul in traffic
 
 # Release notes for version 1.2.2 - Oct 11
 
 Version 1.2.2 is a maintenance release of our Viable North Sea (ViNoS) software. The
-main purpose of this release are improvements to the User Interface
+main purpose of this release are improvements to the user interface.
 
 - consistent naming of species (now changed to English short form)
 - added action (memory) histogram and spatial visualization

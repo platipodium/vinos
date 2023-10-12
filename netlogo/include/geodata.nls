@@ -36,16 +36,13 @@ to setup-maps
   gis:apply-raster bathymetry-dataset depth
 
   ; The following removes NaN values which are not allowed
-  ask patches with [not (depth <= 0 or depth > -1) ] [ set depth 9999 ]
-
+  ; and convert from bathymetry to depth
+  ask patches with [not (depth < 0 or depth > -1) ] [ set depth 9999 ]
+  ask patches [ set depth ( - depth)]
 
   calc-accessibility
   calculate-distance-to-coast
   ; calculate-distance-to-port  ; needs ports defined, so do it later
-
-
-  ; Convert from bathymetry to depth
-  ask patches [ set depth ( - depth)]
 
   gis:apply-raster crangon-summer-dataset crangon-summer
   ask patches with [not (crangon-summer < 0 or crangon-summer > -1) ] [ set crangon-summer -9999 ]
@@ -61,7 +58,6 @@ to setup-maps
     ]
     set _patches patches with [crangon-summer < 0 and depth > 0]
   ]
-
 
   gis:apply-raster crangon-winter-dataset crangon-winter
   ask patches with [not (crangon-winter < 0 or crangon-winter > -1) ] [ set crangon-winter -9999 ]
@@ -328,6 +324,24 @@ to show-dataset [_dataset-name]
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Blues" n
   ]
+
+  if _dataset-name = "Value" [
+    ask water-patches [ set temporary 0 ]
+
+    let _cost-per-km (mean [boat-fuel-consumption] of boats) * oil-price / 100  + wage / (mean [boat-steaming-speed] of boats)
+
+    foreach sort-on [who] ports [ p ->
+      ask water-patches [
+        let _distance  gis-scale * distance p
+        set temporary temporary + crangon-summer * 7 * area - _distance * _cost-per-km
+      ]
+    ]
+
+    set _values sort [ temporary ] of water-patches
+    set _qt quantile-thresholds _values n
+    set _colors palette:scheme-colors "Sequential" "Blues" n
+  ]
+
 
   if _dataset-name = "Tide" [
     calculate-tidal-depth

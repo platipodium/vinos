@@ -123,7 +123,6 @@ to setup
 
   calc-pollution
   calc-fish
-  calc-accessibility
 
   setup-preys
 
