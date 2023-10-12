@@ -727,11 +727,25 @@ to-report gis-scale
   ]
   let _marker one-of link-neighbors with [breed = markers]
 
-  if patch-ahead 1 = nobody [ask _marker [right 180]]
+  ; If we're at the edge, we need to move away one step (and later
+  ; revisit this place
+  let _xy (list xcor ycor)
+  setxy max (list xcor (min-pxcor + 1)) max (list ycor (min-pycor + 1))
+  setxy min (list xcor (max-pxcor - 1)) min (list ycor (max-pycor - 1))
+
   ask _marker [forward 1]
   let _gis-distance gis-envelope-distance (turtle-set self  _marker)
+
+  if _gis-distance < 0.0001 [
+    print (sentence _xy )
+  ]
+
+  ; Cleanup
+  setxy item 0 _xy item 1 _xy
   ask my-out-links with [breed = markers][die]
   ask _marker [die]
+
+
   report  _gis-distance
 end
 

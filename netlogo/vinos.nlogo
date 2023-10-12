@@ -484,25 +484,8 @@ to ci-maps
   let prefix ""
   let dataset gis:patch-dataset fishing-effort-hours
 
-  foreach (list "Shrimp" "Plaice" "Sole" "pollution (random)" "bathymetry" "effort (h a-1)"
-    "accessible?" "owf" "plaice-box?" "swept area ratio") [ s ->
-
-    set scene s
-    update-scene
-    clear-drawing
-
-    set prefix  (word "results/"  first (split "? -" s) "-" time:show date "yyyy-MM-dd")
-    export-view (word prefix ".png")
-
-  ]
-
-  set dataset gis:patch-dataset fishing-effort-hours
-  set prefix  (word "results/effort-" time:show date "yyyy-MM-dd")
-  gis:store-dataset dataset prefix
-
-  set dataset gis:patch-dataset swept-area
-  set prefix  (word "results/swept-" time:show date "yyyy-MM-dd")
-  gis:store-dataset dataset prefix
+  save-static-datasets
+  save-dynamic-datasets
 
 end
 
@@ -644,7 +627,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-3
+11
 
 BUTTON
 83
