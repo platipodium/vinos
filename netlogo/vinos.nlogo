@@ -5,7 +5,6 @@
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 ; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
 ; SPDX-FileContributor: Jieun Seo <jieun.seo@studium.uni-hamburg.de>
-; test
 
 extensions [
   gis
@@ -29,6 +28,7 @@ __includes [
   "include/time-series.nls"
   "include/python.nls"
   "include/ci.nls"
+  "include/video.nls"
 ]
 
 ; The following breeds are defined in include files
@@ -588,7 +588,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-10
+3
 
 BUTTON
 83
