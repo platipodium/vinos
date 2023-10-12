@@ -149,7 +149,6 @@ end
 
 ; this procedures resets all sliders to a reasonable default value
 to setup-defaults
-  set fraction-transportation-costs 0.5
   set memory-size 25
   set adaptation 0.6
   set operating-costs-of-boats 0.2
@@ -268,6 +267,8 @@ to update-scene
   if any? legend-entries [ask legend-entries [die]]
   let n scene-legend-n
 
+  ask patches [set plabel ""]
+
   carefully [show-dataset scene][
 
 
@@ -297,6 +298,7 @@ to update-scene
 
   ]
 
+  if show-values? [show-values]
 end
 
 to update-scene-legend
@@ -586,7 +588,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-4
+10
 
 BUTTON
 83
@@ -722,21 +724,6 @@ Change the information for the basemap here and hit `update`
 11
 0.0
 1
-
-SLIDER
-12
-279
-254
-312
-fraction-transportation-costs
-fraction-transportation-costs
-0
-1
-0.99
-0.01
-1
-NIL
-HORIZONTAL
 
 PLOT
 256
@@ -920,7 +907,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
-12
+0
 
 SWITCH
 1241
@@ -1028,7 +1015,7 @@ CHOOSER
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast" "age"
-5
+3
 
 BUTTON
 1299
@@ -1046,6 +1033,17 @@ NIL
 NIL
 NIL
 1
+
+SWITCH
+11
+249
+159
+282
+show-values?
+show-values?
+1
+1
+-1000
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries

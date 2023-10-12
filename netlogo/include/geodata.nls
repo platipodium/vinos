@@ -363,7 +363,7 @@ to show-dataset [_dataset-name]
     let _uvalues unique _values
     set n min (list n length _uvalues)
     set _qt quantile-thresholds _uvalues n
-    set _colors palette:scheme-colors "Sequential" "Greens" n
+    ifelse n > 2 [set _colors palette:scheme-colors "Sequential" "Greens" n][set _colors (list red blue)]
   ]
 
   if _dataset-name = "Catch" [

@@ -53,6 +53,16 @@ to draw-legend [ colors labels]
 
   ; draw the background (bbox)
   ask patches with [pxcor >= min-pxcor + 2 and pxcor <= min-pxcor + 20
-       and pycor > max-pycor - 20 - legend-pad - 3 * ( length labels ) and pycor < max-pycor - 20][set pcolor grey]
+       and pycor > max-pycor - 20 - legend-pad - 3 * ( length labels ) and pycor < max-pycor - 20][
+    set pcolor grey
+    set plabel ""
+  ]
 
+end
+
+to show-values
+  ask water-patches with [pxcor mod 10 = 0 and  pycor mod 10 = 0  and is-number? temporary and temporary != -9999][
+    set plabel round temporary
+    set plabel-color white ; todo adapt to pcolor
+  ]
 end
