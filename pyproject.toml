@@ -25,6 +25,7 @@ tabula-py = "^2.7.0"
 pypdf = "^3.8.0"
 holidays = "^0.24"
 clevercsv = "^0.8.0"
+convert = "^0.1.2"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^3.2.2"

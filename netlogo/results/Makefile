@@ -4,5 +4,8 @@
 
 default:
 
+mp4:
+	for Y in 2020 2030; do convert tide_*_${Y}*.png tide_${Y}.mp4; done
+
 clean:
-	@-rm -f *.asc *.shp *.prj *.nc *.json
+	@rm -f *.mp4 *.prj *.asc *.png
