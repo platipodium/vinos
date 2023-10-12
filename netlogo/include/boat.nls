@@ -730,8 +730,8 @@ to-report gis-scale
   ; If we're at the edge, we need to move away one step (and later
   ; revisit this place
   let _xy (list xcor ycor)
-  setxy max (list xcor (min-pxcor + 1)) max (list ycor (min-pycor + 1))
-  setxy min (list xcor (max-pxcor - 1)) min (list ycor (max-pycor - 1))
+  setxy max (list xcor (min-pxcor + 2)) max (list ycor (min-pycor + 2))
+  setxy min (list xcor (max-pxcor - 2)) min (list ycor (max-pycor - 2))
 
   ask _marker [forward 1]
   let _gis-distance gis-envelope-distance (turtle-set self  _marker)

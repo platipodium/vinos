@@ -18,12 +18,21 @@ import xarray as xr
 
 
 variables = {
-    'solea': {'min': 0.1, 'max': 60,'unit': 'kg km-2', 'cmap': 'viridis', 'title': 'Sole'},
+    'shore_proximity': {'unit': 'km', 'cmap': 'Blues', 'title': 'Shore proxmity'},
+    'area': {'unit': 'km$^2$', 'cmap': 'Greens', 'title': 'Cell area'},
+    'bathymetry': {'min': 0, 'max': 80,'unit': 'm', 'cmap': 'ocean', 'title': 'Bathymetry'},
+    'plaicebox': {'min': 0, 'max': 1,'unit': '', 'cmap': 'Grays', 'title': 'Plaice box'},
+    'owf': {'min': 0, 'max': 1,'unit': '', 'cmap': 'Grays', 'title': 'OWF fraction'},
+    'accessibility': {'min': 0, 'max': 1,'unit': '', 'cmap': 'Grays', 'title': 'Accessibilty'},
+    'traffic': {'min': 0, 'max': 1,'unit': '', 'cmap': 'viridis', 'title': 'Cargo traffic density'},
+    'sole': {'min': 0.1, 'max': 60,'unit': 'kg km-2', 'cmap': 'viridis', 'title': 'Sole'},
     'plaice': {'min': 10, 'max': 500, 'unit': 'kg km-2', 'cmap': 'viridis', 'title': 'Plaice'},
-    'crangon': {'min': 0.1, 'max': 1, 'unit': 'kg km-2', 'cmap': 'viridis', 'title': 'Shrimp'},
-    'effort': {'max': 1000, 'min': 10, 'unit': 'h a-1', 'cmap': 'viridis', 'title': 'Effort'},
-    'delta_effort': {'max': 50, 'min': -50, 'unit': 'h a-1', 'cmap': 'coolwarm', 'title': '$\Delta$Effort'},
+    'shrimp': {'min': 0.1, 'max': 1, 'unit': 'kg km-2', 'cmap': 'viridis', 'title': 'Shrimp'},
+    'emodnet_tbb_effort': {'max': 1000, 'min': 10, 'unit': 'h a-1', 'cmap': 'viridis', 'title': 'Effort'},
+    'effort': {'max': 1000, 'min': 10, 'unit': 'kW h a-1', 'cmap': 'viridis', 'title': 'Effort'},
+    'delta_effort': {'max': 50, 'min': -50, 'unit': 'kW h a-1', 'cmap': 'coolwarm', 'title': '$\Delta$Effort'},
 }
+
 
 
 def add_nc(ax, nc_file, varname='var', var=None):
@@ -84,7 +93,16 @@ def add_nc(ax, nc_file, varname='var', var=None):
     ax.set_title(title)
 
 
-def add_asc(ax, asc_file, var=None):
+def combine_asc(asc_file1, asc_file2, operator = '-'):
+
+    data_1,_ = read_asc(asc_file1)
+    data_2,_ = read_asc(asc_file2)
+
+    if operator == '-':
+      return data_1 - data_2
+
+
+def read_asc(asc_file):
     # Read the ASC raster file using rasterio
     with rasterio.open(asc_file) as src:
         # Display the raster on the existing map
@@ -101,6 +119,16 @@ def add_asc(ax, asc_file, var=None):
         extent = [transform[2], transform[2] + transform[0] * src.width,
                   transform[5] + transform[4] * src.height, transform[5]]
 
+    return masked_raster_data, extent
+
+
+def add_asc(ax, asc_file1, asc_file2=None, operator='-', var=None):
+
+
+    masked_raster_data, extent = read_asc(asc_file1)
+    if asc_file2 != None:
+        masked_raster_data=combine_asc(asc_file1, asc_file2, operator=operator)
+
     zmin = np.nanmin(masked_raster_data)
     zmax = np.nanmax(masked_raster_data)
     cmap = 'viridis'
@@ -116,8 +144,8 @@ def add_asc(ax, asc_file, var=None):
         if 'title' in variables[var]: title = variables[var]['title']
 
     contour_levels = np.linspace(zmin, zmax, 8)
-    lon = np.linspace(extent[0], extent[1], src.width)
-    lat = np.linspace(extent[2], extent[3], src.height)
+    lon = np.linspace(extent[0], extent[1], masked_raster_data.shape[1])
+    lat = np.linspace(extent[2], extent[3],masked_raster_data.shape[0])
 
     if 'delta' in var:
       masked_raster_data = ma.masked_where(np.abs(masked_raster_data) < 0.3*zmax, masked_raster_data)
@@ -178,47 +206,27 @@ def basemap():
 
 if __name__ == '__main__':
 
-    ax = basemap()
-    add_asc(ax, '../data/thuenen/sol.ple.cra.biomasses_new/dis.pleuronectes.platessa.27.max.asc', var='plaice')
-    plt.savefig('pleuronectes.png', dpi=400)
-    #plt.show()
-
-    ax = basemap()
-    add_asc(ax, '../data/thuenen/sol.ple.cra.biomasses_new/dis.crangon.min.max.asc', var='crangon')
-    plt.savefig('crangon.png', dpi=400)
-    #plt.show()
-
-    ax = basemap()
-    add_asc(ax, '../data/thuenen/sol.ple.cra.biomasses_new/dis.solea.24.max.asc', var='solea')
-    plt.savefig('solea.png', dpi=400)
-    #plt.show()
 
 
-    #add_nc(ax, '../data/gebco/gebco_2021_n56.0_s53.0_w2.0_e10.0.nc', varname='elevation')
+    for v in ['traffic', 'accessibility', 'bathymetry', 'emodnet_tbb_effort',
+              'area', 'shore_proximity', 'shrimp', 'plaice', 'sole', 'owf',
+              'plaicebox']:
+      ax = basemap()
+      add_asc(ax, f'../netlogo/results/{v}.asc', var=v)
+      plt.savefig(f'{v}.png', dpi=400)
+
 
     ax = basemap()
-    add_asc(ax,'../netlogo/results/effort-2017-01-10.asc', var='effort')
-    ax.set_title('Effort 2017')
-    plt.savefig('effort_2017.png', dpi=400)
-    #plt.show()
+    add_asc(ax,'../netlogo/results/effort_0360_20201227.asc', var='effort')
+    ax.set_title('Effort 2020')
+    plt.savefig('effort_2020.png', dpi=400)
+
+    add_asc(ax,'../netlogo/results/effort_0361_20301229.asc', var='effort')
+    ax.set_title('Effort 2030')
+    plt.savefig('effort_2030.png', dpi=400)
+
 
     ax = basemap()
-    add_asc(ax,'../netlogo/results/effort-2029-09-11.asc', var='effort')
-    ax.set_title('Effort 2029')
-    plt.savefig('effort_2029.png', dpi=400)
-    #plt.show()
-
-    # ax = basemap()
-    # add_nc(ax,'effort-2017-01-08_gridspec.nc', var='effort')
-    # plt.savefig('effort-2017-01-08.png', dpi=400)
-    # plt.show()
-
-    # ax = basemap()
-    # add_nc(ax,'effort-2025-10-09_gridspec.nc', var='effort')
-    # plt.savefig('effort-2025-10-09.png', dpi=400)
-    # plt.show()
-
-    ax = basemap()
-    add_nc(ax,'../netlogo/results/effort_2029-2017.nc', var='delta_effort')
-    plt.savefig('effort_2029-2017.png', dpi=400)
+    add_asc(ax,'../netlogo/results/effort_0361_20301229.asc',asc_file2='../netlogo/results/effort_0360_20201227.asc', var='delta_effort')
+    plt.savefig('effort_2030-2020.png', dpi=400)
     plt.show()
