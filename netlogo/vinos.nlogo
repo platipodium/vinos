@@ -235,7 +235,9 @@ to go
   update-actions
 
   ; export the data every week on a Sunday (weekday 0)
-  if (time:get "dayofweek"  date mod 7) = 0 [export-patches]
+  if (time:get "dayofweek"  date mod 7) = 0 [
+    save-dynamic-datasets
+  ]
   save-totals
 
   tick

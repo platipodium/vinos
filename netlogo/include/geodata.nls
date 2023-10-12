@@ -410,6 +410,7 @@ to save-static-dataset [_dataset-name]
   let _name lower _dataset-name
   set _name replace-pattern _name " -" "_"
   export-view (word "./results/" _name ".png")
+  gis:store-dataset gis:patch-dataset temporary (word "./results/" _name)
 end
 
 to save-dynamic-dataset [_dataset-name]
@@ -418,6 +419,7 @@ to save-dynamic-dataset [_dataset-name]
   set _name replace-pattern _name " -" "_"
   let _ticks ifelse-value ticks > 0 [ ticks ][ 0 ]
   export-view (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short ".png")
+  gis:store-dataset gis:patch-dataset temporary (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short)
 end
 
 to save-static-datasets
@@ -425,7 +427,9 @@ to save-static-datasets
     "Sole" "OWF" "Accessibility" "Plaicebox"
   )
 
-  foreach _static [ s -> save-static-dataset s]
+  foreach _static [
+    s -> save-static-dataset s
+  ]
 end
 
 to save-dynamic-datasets
@@ -490,15 +494,6 @@ to draw-background [X]
   ]
 
 end
-
-to export-patches
-  gis:store-dataset gis:patch-dataset fishing-effort-hours (word "results/fishing-effort-hours_" (formatted-int ticks 4) "_" datetime-short)
-  gis:store-dataset gis:patch-dataset depth "results/depth"
-  gis:store-dataset gis:patch-dataset owf-fraction "results/owf-fraction"
-  gis:store-dataset gis:patch-dataset accessible? "results/accessible"
-  gis:store-dataset gis:patch-dataset plaice-box? "results/plaice-box"
-end
-
 
 ; This procedure is very costly.
 to calculate-distance-to-coast
