@@ -360,10 +360,10 @@ end
 ; values and weighted by day of year
 to-report crangon
   let _correction-factor 500
-  let _resupply 0.9
+  let _resupply 0.1
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
-    let _prey-index position "Sole" patch-prey-names
+    let _prey-index position "Shrimp" patch-prey-names
     report _resupply * _correction-factor * (
       (summer-weight * crangon-summer + (1 - summer-weight) * crangon-winter )
     ) +  (1 - _resupply) * item _prey-index patch-prey-biomasses
@@ -375,8 +375,8 @@ to-report crangon
 end
 
 to-report solea
-  let _correction-factor 1
-  let _resupply 0.9
+  let _correction-factor 5
+  let _resupply 0.1
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Sole" patch-prey-names
@@ -391,8 +391,8 @@ to-report solea
 end
 
 to-report platessa
-  let _correction-factor 1
-  let _resupply 0.9
+  let _correction-factor 5
+  let _resupply 0.1
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Plaice" patch-prey-names
@@ -586,7 +586,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-0
+4
 
 BUTTON
 83
@@ -920,7 +920,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
-0
+12
 
 SWITCH
 1241

@@ -401,3 +401,22 @@ to-report __test-replace-pattern
   if replace-pattern "AlHam1Br!a"  "!1" "" != "AlHamBra" [ report false ]
   report true
 end
+
+to-report unique [_list]
+  if not is-list? _list [set _list (list _list)]
+  let _unique (list)
+  foreach _list [ _member ->
+    if not member? _member _unique [set _unique lput _member _unique ]
+  ]
+  report _unique
+end
+
+
+to-report __test-unique
+
+  if unique 1 != (list 1) [report false]
+  if unique [ 1 4 2 ] != (list 1 4 2)  [report false]
+  if unique [ 1 1 4 1 1 2 4 1 2] != (list 1 4 2)  [report false]
+  report true
+
+end

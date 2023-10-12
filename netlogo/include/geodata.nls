@@ -359,7 +359,10 @@ to show-dataset [_dataset-name]
     let _max max  [count actions-here] of water-patches
     ask water-patches with [any? actions-here] [ set temporary count actions-here]
     set _values sort [ temporary ] of water-patches with [any? actions-here]
-    set _qt quantile-thresholds _values n
+
+    let _uvalues unique _values
+    set n min (list n length _uvalues)
+    set _qt quantile-thresholds _uvalues n
     set _colors palette:scheme-colors "Sequential" "Greens" n
   ]
 
