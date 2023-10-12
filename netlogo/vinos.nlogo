@@ -28,6 +28,7 @@ __includes [
   "include/action.nls"
   "include/time-series.nls"
   "include/python.nls"
+  "include/ci.nls"
 ]
 
 ; The following breeds are defined in include files
@@ -115,7 +116,12 @@ end
 to setup
   clear-all
 
+  ; First setup up the calendar.  The routine setup-calendar checks for
+  ; existing date, if there is none, it sets to wall time +/- offset
+  ; specified in slider
+  set date nobody
   setup-calendar
+
   setup-globals
   setup-gears
 
@@ -445,52 +451,6 @@ to-report should-go-fishing?
   report false
 end
 
-; This routine is to be called by CI
-to create-effort-map
-
-  ask patches [
-    set fishing-effort-hours 0
-  ]
-
-  repeat 365 [ go ]
-
-  ; data storage
-  let prefix  (word "results/effort-" substring date-and-time 0 12)
-
-  set scene "effort (h a-1)"
-  update-scene
-  clear-drawing
-  ask links [set hidden? true]
-  ask boats [set hidden? true]
-
-  export-view (word prefix ".png")
-
-  ask links [set hidden? false]
-  ask boats [set hidden? false]
-
-
-  let dataset gis:patch-dataset fishing-effort-hours
-  gis:store-dataset dataset prefix
-
-end
-
-; This routine is to be called by CI, so after a setup is
-; automatically performed
-to ci-maps
-
-  ask links   [set hidden? true]
-  ask turtles [set hidden? true]
-
-  repeat 365 [ go ]
-
-  let prefix ""
-  let dataset gis:patch-dataset fishing-effort-hours
-
-  save-static-datasets
-  save-dynamic-datasets
-
-end
-
 
 to calc-accessibility
 
@@ -535,7 +495,6 @@ to calc-accessibility
 
 end
 
-
 to save-totals
 
   let _boats boats with [boat-total-days-at-sea > 0] ; and  boat-total-landings > 0]
@@ -563,8 +522,6 @@ to save-totals
     file-close
    ]
 end
-
-
 
 ; The profile routine is called manually from the command line while we test
 to profile
@@ -629,7 +586,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-11
+0
 
 BUTTON
 83
@@ -730,7 +687,7 @@ oil-price
 oil-price
 25
 75
-75.0
+50.0
 5
 1
 ct l-1
@@ -932,7 +889,7 @@ wage
 wage
 50
 120
-80.0
+70.0
 5
 1
 € h-1

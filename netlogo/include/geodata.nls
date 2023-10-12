@@ -47,13 +47,13 @@ to setup-maps
   gis:apply-raster crangon-summer-dataset crangon-summer
   ask patches with [not (crangon-summer < 0 or crangon-summer > -1) ] [ set crangon-summer -9999 ]
 
-  ; Creep-fill with nearest neighbor
+  ; Creep-fill with nearest neighbor with 50%
   set _patches patches with [crangon-summer < 0 and accessible?]
   repeat max-pxcor * 2 [
     ask _patches [
       let _neighbors neighbors with [crangon-summer >= 0]
       if any? _neighbors [
-        set crangon-summer  mean [crangon-summer] of _neighbors
+        set crangon-summer  0.5 * mean [crangon-summer] of _neighbors
       ]
     ]
     set _patches patches with [crangon-summer < 0 and depth > 0]
@@ -69,7 +69,7 @@ to setup-maps
     ask _patches [
       let _neighbors neighbors with [crangon-winter >= 0]
       if any? _neighbors [
-        set crangon-winter  mean [crangon-winter] of _neighbors
+        set crangon-winter  0.5 * mean [crangon-winter] of _neighbors
       ]
     ]
     set _patches patches with [crangon-winter < 0 and depth > 0]
@@ -83,7 +83,7 @@ to setup-maps
     ask _patches [
       let _neighbors neighbors with [solea-summer >= 0]
       if any? _neighbors [
-        set solea-summer  mean [solea-summer] of _neighbors
+        set solea-summer  0.5 * mean [solea-summer] of _neighbors
       ]
     ]
     set _patches patches with [solea-summer < 0 and depth > 0]
@@ -96,7 +96,7 @@ to setup-maps
     ask _patches [
       let _neighbors neighbors with [solea-winter >= 0]
       if any? _neighbors [
-        set solea-winter  mean [solea-winter] of _neighbors
+        set solea-winter 0.5 * mean [solea-winter] of _neighbors
       ]
     ]
     set _patches patches with [solea-winter < 0 and depth > 0]
@@ -109,7 +109,7 @@ to setup-maps
     ask _patches [
       let _neighbors neighbors with [platessa-summer >= 0]
       if any? _neighbors [
-        set platessa-summer  mean [platessa-summer] of _neighbors
+        set platessa-summer 0.5 * mean [platessa-summer] of _neighbors
       ]
     ]
     set _patches patches with [platessa-summer < 0 and accessible?]
@@ -122,7 +122,7 @@ to setup-maps
     ask _patches [
       let _neighbors neighbors with [platessa-winter >= 0]
       if any? _neighbors [
-        set platessa-winter  mean [platessa-winter] of _neighbors
+        set platessa-winter 0.5 * mean [platessa-winter] of _neighbors
       ]
     ]
     set _patches patches with [platessa-winter < 0 and accessible?]

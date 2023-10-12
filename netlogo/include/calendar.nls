@@ -26,10 +26,12 @@ to setup-calendar
 
   set days-in-months (list 31 28 31 30 31 30 31 31 30 31 30 31 )
 
-  set date logodate-from-datetime
+  if date = nobody [
+    set date logodate-from-datetime
 
-  ; Now add to the current time the offset
-  set date time:plus date time-offset "months"
+    ; Now add to the current time the offset
+    set date time:plus date time-offset "months"
+  ]
 
   set year time:get "year" date
   set month time:get "month" date
