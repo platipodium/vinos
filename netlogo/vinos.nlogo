@@ -217,7 +217,12 @@ to go
       watch _boat
       inspect _boat
     ]
-  ][]
+  ][
+    if subject != nobody [
+      stop-inspecting subject
+      ; need to unwatch, too
+    ]
+  ]
 
   let _boats _active-boats with [boat-hour < 24]
   while [count _boats > 0] [
@@ -631,7 +636,7 @@ SWITCH
 152
 show-ports?
 show-ports?
-1
+0
 1
 -1000
 
@@ -793,7 +798,7 @@ SWITCH
 268
 owf?
 owf?
-1
+0
 1
 -1000
 
@@ -916,7 +921,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-1
+0
 1
 -1000
 
