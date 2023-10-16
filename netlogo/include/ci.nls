@@ -1,0 +1,83 @@
+; SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+; SPDX-License-Identifier: Apache-2.0
+; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+; Routines that are called by CI
+
+to reset-year [_year]
+
+  set date time:create (word _year "/01/01")
+  setup-calendar
+
+  ask actions [die]
+  ask patches [
+    set fishing-effort-hours 0
+    set prey-catches 0
+    set cluster-fishing-efforts 0
+    set cluster-prey-catches  0
+    set swept-area 0
+  ]
+
+end
+
+
+; This routine is to be called by CI, so after a setup is
+; automatically performed
+to ci-maps
+
+  ;ask links   [set hidden? true]
+  ;ask turtles [set hidden? true]
+  set show-values? false
+  set show-ports? false
+  set show-boats? false
+  set box? true
+  set owf? false
+  update-drawings
+
+  reset-ticks
+  reset-year 2020
+  update-date-patch
+  repeat 365 [
+    go
+    ;print date
+  ]
+  save-static-dataset "Effort"
+
+  reset-ticks
+  reset-year 2030
+  update-date-patch
+  repeat 365 [
+    go
+    ;print date
+  ]
+  save-static-dataset "Effort"
+
+end
+
+; This routine is to be called by CI and is deprecated
+to create-effort-map
+
+  ask patches [
+    set fishing-effort-hours 0
+  ]
+
+  repeat 365 [ go ]
+
+  ; data storage
+  let prefix  (word "results/effort-" substring date-and-time 0 12)
+
+  set scene "effort (h a-1)"
+  update-scene
+  clear-drawing
+  ask links [set hidden? true]
+  ask boats [set hidden? true]
+
+  export-view (word prefix ".png")
+
+  ask links [set hidden? false]
+  ask boats [set hidden? false]
+
+
+  let dataset gis:patch-dataset fishing-effort-hours
+  gis:store-dataset dataset prefix
+
+end
