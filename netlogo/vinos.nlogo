@@ -462,16 +462,33 @@ end
 
 to calc-accessibility
 
+  setup-water-patches
+
   ask patches [set plaice-box? false]
   load-plaice-box
+
+  ; Boats are not allowed within OWF areas
+  ask patches with [owf-fraction > 0.5] [set accessible? false]
+
+  ; Fishery is restricted in MPAs from 1 May 2023.  This needs to be refined
+  ; TBB and OTB are not allowed in Borkum riffgrund
+  ; TBB and OTB ar not allowed in Sylt west
+  ; Small TBB are allowed in Sylt East
+  if year > 2023 or (year = 2023 and month > 4) [
+    ask patches gis:intersecting load-dataset "Natura2000" [ set accessible? false ]
+  ]
+end
+
+
+to setup-water-patches
 
   let depth-threshold -1
 
   ; By default, all patches are inaccessible
   ask patches [set accessible? false]
 
+  ; Provide the SNS shape
   let _sns load-dataset "SNS"
-
   set water-patches patches gis:intersecting  _sns
 
   ; Creep-fill from maximum depth, assumed in the North Sea
@@ -490,18 +507,17 @@ to calc-accessibility
   ask patches with [not accessible?] [set depth min (list -2 depth)]
   set water-patches patches with [accessible?]
 
-  ; Boats are not allowed within OWF areas
-  ask patches with [owf-fraction > 0.5] [set accessible? false]
+  ; Define a sponge layer around edge where we prevent boats to go
+  let _sponge 3
+  ask patches with [pxcor > max-pxcor - _sponge or pxcor < min-pxcor + _sponge or
+    pycor > max-pycor - _sponge or pycor < min-pycor + _sponge] [set accessible? false]
 
-  ; Fishery is restricted in MPAs from 1 May 2023.  This needs to be refined
-  ; TBB and OTB are not allowed in Borkum riffgrund
-  ; TBB and OTB ar not allowed in Sylt west
-  ; Small TBB are allowed in Sylt East
-  if year > 2023 or (year = 2023 and month > 4) [
-    ask patches gis:intersecting load-dataset "Natura2000" [ set accessible? false ]
-  ]
 
 end
+
+
+
+
 
 to save-totals
 
@@ -594,7 +610,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-0
+3
 
 BUTTON
 83

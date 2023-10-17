@@ -712,7 +712,7 @@ end
 to-report boat-accessible-path [d]
   foreach range d [ i ->
     if (not member? patch-ahead i boat-fishable-patches) [report false]
-    if [traffic-suitability] of patch-ahead i < 0.1 [report false]
+    ;if [traffic-suitability] of patch-ahead i < 0.1 [report false]
   ]
   report true
   ;report all? (patch-set (n-values d [ i ->  patch-ahead i])) [accessible?]
