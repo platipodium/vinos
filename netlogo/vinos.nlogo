@@ -134,6 +134,8 @@ to setup
 
   setup-ports
   calc-initial-values
+  calculate-distance-to-port
+
   setup-boats
 
   setup-plots
@@ -272,7 +274,7 @@ to update-scene
   if any? legend-entries [ask legend-entries [die]]
   let n scene-legend-n
 
-  ask patches [set plabel ""]
+  ask water-patches [set plabel ""]
 
   carefully [show-dataset scene][
 
@@ -609,7 +611,7 @@ CHOOSER
 245
 scene
 scene
-"Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
+"Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
 3
 
 BUTTON
@@ -653,7 +655,7 @@ SWITCH
 152
 show-ports?
 show-ports?
-0
+1
 1
 -1000
 
@@ -938,7 +940,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-0
+1
 1
 -1000
 

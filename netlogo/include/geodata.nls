@@ -42,7 +42,6 @@ to setup-maps
 
   calc-accessibility
   calculate-distance-to-coast
-  ; calculate-distance-to-port  ; needs ports defined, so do it later
 
   gis:apply-raster crangon-summer-dataset crangon-summer
   ask patches with [not (crangon-summer < 0 or crangon-summer > -1) ] [ set crangon-summer -9999 ]
@@ -301,6 +300,13 @@ to show-dataset [_dataset-name]
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
 
+  if _dataset-name = "Port proximity" [
+    ask water-patches [ set temporary distance-to-port ]
+    set _qt (list 0 1 2 5 10 15 20 30 40 80)
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Sequential" "Oranges" n
+  ]
+
   if _dataset-name = "Area" [
     ask water-patches [ set temporary area ]
     set _values sort [ temporary ] of water-patches
@@ -522,7 +528,8 @@ end
 to calculate-distance-to-port
   ask patches  [
     let _port min-one-of ports [distance myself]
-    set distance-to-coast gis-envelope-distance (patch-set self [patch-here] of _port)
+    let _patch [patch-here] of _port
+    set distance-to-port gis-envelope-distance (patch-set self _patch)
   ]
 end
 
