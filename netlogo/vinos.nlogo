@@ -302,6 +302,7 @@ to update-scene
   ]
 
   ]
+  display
 
   if show-values? [show-values]
 end
@@ -593,7 +594,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-3
+0
 
 BUTTON
 83

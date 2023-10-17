@@ -135,9 +135,8 @@ to setup-maps
   ; add traffic data
   show-dataset "Traffic"
   ask patches [ set traffic-suitability 1 ]
-  ;ask water-patches with [temporary > 200] [ set traffic-suitability 0.05 ]
   ask patches with [temporary > 200] [ set traffic-suitability exp (- (temporary - 200) / 200)  ]
-  ;ask water-patches [ set traffic-suitability exp (- temporary / 1000) ]
+
 end
 
 to update-owf
@@ -409,6 +408,7 @@ to show-dataset [_dataset-name]
 end
 
 to save-static-dataset [_dataset-name]
+  no-display
   show-dataset _dataset-name
   let _name lower _dataset-name
   set _name replace-pattern _name " -" "_"
@@ -417,6 +417,7 @@ to save-static-dataset [_dataset-name]
 end
 
 to save-dynamic-dataset [_dataset-name]
+  no-display
   show-dataset _dataset-name
   let _name lower _dataset-name
   set _name replace-pattern _name " -" "_"
@@ -426,6 +427,7 @@ to save-dynamic-dataset [_dataset-name]
 end
 
 to save-static-datasets
+  no-display
   let _static (list "Traffic" "Bathymetry" "EMODnet TBB effort" "Area" "Shore proximity" "Shrimp" "Plaice"
     "Sole" "OWF" "Accessibility" "Plaicebox"
   )
@@ -436,6 +438,7 @@ to save-static-datasets
 end
 
 to save-dynamic-datasets
+  no-display
   let _dynamic (list "Effort" "Depth" "Tide" "Action" "Catch")
 
   foreach _dynamic [ s -> save-dynamic-dataset s]
