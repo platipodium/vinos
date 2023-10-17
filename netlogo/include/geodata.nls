@@ -135,7 +135,9 @@ to setup-maps
   ; add traffic data
   show-dataset "Traffic"
   ask patches [ set traffic-suitability 1 ]
-  ask patches with [temporary > 200] [ set traffic-suitability exp (- (temporary - 200) / 200)  ]
+  ;ask patches with [temporary > 100] [ set traffic-suitability exp (- (temporary - 100) / 100)  ]
+  ;ask patches with [temporary > 100] [ set traffic-suitability 0.01  ]
+  ask patches with [temporary > 150] [ set traffic-suitability 0.1  ]
 
 end
 
@@ -265,7 +267,8 @@ to show-dataset [_dataset-name]
   if _dataset-name = "Suitability" [
     ask water-patches [set temporary traffic-suitability]
     set _values sort [ temporary ] of water-patches
-    set _qt quantile-thresholds _values n
+    set _qt (list 0.001 0.01 0.1 0.5 1.0)
+    set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Blues" n
   ]
 
