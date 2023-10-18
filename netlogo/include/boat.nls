@@ -370,6 +370,7 @@ to boat-land-port
 
   ; now update the memory from this trip's best catch and only if
   ; this location is not a preferred one for more than 10 other boats
+  let _min-action-distance 5 ; minimum patch distance between two actions
   let _my-action nobody
   if boat-trip-best-catch > 0 and count actions-on boat-trip-best-patch < 11 [
 
@@ -378,15 +379,20 @@ to boat-land-port
     let _boat-prey-price item boat-current-prey-index prey-prices
     let _boat-cost-per-km (boat-fuel-consumption * oil-price / 100  + wage / boat-steaming-speed)
 
+    ; @todo make sure that actions have a minimum distance from one another...
     ifelse count boat-actions < memory-size [
 
-      hatch-actions 1 [
-        set _my-action self
-        ; @todo fix gear selection (has no impact yet)
-        set action-gear [item 0 boat-gears] of myself
-        set action-catch _catch
-        set action-age 0
-        move-to _patch
+      ifelse any? boat-actions with [distance _patch < _min-action-distance][
+        ; don't do anything
+      ][
+        hatch-actions 1 [
+          set _my-action self
+          ; @todo fix gear selection (has no impact yet)
+          set action-gear [item 0 boat-gears] of myself
+          set action-catch _catch
+          set action-age 0
+          move-to _patch
+        ]
       ]
 
       set boat-actions  (turtle-set _my-action boat-actions)
@@ -401,10 +407,10 @@ to boat-land-port
       ; Check whether the boat already remembers this patch and
       ; update its catch accordingly, otherwise choose one with
       ; lower previous catch
-      ifelse any? boat-actions with [patch-here = _patch] [
-        set _my-action one-of boat-actions with [patch-here = _patch]
+      let _nearby-actions boat-actions with [distance myself < 5]
+      ifelse any? _nearby-actions [
+        set _my-action min-one-of _nearby-actions [action-gain]
       ][
-        ;set _my-action one-of boat-actions with [action-catch < _catch]
         set _my-action min-one-of boat-actions [action-gain]
       ]
       if _my-action != nobody [
