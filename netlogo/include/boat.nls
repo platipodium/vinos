@@ -122,12 +122,6 @@ to setup-boats
       ]
     ])
 
-    ;print ("this is the sum of each boat-type")
-    ;print  (count boats with [boat-type = 0])
-    ;print (count boats with [boat-type = 1])
-    ;print (count boats with [boat-type = 2])
-    ;print (count boats with [boat-type = 3])
-
     ask link-neighbors [
       move-to [port-start-patch] of myself
 
@@ -171,7 +165,9 @@ to setup-boats
       set  boat-capacity 100000                                  ; kg of storage
 
       set  boat-trip-gear-catches         n-values number-of-gears  [?1 -> 0 ]
-      set  catch-efficiency-boat   n-values number-of-gears  [igear -> (item igear gear-catch-efficancy) + random-float 0.20 - random-float 0.40]
+      set  catch-efficiency-boat   n-values number-of-gears  [igear -> 1
+        ;(item igear gear-catch-efficancy) + random-float 0.20 - random-float 0.40
+      ]
 
       ;      set  catch-efficiency-boat   n-values number-of-gears  [?1 -> (0.15 + random-float 0.20)]
       set  revenue-boat            n-values number-of-gears  [?1 -> 0 ]   ; revenue for the fishing trip of the boat

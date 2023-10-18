@@ -390,8 +390,8 @@ end
 ; area concentration of the three species calculated from their winter and summer
 ; values and weighted by day of year
 to-report crangon
-  let _correction-factor 500
-  let _resupply 0.1
+  let _correction-factor 600
+  let _resupply 0.01
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Shrimp" patch-prey-names
@@ -633,7 +633,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-14
+4
 
 BUTTON
 83
@@ -952,7 +952,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
-16
+0
 
 SWITCH
 1241
@@ -1060,7 +1060,7 @@ CHOOSER
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast" "age"
-3
+0
 
 BUTTON
 1299
@@ -1086,7 +1086,7 @@ SWITCH
 282
 show-values?
 show-values?
-0
+1
 1
 -1000
 
