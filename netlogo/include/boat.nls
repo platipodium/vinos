@@ -561,12 +561,12 @@ to boat-make-haul
   let _haul-distance  (_fishing-speed * _haul-time / _gis-scale)
 
   let _patch patch-ahead _haul-distance
-  let _counter 1
 
   ; find (up to ten times) a straight line path with accessible patches by turning,
   ; first slow then more
   ; @todo also make sure no other boats in path
-  while [ (_counter < 10) and (_patch != nobody) and (not boat-accessible-path _haul-distance ) ] [
+  let _counter 1
+  while [ (_counter < 10) and (_patch != nobody) and (not boat-accessible-path _haul-distance _sub-steps) ] [
     set heading heading - 180 - _counter * 5 + random (_counter * 10 + 1)
     set _gis-scale gis-scale
     set _haul-distance  (_fishing-speed * _haul-time / _gis-scale)
@@ -584,10 +584,12 @@ to boat-make-haul
     let _step-size _sub-step-time * fishing-speed / _gis-scale
 
     if show-boats? [pen-down]
+
     repeat (_sub-steps) [
+      ; trawl here
       set _new-catches boat-catch-species (_sub-step-time * _fishing-speed)
 
-
+      ; update diagnostics and stocks of trawled patch
       ask patch-here [
         ; Fishing effort is measured as Megawatt hours
         set fishing-effort-hours fishing-effort-hours + _sub-step-time * _power / 1000.0
@@ -603,12 +605,17 @@ to boat-make-haul
         ;  prey-catches                      ; annual prey catches
         ; cluster-prey-catches              ; preys caught by cluster
       ]
-      while [patch-ahead _step-size != nobody and (not [accessible?] of patch-ahead _step-size)] [rt random 90]
+
+      ;set _counter 1
+      ;while [_counter < 10 and patch-ahead _step-size != nobody and (not [accessible?] of patch-ahead _step-size)] [
+      ;  rt random 90
+      ;  set _counter _counter + 1
+      ;]
       forward _step-size
 
       if not [accessible?] of patch-here [
         ; @todo make this an error
-        print (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(haul)")
+        error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(haul)")
       ]
       set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
 
@@ -617,6 +624,7 @@ to boat-make-haul
         set boat-trip-best-patch patch-here
       ]
     ]
+
 
     let _next-heading heading - 180 - 10 + random (21 + 1)
 
@@ -708,11 +716,10 @@ to-report boat-catch-species [haul-length]
 
 end
 
-; report true if all patches touched within distance d are accessible
-to-report boat-accessible-path [d]
-  foreach range d [ i ->
-    if (not member? patch-ahead i boat-fishable-patches) [report false]
-    ;if [traffic-suitability] of patch-ahead i < 0.1 [report false]
+; report true if all patches touched within distance d at n substeps are accessible
+to-report boat-accessible-path [d n]
+  foreach range n [ i ->
+    if (not member? (patch-ahead (d / n)) boat-fishable-patches) [report false]
   ]
   report true
   ;report all? (patch-set (n-values d [ i ->  patch-ahead i])) [accessible?]
@@ -768,4 +775,11 @@ to-report boat-fuel-consumption
   ; @todo we can adjust this to boat-engine power
   ; we scale the fuel-efficiency (0 to 1) with boat-fuel-consumption
   report 48 * boat-engine *  1.35962 * 0.21 / 300 ; is typically 5 l km-1
+end
+
+to equalize
+  ask boats [
+    set boat-max-distance 300
+    set boat-max-duration 1000
+  ]
 end

@@ -228,14 +228,35 @@ to go
 
   let _boats _active-boats with [boat-hour < 24]
   while [count _boats > 0] [
-    ask _boats [
-      ifelse (boat-trip-phase = 5) [ boat-land-port ][
-        ifelse (boat-trip-phase = 4) [ boat-return-port ][
-          ifelse (boat-trip-phase = 3) [  boat-make-haul ][
-           ifelse (boat-trip-phase = 2) [ boat-choose-start ][
-             ifelse (boat-trip-phase = 1) [ boat-leave-port ][
-               boat-rest-port ; boat-trip-phase = 0
-      ]]]]]
+    let _boats-in-phase _boats with [boat-trip-phase = 5]
+    if any? _boats-in-phase [
+      print (word "  .. landing " count _boats-in-phase " boats ..")
+      ask _boats-in-phase [boat-land-port]
+    ]
+    set _boats-in-phase _boats with [boat-trip-phase = 4]
+    if any? _boats-in-phase [
+      print (word "  .. sending home " count _boats-in-phase " boats ..")
+      ask _boats-in-phase [boat-return-port]
+    ]
+    set _boats-in-phase _boats with [boat-trip-phase = 3]
+    if any? _boats-in-phase [
+      print (word "  .. actively fishing " count _boats-in-phase " boats ..")
+      ask _boats-in-phase [boat-make-haul]
+    ]
+    set _boats-in-phase _boats with [boat-trip-phase = 2]
+    if any? _boats-in-phase [
+      print (word "  .. repositioning " count _boats-in-phase " boats ..")
+      ask _boats-in-phase [boat-choose-start]
+    ]
+    set _boats-in-phase _boats with [boat-trip-phase = 1]
+    if any? _boats-in-phase [
+      print (word "  .. leaving port " count _boats-in-phase " boats ..")
+      ask _boats-in-phase [boat-leave-port]
+    ]
+    set _boats-in-phase _boats with [boat-trip-phase = 0]
+    if any? _boats-in-phase [
+      print (word "  .. resting " count _boats-in-phase " boats ..")
+      ask _boats-in-phase [boat-rest-port]
     ]
     set _boats _active-boats with [boat-hour < 24]
   ]
@@ -517,10 +538,6 @@ to setup-water-patches
 
 end
 
-
-
-
-
 to save-totals
 
   let _boats boats with [boat-total-days-at-sea > 0] ; and  boat-total-landings > 0]
@@ -551,13 +568,18 @@ end
 
 ; The profile routine is called manually from the command line while we test
 to profile
+  let _n 1
+  let _filename "results/profiler_data.csv"
+  print (sentence "Started profiling for" _n "steps ..")
   ;setup
   profiler:start
-  ; repeat 20 [ go ]
-  setup
+  ask boats with [boat-trip-phase = 3] [boat-make-haul]
+   ;repeat 1 [ go ]
+  ;setup
   profiler:stop
-  csv:to-file "results/profiler_data.csv" profiler:data
+  csv:to-file _filename profiler:data
   profiler:reset
+  print (sentence ".. . saved profileing data in" _filename)
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -581,8 +603,8 @@ GRAPHICS-WINDOW
 319
 0
 119
-1
-1
+0
+0
 1
 days
 30.0
@@ -612,7 +634,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-3
+4
 
 BUTTON
 83
@@ -683,7 +705,7 @@ memory-size
 memory-size
 0
 50
-16.0
+0.0
 1
 1
 NIL
@@ -817,7 +839,7 @@ SWITCH
 268
 owf?
 owf?
-0
+1
 1
 -1000
 
@@ -828,7 +850,7 @@ SWITCH
 310
 box?
 box?
-0
+1
 1
 -1000
 
@@ -900,7 +922,7 @@ wage
 wage
 50
 120
-70.0
+50.0
 5
 1
 € h-1
@@ -931,7 +953,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
-0
+11
 
 SWITCH
 1241
@@ -940,7 +962,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-1
+0
 1
 -1000
 
@@ -998,7 +1020,7 @@ time-offset
 time-offset
 -200
 200
--46.0
+-74.0
 1
 1
 months from now
