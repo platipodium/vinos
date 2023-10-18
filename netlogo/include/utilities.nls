@@ -413,10 +413,15 @@ end
 
 
 to-report __test-unique
-
   if unique 1 != (list 1) [report false]
   if unique [ 1 4 2 ] != (list 1 4 2)  [report false]
   if unique [ 1 1 4 1 1 2 4 1 2] != (list 1 4 2)  [report false]
   report true
+end
 
+; This routine supplements the non-functional in-cone distance 0
+; which erroneously report an empty agent-set
+to-report in-direction [_distance]
+  if breed != turtle [ error "This is a turtle procedure only" ]
+  report true
 end

@@ -548,7 +548,7 @@ to boat-make-haul
   let _prey [gear-species] of  item boat-current-gear-index boat-gears
   let _haul-time 1 ; one hour @todo maybe set differnet haul-time depanding on gear? (crangon could be 1.5h?)
   let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing
-  let _sub-step-time _haul-time * 1.0 / _sub-steps
+  let _step-time _haul-time * 1.0 / _sub-steps
   let _cluster boat-type
   let _power boat-engine
 
@@ -575,25 +575,29 @@ to boat-make-haul
   ]
   if _counter >= 10 [set _patch nobody]
 
+
   ; Partition the fishing in small intervals, this could probably be optimized by calculating the
   ; intersection with the patch boundaries
   ifelse _patch != nobody [
 
     let _new-catches n-values length boat-gears [i -> 0]
     let _haul-catches n-values length boat-gears [i -> 0]
-    let _step-size _sub-step-time * fishing-speed / _gis-scale
+    ; @todo the following call gives a wrong value
+    ; let _step-distance (fishing-speed * _step-time / _gis-scale)
+    ; print (sentence _step-distance "=" _fishing-speed "*" _step-time "/" _gis-scale)
 
+    let _step-distance _haul-distance / _sub-steps
     if show-boats? [pen-down]
 
     repeat (_sub-steps) [
       ; trawl here
-      set _new-catches boat-catch-species (_sub-step-time * _fishing-speed)
+      set _new-catches boat-catch-species (_step-time * _fishing-speed)
 
       ; update diagnostics and stocks of trawled patch
       ask patch-here [
         ; Fishing effort is measured as Megawatt hours
-        set fishing-effort-hours fishing-effort-hours + _sub-step-time * _power / 1000.0
-        set swept-area swept-area + _haul-width * _sub-step-time * _fishing-speed
+        set fishing-effort-hours fishing-effort-hours + _step-time * _power / 1000.0
+        set swept-area swept-area + _haul-width * _step-time * _fishing-speed
 
         ; @todo reduce fish on patch by amount taken out, allow for recovery
         if _patch-prey-index > -1 [
@@ -601,22 +605,16 @@ to boat-make-haul
             ((item _patch-prey-index  patch-prey-biomasses ) * area - (item _boat-gear-index _new-catches) )/ area
         )]
 
-        ;set cluster-fishing-efforts replace-item _cluster cluster-fishing-efforts ((item _cluster cluster-fishing-efforts) +  fishing-effort-hours + _sub-step-time)
+        ;set cluster-fishing-efforts replace-item _cluster cluster-fishing-efforts ((item _cluster cluster-fishing-efforts) +  fishing-effort-hours + _step-time)
         ;  prey-catches                      ; annual prey catches
         ; cluster-prey-catches              ; preys caught by cluster
       ]
 
-      ;set _counter 1
-      ;while [_counter < 10 and patch-ahead _step-size != nobody and (not [accessible?] of patch-ahead _step-size)] [
-      ;  rt random 90
-      ;  set _counter _counter + 1
+      ;if (not member? (patch-ahead _step-distance) boat-fishable-patches ) [
+      ;  error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(haul)")
       ;]
-      forward _step-size
+      forward _step-distance
 
-      if not [accessible?] of patch-here [
-        ; @todo make this an error
-        error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(haul)")
-      ]
       set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
 
       if item boat-current-gear-index _new-catches > boat-trip-best-catch [
@@ -713,22 +711,29 @@ to-report boat-catch-species [haul-length]
       * (([gear-width] of item igear boat-gears) * haul-length) * (boolean2int (item (item igear ispecieslist) patch-prey-biomasses > 0) )
       * [traffic-suitability] of patch-here
   ]
-
 end
 
-; report true if all patches touched within distance d at n substeps are accessible
-to-report boat-accessible-path [d n]
-  foreach range n [ i ->
-    if (not member? (patch-ahead (d / n)) boat-fishable-patches) [report false]
+; Report true if all patches touched within distance d at substeps n
+; are accessible. This is a boat procedure.
+to-report boat-accessible-path [_distance _n]
+  if breed != boats [ error "This procedure only applies to boats"]
+
+  let _patches-ahead (patch-set)
+  let _fishable-patches boat-fishable-patches in-radius _distance
+
+  foreach range _n [ _i ->
+    let _patch-ahead patch-ahead ((_i + 1) * _distance / _n)
+    set _patches-ahead (patch-set _patches-ahead _patch-ahead)
+    if not member? _patch-ahead _fishable-patches [report false]
   ]
+
   report true
-  ;report all? (patch-set (n-values d [ i ->  patch-ahead i])) [accessible?]
 end
 
 ; turtle procedure, returns the scaling km/netlogo-unit in the heading of
 ; a turtle
 to-report gis-scale
-  ;report 2
+
   hatch-markers 1 [
     create-link-with myself
   ]
@@ -751,7 +756,6 @@ to-report gis-scale
   setxy item 0 _xy item 1 _xy
   ask my-out-links with [breed = markers][die]
   ask _marker [die]
-
 
   report  _gis-distance
 end

@@ -230,32 +230,32 @@ to go
   while [count _boats > 0] [
     let _boats-in-phase _boats with [boat-trip-phase = 5]
     if any? _boats-in-phase [
-      print (word "  .. landing " count _boats-in-phase " boats ..")
+      ;print (word "  .. landing " count _boats-in-phase " boats ..")
       ask _boats-in-phase [boat-land-port]
     ]
     set _boats-in-phase _boats with [boat-trip-phase = 4]
     if any? _boats-in-phase [
-      print (word "  .. sending home " count _boats-in-phase " boats ..")
+      ;print (word "  .. sending home " count _boats-in-phase " boats ..")
       ask _boats-in-phase [boat-return-port]
     ]
     set _boats-in-phase _boats with [boat-trip-phase = 3]
     if any? _boats-in-phase [
-      print (word "  .. actively fishing " count _boats-in-phase " boats ..")
+      ;print (word "  .. actively fishing " count _boats-in-phase " boats ..")
       ask _boats-in-phase [boat-make-haul]
     ]
     set _boats-in-phase _boats with [boat-trip-phase = 2]
     if any? _boats-in-phase [
-      print (word "  .. repositioning " count _boats-in-phase " boats ..")
+      ;print (word "  .. repositioning " count _boats-in-phase " boats ..")
       ask _boats-in-phase [boat-choose-start]
     ]
     set _boats-in-phase _boats with [boat-trip-phase = 1]
     if any? _boats-in-phase [
-      print (word "  .. leaving port " count _boats-in-phase " boats ..")
+      ;print (word "  .. leaving port " count _boats-in-phase " boats ..")
       ask _boats-in-phase [boat-leave-port]
     ]
     set _boats-in-phase _boats with [boat-trip-phase = 0]
     if any? _boats-in-phase [
-      print (word "  .. resting " count _boats-in-phase " boats ..")
+      ;print (word "  .. resting " count _boats-in-phase " boats ..")
       ask _boats-in-phase [boat-rest-port]
     ]
     set _boats _active-boats with [boat-hour < 24]
@@ -634,7 +634,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-4
+14
 
 BUTTON
 83
@@ -953,7 +953,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
-11
+0
 
 SWITCH
 1241
