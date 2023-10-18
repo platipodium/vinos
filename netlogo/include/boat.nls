@@ -407,7 +407,7 @@ to boat-land-port
       ; Check whether the boat already remembers this patch and
       ; update its catch accordingly, otherwise choose one with
       ; lower previous catch
-      let _nearby-actions boat-actions with [distance myself < 5]
+      let _nearby-actions boat-actions with [distance _patch < _min-action-distance]
       ifelse any? _nearby-actions [
         set _my-action min-one-of _nearby-actions [action-gain]
       ][
