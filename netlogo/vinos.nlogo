@@ -568,13 +568,12 @@ end
 
 ; The profile routine is called manually from the command line while we test
 to profile
-  let _n 1
+  let _n 5
   let _filename "results/profiler_data.csv"
   print (sentence "Started profiling for" _n "steps ..")
   ;setup
   profiler:start
-  ask boats with [boat-trip-phase = 3] [boat-make-haul]
-   ;repeat 1 [ go ]
+  repeat _n [ go ]
   ;setup
   profiler:stop
   csv:to-file _filename profiler:data
@@ -603,8 +602,8 @@ GRAPHICS-WINDOW
 319
 0
 119
-0
-0
+1
+1
 1
 days
 30.0
@@ -705,7 +704,7 @@ memory-size
 memory-size
 0
 50
-0.0
+20.0
 1
 1
 NIL
@@ -953,7 +952,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
-0
+16
 
 SWITCH
 1241
@@ -962,7 +961,7 @@ SWITCH
 189
 show-boats?
 show-boats?
-0
+1
 1
 -1000
 
@@ -1087,7 +1086,7 @@ SWITCH
 282
 show-values?
 show-values?
-1
+0
 1
 -1000
 
