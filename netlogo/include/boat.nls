@@ -726,9 +726,10 @@ to-report boat-accessible-path [_distance _n]
   let _fishable-patches boat-fishable-patches
 
   foreach range _n [ _i ->
-    let _patch-ahead patch-ahead ((_i + 1) * _distance / _n)
+    ;let _patch-ahead patch-ahead ((_i + 1) * _distance / _n)
     ;set _patches-ahead (patch-set _patches-ahead _patch-ahead)
-    if not member? _patch-ahead _fishable-patches [report false]
+    ;  if not member? _patch-ahead _fishable-patches [report false]
+    if not member? (patch-ahead ((_i + 1) * _distance / _n)) _fishable-patches [report false]
   ]
 
   report true

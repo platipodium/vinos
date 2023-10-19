@@ -14,6 +14,7 @@ globals [
   storm?
   ramadan?
   start-date
+  datetime
 ]
 
 to setup-calendar
@@ -51,12 +52,14 @@ to setup-calendar
   set storm? is-storm?
   set ramadan? is-ramadan?
   set start-date date
+  set date time:anchor-to-ticks date 1 "day"
+  set datetime time:anchor-to-ticks date2datetime 1 "day"
+
 end
 
-; Advance the calendar by one day
+; Advance the calendar by one day, note that the date itself
+; is linked to ticks and automatically increases upon tick
 to advance-calendar
-
-  set date time:plus date 1 "days"
 
   set year time:get "year" date
   set month time:get "month" date
@@ -69,9 +72,14 @@ to advance-calendar
 
 end
 
-to-report datetime
+to-report datetime-string
   report (word time:show date "EEE yyyy-MM-dd" " (" time:get "dayofyear" date ")")
 end
+
+to-report date2datetime
+  report (word time:show date "yyyy-MM-dd" " 00:00:00")
+end
+
 
 to-report datetime-short
   report time:show date "yyyyMMdd"

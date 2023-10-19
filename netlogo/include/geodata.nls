@@ -558,12 +558,9 @@ to calculate-tidal-depth
     ask _amphidrome [face myself]
 
     ; assume 12.4167 lunar semidurnal (M2) tide, and convert from hours to degree, than add heading
-    let _phase (time:get "hours" date + 24 * time:get "dayofyear" date + 365.25 * time:get "year" date)  / 12.4167 * 360
+    let _phase ((time:get "minutes" datetime / 60.0) + time:get "hours" datetime + 24 * time:get "dayofyear" datetime + 365.25 * time:get "year" datetime)  / 12.4167 * 360
     set temporary  depth + _range / 2 * cos ( _phase - [heading] of _amphidrome )
 
     ;print (sentence [heading] of _amphidrome _phase sin ( _phase + [heading] of _amphidrome ))
   ]
-
-
-
 end

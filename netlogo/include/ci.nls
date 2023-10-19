@@ -23,6 +23,7 @@ to reset-year [_year]
     set boat-total-landings 0
   ]
 
+
 end
 
 
@@ -39,8 +40,8 @@ to ci-maps
   set owf? false
   update-drawings
 
-  reset-ticks
   reset-year 2020
+  reset-ticks
   update-date-patch
   repeat 365 [
     go
@@ -48,8 +49,8 @@ to ci-maps
   ]
   save-dynamic-dataset "Effort"
 
-  reset-ticks
   reset-year 2030
+  reset-ticks
   update-date-patch
   repeat 365 [
     go

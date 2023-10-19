@@ -16,8 +16,8 @@ def main():
 
 if __name__ == "__main__":
     main()
-    df = pd.read_csv('../netlogo/results/total_avg.csv', sep=',',
-                     header=2, names=["tick","year","month","day","doy","at-sea","fuel","landings","lpue"])
+    df = pd.read_csv('../netlogo/results/results/total_avg_shrimp_2030-1-1.csv', sep=',',
+                     header=2, names=["tick","year","month","day","doy","at-sea","fuel","landings","count"])
 
 
     datestr = [f'{y}-{m}-{d}' for y,m,d in zip(df["year"],df["month"],df["day"])]
@@ -35,4 +35,4 @@ if __name__ == "__main__":
 
     ddf_monthly = ddf[['landings','lpue','fuel']].resample('M').sum()
 
-    ddf_monthly.plot(y=["lpue","fuel"], label=["LPUE kg d-1", "Intensity l t-1"])
+    ddf_monthly.plot(y=["lpue","fuel"], label=["LPUE kg d-1", "Intensity l t-1"], kind='bar')
