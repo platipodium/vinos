@@ -13,6 +13,7 @@ globals [
   holiday?
   storm?
   ramadan?
+  start-date
 ]
 
 to setup-calendar
@@ -49,6 +50,7 @@ to setup-calendar
   set holiday? is-holiday?
   set storm? is-storm?
   set ramadan? is-ramadan?
+  set start-date date
 end
 
 ; Advance the calendar by one day

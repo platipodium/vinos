@@ -438,6 +438,7 @@ to boat-choose-start
   let _patches nobody
   let _boat-cost-per-km (boat-fuel-consumption * oil-price / 100  + wage / boat-steaming-speed)
   let _boat-prey-price item boat-current-prey-index prey-prices
+  let _fishable-patches boat-fishable-patches
 
   ifelse count boat-actions < memory-size  or memory-size < 1 [
     ; random patch if not sufficient memory accumulated yet (learning phase)
@@ -472,7 +473,8 @@ to boat-choose-start
     ]
 
     ; Introduce some random component
-    set _patches boat-fishable-patches with [ count other boats-here = 0 and distance myself < 6 ]
+    set _patches (patch-set _patch [neighbors] of _patch) with [member? self _fishable-patches ]
+    ;set _patches boat-fishable-patches with [ count other boats-here = 0 and distance _patch < 6 ]
     if _patches != nobody [
       if count _patches > 10 [ set _patches n-of 10 _patches ]
       let _nearby-patch max-one-of _patches [traffic-suitability]
@@ -781,11 +783,4 @@ to-report boat-fuel-consumption
   ; @todo we can adjust this to boat-engine power
   ; we scale the fuel-efficiency (0 to 1) with boat-fuel-consumption
   report 48 * boat-engine *  1.35962 * 0.21 / 300 ; is typically 5 l km-1
-end
-
-to equalize
-  ask boats [
-    set boat-max-distance 300
-    set boat-max-duration 1000
-  ]
 end

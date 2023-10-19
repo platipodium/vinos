@@ -130,7 +130,7 @@ end
 to-report quantile-thresholds [data n]
   let sorted sort data
   if length sorted < (n + 1) or n < 1 [
-    print (sentence "Error, the data is not diverse enough for" n "categories")
+    ;print (sentence "Error, the data is not diverse enough for" n "categories")
     report nobody
   ]
   let data-min first sorted

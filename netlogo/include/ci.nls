@@ -5,7 +5,7 @@
 
 to reset-year [_year]
 
-  set date time:create (word _year "/01/01")
+  set date time:create (word _year "-01-01")
   setup-calendar
 
   ask actions [die]
@@ -15,6 +15,12 @@ to reset-year [_year]
     set cluster-fishing-efforts 0
     set cluster-prey-catches  0
     set swept-area 0
+  ]
+
+  ask boats [
+    set boat-total-days-at-sea 0
+    set boat-total-fuel-consumption 0
+    set boat-total-landings 0
   ]
 
 end
@@ -40,7 +46,7 @@ to ci-maps
     go
     ;print date
   ]
-  save-static-dataset "Effort"
+  save-dynamic-dataset "Effort"
 
   reset-ticks
   reset-year 2030
@@ -49,7 +55,7 @@ to ci-maps
     go
     ;print date
   ]
-  save-static-dataset "Effort"
+  save-dynamic-dataset "Effort"
 
 end
 

@@ -538,29 +538,34 @@ to setup-water-patches
 
 end
 
+; This observer procedure saves tabular data as a fleet average. It should be
+; called by go each time step
+; @todo expand to other gears, as this one
 to save-totals
 
-  let _boats boats with [boat-total-days-at-sea > 0] ; and  boat-total-landings > 0]
+  let _boats boats with [boat-total-days-at-sea > 0 and ([gear-species] of item boat-current-gear-index boat-gears) =  "Shrimp"]
   let _count count _boats
-  let _file "results/total_avg.csv"
+  let _filename (word "results/total_avg_shrimp_" (time:get "year" start-date)
+      "-"  (time:get "month" start-date) "-" (time:get "day" start-date) ".csv")
 
   if ticks = 0 [
-    carefully [file-delete _file][]
-    file-open _file
-    file-print (word "# tick,year,month,day,doy,at-sea,fuel,landings,lpue")
-    file-print (word "#     ,    ,     ,   ,   , d    , l  ,   kg   , kg d-1")
+    carefully [file-delete _filename][]
+    file-open _filename
+    file-print (word "# tick,year,month,day,doy,at-sea,fuel,landings,count")
+    file-print (word "#     ,    ,     ,   ,   , d    , l  ,   kg   , ")
     file-close
   ]
 
   if any? _boats [
-    file-open _file
+    file-open _filename
     file-print csv:to-row (list ticks
       (time:get "year" date)   (time:get "month" date) (time:get "day" date) (time:get "dayofyear" date)
-      (sum [boat-total-days-at-sea ] of _boats / _count )
-      (sum [boat-total-fuel-consumption] of _boats / _count )
-      (sum [boat-total-landings] of _boats / _count )
+      (sum [boat-total-days-at-sea ] of _boats )
+      (sum [boat-total-fuel-consumption] of _boats  )
+      (sum [boat-total-landings] of _boats  )
       ;(sum [boat-total-fuel-consumption / boat-total-landings] of _boats / _count ) ; Fuel intensity
-      (sum [boat-total-landings / boat-total-days-at-sea] of _boats / _count) ; LPUE
+      ;(sum [boat-total-landings / boat-total-days-at-sea] of _boats / _count) ; LPUE
+      _count
     )
     file-close
    ]
@@ -704,7 +709,7 @@ memory-size
 memory-size
 0
 50
-20.0
+30.0
 1
 1
 NIL
@@ -849,7 +854,7 @@ SWITCH
 310
 box?
 box?
-1
+0
 1
 -1000
 

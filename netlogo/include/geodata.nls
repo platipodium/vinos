@@ -235,7 +235,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Effort" and ticks > 0 [
     ask water-patches [set temporary 365.25 / ticks *  fishing-effort-hours / area]
-    set _qt (list  10 50 100 250 400 600  800 1000)
+    set _qt (list  10 50 100 200 300 400 500 600)
     set _min 0
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n

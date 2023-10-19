@@ -29,7 +29,7 @@ variables = {
     'plaice': {'min': 1, 'max': 500, 'unit': 'kg km-2', 'cmap': 'Reds', 'title': 'Plaice'},
     'shrimp': {'min': 1, 'max': 500, 'unit': 'kg km-2', 'cmap': 'Reds', 'title': 'Shrimp'},
     'emodnet_tbb_effort': {'max': 1000, 'min': 10, 'unit': 'h a-1', 'cmap': 'viridis', 'title': 'Effort'},
-    'effort': {'max': 1000, 'min': 10, 'unit': 'kW h a-1', 'cmap': 'viridis', 'title': 'Effort'},
+    'effort': {'max': 510, 'min': 10, 'unit': 'kW h a-1', 'cmap': 'viridis', 'title': 'Effort'},
     'delta_effort': {'max': 100, 'min': -100, 'unit': 'kW h a-1', 'cmap': 'coolwarm', 'title': '$\Delta$Effort'},
 }
 
@@ -216,7 +216,6 @@ def basemap():
 if __name__ == '__main__':
 
 
-
     for v in [ 'shrimp', 'plaice', 'sole',
             'accessibility', 'bathymetry','traffic',
             'area', 'shore_proximity', 'owf',
@@ -227,6 +226,11 @@ if __name__ == '__main__':
       add_asc(ax, f'../netlogo/results/{v}.asc', var=v)
       plt.savefig(f'{v}.png', dpi=400)
 
+
+    ax = basemap()
+    add_asc(ax,'../netlogo/results/effort_0361_20301229.asc', var='effort')
+    ax.set_title('Effort 2030')
+    plt.savefig('effort_2030.png', dpi=400)
 
     ax = basemap()
     add_asc(ax,'../netlogo/results/effort_0360_20201227.asc', var='effort')
