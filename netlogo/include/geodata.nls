@@ -543,6 +543,11 @@ to calculate-tidal-depth
     set label "amphidrome"
   ]
 
+  ; the synodal month (full moon to full moon) has a 29.52 day period, get a phase for this,
+  ; double the frequency to obtain spring-neap effects
+  let _spring-neap-phase ((time:get "minutes" datetime / 60.0) + time:get "hours" datetime + 24 * time:get "dayofyear" datetime + 365.25 * time:get "year" datetime)  / (29.52 * 12)  * 360
+  let _spring-neap-range sin _spring-neap-phase
+
   let _amphidrome one-of turtles with [label = "amphidrome"]
 
   ; water patches with insufficient depth only
@@ -550,16 +555,22 @@ to calculate-tidal-depth
   ask water-patches with [depth < 10] [
     ;let _coords gis:envelope-of (self)
     ;let _distance haversine-distance (list 5.1 ((item 0 _coords + item 1 _coords) / 2) 55.5 ((item 2 _coords + item 3 _coords) / 2))
-    ; Distance amphidromic point to Cuxhaven is 260 km, and tidal range there is about 3 m, so linear model gives
+    ; Distance amphidromic point to Cuxhaven is 260 km, and tidal range there is about 2.9 m, so linear model gives
 
     let _distance gis-envelope-distance (patch-set [patch-here] of _amphidrome self)
-    let _range _distance / 260.0 * 3.0
+    let _range _distance / 260.0 * 2.9
+
+    ; At Cuxhaven the neap tide has about 25% less range than the spring tide, so let's modulate the range
+    set _range _range * (1 + 0.25 * _spring-neap-range)
 
     ask _amphidrome [face myself]
 
     ; assume 12.4167 lunar semidurnal (M2) tide, and convert from hours to degree, than add heading
     let _phase ((time:get "minutes" datetime / 60.0) + time:get "hours" datetime + 24 * time:get "dayofyear" datetime + 365.25 * time:get "year" datetime)  / 12.4167 * 360
-    set temporary  depth + _range / 2 * cos ( _phase - [heading] of _amphidrome )
+
+
+
+    set temporary  depth + _range / 2 * sin ( _phase + [heading] of _amphidrome )
 
     ;print (sentence [heading] of _amphidrome _phase sin ( _phase + [heading] of _amphidrome ))
   ]

@@ -81,9 +81,18 @@ to-report date2datetime
 end
 
 
-to-report datetime-short
+to-report date-short
   report time:show date "yyyyMMdd"
 end
+
+to-report datetime-short
+  report time:show datetime "yyyyMMdd-HHmm"
+end
+
+to-report datetime-long
+  report time:show datetime "MMM dd HH:mm"
+end
+
 
 to-report is-holiday?
   report (ts-member? holidays-germany date) or (time:get "dayofweek" date mod 7 = 0)

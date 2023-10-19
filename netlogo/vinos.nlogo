@@ -586,11 +586,6 @@ to profile
   print (sentence ".. . saved profileing data in" _filename)
 end
 
-to save-tides
-end
-
-
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -644,7 +639,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-3
+13
 
 BUTTON
 83

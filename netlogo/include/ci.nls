@@ -88,3 +88,43 @@ to create-effort-map
   gis:store-dataset dataset prefix
 
 end
+
+to save-tides
+  set scene "Tide"
+  let _dataset-name "Tide"
+  let _ndays  2
+  let _nsteps  48
+
+  let _csv  (word "results/tide_gauge_cuxhaven_" (time:get "year" datetime)
+      "-"  (time:get "month" datetime) "-" (time:get "day" datetime) ".csv")
+  carefully [file-delete _csv][]
+
+  ; Reference data are from Cuxhaven Steubenhöft at 53.86827498075895 8.717586224283938
+  let _coords gis:project-lat-lon 53.86827498075895 8.717586224283938
+  let _cuxhaven-patch  patch (1 + item 0 _coords)  (1 + item 1 _coords) ; move 1 northeast, as Cuxhaven patch itself has no water
+
+  file-open _csv
+  file-print (word "# year,month,day,hour,minute,level")
+  file-print (word "#     ,     ,   ,    ,      , m   ")
+  file-close
+
+  repeat _ndays * _nsteps [
+    update-scene
+    ask date-patch [set plabel datetime-long]
+
+    let _name (word "results" "/" (lower _dataset-name) "_" datetime-short)
+    export-view (word _name ".png")
+    gis:store-dataset gis:patch-dataset temporary (word _name)
+
+    let _level [temporary] of _cuxhaven-patch
+
+    file-open _csv
+    file-print csv:to-row (list
+      (time:get "year" datetime) (time:get "month" datetime) (time:get "day" datetime)
+      (time:get "hour" datetime) (time:get "minute" datetime) _level
+    )
+    file-close
+
+    tick-advance (1 / _nsteps)
+  ]
+end
