@@ -31,6 +31,10 @@ Files: data/eez/*
 Copyright: 2022-2023 United Nations Convention on the Law of the Sea
 License: CC0-1.0
 
+Files: data/vliz/*
+Copyright: 2019 Flanders Marine Institute
+License: CC-BY-4.0
+
 Files: data/ices/*
 Copyright: 2022-2023 International Council for the Exploration of the Sea Spatial Facility
 License: LicenseRef-ICES-1.0
