@@ -30,28 +30,27 @@ import datetime
 from tqdm import tqdm
 import pyarrow
 
-def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
+bbox = (3, 53 , 10, 56)
 
-    res = 0.01
+def create_gridspec(df, filename: pathlib.Path, ires=np.nan):
+
+    if ires == np.nan: ires = 100
+    res = 1/ires
+
     fill_value = -9999.0
 
-    df = df[df["cell_ll_lon"] >= bbox[0]]
-    df = df[df["cell_ll_lat"] >= bbox[1] - res]
-    df = df[df["cell_ll_lon"] <= bbox[2]]
-    df = df[df["cell_ll_lat"] <= bbox[3] - res].reset_index()
+    df['lon'] = df["cell_ll_lon"] + 0.01 / 2
+    df['lat'] = df["cell_ll_lat"] + 0.01 / 2
 
     n = len(df)
     if (n<1) : return
 
-    ll_lon = df["cell_ll_lon"].min()
-    ll_lat = df["cell_ll_lat"].min()
-    ur_lon = df["cell_ll_lon"].max() + res
-    ur_lat = df["cell_ll_lat"].max() + res
+    ll_lon, ll_lat, ur_lon, ur_lat = bbox
 
     nlon = int(round((ur_lon - ll_lon) / res))
     nlat = int(round((ur_lat - ll_lat) / res))
 
-    filename  =  pathlib.Path(filename.stem + "_gridspec.nc")
+    filename  =  pathlib.Path(filename.stem + "_" + str(ires) + "_gridspec.nc")
 
     nc=netCDF4.Dataset(filename,'w',format='NETCDF4')
 
@@ -95,8 +94,8 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
     lat_bnds[:,1]=lat[:]+0.5*res
 
     # define the index
-    df["ilon"] = np.round((df["cell_ll_lon"] - ll_lon) / res).astype(int)
-    df["ilat"] = np.round((df["cell_ll_lat"] - ll_lat) / res).astype(int)
+    df["ilon"] = np.round((df["lon"] - res / 2 - ll_lon) / res).astype(int)
+    df["ilat"] = np.round((df["lat"] - res / 2 - ll_lat) / res).astype(int)
 
     years = df["year"].unique()
 
@@ -115,26 +114,28 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
 
     ddf = df[df["flag"] == "DEU"]
 
+    glon, glat = np.meshgrid(lon[:], lat[:])
+
+
     for y, year in enumerate(years):
-        tdf = df[df["year"] == year]
+        tdf = df[df["year"] == year].groupby(['ilon', 'ilat']).agg({'fishing_hours': 'sum'}).reset_index()
+
         if len(tdf) < 1: continue
 
         print(f"... in year {year} with {len(tdf)} data points")
 
-        gvar = np.zeros((nlat, nlon)) + fill_value
-        for i in tdf.index:
-            gvar[tdf["ilat"][i],tdf["ilon"][i]] = tdf['fishing_hours'][i]
-            var = nc.variables.get(f'fishing_hours')
-            var[y,:,:] = gvar
+        gvar = np.zeros_like(glon) #+ fill_value
+        indices = np.column_stack((tdf["ilat"].values, tdf["ilon"].values))
+        gvar[indices[:, 0], indices[:, 1]] = tdf["fishing_hours"].values
+        nc.variables.get(f'fishing_hours')[y,:,:] = gvar
 
-        tdf = ddf[ddf["year"] == year]
+        tdf = ddf[ddf["year"] == year].groupby(['ilon', 'ilat']).agg({'fishing_hours': 'sum'}).reset_index()
         if len(tdf) < 1: continue
 
-        gvar = np.zeros((nlat, nlon)) + fill_value
-        for i in tdf.index:
-            gvar[tdf["ilat"][i],tdf["ilon"][i]] = tdf['fishing_hours'][i]
-            var = nc.variables.get(f'fishing_hours_de')
-            var[y,:,:] = gvar
+        gvar = np.zeros_like(glon) # + fill_value
+        indices = np.column_stack((tdf["ilat"].values, tdf["ilon"].values))
+        gvar[indices[:, 0], indices[:, 1]] = tdf["fishing_hours"].values
+        nc.variables.get(f'fishing_hours_de')[y,:,:] = gvar
 
     nc.close()
 
@@ -145,14 +146,13 @@ def main():
     else:
         directory = pathlib.Path(sys.argv[1])
 
-    files = list(directory.glob('*27.csv'))
+    files = list(directory.glob('*.csv'))
     dfs = []
 
     parquet_name = pathlib.Path(files[0].stem[:4] + ".parquet")
     netcdf_name = pathlib.Path(parquet_name.stem + '.nc')
 
     if parquet_name.is_file():
-        #table = pyarrow.parquet.read_table(parquet_name)
         df = pd.read_parquet(parquet_name) #table.to_pandas()
     else:
       with tqdm(total=len(files), unit="file") as progress:
@@ -161,7 +161,14 @@ def main():
             _df = pd.read_csv(csv, usecols={'date', 'cell_ll_lat',
                  'cell_ll_lon', 'flag', 'geartype', 'fishing_hours'},
                   dtype={'flag':str, 'fishing_hours':float})
-            dfs.append(_df[_df.geartype=='trawlers'])
+
+            _df = _df[_df['geartype'] == 'trawlers' ]
+            _df = _df[_df['cell_ll_lat'] >= bbox[1] ]
+            _df = _df[_df['cell_ll_lat']  < bbox[3] ]
+            _df = _df[_df['cell_ll_lon'] >= bbox[0] ]
+            _df = _df[_df['cell_ll_lon']  < bbox[2] ]
+
+            dfs.append(_df)
             progress.update(1)
 
       df = pd.concat(dfs, ignore_index=True)
@@ -171,7 +178,9 @@ def main():
 
       df.to_parquet(path=parquet_name)
 
-    create_gridspec(df, netcdf_name)
+    #create_gridspec(df, netcdf_name, res=0.01)
+    for r in [1,2,5,10]:
+        create_gridspec(df, netcdf_name, ires=r)
     return df
 
 if __name__ == "__main__":
