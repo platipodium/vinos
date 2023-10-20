@@ -50,9 +50,9 @@ def create_gridspec(df, filename: pathlib.Path, ires=np.nan):
     nlon = int(round((ur_lon - ll_lon) / res))
     nlat = int(round((ur_lat - ll_lat) / res))
 
-    filename  =  pathlib.Path(filename.stem + "_" + str(ires) + "_gridspec.nc")
+    nc_filename  =  pathlib.Path(filename.stem + "_" + str(ires) + "_gridspec.nc")
 
-    nc=netCDF4.Dataset(filename,'w',format='NETCDF4')
+    nc=netCDF4.Dataset(nc_filename,'w',format='NETCDF4')
 
     nc.createDimension('time',0)
     nc.createDimension('bound',2)
@@ -140,12 +140,12 @@ def create_gridspec(df, filename: pathlib.Path, ires=np.nan):
         nc.variables.get(f'fishing_hours')[y,:,:] = gvar
 
         # Add writing of ESRCII asc file
-        asc_filename  =  pathlib.Path(filename.stem + "_" + str(y) + "_" + str(ires) + ".asc")
+        asc_filename  =  pathlib.Path(filename.stem + "_" + str(year) + "_" + str(ires) + ".asc")
         with open(asc_filename, 'w') as fid:
             [fid.writelines(f'{key}\t{str(value)}\n') for key,value in asc_header.items()]
             np.savetxt(fid, gvar.round().astype(int), fmt='%d', delimiter='\t')
-        asc_filename =  pathlib.Path(filename.stem + "_" + str(y) + "_" + str(ires) + ".asc.license")
-        with open(filename, 'w') as fid:
+        asc_filename =  pathlib.Path(filename.stem + "_" + str(year) + "_" + str(ires) + ".asc.license")
+        with open(asc_filename, 'w') as fid:
             [fid.writelines(f'{key}\t{str(value)}\n') for key,value in license.items()]
 
         tdf = ddf[ddf["year"] == year].groupby(['ilon', 'ilat']).agg({'fishing_hours': 'sum'}).reset_index()
@@ -157,12 +157,12 @@ def create_gridspec(df, filename: pathlib.Path, ires=np.nan):
         nc.variables.get(f'fishing_hours_de')[y,:,:] = gvar
 
         # Add writing of ESRCII asc file
-        asc_filename  =  pathlib.Path(filename.stem + "_" + str(y) + "_" + str(ires) + "_de.asc")
+        asc_filename  =  pathlib.Path(filename.stem + "_" + str(year) + "_" + str(ires) + "_de.asc")
         with open(asc_filename, 'w') as fid:
             [fid.writelines(f'{key}\t{str(value)}\n') for key,value in asc_header.items()]
             np.savetxt(fid, gvar.round().astype(int), fmt='%d', delimiter='\t')
-        asc_filename =  pathlib.Path(filename.stem + "_" + str(y) + "_" + str(ires) + "_de.asc.license")
-        with open(filename, 'w') as fid:
+        asc_filename =  pathlib.Path(filename.stem + "_" + str(year) + "_" + str(ires) + "_de.asc.license")
+        with open(asc_filename, 'w') as fid:
             [fid.writelines(f'{key}\t{str(value)}\n') for key,value in license.items()]
 
     nc.close()
@@ -209,8 +209,8 @@ def main():
 
       df.to_parquet(path=parquet_name)
 
-    #create_gridspec(df, netcdf_name, res=0.01)
-    for r in [1,2,5,10]:
+    # set the reciprocal of degree resolution
+    for r in [2,5,10,20,50,100]:
         create_gridspec(df, netcdf_name, ires=r)
     return df
 
