@@ -5,4 +5,5 @@
 *.asc
 *.png
 *.nc
+*.parquet
 __pycache__
