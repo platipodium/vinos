@@ -92,7 +92,8 @@ patches-own [
 
 
   ; Diagnostics
-  fishing-effort-hours              ; anual fishing effort in hours
+  patch-effort-hours              ; fishing effort in hours
+  patch-effort-mwatthours         ; fishing effort in Megawatt hours
   prey-catches                      ; annual prey catches
   cluster-fishing-efforts           ; fishing effort by cluster in hours
   cluster-prey-catches              ; preys caught by cluster
@@ -637,8 +638,8 @@ CHOOSER
 245
 scene
 scene
-"Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort"
-3
+"Shrimp" "Plaice" "Sole" "Bathymetry" "Effort h" "Effort MWh" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort"
+4
 
 BUTTON
 83

@@ -245,7 +245,7 @@ to show-dataset [_dataset-name]
   if _dataset-name = "EMODnet effort" [
     let _dataset gis:load-dataset "../data/emodnet/fishingbeamtrawlsPolygon.shp"
     gis:apply-coverage  _dataset "MW_FSHN" temporary
-    set _qt (list 1 10 50 100 250 400 600  800 1000)
+    set _qt (list  10 50 100 200 300 400 500 600)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
@@ -258,9 +258,17 @@ to show-dataset [_dataset-name]
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
 
-  if _dataset-name = "Effort" and ticks > 0 [
-    ask water-patches [set temporary 365.25 / ticks *  fishing-effort-hours / area]
+  if _dataset-name = "Effort MWh" and ticks > 0 [
+    ask water-patches [set temporary 365.25 / ticks *  patch-effort-mwatthours / area]
     set _qt (list  10 50 100 200 300 400 500 600)
+    set _min 0
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Sequential" "Oranges" n
+  ]
+
+  if _dataset-name = "Effort h" and ticks > 0 [
+    ask water-patches [set temporary 365.25 / ticks *  patch-effort-hours / area]
+    set _qt (list 1 10 50 100 250 400 600  800 1000)
     set _min 0
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n

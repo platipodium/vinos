@@ -10,7 +10,8 @@ to reset-year [_year]
 
   ask actions [die]
   ask patches [
-    set fishing-effort-hours 0
+    set patch-effort-hours 0
+    set patch-effort-mwatthours 0
     set prey-catches 0
     set cluster-fishing-efforts 0
     set cluster-prey-catches  0
@@ -64,7 +65,8 @@ end
 to create-effort-map
 
   ask patches [
-    set fishing-effort-hours 0
+    set patch-effort-hours 0
+    set patch-effort-mwatthours 0
   ]
 
   repeat 365 [ go ]
@@ -72,7 +74,7 @@ to create-effort-map
   ; data storage
   let prefix  (word "results/effort-" substring date-and-time 0 12)
 
-  set scene "effort (h a-1)"
+  set scene "Effort h"
   update-scene
   clear-drawing
   ask links [set hidden? true]
@@ -83,8 +85,7 @@ to create-effort-map
   ask links [set hidden? false]
   ask boats [set hidden? false]
 
-
-  let dataset gis:patch-dataset fishing-effort-hours
+  let dataset gis:patch-dataset patch-effort-hours
   gis:store-dataset dataset prefix
 
 end
