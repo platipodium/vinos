@@ -116,6 +116,16 @@ def create_gridspec(df, filename: pathlib.Path, ires=np.nan):
 
     glon, glat = np.meshgrid(lon[:], lat[:])
 
+    asc_header = {'NCOLS': nlon, 'NROWS': nlat, 'XLLCORNER': ll_lon, 'YLLCORNER': ll_lat,
+              'CELLSIZE': res, 'NODATA_VALUE': fill_value}
+
+    license = {'History': f'Created {time.ctime(time.time())}  by {sys.argv[0]}',
+              'SPDX-FileContributor': 'Carsten Lemmen <carsten.lemmen@hereon.de',
+              'SPDX-FileCopyrightText': '2023 Global Fishery Watch',
+              'SPDX-License-Identifier': 'CC-BY-4.0',
+              'Units': 'h',
+    }
+
 
     for y, year in enumerate(years):
         tdf = df[df["year"] == year].groupby(['ilon', 'ilat']).agg({'fishing_hours': 'sum'}).reset_index()
@@ -129,6 +139,15 @@ def create_gridspec(df, filename: pathlib.Path, ires=np.nan):
         gvar[indices[:, 0], indices[:, 1]] = tdf["fishing_hours"].values
         nc.variables.get(f'fishing_hours')[y,:,:] = gvar
 
+        # Add writing of ESRCII asc file
+        asc_filename  =  pathlib.Path(filename.stem + "_" + str(y) + "_" + str(ires) + ".asc")
+        with open(asc_filename, 'w') as fid:
+            [fid.writelines(f'{key}\t{str(value)}\n') for key,value in asc_header.items()]
+            np.savetxt(fid, gvar.round().astype(int), fmt='%d', delimiter='\t')
+        asc_filename =  pathlib.Path(filename.stem + "_" + str(y) + "_" + str(ires) + ".asc.license")
+        with open(filename, 'w') as fid:
+            [fid.writelines(f'{key}\t{str(value)}\n') for key,value in license.items()]
+
         tdf = ddf[ddf["year"] == year].groupby(['ilon', 'ilat']).agg({'fishing_hours': 'sum'}).reset_index()
         if len(tdf) < 1: continue
 
@@ -137,7 +156,19 @@ def create_gridspec(df, filename: pathlib.Path, ires=np.nan):
         gvar[indices[:, 0], indices[:, 1]] = tdf["fishing_hours"].values
         nc.variables.get(f'fishing_hours_de')[y,:,:] = gvar
 
+        # Add writing of ESRCII asc file
+        asc_filename  =  pathlib.Path(filename.stem + "_" + str(y) + "_" + str(ires) + "_de.asc")
+        with open(asc_filename, 'w') as fid:
+            [fid.writelines(f'{key}\t{str(value)}\n') for key,value in asc_header.items()]
+            np.savetxt(fid, gvar.round().astype(int), fmt='%d', delimiter='\t')
+        asc_filename =  pathlib.Path(filename.stem + "_" + str(y) + "_" + str(ires) + "_de.asc.license")
+        with open(filename, 'w') as fid:
+            [fid.writelines(f'{key}\t{str(value)}\n') for key,value in license.items()]
+
     nc.close()
+
+
+
 
 def main():
 
