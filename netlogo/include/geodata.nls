@@ -4,6 +4,16 @@
 ; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
+breed [amphidromes amphidrome]
+
+amphidromes-own [
+  ; the synodal month (full moon to full moon) has a 29.52 day period
+  ; double the frequency to obtain spring-neap effects from in-line and
+  ; orthogonal constellation of Sun-Earth-Moon, and M2 semidiurnal.
+  spring-neap-period
+  m2-period
+]
+
 to setup-maps
 
   no-display
@@ -32,9 +42,13 @@ to setup-maps
 ;                                                (gis:envelope-of solea-summer-dataset)
 ;                                                (gis:envelope-of solea-winter-dataset)
     )
+    set gis-envelope gis:world-envelope
   ][ gis:set-world-envelope-ds gis-envelope]
 
   print (word "Setting up GIS system within bounds " gis:world-envelope)
+
+  ; To set the amphidromic points, all that is needed is the gis-envelope
+  setup-amphidromes
 
   gis:apply-raster bathymetry-dataset depth
 
@@ -536,48 +550,51 @@ to calculate-distance-to-port
   ]
 end
 
-to calculate-tidal-depth
-
-  ; create the amphidromic point, make artificially move it to adjust to
+to setup-amphidromes
+  ; create the amphidromic point, artificially move it to adjust to
   ; world envelope
-  create-turtles 1 [
+  if (not is-list? gis-envelope or length gis-envelope != 4) [
+    error (word "To set up the amphidromic points, you need to define the GIS envelope")
+  ]
+
+  create-amphidromes 1 [
     set hidden? true
 
     let _xy gis:project-lat-lon (min (list 55.5 (item 3 gis-envelope - 0.1))) (max (list 5.1 item 0 gis-envelope))
+    if (not is-list? _xy) [
+      error (word "Error in projecting " gis-envelope " to model domain ")
+    ]
     setxy item 0 _xy item 1 _xy
     set label "amphidrome"
-
+    set spring-neap-period 29.52 * 24 / 2 ; half a synodal month, in hours
+    set m2-period 12.4167  ; lunar semidiurnal tide, in hours
   ]
+end
 
+to calculate-tidal-depth
   ; the synodal month (full moon to full moon) has a 29.52 day period, get a phase for this,
-  ; double the frequency to obtain spring-neap effects
-  let _spring-neap-phase ((time:get "minutes" datetime / 60.0) + time:get "hours" datetime + 24 * time:get "dayofyear" datetime + 365.25 * time:get "year" datetime)  / (29.52 * 12)  * 360
-  let _spring-neap-range sin _spring-neap-phase
-
-  let _amphidrome one-of turtles with [label = "amphidrome"]
-
-  ; water patches with insufficient depth only
-  ask water-patches [set temporary -9999]
-  ask water-patches with [depth < 10] [
-    ;let _coords gis:envelope-of (self)
-    ;let _distance haversine-distance (list 5.1 ((item 0 _coords + item 1 _coords) / 2) 55.5 ((item 2 _coords + item 3 _coords) / 2))
-    ; Distance amphidromic point to Cuxhaven is 260 km, and tidal range there is about 2.9 m, so linear model gives
-
-    let _distance gis-envelope-distance (patch-set [patch-here] of _amphidrome self)
-    let _range _distance / 260.0 * 2.9
-
-    ; At Cuxhaven the neap tide has about 25% less range than the spring tide, so let's modulate the range
-    set _range _range * (1 + 0.25 * _spring-neap-range)
-
-    ask _amphidrome [face myself]
-
-    ; assume 12.4167 lunar semidurnal (M2) tide, and convert from hours to degree, than add heading
-    let _phase ((time:get "minutes" datetime / 60.0) + time:get "hours" datetime + 24 * time:get "dayofyear" datetime + 365.25 * time:get "year" datetime)  / 12.4167 * 360
-
-
-
-    set temporary  depth + _range / 2 * sin ( _phase + [heading] of _amphidrome )
-
-    ;print (sentence [heading] of _amphidrome _phase sin ( _phase + [heading] of _amphidrome ))
-  ]
+;  ; double the frequency to obtain spring-neap effects
+;  let _spring-neap-phase ((time:get "minutes" datetime / 60.0) + time:get "hours" datetime + 24 * time:get "dayofyear" datetime + 365.25 * time:get "year" datetime)  / spring-neap-period  * 360
+;  let _spring-neap-range sin _spring-neap-phase
+;
+;  ; assume 12.4167 lunar semidurnal (M2) tide, and convert from hours to degree, than add heading
+;  let _m2-phase ((time:get "minutes" datetime / 60.0) + time:get "hours" datetime + 24 * time:get "dayofyear" datetime + 365.25 * time:get "year" datetime)  / m2-period * 360
+;  let _amphidrome one-of amphidromes
+;
+;  ; water patches with insufficient depth only
+;  ask water-patches [set temporary -9999]
+;  ask water-patches with [depth < 10] [
+;    ;let _coords gis:envelope-of (self)
+;    ;let _distance haversine-distance (list 5.1 ((item 0 _coords + item 1 _coords) / 2) 55.5 ((item 2 _coords + item 3 _coords) / 2))
+;    ; Distance amphidromic point to Cuxhaven is 260 km, and tidal range there is about 2.9 m, so linear model gives
+;
+;    let _distance gis-envelope-distance (patch-set [patch-here] of _amphidrome self)
+;    let _range _distance / 260.0 * 2.9
+;
+;    ; At Cuxhaven the neap tide has about 25% less range than the spring tide, so let's modulate the range
+;    set _range _range * (1 + 0.25 * _spring-neap-range)
+;
+;    ask _amphidrome [face myself]
+;    set temporary  depth + _range / 2 * sin ( _m2-phase + [heading] of _amphidrome )
+;  ]
 end
