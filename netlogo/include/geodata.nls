@@ -238,6 +238,7 @@ to show-dataset [_dataset-name]
   let _patches nobody
   let _colors nobody
   let _min 0
+  let _area-factor area-factor
 
   ask patches [set pcolor grey - 2]
   ask water-patches [set pcolor grey]
@@ -245,6 +246,7 @@ to show-dataset [_dataset-name]
   if _dataset-name = "EMODnet effort" [
     let _dataset gis:load-dataset "../data/emodnet/fishingbeamtrawlsPolygon.shp"
     gis:apply-coverage  _dataset "MW_FSHN" temporary
+    ; unit is MWh per 0.05x0.05 grid cell area
     set _qt (list  10 50 100 200 300 400 500 600)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
@@ -253,13 +255,14 @@ to show-dataset [_dataset-name]
   if _dataset-name = "GFW effort" [
     let _dataset gis:load-dataset "../data/gfw/fishing_hours_2019_20_de.asc"
     gis:apply-raster _dataset temporary
+    ; unit is h per 0.05x0.05 grid cell area
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
 
   if _dataset-name = "Effort MWh" and ticks > 0 [
-    ask water-patches [set temporary 365.25 / ticks *  patch-effort-mwatthours / area]
+    ask water-patches [set temporary 365.25 / ticks *  patch-effort-mwatthours / _area-factor]
     set _qt (list  10 50 100 200 300 400 500 600)
     set _min 0
     set n (length _qt) - 1
@@ -267,7 +270,7 @@ to show-dataset [_dataset-name]
   ]
 
   if _dataset-name = "Effort h" and ticks > 0 [
-    ask water-patches [set temporary 365.25 / ticks *  patch-effort-hours / area]
+    ask water-patches [set temporary 365.25 / ticks *  patch-effort-hours / _area-factor]
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set _min 0
     set n (length _qt) - 1
@@ -290,6 +293,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Traffic" [
     let _dataset gis:load-dataset "../data/emodnet/EMODnet_HA_cargo-all_europe-yearly-2021.asc"
+    ; unit is not known and also not whether to scale this with grid cell area
     gis:apply-raster  _dataset temporary
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set n (length _qt) - 1

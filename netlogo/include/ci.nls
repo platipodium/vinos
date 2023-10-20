@@ -3,12 +3,7 @@
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 ; Routines that are called by CI
 
-to reset-year [_year]
-
-  set date time:create (word _year "-01-01")
-  setup-calendar
-
-  ask actions [die]
+to reset-patches
   ask patches [
     set patch-effort-hours 0
     set patch-effort-mwatthours 0
@@ -17,7 +12,16 @@ to reset-year [_year]
     set cluster-prey-catches  0
     set swept-area 0
   ]
+end
 
+to reset-year [_year]
+
+  set date time:create (word _year "-01-01")
+  setup-calendar
+
+  ask actions [die]
+
+  reset-patches
   ask boats [
     set boat-total-days-at-sea 0
     set boat-total-fuel-consumption 0

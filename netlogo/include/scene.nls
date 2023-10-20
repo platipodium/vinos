@@ -81,7 +81,10 @@ to zoom-scene
   set gis-envelope (list 5.5 9.5 53.2 54.7)    ; this is the same projection but at twice default resolution
   set gis-envelope (list 6.4 9.14 53.25 55.1)  ; a rather distorted view, but concentrating on German waters
 
+  ask (turtle-set actions ports boats) [die]
+
   setup-maps
+  reset-patches
 
   calc-pollution
   calc-fish
@@ -104,4 +107,12 @@ to zoom-scene
 
   reset-ticks
 
+end
+
+; Observer procedure reporting the area factor between the default data resolution of effort
+; at 0.05 x 0.05 degree to the current resolution.  The default display area is 320x120 pixels
+; and gis-envelope (list 2 10 53 56), so 8 x 3 degree, with resolution
+; 8/320 = 2/120 = 1/40 = 0.025 degree.
+to-report area-factor
+  report ((item 3 gis-envelope - item 2 gis-envelope) / 3 * (item 1 gis-envelope - item 0 gis-envelope) / 8 ) / 4
 end
