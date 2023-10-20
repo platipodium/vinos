@@ -143,7 +143,7 @@ def create_gridspec(df, filename: pathlib.Path, ires=np.nan):
         asc_filename  =  pathlib.Path(filename.stem + "_" + str(year) + "_" + str(ires) + ".asc")
         with open(asc_filename, 'w') as fid:
             [fid.writelines(f'{key}\t{str(value)}\n') for key,value in asc_header.items()]
-            np.savetxt(fid, gvar.round().astype(int), fmt='%d', delimiter='\t')
+            np.savetxt(fid, np.flipud(gvar.round()), fmt='%d', delimiter='\t')
         asc_filename =  pathlib.Path(filename.stem + "_" + str(year) + "_" + str(ires) + ".asc.license")
         with open(asc_filename, 'w') as fid:
             [fid.writelines(f'{key}\t{str(value)}\n') for key,value in license.items()]
@@ -160,7 +160,7 @@ def create_gridspec(df, filename: pathlib.Path, ires=np.nan):
         asc_filename  =  pathlib.Path(filename.stem + "_" + str(year) + "_" + str(ires) + "_de.asc")
         with open(asc_filename, 'w') as fid:
             [fid.writelines(f'{key}\t{str(value)}\n') for key,value in asc_header.items()]
-            np.savetxt(fid, gvar.round().astype(int), fmt='%d', delimiter='\t')
+            np.savetxt(fid, np.flipud(gvar.round()), fmt='%d', delimiter='\t')
         asc_filename =  pathlib.Path(filename.stem + "_" + str(year) + "_" + str(ires) + "_de.asc.license")
         with open(asc_filename, 'w') as fid:
             [fid.writelines(f'{key}\t{str(value)}\n') for key,value in license.items()]

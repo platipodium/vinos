@@ -585,7 +585,6 @@ to profile
   profiler:reset
   print (sentence ".. . saved profileing data in" _filename)
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -638,8 +637,8 @@ CHOOSER
 245
 scene
 scene
-"Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch"
-13
+"Shrimp" "Plaice" "Sole" "Bathymetry" "Effort" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort"
+3
 
 BUTTON
 83
