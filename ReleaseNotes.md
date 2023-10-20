@@ -8,9 +8,11 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 Version 1.2.3 is a maintenance release of our Viable North Sea (ViNoS) software. The main purpose of this release are further improvements to the user interface and trip optimization.
 
+- speed improvements
+- include Global Fishery Watch effort data
 - don't haul in traffic
-- output scenarios for 2020 and 2030
-- display of values
+- output scenarios for 2020, 2030 and for tides
+- display of map values
 - nicer python visualization of maps
 
 # Release notes for version 1.2.2 - Oct 11
