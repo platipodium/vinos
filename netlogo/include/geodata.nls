@@ -21,17 +21,20 @@ to setup-maps
   let solea-summer-dataset gis:load-dataset "../data/thuenen/dis.solea.24.max.asc"
   let solea-winter-dataset gis:load-dataset "../data/thuenen/dis.solea.24.max.asc"
 
-  ; Set the world envelope to the union of all of our dataset's envelopes
-  gis:set-world-envelope (gis:envelope-union-of (gis:envelope-of bathymetry-dataset)
+  ; Set the world envelope to the union of all of our dataset's envelopes, if it has not been
+  ; set before
+  ifelse (not is-list? gis-envelope or length gis-envelope != 4) [
+    gis:set-world-envelope (gis:envelope-union-of (gis:envelope-of bathymetry-dataset)
 ;                                                (gis:envelope-of crangon-summer-dataset)
 ;                                               (gis:envelope-of crangon-winter-dataset)
 ;                                                (gis:envelope-of platessa-summer-dataset)
 ;                                                (gis:envelope-of platessa-winter-dataset)
 ;                                                (gis:envelope-of solea-summer-dataset)
 ;                                                (gis:envelope-of solea-winter-dataset)
-  )
+    )
+  ][ gis:set-world-envelope-ds gis-envelope]
 
-  ;gis:set-world-envelope (list 6.7 8.0 53.2 56.5)
+  print (word "Setting up GIS system within bounds " gis:world-envelope)
 
   gis:apply-raster bathymetry-dataset depth
 
@@ -535,12 +538,15 @@ end
 
 to calculate-tidal-depth
 
-  ; create the amphidromic point
+  ; create the amphidromic point, make artificially move it to adjust to
+  ; world envelope
   create-turtles 1 [
     set hidden? true
-    let _xy gis:project-lat-lon 55.5 5.1
+
+    let _xy gis:project-lat-lon (min (list 55.5 (item 3 gis-envelope - 0.1))) (max (list 5.1 item 0 gis-envelope))
     setxy item 0 _xy item 1 _xy
     set label "amphidrome"
+
   ]
 
   ; the synodal month (full moon to full moon) has a 29.52 day period, get a phase for this,

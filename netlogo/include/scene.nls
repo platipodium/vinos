@@ -4,6 +4,10 @@
 
 breed [legends legend]
 
+globals [
+  gis-envelope
+]
+
 legends-own [
   legend-title
   legend-colors
@@ -65,4 +69,39 @@ to show-values
     set plabel round temporary
     set plabel-color white ; todo adapt to pcolor
   ]
+end
+
+; This routine changes the scene (and all of the data behind) to zoom in on
+; the German Bight only.  This allows higher resolution (but remember that the
+; data itself is only coarse) and is an experimental feature.
+to zoom-scene
+
+  ; the default envelope given by the SNS dataset is [2 10 53 56]
+  set gis-envelope (list 2 10 53 56)           ; default including entire EEZ
+  set gis-envelope (list 5.5 9.5 53.2 54.7)    ; this is the same projection but at twice default resolution
+  set gis-envelope (list 6.4 9.14 53.25 55.1)  ; a rather distorted view, but concentrating on German waters
+
+  setup-maps
+
+  calc-pollution
+  calc-fish
+
+  setup-preys
+
+  setup-ports
+  calc-initial-values
+  calculate-distance-to-port
+
+  setup-boats
+
+  setup-plots
+
+  set scene-legend-n 9
+  update-scene
+  update-drawings
+  setup-logo
+  display
+
+  reset-ticks
+
 end
