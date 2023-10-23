@@ -639,7 +639,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort h" "Effort MWh" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort"
-1
+3
 
 BUTTON
 83
@@ -886,17 +886,6 @@ NIL
 NIL
 NIL
 1
-
-MONITOR
-271
-71
-379
-116
-NIL
-displayed
-17
-1
-11
 
 TEXTBOX
 338
