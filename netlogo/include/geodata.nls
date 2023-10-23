@@ -273,6 +273,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Effort MWh" and ticks > 0 [
     ask water-patches [set temporary 365.25 / ticks *  patch-effort-mwatthours / area]
+    set _unit "MWh a-1 km-2"
     set _qt (list  10 50 100 150 200) ; 250 300 350 400)
     set _min 0
     set n (length _qt) - 1
@@ -281,6 +282,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Effort h" and ticks > 0 [
     ask water-patches [set temporary 365.25 / ticks *  patch-effort-hours / area]
+    set _unit "h a-1 km-2"
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set _min 0
     set n (length _qt) - 1
@@ -289,6 +291,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Bathymetry" [
     ask water-patches [set temporary depth]
+    set _unit "m"
     set _qt (list 0 1 2 5 10 20 30 40  80)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Blues" n
@@ -297,6 +300,7 @@ to show-dataset [_dataset-name]
   if _dataset-name = "Depth" [
     calculate-tidal-depth
     set _qt (list 0 1 2 5 10 20 30 40  80)
+    set _unit "m"
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Blues" n
   ]
@@ -304,6 +308,7 @@ to show-dataset [_dataset-name]
   if _dataset-name = "Traffic" [
     let _dataset gis:load-dataset "../data/emodnet/EMODnet_HA_cargo-all_europe-yearly-2021.asc"
     ; Density is expressed as hours per square kilometre per month
+    set _unit "h km-2 month-1"
     gis:apply-raster  _dataset temporary
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set n (length _qt) - 1
@@ -321,6 +326,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Shrimp" [
     ask water-patches [set temporary crangon]
+    set _unit "kg km-2"
     set _qt (list 1 10 50 100 250 400 600 800 1000)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Reds" n
@@ -328,6 +334,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Sole" [
     ask water-patches [set temporary solea]
+    set _unit "kg km-2"
     set _qt (list 1 10 50 100 250 400 600 800 1000)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Reds" n
@@ -335,6 +342,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Plaice" [
     ask water-patches [set temporary platessa]
+    set _unit "kg km-2"
     set _qt (list 1 10 50 100 250 400 600 800 1000)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Reds" n
@@ -342,6 +350,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Shore proximity" [
     ask water-patches [ set temporary distance-to-coast ]
+    set _unit "km"
     set _qt (list 0 1 2 5 10 15 20 30 40 80)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
@@ -349,6 +358,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Port proximity" [
     ask water-patches [ set temporary distance-to-port ]
+    set _unit "km"
     set _qt (list 0 1 2 5 10 15 20 30 40 80)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
@@ -356,6 +366,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Area" [
     ask water-patches [ set temporary area ]
+    set _unit "km2"
     set _values sort [ temporary ] of water-patches
     set _qt quantile-thresholds _values n
     set _colors palette:scheme-colors "Sequential" "Oranges" n
@@ -400,6 +411,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Tide" [
     calculate-tidal-depth
+    set _unit "m"
     ask water-patches with [temporary > -9999][ set temporary (temporary - depth)]
     ;set _values sort [ temporary ] of water-patches
     ;set _qt quantile-thresholds _values n
@@ -423,8 +435,9 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Catch" [
     ask water-patches [set temporary -9999]
+    set _unit "kg km-2"
     ask water-patches with [any? actions-here] [
-      set temporary mean [action-catch] of actions-here
+      set temporary mean [action-catch] of actions-here / area
     ]
     set _values sort [ temporary ] of water-patches with [any? actions-here]
     set _qt quantile-thresholds _values n
