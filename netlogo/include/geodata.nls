@@ -293,7 +293,7 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Traffic" [
     let _dataset gis:load-dataset "../data/emodnet/EMODnet_HA_cargo-all_europe-yearly-2021.asc"
-    ; unit is not known and also not whether to scale this with grid cell area
+    ; Density is expressed as hours per square kilometre per month
     gis:apply-raster  _dataset temporary
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set n (length _qt) - 1

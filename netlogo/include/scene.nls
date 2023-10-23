@@ -57,12 +57,41 @@ to draw-legend [ colors labels]
 
   ; draw the background (bbox)
   ask patches with [pxcor >= min-pxcor + 2 and pxcor <= min-pxcor + 20
-       and pycor > max-pycor - 20 - legend-pad - 3 * ( length labels ) and pycor < max-pycor - 20][
+       and pycor > max-pycor - 20 - legend-pad - 3 * ( length labels ) and pycor < max-pycor - 8][
     set pcolor grey
     set plabel ""
   ]
 
 end
+
+; Observer procedure to set legend title and unit, which can be provided as a list
+; or as a string (then only the title is set)
+to set-legend-title [_string]
+  let _unit ""
+  let _title ""
+  ifelse is-list? _string  [
+    if length _string > 1 [ set _unit  (word item 1 _string) ]
+    if length _string > 0 [ set _title (word item 0 _string) ]
+  ][
+    set _title (word _string)
+  ]
+
+  let legend-pad 4
+  if any? legends [
+    ask patch (min-pxcor + 20 - legend-pad) (max-pycor - 11) [
+      ;set pcolor cyan
+      set plabel-color black
+      set plabel _title
+    ]
+    ; A vertical spacing of 4 works well
+    ask patch (min-pxcor + 20 - legend-pad) (max-pycor - 15) [
+      ;set pcolor cyan
+      set plabel-color black
+      set plabel _unit
+    ]
+  ]
+end
+
 
 to show-values
   ask water-patches with [pxcor mod 10 = 0 and  pycor mod 10 = 0  and is-number? temporary and temporary != -9999][
