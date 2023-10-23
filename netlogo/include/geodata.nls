@@ -239,15 +239,22 @@ to show-dataset [_dataset-name]
   let _colors nobody
   let _min 0
   let _area-factor area-factor
+  let _unit ""
 
+  print _area-factor
   ask patches [set pcolor grey - 2]
   ask water-patches [set pcolor grey]
 
   if _dataset-name = "EMODnet effort" [
     let _dataset gis:load-dataset "../data/emodnet/fishingbeamtrawlsPolygon.shp"
     gis:apply-coverage  _dataset "MW_FSHN" temporary
-    ; unit is MWh per 0.05x0.05 grid cell area
-    set _qt (list  10 50 100 200 300 400 500 600)
+    ; Remove NaN
+    ask water-patches with [(not (temporary > 0)) and (not (temporary < 1)) ] [set temporary 0]
+    ; Original unit is MWh per 0.05x0.05 grid cell area, we correct this by the
+    ; area-factor (conversion to actual grid resolution, and by area
+    ask water-patches [set temporary temporary * _area-factor / area]
+    set _unit "MWh a-1 km-2"
+    set _qt (list  10 50 100 150 200) ; 250 300 350 400)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
@@ -255,22 +262,25 @@ to show-dataset [_dataset-name]
   if _dataset-name = "GFW effort" [
     let _dataset gis:load-dataset "../data/gfw/fishing_hours_2019_20_de.asc"
     gis:apply-raster _dataset temporary
-    ; unit is h per 0.05x0.05 grid cell area
+    ask water-patches with [(not (temporary > 0)) and (not (temporary < 1)) ] [set temporary 0]
+    ; Original unit is h per 0.05x0.05 grid cell area
+    ask water-patches [set temporary temporary * _area-factor / area]
+    set _unit "h a-1 km-2"
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
 
   if _dataset-name = "Effort MWh" and ticks > 0 [
-    ask water-patches [set temporary 365.25 / ticks *  patch-effort-mwatthours / _area-factor]
-    set _qt (list  10 50 100 200 300 400 500 600)
+    ask water-patches [set temporary 365.25 / ticks *  patch-effort-mwatthours / area]
+    set _qt (list  10 50 100 150 200) ; 250 300 350 400)
     set _min 0
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
 
   if _dataset-name = "Effort h" and ticks > 0 [
-    ask water-patches [set temporary 365.25 / ticks *  patch-effort-hours / _area-factor]
+    ask water-patches [set temporary 365.25 / ticks *  patch-effort-hours / area]
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set _min 0
     set n (length _qt) - 1
@@ -443,6 +453,7 @@ to show-dataset [_dataset-name]
       ]
     ]
     draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
+    set-legend-title (list _dataset-name _unit)
   ][
     foreach  (range length _patches) [ i ->
       ask item i _patches [
