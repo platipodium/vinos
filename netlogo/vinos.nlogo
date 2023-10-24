@@ -90,15 +90,11 @@ patches-own [
   unrestricted?                   ; false if close to port, too shallow, restricted area
   plaice-box?
 
-
   ; Diagnostics
-  patch-effort-hours              ; fishing effort in hours
-  patch-effort-mwatthours         ; fishing effort in Megawatt hours
   prey-catches                      ; annual prey catches
   cluster-fishing-efforts           ; fishing effort by cluster in hours
   cluster-prey-catches              ; preys caught by cluster
   area                              ; area of the patch
-  swept-area                        ; swept area of the patch, used to calculate SAR (swept area ratio)
   distance-to-coast                 ; distance to nearest land
   distance-to-port                  ; distance to nearest port
   traffic-suitability               ; relative suitability due to traffic
@@ -303,36 +299,9 @@ to update-scene
 
   ask water-patches [set plabel ""]
 
-  carefully [show-dataset scene][
+  carefully [show-dataset scene][print (word "Warning, scene " scene " cannot be displayed")]
 
-
-  let _qt nobody
-  let _values nobody
-  let _patches nobody
-  let _colors nobody
-
-  ask patches [set pcolor grey - 2]
-  ask patches with [ accessible? ][set pcolor grey]
-
-  if (scene = "swept area ratio") and ( ticks > 0 )[
-
-    set _patches [self] of patches with [swept-area > 0]
-    set _values (map [ p -> [365.25 / ticks *  swept-area / area] of p ] _patches )
-    set _qt map [ x ->  x] (range (n + 1)) ; quantile-thresholds _values n
-    set _values quantile-scale-new _qt _values
-    set _colors palette:scheme-colors "Sequential" "Oranges" n
-
-    foreach  (range length _patches) [ i ->
-      ask item i _patches [
-        set pcolor palette:scale-gradient _colors (item i _values) 0 1
-      ]
-    ]
-    draw-legend _colors (n-values (n + 1) [ i -> formatted-number (item i _qt) 5])
-  ]
-
-  ]
   display
-
   if show-values? [show-values]
 end
 
@@ -643,8 +612,8 @@ CHOOSER
 245
 scene
 scene
-"Shrimp" "Plaice" "Sole" "Bathymetry" "Effort h" "Effort MWh" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort"
-4
+"Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
+0
 
 BUTTON
 83
@@ -700,7 +669,7 @@ adaptation
 adaptation
 0
 1
-0.712
+0.739
 0.001
 1
 NIL
@@ -715,7 +684,7 @@ memory-size
 memory-size
 0
 50
-30.0
+50.0
 1
 1
 NIL
@@ -745,7 +714,7 @@ oil-price
 oil-price
 25
 75
-35.0
+75.0
 5
 1
 ct l-1
@@ -1096,7 +1065,7 @@ MONITOR
 288
 765
 Effort h, MWh
-(list \n  round sum [ area * patch-effort-hours / ticks ] of water-patches\n  round sum [ area * patch-effort-mwatthours / ticks ] of water-patches\n)
+(list \n  (round 365.25 / days-in-past-year * ([ sum patch-monthly-effort-hours ] of water-patches))\n  (round 365.25 / days-in-past-year * ([ sum patch-monthly-effort-mwatthours  ] of water-patches))\n)
 0
 1
 11

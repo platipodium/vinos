@@ -188,6 +188,7 @@ end
 
 
 to plot-update-action-histogram
+  let _days days-in-past-year
   set-current-plot "action"
   if not plot-pen-exists? action-chooser [
     clear-plot
@@ -215,8 +216,9 @@ to plot-update-action-histogram
       if ( action-chooser =  "catch" ) [ set _values [ round action-catch] of actions ]
       if ( action-chooser =  "coast" ) [ set _values [ round [distance-to-coast] of patch-here] of actions ]
       if ( action-chooser =  "depth" ) [ set _values [ round [depth] of patch-here] of actions ]
-      if ( action-chooser =  "Effort h" ) [ set _values [ round [patch-effort-hours] of patch-here] of actions ]
-      if ( action-chooser =  "Effort MWh" ) [ set _values [ round [patch-effort-mwatthours] of patch-here] of actions ]
+      if ( action-chooser =  "Effort h" ) [ set _values [ round sum [patch-monthly-effort-hours] of patch-here] of actions ]
+      if ( action-chooser =  "Effort MWh" ) [ set _values [ round sum [patch-monthly-effort-mwatthours] of patch-here] of actions ]
+      if ( action-chooser =  "SAR" ) [ set _values [ round sum [patch-monthly-swept-area] of patch-here] of actions ]
       if ( action-chooser =  "age" ) [ set _values [ action-age ] of actions ]
 
       set-histogram-num-bars 9

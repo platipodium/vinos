@@ -5,12 +5,12 @@
 
 to reset-patches
   ask patches [
-    set patch-effort-hours 0
-    set patch-effort-mwatthours 0
+    set patch-monthly-effort-hours n-values 12 [ i -> 0]
+    set patch-monthly-effort-mwatthours n-values 12 [ i -> 0]
+    set patch-monthly-swept-area n-values 12 [ i -> 0]
     set prey-catches 0
     set cluster-fishing-efforts 0
     set cluster-prey-catches  0
-    set swept-area 0
   ]
 end
 
@@ -62,35 +62,6 @@ to ci-maps
     ;print date
   ]
   save-dynamic-dataset "Effort"
-
-end
-
-; This routine is to be called by CI and is deprecated
-to create-effort-map
-
-  ask patches [
-    set patch-effort-hours 0
-    set patch-effort-mwatthours 0
-  ]
-
-  repeat 365 [ go ]
-
-  ; data storage
-  let prefix  (word "results/effort-" substring date-and-time 0 12)
-
-  set scene "Effort h"
-  update-scene
-  clear-drawing
-  ask links [set hidden? true]
-  ask boats [set hidden? true]
-
-  export-view (word prefix ".png")
-
-  ask links [set hidden? false]
-  ask boats [set hidden? false]
-
-  let dataset gis:patch-dataset patch-effort-hours
-  gis:store-dataset dataset prefix
 
 end
 

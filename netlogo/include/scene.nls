@@ -154,5 +154,5 @@ end
 to-report gfw-effort
   show-dataset "GFW effort"
   ; this dataset is in h, so convert to MWh with simulated data
-  report round sum [ temporary * area * patch-effort-mwatthours / patch-effort-hours ] of water-patches with [patch-effort-hours > 0]
+  report round sum [ temporary * area * sum patch-monthly-effort-mwatthours / sum patch-monthly-effort-hours] of water-patches with [sum patch-monthly-effort-hours > 0]
 end

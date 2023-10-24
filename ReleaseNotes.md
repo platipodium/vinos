@@ -8,6 +8,7 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 Version 1.2.4 is a maintenance release of our Viable North Sea (ViNoS) software. The main purpose of this release are benchmarks and realism improvements.
 
+- monthly reporting of effort and SAR
 - consistent versioning
 - added benchmark monitors
 
