@@ -144,7 +144,12 @@ to setup-maps
     set _patches patches with [platessa-winter < 0 and accessible?]
   ]
 
-  ask patches [ set area gis-patch-area ]
+  ask patches [
+    set area gis-patch-area
+    set patch-monthly-effort-hours n-values 12 [ i -> 0]
+    set patch-monthly-effort-mwatthours n-values 12 [ i -> 0]
+    set patch-monthly-swept-area n-values 12 [ i -> 0]
+  ]
 
   update-owf
 
@@ -240,6 +245,7 @@ to show-dataset [_dataset-name]
   let _min 0
   let _area-factor area-factor
   let _unit ""
+  let _days days-in-past-year
 
   print _area-factor
   ask patches [set pcolor grey - 2]
@@ -271,8 +277,8 @@ to show-dataset [_dataset-name]
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
 
-  if _dataset-name = "Effort MWh" and ticks > 0 [
-    ask water-patches [set temporary 365.25 / ticks *  patch-effort-mwatthours / area]
+  if _dataset-name = "Effort MWh" and ticks > 0 and _days > 0 [
+    ask water-patches [set temporary 365.25 / _days *  sum patch-monthly-effort-mwatthours / area]
     set _unit "MWh a-1 km-2"
     set _qt (list  10 50 100 150 200) ; 250 300 350 400)
     set _min 0
@@ -280,11 +286,22 @@ to show-dataset [_dataset-name]
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
 
-  if _dataset-name = "Effort h" and ticks > 0 [
-    ask water-patches [set temporary 365.25 / ticks *  patch-effort-hours / area]
+  if _dataset-name = "Effort h" and ticks > 0 and _days > 0 [
+    ask water-patches [set temporary 365.25 / _days *  sum patch-monthly-effort-hours / area]
     set _unit "h a-1 km-2"
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set _min 0
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Sequential" "Oranges" n
+  ]
+
+  if _dataset-name = "SAR" and ticks > 0 and _days > 0 [
+    ask water-patches [set temporary 365.25 / _days *  sum patch-monthly-swept-area / area]
+    set _unit ""
+    ;set _values sort [ temporary ] of water-patches
+    ;set _qt quantile-thresholds _values n
+    set _qt (list 0.01 0.1 0.5 1.0 5.0 20.0 100.0 )
+    set _min 0.01
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
@@ -644,4 +661,13 @@ to calculate-tidal-depth
     ask _amphidrome [face myself]
     set temporary  depth + _range / 2 * sin ( _m2-phase + [heading] of _amphidrome )
   ]
+end
+
+; This is a patch procedure that is called every 1st of the month
+; and updates the time global and monthly storage
+to reset-monthly
+  let _imonth time:get "month" date - 1
+  set  patch-monthly-effort-hours replace-item _imonth patch-monthly-effort-hours 0
+  set  patch-monthly-effort-mwatthours replace-item _imonth patch-monthly-effort-mwatthours 0
+  set  patch-monthly-swept-area replace-item _imonth patch-monthly-swept-area 0
 end

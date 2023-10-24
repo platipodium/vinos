@@ -555,6 +555,7 @@ to boat-make-haul
   let _step-time _haul-time * 1.0 / _sub-steps
   let _cluster boat-type
   let _power boat-engine
+  let _imonth time:get "month" date - 1
 
   let _boat-gear-index boat-current-gear-index
   let _patch-prey-index position _prey patch-prey-names
@@ -601,8 +602,19 @@ to boat-make-haul
       ask patch-here [
         ; Fishing effort is measured as Megawatt hours
         set patch-effort-hours patch-effort-hours + _step-time
+        set patch-monthly-effort-hours replace-item _imonth patch-monthly-effort-hours (
+          item _imonth patch-monthly-effort-hours + _step-time
+        )
+
         set patch-effort-mwatthours patch-effort-mwatthours + _step-time * _power / 1000.0
+        set patch-monthly-effort-mwatthours replace-item _imonth patch-monthly-effort-mwatthours (
+          item _imonth patch-monthly-effort-mwatthours + _step-time * _power / 1000.0
+        )
+
         set swept-area swept-area + _haul-width * _step-time * _fishing-speed
+        set patch-monthly-swept-area replace-item _imonth patch-monthly-swept-area (
+          item _imonth patch-monthly-swept-area + _haul-width * _step-time * _fishing-speed
+        )
 
         ; @todo reduce fish on patch by amount taken out, allow for recovery
         if _patch-prey-index > -1 [

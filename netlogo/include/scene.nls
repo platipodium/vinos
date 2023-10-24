@@ -145,3 +145,14 @@ end
 to-report area-factor
   report ((item 3 gis-envelope - item 2 gis-envelope) / 3 * (item 1 gis-envelope - item 0 gis-envelope) / 8 ) / 4
 end
+
+to-report emodnet-effort
+  show-dataset "EMODnet effort"
+  report round sum [ temporary * area ] of water-patches
+end
+
+to-report gfw-effort
+  show-dataset "GFW effort"
+  ; this dataset is in h, so convert to MWh with simulated data
+  report round sum [ temporary * area * patch-effort-mwatthours / patch-effort-hours ] of water-patches with [patch-effort-hours > 0]
+end

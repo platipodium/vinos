@@ -104,6 +104,11 @@ patches-own [
   traffic-suitability               ; relative suitability due to traffic
 
   temporary                         ; temporary variable storage
+
+  ; Monthly diagnostic storage
+  patch-monthly-effort-hours
+  patch-monthly-effort-mwatthours
+  patch-monthly-swept-area
 ]
 
 ; ------------------------------------------------------------------------------------------
@@ -639,7 +644,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Bathymetry" "Effort h" "Effort MWh" "Accessibility" "OWF" "Plaicebox" "Area" "swept area ratio" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort"
-3
+4
 
 BUTTON
 83
@@ -695,7 +700,7 @@ adaptation
 adaptation
 0
 1
-0.642
+0.712
 0.001
 1
 NIL
@@ -725,7 +730,7 @@ operating-costs-of-boats
 operating-costs-of-boats
 0
 1
-0.38
+0.354
 0.001
 1
 NIL
@@ -740,7 +745,7 @@ oil-price
 oil-price
 25
 75
-50.0
+35.0
 5
 1
 ct l-1
@@ -1014,7 +1019,7 @@ time-offset
 time-offset
 -200
 200
--74.0
+-107.0
 1
 1
 months from now
@@ -1084,6 +1089,90 @@ show-values?
 1
 1
 -1000
+
+MONITOR
+195
+720
+288
+765
+Effort h, MWh
+(list \n  round sum [ area * patch-effort-hours / ticks ] of water-patches\n  round sum [ area * patch-effort-mwatthours / ticks ] of water-patches\n)
+0
+1
+11
+
+TEXTBOX
+22
+724
+172
+780
+Benchmarks compare summary simulation results to observations for recent years.
+11
+0.0
+1
+
+MONITOR
+299
+721
+362
+766
+Seadays
+round (sum [boat-total-days-at-sea] of boats) \n/ count boats\n* 365.25 / ticks
+0
+1
+11
+
+MONITOR
+370
+722
+458
+767
+LPUE kg d-1
+round mean [boat-total-landings / boat-total-days-at-sea] of boats
+0
+1
+11
+
+MONITOR
+466
+723
+545
+768
+Fuel l kg-1
+mean [boat-total-fuel-consumption / boat-total-landings] of boats
+2
+1
+11
+
+TEXTBOX
+206
+768
+356
+786
+[ 47      88   ]
+11
+0.0
+1
+
+TEXTBOX
+481
+774
+631
+792
+0.5-1.0
+11
+0.0
+1
+
+TEXTBOX
+388
+775
+538
+793
+300-900
+11
+0.0
+1
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries

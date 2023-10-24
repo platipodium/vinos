@@ -70,6 +70,9 @@ to advance-calendar
   set storm? is-storm?
   set ramadan? is-ramadan?
 
+  ; Every first of the month, ask the water patches to reset their
+  ; monthly storage.
+  if day = 1 [ ask water-patches [reset-monthly] ]
 end
 
 to-report datetime-string
@@ -140,4 +143,20 @@ to-report is-storm?
   let _month-index  (time:get "month" date) - 1
   let _threshold item _month-index _days-with-storm
   report random-float (item _month-index days-in-months) < _threshold
+end
+
+; Observer procedure that reports the number of days that have passed either
+; since the beginning of the simulation or since the last complete year, and
+; consider that for monthly data storage we only save full month data.  So
+; the number of days is 11 full month + the days in the current month
+to-report days-in-past-year
+  let _yeardays 0
+  carefully [if ticks < 366 [set _yeardays ticks]][set _yeardays -1]
+  if _yeardays < 0 [report 0]
+  if ticks < 366 [report ticks]
+
+  ;let _imonth time:plus 11 "month" date
+  set _yeardays time:difference-between date (time:plus date -1 "years") "days"
+  let _monthdays time:difference-between date (time:create (word (time:get "year" date) "-" (time:get "month" time:plus date 1 "months") "-1")) "days"
+  report ( - _yeardays - _monthdays)
 end
