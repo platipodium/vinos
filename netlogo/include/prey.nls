@@ -22,10 +22,6 @@ globals [
 
 ; We define here a constant and predefined number of gears
 to setup-preys
-  ask preys [
-    ask my-links [die]
-    die
-  ]
 
   read-prey-csv
 
@@ -53,6 +49,11 @@ end
 
 to read-prey-csv
 
+  if any? preys [ ask preys [
+    ask my-links [die]
+    die
+  ]]
+
   file-open "./include/prey.csv"
   ; Read the first row without doing anything, the ASFIS column headers are
   ; "3A_Code","Taxonomic_Code","CPC_Group","Identifier","Name_En","Name_Fr","Name_Es","Name_Ar","Name_Cn",
@@ -64,11 +65,10 @@ to read-prey-csv
     set row csv:from-row file-read-line
 
     create-preys 1 [
-      let my-name item 10 row
       set prey-name last row
       set prey-three-code item 0 row
       set prey-english item 4 row
-      set prey-scientific my-name
+      set prey-scientific item 10 row
       set prey-german ""
       set prey-picture ""
       set hidden? true
@@ -80,6 +80,8 @@ to read-prey-csv
   set prey-names n-values prey-number [i -> [prey-name] of prey item i my-prey-ids]
 
   file-close
+  print (word "Created " prey-number " preys: " prey-names)
+
 end
 
 to-report prey-gear-indices

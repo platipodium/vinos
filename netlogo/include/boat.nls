@@ -75,6 +75,7 @@ boats-own [
   boat-fishable-patches ; large memory required, is this problematic?
   boat-actions ; Agentset of actions for this boat
 
+  boat-preys ; Agentset of preys for this boat
   boat-current-gear-index
   boat-current-prey-index
 
@@ -140,7 +141,8 @@ to setup-boats
       set boat-max-distance 2 * 0.001 * value-from-distribution butfirst butfirst item boat-type distance-distribution
       set boat-max-duration value-from-distribution butfirst butfirst item boat-type triplength-distribution
 
-      set boat-gears n-values number-of-gears [i -> gear i] ; assign a list of gears available in the same order to all the boats
+      let _boat-ids sort [who] of gears
+      set boat-gears map [ i -> gear i] _boat-ids
       set boat-gear-priorities n-values number-of-gears  [i -> random-float 1] ; initialize priority for the pathway
 
       let _crangon-gear-index position "Shrimp" gear-prey-names
@@ -353,11 +355,14 @@ to boat-land-port
   ]
 
   ; Add diagnostics of the actually caught species to fleet monthly diagnostics
-  let _boat-catch item boat-current-gear-index boat-trip-gear-catches
-  let _boat-revenue _boat-catch * (item boat-current-prey-index prey-prices)
+  ; @todo later expand to other species
+  if ([gear-name] of (item boat-current-gear-index boat-gears) = "TBB20CSH") [
+    let _boat-catch item boat-current-gear-index boat-trip-gear-catches
+    let _boat-revenue _boat-catch * (item boat-current-prey-index prey-prices)
 
-  set  fleet-monthly-landing replace-item _imonth fleet-monthly-landing (item _imonth fleet-monthly-landing + _boat-catch)
-  set  fleet-monthly-revenue replace-item _imonth fleet-monthly-revenue (item _imonth fleet-monthly-revenue + _boat-revenue)
+    set  fleet-monthly-landing replace-item _imonth fleet-monthly-landing (item _imonth fleet-monthly-landing + _boat-catch)
+    set  fleet-monthly-revenue replace-item _imonth fleet-monthly-revenue (item _imonth fleet-monthly-revenue + _boat-revenue)
+  ]
 
   ; Boat time is in hours, add the trip's hours to the total boat sea days and
   ; reset the trip data

@@ -128,14 +128,15 @@ to setup
   setup-calendar
 
   setup-globals
-  setup-gears
+
+  setup-preys
+  setup-gears ; gears depend on preys
 
   setup-maps
 
   calc-pollution
   calc-fish
 
-  setup-preys
 
   setup-ports
   calc-initial-values
@@ -1017,7 +1018,7 @@ CHOOSER
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast" "age"
-0
+1
 
 BUTTON
 1160
@@ -1138,7 +1139,7 @@ CHOOSER
 482
 monthly-chooser
 monthly-chooser
-"Landing" "Revenue" "Effort MWh" "Effort h"
+"Landing t" "Revenue k€" "Effort MWh" "Effort h"
 0
 
 PLOT
@@ -1146,15 +1147,15 @@ PLOT
 486
 1233
 606
-Montly statistics
-Month of year
+Monthly statistics
+Month
 NIL
 1.0
 12.0
 0.0
 10.0
-true
-true
+false
+false
 "plot-setup-month-histogram" "plot-update-month-histogram"
 PENS
 

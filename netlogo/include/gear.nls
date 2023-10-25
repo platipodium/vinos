@@ -9,6 +9,7 @@ breed [gears gear]
 gears-own [
   gear-name
   gear-species
+  gear-prey
   gear-width
   gear-drag
   gear-installation-cost
@@ -114,6 +115,13 @@ to setup-gears
 ;    set gear-speed 5 ;
 ;  ]
 
+  if not any? preys [ error (word "Cannot create gears before preys")]
+  ask gears [
+    let _gear-prey-name gear-species
+    set gear-prey one-of preys with [prey-name = _gear-prey-name]
+    if gear-prey = nobody [ die ]
+  ]
+
   ; Report global variables, make sure to keep the order of the gears
   ; and the correct relation between species and gear name
 
@@ -122,6 +130,8 @@ to setup-gears
   set gear-names n-values number-of-gears [i -> [gear-name] of gear item i my-gear-ids]
   set gear-prey-names n-values number-of-gears [i -> [gear-species] of gear item i my-gear-ids]
   set gear-catch-efficancy n-values number-of-gears [i -> [gear-efficancy] of gear item i my-gear-ids]
+
+  print (word "Created " count gears " gears: " [gear-name] of gears)
 
 end
 
