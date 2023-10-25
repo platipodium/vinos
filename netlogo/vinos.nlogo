@@ -649,10 +649,10 @@ NIL
 1
 
 SWITCH
-1241
-119
-1376
-152
+1244
+123
+1364
+156
 show-ports?
 show-ports?
 1
@@ -660,10 +660,10 @@ show-ports?
 -1000
 
 SLIDER
-14
-359
-252
-392
+10
+386
+249
+419
 adaptation
 adaptation
 0
@@ -675,10 +675,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-14
-318
-255
-351
+10
+345
+251
+378
 memory-size
 memory-size
 0
@@ -690,10 +690,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-334
-471
-506
-504
+11
+467
+183
+500
 oil-price
 oil-price
 25
@@ -735,10 +735,10 @@ Change the information for the basemap here and hit `update`
 1
 
 PLOT
-256
-547
-638
-697
+339
+522
+726
+767
 catch
 days
 catch/kg
@@ -752,10 +752,10 @@ true
 PENS
 
 PLOT
-647
-547
-925
-697
+732
+520
+1010
+640
 gain-by-gear
 days
 gain/k€
@@ -769,10 +769,10 @@ false
 PENS
 
 PLOT
-932
-548
-1145
-697
+733
+646
+1010
+766
 priority-by-gear
 NIL
 NIL
@@ -786,20 +786,20 @@ false
 PENS
 
 TEXTBOX
-1244
-58
-1394
-114
-Select additional \nbackground\ninformation and\nhit update-background
+1247
+57
+1362
+113
+Additional \nforeground\ninformation, \nhit `update`
 11
 0.0
 1
 
 SWITCH
-1242
-235
-1344
-268
+1244
+199
+1364
+232
 owf?
 owf?
 1
@@ -807,10 +807,10 @@ owf?
 -1000
 
 SWITCH
-1241
-277
-1344
-310
+1243
+241
+1365
+274
 box?
 box?
 0
@@ -818,10 +818,10 @@ box?
 -1000
 
 SWITCH
-1240
-318
-1343
-351
+1242
+282
+1365
+315
 sar?
 sar?
 1
@@ -829,10 +829,10 @@ sar?
 -1000
 
 BUTTON
-1238
-356
-1380
-389
+1240
+320
+1366
+353
 update-background
 update-drawings
 NIL
@@ -846,30 +846,30 @@ NIL
 1
 
 TEXTBOX
-338
-440
-530
-479
+15
+436
+207
+475
 Diesel for ships is tax-exempt and \ncosts on average 0.5 € l-1
 10
 0.0
 1
 
 TEXTBOX
-526
-440
-676
-468
+203
+436
+353
+464
 Staff costs are usually around 80 € h-1
 11
 0.0
 1
 
 SLIDER
-524
-470
-696
-503
+201
+466
+373
+499
 wage
 wage
 50
@@ -882,9 +882,9 @@ HORIZONTAL
 
 PLOT
 15
-547
-244
-697
+616
+333
+766
 boat-property
 NIL
 # boats
@@ -899,19 +899,19 @@ PENS
 
 CHOOSER
 12
-495
+564
 167
-540
+609
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
 0
 
 SWITCH
-1241
-156
-1377
-189
+1244
+160
+1365
+193
 show-boats?
 show-boats?
 1
@@ -920,9 +920,9 @@ show-boats?
 
 BUTTON
 170
-496
+565
 242
-540
+609
 update-plot
 plot-update-boat-property
 NIL
@@ -936,10 +936,10 @@ NIL
 0
 
 BUTTON
-1239
-394
-1344
-427
+1241
+358
+1368
+391
 clear
 clear-drawing
 NIL
@@ -955,7 +955,7 @@ NIL
 SWITCH
 156
 102
-259
+246
 135
 one?
 one?
@@ -964,10 +964,10 @@ one?
 -1000
 
 SLIDER
-13
-445
-231
-478
+10
+307
+250
+340
 time-offset
 time-offset
 -200
@@ -979,20 +979,20 @@ months from now
 HORIZONTAL
 
 TEXTBOX
-499
-570
-573
-610
+658
+643
+732
+683
 CSH = shrimp\nPLE = plaice\nSOL = sole\nTBB = beam trawl\nOTB = otter trawl
 6
 0.0
 1
 
 PLOT
-1160
-545
-1373
-695
+1025
+571
+1241
+764
 action
 NIL
 # action
@@ -1006,20 +1006,20 @@ true
 PENS
 
 CHOOSER
-1159
-495
-1297
-540
+1024
+521
+1162
+566
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast" "age"
 0
 
 BUTTON
-1299
-495
-1373
-541
+1165
+520
+1239
+566
 update
 plot-update-action-histogram
 NIL
@@ -1044,10 +1044,10 @@ show-values?
 -1000
 
 MONITOR
-195
-720
-288
-765
+569
+439
+662
+484
 Effort h, MWh
 (list \n  (round 365.25 / days-in-past-year * ([ sum patch-monthly-effort-hours ] of water-patches))\n  (round 365.25 / days-in-past-year * ([ sum patch-monthly-effort-mwatthours  ] of water-patches))\n)
 0
@@ -1055,20 +1055,20 @@ Effort h, MWh
 11
 
 TEXTBOX
-22
-724
-172
-780
+396
+443
+546
+499
 Benchmarks compare summary simulation results to observations for recent years.
 11
 0.0
 1
 
 MONITOR
-299
-721
-362
-766
+673
+440
+736
+485
 Seadays
 round (sum [boat-total-days-at-sea] of boats) \n/ count boats\n* 365.25 / ticks
 0
@@ -1076,10 +1076,10 @@ round (sum [boat-total-days-at-sea] of boats) \n/ count boats\n* 365.25 / ticks
 11
 
 MONITOR
-370
-722
-458
-767
+744
+441
+832
+486
 LPUE kg d-1
 round mean [boat-total-landings / boat-total-days-at-sea] of boats
 0
@@ -1087,10 +1087,10 @@ round mean [boat-total-landings / boat-total-days-at-sea] of boats
 11
 
 MONITOR
-466
-723
-545
-768
+840
+442
+919
+487
 Fuel l kg-1
 mean [boat-total-fuel-consumption / boat-total-landings] of boats
 2
@@ -1098,30 +1098,30 @@ mean [boat-total-fuel-consumption / boat-total-landings] of boats
 11
 
 TEXTBOX
-206
-768
-356
-786
+580
+487
+730
+505
 [ 47      88   ]
 11
 0.0
 1
 
 TEXTBOX
-481
-774
-631
-792
+855
+493
+1005
+511
 0.5-1.0
 11
 0.0
 1
 
 TEXTBOX
-388
-775
-538
-793
+762
+494
+912
+512
 300-900
 11
 0.0
