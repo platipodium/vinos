@@ -260,7 +260,7 @@ to show-dataset [_dataset-name]
     ; area-factor (conversion to actual grid resolution, and by area
     ask water-patches [set temporary temporary * _area-factor / area]
     set _unit "MWh a-1 km-2"
-    set _qt (list  10 50 100 150 200) ; 250 300 350 400)
+    set _qt (list  5 10 25 50 75 100 150 200) ; 250 300 350 400)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
   ]
@@ -280,7 +280,7 @@ to show-dataset [_dataset-name]
   if _dataset-name = "Effort MWh" and ticks > 0 and _days > 0 [
     ask water-patches [set temporary 365.25 / _days *  sum patch-monthly-effort-mwatthours / area]
     set _unit "MWh a-1 km-2"
-    set _qt (list  10 50 100 150 200) ; 250 300 350 400)
+    set _qt (list  5 10 25 50 75 100 150 200) ; 250 300 350 400)
     set _min 0
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n

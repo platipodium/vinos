@@ -7,9 +7,9 @@ readthedocs:
   stage: deploy
   before_script:
     - apk add curl rsync
-    - rsync ./netlogo/results/*png ./doc/mkdocs/assets/
-    - rsync ./doc/odd/paper.md ./doc/mkdocs/odd.md
   script:
+    - rsync --ignore-errors ./netlogo/results/*png ./doc/mkdocs/assets/
+    - rsync --ignore-errors ./doc/odd/paper.md ./doc/mkdocs/odd.md
     - 'curl -X POST -H "Authorization: Token ${RTD_TOKEN}" https://readthedocs.org/api/v3/projects/viable-north-sea/versions/latest/builds/'
   rules:
     # Only run the job on the default branch and not in forks.

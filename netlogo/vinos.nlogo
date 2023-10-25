@@ -613,7 +613,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-0
+5
 
 BUTTON
 83
@@ -714,7 +714,7 @@ oil-price
 oil-price
 25
 75
-75.0
+50.0
 5
 1
 ct l-1
