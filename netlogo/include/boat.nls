@@ -302,6 +302,7 @@ end
 ; This is a boat procedure  where a boat lands at a port and offloads its cargo
 ; here the optimization is done and the memory update
 to boat-land-port
+  let _imonth time:get "month" date - 1
 
   ; Diesel for shipping is usually 0.5 € l-1
   ; In the end tranpsortatino costs should be 15% of crangon reenvu, up to 30% for platessa/sole
@@ -351,6 +352,12 @@ to boat-land-port
     )
   ]
 
+  ; Add diagnostics of the actually caught species to fleet monthly diagnostics
+  let _boat-catch item boat-current-gear-index boat-trip-gear-catches
+  let _boat-revenue _boat-catch * (item boat-current-prey-index prey-prices)
+
+  set  fleet-monthly-landing replace-item _imonth fleet-monthly-landing (item _imonth fleet-monthly-landing + _boat-catch)
+  set  fleet-monthly-revenue replace-item _imonth fleet-monthly-revenue (item _imonth fleet-monthly-revenue + _boat-revenue)
 
   ; Boat time is in hours, add the trip's hours to the total boat sea days and
   ; reset the trip data

@@ -68,6 +68,9 @@ globals [
   patch-prey-names
 
   water-patches
+
+  fleet-monthly-landing
+  fleet-monthly-revenue
 ]
 
 patches-own [
@@ -139,6 +142,7 @@ to setup
   calculate-distance-to-port
 
   setup-boats
+  setup-monthly
 
   setup-plots
 
@@ -736,9 +740,9 @@ Change the information for the basemap here and hit `update`
 
 PLOT
 339
-522
+539
 726
-767
+784
 catch
 days
 catch/kg
@@ -753,9 +757,9 @@ PENS
 
 PLOT
 732
-520
+537
 1010
-640
+657
 gain-by-gear
 days
 gain/k€
@@ -770,9 +774,9 @@ PENS
 
 PLOT
 733
-646
+663
 1010
-766
+783
 priority-by-gear
 NIL
 NIL
@@ -881,10 +885,10 @@ wage
 HORIZONTAL
 
 PLOT
-15
-616
-333
-766
+13
+635
+331
+785
 boat-property
 NIL
 # boats
@@ -898,10 +902,10 @@ true
 PENS
 
 CHOOSER
-12
-564
-167
-609
+10
+583
+165
+628
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
@@ -919,10 +923,10 @@ show-boats?
 -1000
 
 BUTTON
-170
-565
-242
-609
+168
+584
+240
+628
 update-plot
 plot-update-boat-property
 NIL
@@ -980,19 +984,19 @@ HORIZONTAL
 
 TEXTBOX
 658
-643
+660
 732
-683
+700
 CSH = shrimp\nPLE = plaice\nSOL = sole\nTBB = beam trawl\nOTB = otter trawl
 6
 0.0
 1
 
 PLOT
-1025
-571
-1241
-764
+1020
+663
+1234
+783
 action
 NIL
 # action
@@ -1006,20 +1010,20 @@ true
 PENS
 
 CHOOSER
-1024
-521
-1162
-566
+1019
+613
+1157
+658
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast" "age"
 0
 
 BUTTON
-1165
-520
-1239
-566
+1160
+612
+1234
+658
 update
 plot-update-action-histogram
 NIL
@@ -1126,6 +1130,50 @@ TEXTBOX
 11
 0.0
 1
+
+CHOOSER
+1016
+437
+1154
+482
+monthly-chooser
+monthly-chooser
+"Landing" "Revenue" "Effort MWh" "Effort h"
+0
+
+PLOT
+1017
+486
+1233
+606
+Montly statistics
+Month of year
+NIL
+1.0
+12.0
+0.0
+10.0
+true
+true
+"plot-setup-month-histogram" "plot-update-month-histogram"
+PENS
+
+BUTTON
+1158
+438
+1232
+482
+update
+plot-update-month-histogram
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+0
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries

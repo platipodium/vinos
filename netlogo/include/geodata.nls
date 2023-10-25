@@ -662,11 +662,31 @@ to calculate-tidal-depth
   ]
 end
 
-; This is a patch procedure that is called every 1st of the month
+; Observer procedure that is called every 1st of the month
 ; and updates the time global and monthly storage
 to reset-monthly
   let _imonth time:get "month" date - 1
-  set  patch-monthly-effort-hours replace-item _imonth patch-monthly-effort-hours 0
-  set  patch-monthly-effort-mwatthours replace-item _imonth patch-monthly-effort-mwatthours 0
-  set  patch-monthly-swept-area replace-item _imonth patch-monthly-swept-area 0
+  ask water-patches [
+    foreach (list patch-monthly-effort-hours patch-monthly-effort-hours patch-monthly-swept-area) [ _p ->
+      set  _p replace-item _imonth _p 0
+    ]
+  ]
+  foreach (list fleet-monthly-landing fleet-monthly-revenue) [ _p ->
+    set  _p replace-item _imonth _p 0
+  ]
+end
+
+; Observer procedure that is called at setup time
+; initializes the lists used for montly patch and global storage
+to setup-monthly
+  let _imonth time:get "month" date - 1
+
+  ask water-patches [
+    set patch-monthly-effort-hours n-values 12 [ i -> 0 ]
+    set patch-monthly-effort-mwatthours n-values 12 [ i -> 0 ]
+    set patch-monthly-swept-area n-values 12 [ i -> 0 ]
+  ]
+
+  set fleet-monthly-landing n-values 12 [ i -> 0 ]
+  set fleet-monthly-revenue n-values 12 [ i -> 0 ]
 end

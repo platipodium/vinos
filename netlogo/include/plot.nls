@@ -231,6 +231,35 @@ to plot-update-action-histogram
 
 end
 
+to plot-setup-month-histogram
+  set-current-plot "Monthly statistics"
+  clear-plot
+  set-plot-background-color white
+  set-plot-x-range 0.4 12.6
+  auto-plot-off
+end
+
+to plot-update-month-histogram
+  let _imonth time:get "month" date - 1
+  let _value n-values 12 [ i -> 0 ]
+  set-current-plot "Monthly statistics"
+  if not plot-pen-exists? monthly-chooser [
+    clear-plot
+    create-temporary-plot-pen monthly-chooser
+    set-plot-pen-mode 1 ; box
+  ]
+  set-current-plot-pen monthly-chooser
+  if (monthly-chooser = "Landing t")  [ set _value map [ i -> i / 1000 ] fleet-monthly-landing ]
+  if (monthly-chooser = "Revenue k€") [ set _value map [ i -> i / 1000 ] fleet-monthly-revenue ]
+  if (monthly-chooser = "Effort h")   [ set _value n-values 12 [ i -> sum [item i patch-monthly-effort-hours * area] of water-patches ]]
+  if (monthly-chooser = "Effort MWh") [ set _value n-values 12 [ i -> sum [item i patch-monthly-effort-mwatthours * area] of water-patches ]]
+  plot-pen-reset
+  set-plot-y-range 0 ceiling (max _value / 10) * 10
+  foreach range 12 [ _m ->
+    ifelse ( _m = _imonth) [set-plot-pen-color red][set-plot-pen-color black]
+    plotxy (_m + .5) item _m _value
+  ]
+end
 
 to update-drawings
   clear-drawing

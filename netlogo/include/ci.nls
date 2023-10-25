@@ -4,10 +4,8 @@
 ; Routines that are called by CI
 
 to reset-patches
-  ask patches [
-    set patch-monthly-effort-hours n-values 12 [ i -> 0]
-    set patch-monthly-effort-mwatthours n-values 12 [ i -> 0]
-    set patch-monthly-swept-area n-values 12 [ i -> 0]
+  setup-monthly
+  ask water-patches [
     set prey-catches 0
     set cluster-fishing-efforts 0
     set cluster-prey-catches  0

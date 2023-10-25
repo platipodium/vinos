@@ -72,7 +72,8 @@ to advance-calendar
 
   ; Every first of the month, ask the water patches to reset their
   ; monthly storage.
-  if day = 1 [ ask water-patches [reset-monthly] ]
+  ;if day = 1 [ ask water-patches [reset-monthly] ]
+  if day = 1 [reset-monthly]
 end
 
 to-report datetime-string
