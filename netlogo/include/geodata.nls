@@ -247,7 +247,6 @@ to show-dataset [_dataset-name]
   let _unit ""
   let _days days-in-past-year
 
-  print _area-factor
   ask patches [set pcolor grey - 2]
   ask water-patches [set pcolor grey]
 

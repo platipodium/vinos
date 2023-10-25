@@ -7,20 +7,20 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 <!DOCTYPE experiments SYSTEM "behaviorspace.dtd">
 <experiments>
   <experiment name="rtd-maps" repetitions="1" sequentialRunOrder="false" runMetricsEveryStep="false">
-    <setup>setup save-datasets</setup>
+    <setup>setup save-static-datasets</setup>
     <go>ci-maps</go>
     <timeLimit steps="1"/>
-    <enumeratedValueSet variable="show-ports?">
-      <value value="false"/>
-    </enumeratedValueSet>
     <enumeratedValueSet variable="oil-price">
       <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="wage">
+      <value value="75"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="memory-size">
       <value value="20"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="adaptation">
-      <value value="0.489"/>
+      <value value="0.5"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
