@@ -568,6 +568,30 @@ to profile
   profiler:reset
   print (sentence ".. . saved profileing data in" _filename)
 end
+
+to-report effort-monitor
+  report (list
+    round (365.25 / days-in-past-year / 1000 * (sum [ area * sum patch-monthly-effort-hours ] of water-patches))
+    round (365.25 / days-in-past-year / 1000 * (sum [ area * sum patch-monthly-effort-mwatthours ] of water-patches))
+  )
+end
+
+to-report depth-monitor
+  let _total sum [ sum patch-monthly-effort-hours ] of water-patches
+  let _sub10 (sum [ sum patch-monthly-effort-hours ] of (water-patches with [depth <= 10]))
+  let _sub20 (sum [ sum patch-monthly-effort-hours ] of (water-patches with [depth > 10 and depth <= 20]))
+
+  report (list
+    round (100 * _sub10 / _total)
+    round (100 * _sub20 / _total)
+  )
+end
+
+
+
+
+
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -621,7 +645,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-4
+6
 
 BUTTON
 83
@@ -1053,12 +1077,12 @@ show-values?
 -1000
 
 MONITOR
-569
+503
 439
-662
+604
 484
-Effort h, MWh
-(list \n  (round 365.25 / days-in-past-year * ([ sum patch-monthly-effort-hours ] of water-patches))\n  (round 365.25 / days-in-past-year * ([ sum patch-monthly-effort-mwatthours  ] of water-patches))\n)
+Effort kh, GWh
+effort-monitor
 0
 1
 11
@@ -1066,17 +1090,17 @@ Effort h, MWh
 TEXTBOX
 396
 443
-546
-499
+495
+525
 Benchmarks compare summary simulation results to observations for recent years.
 11
 0.0
 1
 
 MONITOR
-673
+607
 440
-736
+670
 485
 Seadays
 round (sum [boat-total-days-at-sea] of boats) \n/ count boats\n* 365.25 / ticks
@@ -1085,9 +1109,9 @@ round (sum [boat-total-days-at-sea] of boats) \n/ count boats\n* 365.25 / ticks
 11
 
 MONITOR
-744
+678
 441
-832
+766
 486
 LPUE kg d-1
 round mean [boat-total-landings / boat-total-days-at-sea] of boats
@@ -1096,9 +1120,9 @@ round mean [boat-total-landings / boat-total-days-at-sea] of boats
 11
 
 MONITOR
-840
+774
 442
-919
+853
 487
 Fuel l kg-1
 mean [boat-total-fuel-consumption / boat-total-landings] of boats
@@ -1107,9 +1131,9 @@ mean [boat-total-fuel-consumption / boat-total-landings] of boats
 11
 
 TEXTBOX
-580
+514
 487
-730
+664
 505
 [ 47      88   ]
 11
@@ -1117,9 +1141,9 @@ TEXTBOX
 1
 
 TEXTBOX
-855
+789
 493
-1005
+840
 511
 0.5-1.0
 11
@@ -1127,9 +1151,9 @@ TEXTBOX
 1
 
 TEXTBOX
-762
+696
 494
-912
+846
 512
 300-900
 11
@@ -1179,6 +1203,27 @@ NIL
 NIL
 NIL
 0
+
+MONITOR
+865
+442
+991
+487
+Effort% < 10, < 20
+depth-monitor
+0
+1
+11
+
+TEXTBOX
+884
+492
+1034
+510
+43% .  47%
+11
+0.0
+1
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
