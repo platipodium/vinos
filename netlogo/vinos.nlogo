@@ -155,7 +155,6 @@ end
 to setup-defaults
   set memory-size 25
   set adaptation 0.6
-  set operating-costs-of-boats 0.2
   set time-offset -92 ; months from today
   set oil-price 62 ; ct l-1
   set wage 80 ; € h-1
@@ -613,7 +612,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-5
+6
 
 BUTTON
 83
@@ -686,21 +685,6 @@ memory-size
 50
 50.0
 1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-13
-401
-254
-434
-operating-costs-of-boats
-operating-costs-of-boats
-0
-1
-0.354
-0.001
 1
 NIL
 HORIZONTAL
@@ -1542,35 +1526,6 @@ NetLogo 6.3.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
-<experiments>
-  <experiment name="effort-map" repetitions="1" sequentialRunOrder="false" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>create-effort-map</go>
-    <timeLimit steps="1000"/>
-    <metric>count turtles</metric>
-    <enumeratedValueSet variable="view">
-      <value value="&quot;effort (h)&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="ports?">
-      <value value="false"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="Oil-Price">
-      <value value="50"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="operating-costs-of-boats">
-      <value value="0.203"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="memory-size">
-      <value value="47"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="Adaptation">
-      <value value="0.489"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="fraction-transportation-costs">
-      <value value="0.198"/>
-    </enumeratedValueSet>
-  </experiment>
-</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default

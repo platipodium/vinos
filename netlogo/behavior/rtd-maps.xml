@@ -13,16 +13,13 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
     <enumeratedValueSet variable="show-ports?">
       <value value="false"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="Oil-Price">
+    <enumeratedValueSet variable="oil-price">
       <value value="50"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="operating-costs-of-boats">
-      <value value="0.203"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="memory-size">
       <value value="20"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="Adaptation">
+    <enumeratedValueSet variable="adaptation">
       <value value="0.489"/>
     </enumeratedValueSet>
   </experiment>
