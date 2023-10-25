@@ -69,8 +69,10 @@ globals [
 
   water-patches
 
-  fleet-monthly-landing
-  fleet-monthly-revenue
+  fleet-monthly-landing            ; model diagnostic of the 12 recently simulated month's landings
+  fleet-monthly-revenue            ; model diagnostic of the 12 recently simulated month's landings
+
+  fleet-landing-climatology        ; observational data from Temming et al. https://doi.org/10.3354/meps12325
 ]
 
 patches-own [
@@ -172,6 +174,8 @@ to setup-globals
   set boat-property-chooser "distance-at-sea"
   set scene "Bathymetry"
   setup-date-patch
+
+  set fleet-landing-climatology (list 1.5 1.3 5.5 11 9 9 9 10.5 14 15 11.5 3.5)
 end
 
 to setup-date-patch
@@ -369,8 +373,8 @@ end
 ; area concentration of the three species calculated from their winter and summer
 ; values and weighted by day of year
 to-report crangon
-  let _correction-factor 600
-  let _resupply 0.01
+  let _correction-factor 500
+  let _resupply 0.02
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Shrimp" patch-prey-names
@@ -386,7 +390,7 @@ end
 
 to-report solea
   let _correction-factor 5
-  let _resupply 0.1
+  let _resupply 0.2
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Sole" patch-prey-names
@@ -402,7 +406,7 @@ end
 
 to-report platessa
   let _correction-factor 5
-  let _resupply 0.1
+  let _resupply 0.2
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Plaice" patch-prey-names
@@ -617,7 +621,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-6
+4
 
 BUTTON
 83
@@ -688,7 +692,7 @@ memory-size
 memory-size
 0
 50
-50.0
+20.0
 1
 1
 NIL
@@ -977,7 +981,7 @@ time-offset
 time-offset
 -200
 200
--107.0
+88.0
 1
 1
 months from now

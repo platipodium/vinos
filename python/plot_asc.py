@@ -29,8 +29,8 @@ variables = {
     'plaice': {'min': 1, 'max': 500, 'unit': 'kg km-2', 'cmap': 'Reds', 'title': 'Plaice'},
     'shrimp': {'min': 1, 'max': 500, 'unit': 'kg km-2', 'cmap': 'Reds', 'title': 'Shrimp'},
     'emodnet_tbb_effort': {'max': 1000, 'min': 10, 'unit': 'h a-1', 'cmap': 'viridis', 'title': 'Effort'},
-    'effort': {'max': 510, 'min': 10, 'unit': 'kW h a-1', 'cmap': 'viridis', 'title': 'Effort'},
-    'delta_effort': {'max': 100, 'min': -100, 'unit': 'kW h a-1', 'cmap': 'coolwarm', 'title': '$\Delta$Effort'},
+    'effort': {'max': 50, 'min': 10, 'unit': 'MW h a-1', 'cmap': 'viridis', 'title': 'Effort'},
+    'delta_effort': {'max': 50, 'min': -50, 'unit': 'MW h a-1', 'cmap': 'coolwarm', 'title': '$\Delta$Effort'},
 }
 
 extent = [4.5, 9.3, 53.2, 55.1]

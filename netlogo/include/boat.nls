@@ -239,6 +239,7 @@ end
 ; Boat phase 0.  Boat procedure to rest.  This is dependent on weekends and for
 ; shrimpers also on Ramadan in Morocco, where 90% of landed shrimp is processed.
 to boat-rest-port
+  let _imonth time:get "month" date - 1
 
   ; Boats rest for at least 11 hours and regain their ability to stay offshore
   set boat-time-at-sea-left boat-max-duration
@@ -260,12 +261,21 @@ to boat-rest-port
     set boat-trip-phase 1 ; ready to leave port
   ]
 
-  ; Now introduce some weather, based on statistics of wind speeds exceeding
+  ; Introduce some weather, based on statistics of wind speeds exceeding
   ; a threshold.  See calendar.nls for details of the implementation
   if storm? [
     set boat-hour 24
     set boat-trip-phase 0
   ]
+
+  ; Introduce gain expectation from data be Temming et al. MEPS
+  ; This is highlgy variable (from 1.5 to 15), so choose with that
+  ; probablity whether to go out or stay in port
+  if (item _imonth fleet-landing-climatology < random-float max fleet-landing-climatology) [
+    set boat-hour 24
+    set boat-trip-phase 0
+  ]
+
 
  end
 

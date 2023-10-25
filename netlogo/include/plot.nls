@@ -236,6 +236,7 @@ to plot-setup-month-histogram
   clear-plot
   set-plot-background-color white
   set-plot-x-range 0.4 12.6
+  set-plot-y-range 0 1
   auto-plot-off
 end
 
@@ -254,7 +255,7 @@ to plot-update-month-histogram
   if (monthly-chooser = "Effort h")   [ set _value n-values 12 [ i -> sum [item i patch-monthly-effort-hours * area] of water-patches ]]
   if (monthly-chooser = "Effort MWh") [ set _value n-values 12 [ i -> sum [item i patch-monthly-effort-mwatthours * area] of water-patches ]]
   plot-pen-reset
-  set-plot-y-range 0 ceiling (max _value / 10) * 10
+  set-plot-y-range 0 max (list (ceiling (max _value / 10) * 10) 1)
   foreach range 12 [ _m ->
     ifelse ( _m = _imonth) [set-plot-pen-color red][set-plot-pen-color black]
     plotxy (_m + .5) item _m _value
