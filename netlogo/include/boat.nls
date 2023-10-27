@@ -592,6 +592,7 @@ to boat-return-port
   ; don't show returning to port
   pen-up
   move-to _patch
+  write-log (word "Arrived at port entry location")
 
   set boat-distance-at-sea boat-distance-at-sea + _distance
   set boat-time-at-sea boat-time-at-sea  + _time
@@ -603,6 +604,7 @@ to boat-return-port
   set _time _distance / boat-steaming-speed
 
   move-to boat-home-port
+  write-log (word "Arrived in  port " [port-name] of boat-home-port)
 
   set boat-distance-at-sea boat-distance-at-sea + _distance
   set boat-time-at-sea boat-time-at-sea  + _time
@@ -652,10 +654,11 @@ to boat-make-haul
   ]
   if _counter >= 10 [set _patch nobody]
 
-
   ; Partition the fishing in small intervals, this could probably be optimized by calculating the
   ; intersection with the patch boundaries
   ifelse _patch != nobody [
+
+    write-log (word "Found suitable straight-line fishing path in direction " heading "°N")
 
     let _new-catches n-values length boat-gears [i -> 0]
     let _haul-catches n-values length boat-gears [i -> 0]
@@ -685,7 +688,6 @@ to boat-make-haul
           item _imonth patch-monthly-swept-area + _haul-width * _step-time * _fishing-speed
         )
 
-        ; @todo reduce fish on patch by amount taken out, allow for recovery
         if _patch-prey-index > -1 [
           set  patch-prey-biomasses replace-item _patch-prey-index patch-prey-biomasses  (
             ((item _patch-prey-index  patch-prey-biomasses ) * area - (item _boat-gear-index _new-catches) )/ area
@@ -699,12 +701,16 @@ to boat-make-haul
 
       set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
 
+      write-log (word "Trawl filling with another " (precision item boat-current-gear-index _new-catches 1)" kg" )
+
       if item boat-current-gear-index _new-catches > boat-trip-best-catch [
         set boat-trip-best-catch item boat-current-gear-index _new-catches
         set boat-trip-best-patch patch-here
+        write-log (word "Noting particularly good location " boat-trip-best-patch " catching " round boat-trip-best-catch " kg")
       ]
-    ]
+    ] ; end of repeat _sub-steps
 
+    write-log (word "Hauled " (round item boat-current-gear-index _haul-catches) " kg abord")
 
     let _next-heading heading - 180 - 10 + random (21 + 1)
 
@@ -736,10 +742,14 @@ to boat-make-haul
     set boat-trip-gear-catches n-values (number-of-gears) [i -> (item i boat-trip-gear-catches + item i _haul-catches)]
 
     ; If the boat is full, also need to return
-    if item boat-current-gear-index boat-trip-gear-catches > boat-capacity [ set boat-trip-phase 4]
+    if item boat-current-gear-index boat-trip-gear-catches > boat-capacity [
+       write-log (word "Boat reached capacity " boat-capacity ", returning to port")
+      set boat-trip-phase 4
+    ]
   ][
     ; Could not find a straight-line haul from hear, so continue steaming
     set boat-trip-phase 2
+    write-log (word "Could not find strait-line haul, continue to steam")
   ]
 
   ; After a haul, create the action properties
@@ -876,6 +886,6 @@ to write-log [_entry ]
   if is-logbook? (boat-logbook) [
     let _timestamp (word time:show date "YYYY-MM-dd " int boat-hour ":" round ((boat-hour mod 1) * 5 / 3))
     let _envelope gis:envelope-of self
-    write-timestamp-log (word _timestamp " " (precision item 0 _envelope 2) " " (precision item 2 _envelope 2)) _entry
+    write-timestamp-log (word _timestamp " " (precision item 0 _envelope 2) "°E " (precision item 2 _envelope 2) "°N")_entry
   ]
 end
