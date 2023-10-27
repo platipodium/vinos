@@ -13,6 +13,7 @@ extensions [csv]
 
 breed [boats boat]
 breed [markers marker]
+breed [logbooks logbook]
 
 boats-own [
   ; Static properties individual to each boat
@@ -85,6 +86,13 @@ boats-own [
   boat-total-days-at-sea
   boat-total-fuel-consumption
   boat-total-landings
+
+  ; A boats log book
+  boat-logbook
+]
+
+logbooks-own [
+  logbook-file-name
 ]
 
 
@@ -201,6 +209,24 @@ to setup-boats
     ask my-links [set hidden? true]
   ]
 
+  ; Create a log book
+  ask one-of boats [
+    let _logbook nobody
+    hatch-logbooks 1 [
+      set hidden? true
+      set logbook-file-name (word "results/logbook_" [who] of myself ".txt")
+      if file-exists? logbook-file-name [carefully [file-delete logbook-file-name][]]
+      set _logbook self
+    ]
+    set boat-logbook _logbook
+    write-log (word "Logbook of boat " who )
+    write-log (word "This boat is a " boat-length "m trawler with engine power "
+        boat-engine "kW.")
+    write-log(word "It steams at " boat-steaming-speed  "km a-1")
+    write-log (word "It is equipped with gear " [gear-name] of (item boat-current-gear-index boat-gears)
+        " and targets ") ; [[prey-name] of (item boat-current-prey-index preys)])
+  ]
+
 end
 
 to-report csv-property [x]
@@ -244,10 +270,14 @@ to boat-rest-port
   ; Boats rest for at least 11 hours and regain their ability to stay offshore
   set boat-time-at-sea-left boat-max-duration
   set boat-hour boat-hour + 11
+  write-log (word "-" (boat-hour - 11) ":00 Need to rest until " boat-hour ":00")
 
   ; If on Monday, rest at least until 4 am
   let _day-of-week time:get "dayofweek" date
-  if  _day-of-week = 1 and boat-hour < 4 [ set boat-hour 4 ]
+  if  _day-of-week = 1 and boat-hour < 4 [
+    write-log (word "-" boat-hour ":00 Need to rest another 4 hours till " (boat-hour + 4) ":00")
+    set boat-hour 4
+  ]
 
   ; Boats arriving in port on Saturday don't go out again, neither do boats go
   ; out on a Sunday or before Monday 4 am.  Shrimpers don't go out during Ramadan.
@@ -256,6 +286,7 @@ to boat-rest-port
   or (boat-prey = "Crangon" and is-ramadan?) [
     ; rest more
     set boat-hour 24
+    write-log (word "-" boat-hour ":00 Won't go out this " time:show date "EEEE" " at all")
   ][
     ; take off
     set boat-trip-phase 1 ; ready to leave port
@@ -263,20 +294,20 @@ to boat-rest-port
 
   ; Introduce some weather, based on statistics of wind speeds exceeding
   ; a threshold.  See calendar.nls for details of the implementation
-  if storm? [
+  if boat-trip-phase = 1 and storm? [
     set boat-hour 24
     set boat-trip-phase 0
+    write-log (word "-" boat-hour ":00 Won't go out for bad weather")
   ]
 
   ; Introduce gain expectation from data be Temming et al. MEPS
   ; This is highlgy variable (from 1.5 to 15), so choose with that
   ; probablity whether to go out or stay in port
-  if (item _imonth fleet-landing-climatology < random-float max fleet-landing-climatology) [
+  if (boat-trip-phase = 1  and item _imonth fleet-landing-climatology < random-float max fleet-landing-climatology) [
     set boat-hour 24
+    write-log (word "-" boat-hour ":00 Won't go out for expected bad catch")
     set boat-trip-phase 0
   ]
-
-
  end
 
 ; Boat trip phase 1. This is a boat procedure initializing a new
@@ -287,6 +318,7 @@ to boat-leave-port
   ; Determine start end end patches of fishing activity.  This is usually the start/landing
   ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
   ; patch outside the plaice box.
+  write-log (word "-" boat-hour ":00 Leaves port" [port-name] of boat-home-port)
   let _patch [port-start-patch] of boat-home-port    ; starting patch of the boat
   face _patch
   let _gis-scale gis-scale
@@ -305,6 +337,8 @@ to boat-leave-port
   set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
   set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
   set boat-hour boat-hour + _distance / boat-steaming-speed
+
+  write-log (word "-" boat-hour " arrives at sea ")
 
   set boat-trip-phase 2 ; available at start patch
 
@@ -366,13 +400,20 @@ to boat-land-port
 
   ; Add diagnostics of the actually caught species to fleet monthly diagnostics
   ; @todo later expand to other species
+  let _boat-gain item boat-current-gear-index boat-gains
+  let _boat-catch item boat-current-gear-index boat-trip-gear-catches
+  let _boat-revenue _boat-catch * (item boat-current-prey-index prey-prices)
   if ([gear-name] of (item boat-current-gear-index boat-gears) = "TBB20CSH") [
-    let _boat-catch item boat-current-gear-index boat-trip-gear-catches
-    let _boat-revenue _boat-catch * (item boat-current-prey-index prey-prices)
 
     set  fleet-monthly-landing replace-item _imonth fleet-monthly-landing (item _imonth fleet-monthly-landing + _boat-catch)
     set  fleet-monthly-revenue replace-item _imonth fleet-monthly-revenue (item _imonth fleet-monthly-revenue + _boat-revenue)
   ]
+
+  write-log (word "-" boat-hour " landed  " round _boat-catch "kg of" item boat-current-prey-index prey-names)
+  write-log (word "-" boat-hour " sold fish for "round  _boat-revenue "€" )
+  write-log (word "-" boat-hour " consumed " round (boat-fuel-consumption * boat-distance-at-sea)  "l Diesel at " oil-price " ct l-1,  costing me " round boat-transportation-costs "€")
+  write-log (word "-" boat-hour " paid " round (wage * boat-time-at-sea)  "€ for wages")
+  write-log (word "-" boat-hour " resulting in gain of " round _boat-gain "€")
 
   ; Boat time is in hours, add the trip's hours to the total boat sea days and
   ; reset the trip data
@@ -415,6 +456,7 @@ to boat-land-port
           set action-age 0
           move-to _patch
         ]
+        write-log (word "-" boat-hour " have to remember this fishing location " _patch " with catch " _catch "kg")
       ]
 
       set boat-actions  (turtle-set _my-action boat-actions)
@@ -442,6 +484,7 @@ to boat-land-port
           set action-catch [boat-trip-best-catch] of myself
           move-to [boat-trip-best-patch] of myself
         ]
+        write-log (word "-" boat-hour " have to remember this fishing location " boat-trip-best-patch " with catch " boat-trip-best-catch "kg")
       ]
     ]
   ]
@@ -812,4 +855,12 @@ to-report boat-fuel-consumption
   ; @todo we can adjust this to boat-engine power
   ; we scale the fuel-efficiency (0 to 1) with boat-fuel-consumption
   report 48 * boat-engine *  1.35962 * 0.21 / 300 ; is typically 5 l km-1
+end
+
+to write-log [_entry ]
+  if is-logbook? (boat-logbook) [ask boat-logbook [
+    file-open logbook-file-name
+    file-print (word time:show date "YY-MM-dd" _entry)
+    file-close
+  ]]
 end
