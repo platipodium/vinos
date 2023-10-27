@@ -220,11 +220,11 @@ to setup-boats
     ]
     set boat-logbook _logbook
     write-log (word "Logbook of boat " who )
-    write-log (word "This boat is a " boat-length "m trawler with engine power "
-        boat-engine "kW.")
-    write-log(word "It steams at " boat-steaming-speed  "km a-1")
-    write-log (word "It is equipped with gear " [gear-name] of (item boat-current-gear-index boat-gears)
-        " and targets ") ; [[prey-name] of (item boat-current-prey-index preys)])
+    write-log (word "Boat is a " round boat-length " m trawler with engine power "
+        round boat-engine " kW")
+    write-log(word "Steaming speed is " precision boat-steaming-speed 1 "km a-1")
+    write-log (word "Equipped with gear " [gear-name] of (item boat-current-gear-index boat-gears)
+        ", targets " item boat-current-prey-index prey-names)
   ]
 
 end
@@ -269,13 +269,13 @@ to boat-rest-port
 
   ; Boats rest for at least 11 hours and regain their ability to stay offshore
   set boat-time-at-sea-left boat-max-duration
+  write-log (word "Need to rest 11 hours")
   set boat-hour boat-hour + 11
-  write-log (word "-" (boat-hour - 11) ":00 Need to rest until " boat-hour ":00")
 
   ; If on Monday, rest at least until 4 am
   let _day-of-week time:get "dayofweek" date
   if  _day-of-week = 1 and boat-hour < 4 [
-    write-log (word "-" boat-hour ":00 Need to rest another 4 hours till " (boat-hour + 4) ":00")
+    write-log (word "Need to wait until 4 am")
     set boat-hour 4
   ]
 
@@ -284,11 +284,9 @@ to boat-rest-port
   ; On other days, just rest 11 hours.
   ifelse _day-of-week = 6 or holiday?
   or (boat-prey = "Crangon" and is-ramadan?) [
-    ; rest more
     set boat-hour 24
-    write-log (word "-" boat-hour ":00 Won't go out this " time:show date "EEEE" " at all")
+    write-log (word "Won't go out this " time:show date "EEEE" " at all")
   ][
-    ; take off
     set boat-trip-phase 1 ; ready to leave port
   ]
 
@@ -297,7 +295,7 @@ to boat-rest-port
   if boat-trip-phase = 1 and storm? [
     set boat-hour 24
     set boat-trip-phase 0
-    write-log (word "-" boat-hour ":00 Won't go out for bad weather")
+    write-log (word "Won't go out for bad weather")
   ]
 
   ; Introduce gain expectation from data be Temming et al. MEPS
@@ -305,7 +303,7 @@ to boat-rest-port
   ; probablity whether to go out or stay in port
   if (boat-trip-phase = 1  and item _imonth fleet-landing-climatology < random-float max fleet-landing-climatology) [
     set boat-hour 24
-    write-log (word "-" boat-hour ":00 Won't go out for expected bad catch")
+    write-log (word "Won't go out for expected bad catch")
     set boat-trip-phase 0
   ]
  end
@@ -318,7 +316,7 @@ to boat-leave-port
   ; Determine start end end patches of fishing activity.  This is usually the start/landing
   ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
   ; patch outside the plaice box.
-  write-log (word "-" boat-hour ":00 Leaves port" [port-name] of boat-home-port)
+  write-log (word "Leaves port " [port-name] of boat-home-port)
   let _patch [port-start-patch] of boat-home-port    ; starting patch of the boat
   face _patch
   let _gis-scale gis-scale
@@ -338,7 +336,7 @@ to boat-leave-port
   set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
   set boat-hour boat-hour + _distance / boat-steaming-speed
 
-  write-log (word "-" boat-hour " arrives at sea ")
+  write-log (word "Arrives at sea")
 
   set boat-trip-phase 2 ; available at start patch
 
@@ -409,11 +407,11 @@ to boat-land-port
     set  fleet-monthly-revenue replace-item _imonth fleet-monthly-revenue (item _imonth fleet-monthly-revenue + _boat-revenue)
   ]
 
-  write-log (word "-" boat-hour " landed  " round _boat-catch "kg of" item boat-current-prey-index prey-names)
-  write-log (word "-" boat-hour " sold fish for "round  _boat-revenue "€" )
-  write-log (word "-" boat-hour " consumed " round (boat-fuel-consumption * boat-distance-at-sea)  "l Diesel at " oil-price " ct l-1,  costing me " round boat-transportation-costs "€")
-  write-log (word "-" boat-hour " paid " round (wage * boat-time-at-sea)  "€ for wages")
-  write-log (word "-" boat-hour " resulting in gain of " round _boat-gain "€")
+  write-log (word "Landed  " round _boat-catch " kg " item boat-current-prey-index prey-names)
+  write-log (word "Sold fish for "round  _boat-revenue " €" )
+  write-log (word "Consumed " round (boat-fuel-consumption * boat-distance-at-sea)  " l diesel at " oil-price " ct l-1,  costing " round boat-transportation-costs " €")
+  write-log (word "Paid " round (wage * boat-time-at-sea)  " € for wages")
+  write-log (word "Made net gain " round _boat-gain " €")
 
   ; Boat time is in hours, add the trip's hours to the total boat sea days and
   ; reset the trip data
@@ -456,7 +454,7 @@ to boat-land-port
           set action-age 0
           move-to _patch
         ]
-        write-log (word "-" boat-hour " have to remember this fishing location " _patch " with catch " _catch "kg")
+        write-log (word "Remember this fishing location " _patch " with catch " _catch "kg")
       ]
 
       set boat-actions  (turtle-set _my-action boat-actions)
@@ -474,8 +472,10 @@ to boat-land-port
       let _nearby-actions boat-actions with [distance _patch < _min-action-distance]
       ifelse any? _nearby-actions [
         set _my-action min-one-of _nearby-actions [action-gain]
+        write-log (word "Choose to try at nearby remembered location")
       ][
         set _my-action min-one-of boat-actions [action-gain]
+        write-log (word "Choose to try at other remembered location")
       ]
       if _my-action != nobody [
         ; replace properties of that action
@@ -484,7 +484,7 @@ to boat-land-port
           set action-catch [boat-trip-best-catch] of myself
           move-to [boat-trip-best-patch] of myself
         ]
-        write-log (word "-" boat-hour " have to remember this fishing location " boat-trip-best-patch " with catch " boat-trip-best-catch "kg")
+        write-log (word "Udate remember this fishing location " boat-trip-best-patch " with catch " boat-trip-best-catch " kg")
       ]
     ]
   ]
@@ -493,6 +493,7 @@ to boat-land-port
 
   ; @todo find out how long it takes to land the catch and clean the boat, here, we assume 2 hours
   set boat-hour boat-hour + 2
+  write-log (word "Unloading for 2 hours finished")
 end
 
 ; This is a boat procedure  where a boat
@@ -512,10 +513,12 @@ to boat-choose-start
       set _patches n-of 10 boat-fishable-patches in-radius boat-max-distance ; with [ count boats-here = 0 and distance myself < boat-max-distance]
       set _patch max-one-of _patches [traffic-suitability]
       if one? [ print (sentence "Boat" who "leaves from home and searches in radius"  boat-max-distance)]
+      write-log (word "Searched for new fishing opportunities in distance " boat-max-distance " km")
     ][
       set _patches n-of 10 boat-fishable-patches in-radius (boat-max-distance / 2)
       set _patch max-one-of _patches [traffic-suitability]
-      if one? [ print (sentence "Boat" who "leaves from " patch-here "and searches in radius"  boat-max-distance)]
+      if one? [ print (sentence "Boat" who "leaves from " patch-here "and searches in radius"  (boat-max-distance / 2))]
+      write-log (word "Searched for new fishing opportunities in distance " (boat-max-distance / 2) " km")
     ]
 
   ][
@@ -535,6 +538,7 @@ to boat-choose-start
     if _action != nobody [
       set _patch [ patch-here ] of _action
       if one? [ print (sentence "Boat" who "leaves from " patch-here "to memorized " _patch "with expected gain" [action-gain] of _action)]
+      write-log (word "Remembered fishing location at " _patch " with expected gain " [action-gain] of _action " €")
     ]
 
     ; Introduce some random component
@@ -546,6 +550,7 @@ to boat-choose-start
       if _nearby-patch != nobody [
         set _patch _nearby-patch
         if one? [ print (sentence "Boat" who "corrects position to " _patch )]
+        write-log (word "Corrected position to " _patch)
       ]
     ]
   ]
@@ -553,6 +558,7 @@ to boat-choose-start
   ; If there are not accessible patches found, go home and try again
   ifelse (_patch = nobody or [not accessible?] of _patch) [
     set boat-trip-phase 4 ; need to go home
+    write-log (word "Couldn't find good fishing location, returning home")
   ][
     face _patch
     let _distance gis-scale * distance _patch
@@ -568,6 +574,7 @@ to boat-choose-start
     set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
     set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
     set boat-hour boat-hour + _distance / boat-steaming-speed
+    write-log (word "Found suitable location, ready to deploy gear")
 
     set boat-trip-phase 3 ; ready to fish
     set heading random 360
@@ -857,10 +864,18 @@ to-report boat-fuel-consumption
   report 48 * boat-engine *  1.35962 * 0.21 / 300 ; is typically 5 l km-1
 end
 
-to write-log [_entry ]
+to write-timestamp-log [_timestamp _entry ]
   if is-logbook? (boat-logbook) [ask boat-logbook [
     file-open logbook-file-name
-    file-print (word time:show date "YY-MM-dd" _entry)
+    file-print (word _timestamp " " _entry)
     file-close
   ]]
+end
+
+to write-log [_entry ]
+  if is-logbook? (boat-logbook) [
+    let _timestamp (word time:show date "YYYY-MM-dd " int boat-hour ":" round ((boat-hour mod 1) * 5 / 3))
+    let _envelope gis:envelope-of self
+    write-timestamp-log (word _timestamp " " (precision item 0 _envelope 2) " " (precision item 2 _envelope 2)) _entry
+  ]
 end
