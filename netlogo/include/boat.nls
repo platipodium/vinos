@@ -402,7 +402,6 @@ to boat-land-port
   let _boat-catch item boat-current-gear-index boat-trip-gear-catches
   let _boat-revenue _boat-catch * (item boat-current-prey-index prey-prices)
   if ([gear-name] of (item boat-current-gear-index boat-gears) = "TBB20CSH") [
-
     set  fleet-monthly-landing replace-item _imonth fleet-monthly-landing (item _imonth fleet-monthly-landing + _boat-catch)
     set  fleet-monthly-revenue replace-item _imonth fleet-monthly-revenue (item _imonth fleet-monthly-revenue + _boat-revenue)
   ]
@@ -735,8 +734,10 @@ to boat-make-haul
       ifelse item boat-current-gear-index _haul-catches < min-fresh-catch [
         set _haul-catches n-values length boat-gears [i -> 0]
         set boat-trip-phase 2
+        write-log (word "Discarded catch " (round item boat-current-gear-index _haul-catches) " as insufficient")
       ][
         set boat-time-at-sea-left 24
+        write-log (word "Need to return within next 24 hours to keep catch fresh")
       ]
     ]
     set boat-trip-gear-catches n-values (number-of-gears) [i -> (item i boat-trip-gear-catches + item i _haul-catches)]
