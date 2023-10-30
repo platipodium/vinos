@@ -672,7 +672,7 @@ to reset-monthly
       set  _p replace-item _imonth _p 0
     ]
   ]
-  foreach (list fleet-monthly-landing fleet-monthly-revenue) [ _p ->
+  foreach (list fleet-monthly-landing fleet-monthly-revenue fleet-monthly-effort-hours) [ _p ->
     set  _p replace-item _imonth _p 0
   ]
 end
@@ -690,6 +690,7 @@ to setup-monthly
 
   set fleet-monthly-landing n-values 12 [ i -> 0 ]
   set fleet-monthly-revenue n-values 12 [ i -> 0 ]
+  set fleet-monthly-effort-hours n-values 12 [ i -> 0 ]
 end
 
 to-report monitor-nationalpark
