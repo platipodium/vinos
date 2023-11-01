@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 # SPDX-License-Identifier: CC-BY-NC-ND-4.0
 # SPDX-FileContributor: Serra Örey <soerey@hs-bremerhaven.de>
+# Units are hours
 sub_grp,median,mean,sd,min,max
 1,32.33044656680768,32.36188606556151,7.186190223151217,15.892592592592592,46.42072980466036
 2,44.73920245649412,47.61776364446574,8.259381918694954,36.99758406926249,68.95257228111394
