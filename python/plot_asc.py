@@ -29,7 +29,7 @@ variables = {
     'plaice': {'min': 1, 'max': 500, 'unit': 'kg km-2', 'cmap': 'Reds', 'title': 'Plaice'},
     'shrimp': {'min': 1, 'max': 500, 'unit': 'kg km-2', 'cmap': 'Reds', 'title': 'Shrimp'},
     'emodnet_tbb_effort': {'max': 1000, 'min': 10, 'unit': 'h a-1', 'cmap': 'viridis', 'title': 'Effort'},
-    'effort': {'max': 50, 'min': 10, 'unit': 'MW h a-1', 'cmap': 'viridis', 'title': 'Effort'},
+    'effort': {'max': 54, 'min': 5, 'unit': 'MW h a-1', 'cmap': 'viridis', 'title': 'Effort'},
     'delta_effort': {'max': 50, 'min': -50, 'unit': 'MW h a-1', 'cmap': 'coolwarm', 'title': '$\Delta$Effort'},
 }
 
@@ -227,35 +227,39 @@ if __name__ == '__main__':
       plt.savefig(f'{v}.png', dpi=400)
 
 
+    # Read plaicebox to mask data offshore (which we should not compare)
+    mask, lon, lat = read_asc(f'../netlogo/results/plaicebox.asc')
+    emod, lon, lat = read_asc(f'../netlogo/results/emodnet_effort.asc')
+    tbb2020, lon, lat = read_asc(f'../netlogo/results/effort_mwh_0365_20210301-0000.asc')
+    tbb2030, lon, lat = read_asc(f'../netlogo/results/effort_mwh_0365_20310302-0000.asc')
+
+
     ax = basemap()
-    add_asc(ax,'../netlogo/results/effort_0361_20301229.asc', var='effort')
+    plot_grid(ax, tbb2030, lon, lat, var="effort")
     ax.set_title('Effort 2030')
     plt.savefig('effort_2030.png', dpi=400)
 
     ax = basemap()
-    add_asc(ax,'../netlogo/results/effort_0360_20201227.asc', var='effort')
+    plot_grid(ax, tbb2020, lon, lat, var="effort")
     ax.set_title('Effort 2020')
     plt.savefig('effort_2020.png', dpi=400)
 
 
-    mask, lon, lat = read_asc(f'../netlogo/results/plaicebox.asc')
-    tbb, lon, lat = read_asc(f'../netlogo/results/emodnet_tbb_effort.asc')
-    data = tbb * (1-mask)
+    data = emod * (1-mask)
 
     ax = basemap()
     plot_grid(ax, data, lon, lat, var="effort")
     ax.set_title('EMODnet effort')
     plt.savefig('effort_emodnet.png', dpi=400)
 
-    tbb, lon, lat = read_asc(f'../netlogo/results/effort_0360_20201227.asc')
-    data1 = tbb * (1-mask)
+    data2020 = tbb2020 * (1-mask)
 
+    diff = data2020 - data
     ax = basemap()
-    plot_grid(ax, data1, lon, lat, var="effort")
-    ax.set_title('Simulated effort')
-    plt.savefig('effort_2020.png', dpi=400)
-
-    data2 = data1 - data
-    ax = basemap()
-    plot_grid(ax, data2, lon, lat, var="delta_effort")
+    plot_grid(ax, diff, lon, lat, var="delta_effort")
     plt.savefig('delta_effort_emodnet-2020.png', dpi=400)
+
+    diff = tbb2030 - tbb2020
+    ax = basemap()
+    plot_grid(ax, diff, lon, lat, var="delta_effort")
+    plt.savefig('delta_effort_2030-2020.png', dpi=400)

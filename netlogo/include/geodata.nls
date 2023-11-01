@@ -533,7 +533,8 @@ end
 to-report load-dataset [_dataset-name]
 
   if _dataset-name = "Natura2000" [ report gis:load-dataset "../data/natura2000/northsea/MPA_NorthSea_Shapes.shp"]
-  if _dataset-name = "NP" [ report gis:load-dataset "../data/nlwkn/NLP/Nationalparke_DTK25.shp"]
+  if _dataset-name = "NP-NS" [ report gis:load-dataset "../data/nlwkn/NLP/Nationalparke_DTK25.shp"]
+  ;if _dataset-name = "NP-SH" [ report gis:load-dataset "../data/nlwkn/NLP/Nationalparke_DTK25.shp"]
   if _dataset-name = "ICES" [ report gis:load-dataset "../data/ices/ICES_Statistical_Rectangles_Eco.shp"]
   if _dataset-name = "EEZ" [ report gis:load-dataset "../data/eez/eez.shp"]
   if _dataset-name = "Plaicebox" [ report gis:load-dataset "../data/plaicebox/DB_PlaiceBox_WGS84_vTIwi_Jan2001_G.shp"]
@@ -671,7 +672,7 @@ to reset-monthly
       set  _p replace-item _imonth _p 0
     ]
   ]
-  foreach (list fleet-monthly-landing fleet-monthly-revenue) [ _p ->
+  foreach (list fleet-monthly-landing fleet-monthly-revenue fleet-monthly-effort-hours) [ _p ->
     set  _p replace-item _imonth _p 0
   ]
 end
@@ -689,4 +690,11 @@ to setup-monthly
 
   set fleet-monthly-landing n-values 12 [ i -> 0 ]
   set fleet-monthly-revenue n-values 12 [ i -> 0 ]
+  set fleet-monthly-effort-hours n-values 12 [ i -> 0 ]
+end
+
+to-report monitor-nationalpark
+  let _dataset load-dataset "NP-NS"
+  gis:apply-coverage _dataset "FLAECHE" temporary
+  report sum [sum patch-monthly-effort-hours] of water-patches with [temporary > 0]
 end
