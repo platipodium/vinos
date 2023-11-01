@@ -13,7 +13,6 @@ to reset-patches
 end
 
 to reset-year [_year]
-
   set date time:create (word _year "-01-01")
   setup-calendar
 
@@ -25,10 +24,21 @@ to reset-year [_year]
     set boat-total-fuel-consumption 0
     set boat-total-landings 0
   ]
-
-
 end
 
+to reset-date [_datestring]
+  set date time:create _datestring
+  setup-calendar
+
+  ask actions [die]
+
+  reset-patches
+  ask boats [
+    set boat-total-days-at-sea 0
+    set boat-total-fuel-consumption 0
+    set boat-total-landings 0
+  ]
+end
 
 ; This routine is to be called by CI, so after a setup is
 ; automatically performed
@@ -43,6 +53,15 @@ to ci-maps
   set owf? false
   update-drawings
 
+  reset-date "2020-04-01"
+  ; do a spinup for two months
+  reset-ticks
+  update-date-patch
+  repeat 60 [
+    go
+  ]
+
+  ; now do an annual simulation
   reset-year 2020
   reset-ticks
   update-date-patch
@@ -50,7 +69,15 @@ to ci-maps
     go
     ;print date
   ]
-  save-dynamic-dataset "Effort"
+  save-dynamic-dataset "Effort MWh"
+
+  ; do a spinup for two months
+  reset-date "2030-04-01"
+  reset-ticks
+  update-date-patch
+  repeat 60 [
+    go
+  ]
 
   reset-year 2030
   reset-ticks
@@ -59,7 +86,7 @@ to ci-maps
     go
     ;print date
   ]
-  save-dynamic-dataset "Effort"
+  save-dynamic-dataset "Effort MWh"
 
 end
 

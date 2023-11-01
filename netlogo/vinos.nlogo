@@ -280,7 +280,7 @@ to go
 
   ; export the data every week on a Sunday (weekday 0)
   if (time:get "dayofweek"  date mod 7) = 0 [
-    save-dynamic-datasets
+    ;save-dynamic-datasets
   ]
   save-totals
 
@@ -468,13 +468,13 @@ end
 
 
 to calc-accessibility
-
   setup-water-patches
 
   ask patches [set plaice-box? false]
   load-plaice-box
 
   ; Boats are not allowed within OWF areas
+  update-owf
   ask patches with [owf-fraction > 0.5] [set accessible? false]
 
   ; Fishery is restricted in MPAs from 1 May 2023.  This needs to be refined
@@ -518,8 +518,6 @@ to setup-water-patches
   let _sponge 3
   ask patches with [pxcor > max-pxcor - _sponge or pxcor < min-pxcor + _sponge or
     pycor > max-pycor - _sponge or pycor < min-pycor + _sponge] [set accessible? false]
-
-
 end
 
 ; This observer procedure saves tabular data as a fleet average. It should be
@@ -587,7 +585,6 @@ to-report depth-monitor
     round (100 * _sub20 / _total)
   )
 end
-
 
 
 
@@ -937,7 +934,7 @@ CHOOSER
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea" "effort h"
-19
+0
 
 SWITCH
 1244
@@ -1004,7 +1001,7 @@ time-offset
 time-offset
 -200
 200
-88.0
+-74.0
 1
 1
 months from now
@@ -1167,7 +1164,7 @@ CHOOSER
 monthly-chooser
 monthly-chooser
 "Landing t" "Revenue k€" "Effort MWh" "Effort h" "Fleet effort h"
-4
+2
 
 PLOT
 1158

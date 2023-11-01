@@ -21,7 +21,7 @@ boats-own [
   boat-steaming-speed     ; speed when steaming
   boat-landing-port       ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
   boat-home-port          ; Home Port (in the current state only German home ports are considered
-  boat-gears              ; set of available gears on this boat
+  boat-gears              ; list of available gears on this boat
   boat-type               ; Number 1-4 of the named cluster
   boat-length             ; length of boat in m, related (yet unknown) to capacity.
   boat-engine             ; power of the engine in kW
@@ -141,9 +141,11 @@ to setup-boats
       set boat-max-distance 2 * 0.001 * value-from-distribution butfirst butfirst item boat-type distance-distribution
       set boat-max-duration value-from-distribution butfirst butfirst item boat-type triplength-distribution
 
-      let _boat-ids sort [who] of gears
-      set boat-gears map [ i -> gear i] _boat-ids
-      set boat-gear-priorities n-values number-of-gears  [i -> random-float 1] ; initialize priority for the pathway
+      ; create a list of gears, here we should @todo limit the gears available to a boat by the
+      ; engine capacity.
+      let _gear-ids sort [who] of gears
+      set boat-gears map [ i -> gear i] _gear-ids
+      set boat-gear-priorities n-values (length boat-gears)  [i -> random-float 1] ; initialize priority for the pathway
 
       let _crangon-gear-index position "Shrimp" gear-prey-names
       ifelse boat-type < 3 [
@@ -358,7 +360,7 @@ to boat-land-port
     ]
   ]
 
-  ;let _boat-prey-catches n-values count preys [ i -> 0]
+  ;let _prey-catches n-values count preys [ i -> 0]
 
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
   set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches  * (item boat-current-prey-index prey-prices))]
@@ -432,7 +434,7 @@ to boat-land-port
 
     let _catch boat-trip-best-catch
     let _patch boat-trip-best-patch
-    let _boat-prey-price item boat-current-prey-index prey-prices
+    let _prey-price item boat-current-prey-index prey-prices
     let _boat-cost-per-km (boat-fuel-consumption * oil-price / 100  + wage / boat-steaming-speed)
 
     ; @todo make sure that actions have a minimum distance from one another...
@@ -458,7 +460,7 @@ to boat-land-port
       ask boat-actions [
         ; @todo improve heading-dependent gis-scale calculation
         let _action-distance  gis-scale * distance myself
-        set action-gain action-catch * _boat-prey-price - _action-distance * _boat-cost-per-km
+        set action-gain action-catch * _prey-price - _action-distance * _boat-cost-per-km
       ]
 
       ; Check whether the boat already remembers this patch and
@@ -495,7 +497,7 @@ to boat-choose-start
   let _patch nobody
   let _patches nobody
   let _boat-cost-per-km (boat-fuel-consumption * oil-price / 100  + wage / boat-steaming-speed)
-  let _boat-prey-price item boat-current-prey-index prey-prices
+  let _prey-price item boat-current-prey-index prey-prices
   let _fishable-patches boat-fishable-patches
 
   ifelse count boat-actions < memory-size  or memory-size < 1 [
@@ -515,7 +517,7 @@ to boat-choose-start
     ask boat-actions [
       ; @todo improve heading-dependent gis-scale calculation
       let _action-distance  gis-scale * distance myself
-      set action-gain action-catch * _boat-prey-price - _action-distance * _boat-cost-per-km
+      set action-gain action-catch * _prey-price - _action-distance * _boat-cost-per-km
     ]
 
     let _mean-gain median [action-gain] of boat-actions
@@ -603,28 +605,30 @@ end
 ; This is a boat procedure  where a boat
 ; fishes in a straight line
 to boat-make-haul
-
-  ; A boat deploys the gear with the highest priority
-  let _boat-gear item boat-current-gear-index boat-gears
-  let _haul-width [gear-width] of _boat-gear
-
-  ; @todo should we adjust the gear-speed with the boat-engine?
-  let _fishing-speed [gear-speed] of item boat-current-gear-index boat-gears
-  let _prey [gear-species] of  item boat-current-gear-index boat-gears
-  let _haul-time 1 ; one hour @todo maybe set differnet haul-time depanding on gear? (crangon could be 1.5h?)
-  let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing
-  let _step-time _haul-time * 1.0 / _sub-steps
+  let _gear item boat-current-gear-index boat-gears
+  let _prey [gear-species] of _gear
   let _cluster boat-type
   let _power boat-engine
-  let _imonth time:get "month" date - 1
 
-  let _boat-gear-index boat-current-gear-index
+  let _imonth time:get "month" date - 1
+  let _gear-index boat-current-gear-index ; needed to make accessible to patches
   let _patch-prey-index position _prey patch-prey-names
+
+  ; A boat deploys the gear with the highest priority
+  let _haul-width [gear-width] of _gear
+
+  ; @todo should we adjust the gear-speed with the boat-engine?
+  let _boat-fishing-speed [gear-speed] of _gear
+
+  ; Set some parameters for numerical integration
+  let _haul-time 1 ; one hour @todo maybe set differnet haul-time depending on gear? (crangon could be 1.5h?)
+  let _sub-steps  10 ; partition the _haul-time in _sub-steps for actual fishing
+  let _step-time _haul-time * 1.0 / _sub-steps
 
   ; Calculate conversion factor netlogo units to km, needs to be recalculated after
   ; every change of heading
   let _gis-scale gis-scale
-  let _haul-distance  (_fishing-speed * _haul-time / _gis-scale)
+  let _haul-distance  (_boat-fishing-speed * _haul-time / _gis-scale)
 
   let _patch patch-ahead _haul-distance
 
@@ -635,12 +639,11 @@ to boat-make-haul
   while [ (_counter < 10) and (_patch != nobody) and (not boat-accessible-path _haul-distance _sub-steps) ] [
     set heading heading - 180 - _counter * 5 + random (_counter * 10 + 1)
     set _gis-scale gis-scale
-    set _haul-distance  (_fishing-speed * _haul-time / _gis-scale)
+    set _haul-distance  (_boat-fishing-speed * _haul-time / _gis-scale)
     set _counter _counter + 1
     set _patch patch-ahead _haul-distance
   ]
   if _counter >= 10 [set _patch nobody]
-
 
   ; Partition the fishing in small intervals, this could probably be optimized by calculating the
   ; intersection with the patch boundaries
@@ -650,14 +653,14 @@ to boat-make-haul
     let _haul-catches n-values length boat-gears [i -> 0]
     ; @todo the following call gives a wrong value
     ; let _step-distance (fishing-speed * _step-time / _gis-scale)
-    ; print (sentence _step-distance "=" _fishing-speed "*" _step-time "/" _gis-scale)
+    ; print (sentence _step-distance "=" _boat-fishing-speed "*" _step-time "/" _gis-scale)
 
     let _step-distance _haul-distance / _sub-steps
     if show-boats? [pen-down]
 
     repeat (_sub-steps) [
       ; trawl here
-      set _new-catches boat-catch-species (_step-time * _fishing-speed)
+      set _new-catches boat-catch-species (_step-time * _boat-fishing-speed)
 
       ; update diagnostics and stocks of trawled patch
       ask patch-here [
@@ -671,16 +674,16 @@ to boat-make-haul
         )
 
         set patch-monthly-swept-area replace-item _imonth patch-monthly-swept-area (
-          item _imonth patch-monthly-swept-area + _haul-width * _step-time * _fishing-speed
+          item _imonth patch-monthly-swept-area + _haul-width * _step-time * _boat-fishing-speed
         )
 
         ; @todo reduce fish on patch by amount taken out, allow for recovery
         if _patch-prey-index > -1 [
           set  patch-prey-biomasses replace-item _patch-prey-index patch-prey-biomasses  (
-            ((item _patch-prey-index  patch-prey-biomasses ) * area - (item _boat-gear-index _new-catches) )/ area
+            ((item _patch-prey-index  patch-prey-biomasses ) * area - (item _gear-index _new-catches) )/ area
         )]
       ]
-      set boat-trip-effort boat-trip-effort  + _step-time * _fishing-speed
+      set boat-trip-effort boat-trip-effort  + _step-time * _boat-fishing-speed
 
       ;if (not member? (patch-ahead _step-distance) boat-fishable-patches ) [
       ;  error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(haul)")
