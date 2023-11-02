@@ -133,7 +133,7 @@ to-report logodate-from-datetime
   set _format (word _format "-MM")
   if length _m > 2 [set _format (word _format "M")]
   if length _m > 3 and last _m != "."  [set _format (word _format "M")]
-  set _format (word _format "-YYYY")
+  set _format (word _format "-yyyy")
   report time:create-with-format (last split " " date-and-time) _format
 end
 
@@ -171,8 +171,9 @@ end
 
 to-report __test-logodate
   let _date time:create "2022-01-01"
-  if _date != logodate 2022 [ report false ]
-  if _date != logodate "2022-01-01" [ report false ]
-  if _date != time:create "2022-01-01" [ report false ]
+  let _string time:show _date "yyyy-MM-dd"
+  if _string != time:show logodate 2022 "yyyy-MM-dd" [ print (word "Cannot convert 2022 to time:date " logodate 2022 _date) report false ]
+  if _string != time:show logodate "2022-01-01" "yyyy-MM-dd" [ print "Cannot convert '2022-01-01' to time:date" report false ]
+  if _string != time:show logodate time:create "2022-01-01" "yyyy-MM-dd"  [ print "Cannot convert logodate to time:date" report false ]
   report true
 end
