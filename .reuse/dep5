@@ -51,6 +51,10 @@ Files: data/nlwkn/NLP/*
 Copyright: 2022-2023 Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 License: LicenseRef-DL-DE-BY-2.0
 
+Files: data/lkn/*
+Copyright: 1999 Landesbetrieb für Küstenschutz Nationalpark und Meeresschutz Schleswig-Holstein Nationalparkverwaltung
+License: LicenseRef-DL-DE-BY-2.0
+
 Files: data/natura2000/northsea/MPA*
 Copyright: 2023 European Environmental Agency, Helmholtz-Zentrum hereon GmbH
 License: CC0-1.0
