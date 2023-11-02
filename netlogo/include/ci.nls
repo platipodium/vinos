@@ -12,22 +12,8 @@ to reset-patches
   ]
 end
 
-to reset-year [_year]
-  set date time:create (word _year "-01-01")
-  setup-calendar
-
-  ask actions [die]
-
-  reset-patches
-  ask boats [
-    set boat-total-days-at-sea 0
-    set boat-total-fuel-consumption 0
-    set boat-total-landings 0
-  ]
-end
-
-to reset-date [_datestring]
-  set date time:create _datestring
+to reset-date [_arg]
+  set date logodate _arg
   setup-calendar
 
   ask actions [die]
@@ -51,42 +37,11 @@ to ci-maps
   set show-boats? false
   set box? true
   set owf? false
+  set one? false
   update-drawings
 
-  reset-date "2020-04-01"
-  ; do a spinup for two months
-  reset-ticks
-  update-date-patch
-  repeat 60 [
-    go
-  ]
-
-  ; now do an annual simulation
-  reset-year 2020
-  reset-ticks
-  update-date-patch
-  repeat 365 [
-    go
-    ;print date
-  ]
-  save-dynamic-dataset "Effort MWh"
-
-  ; do a spinup for two months
-  reset-date "2030-04-01"
-  reset-ticks
-  update-date-patch
-  repeat 60 [
-    go
-  ]
-
-  reset-year 2030
-  reset-ticks
-  update-date-patch
-  repeat 365 [
-    go
-    ;print date
-  ]
-  save-dynamic-dataset "Effort MWh"
+  ci-run-year 2020
+  ci-run-year 2030
 
 end
 
@@ -128,4 +83,24 @@ to save-tides
 
     tick-advance (1 / _nsteps)
   ]
+end
+
+to ci-spinup-year [ _arg ]
+  let _spinup-days 100
+  let _date time:plus (logodate _arg) (- _spinup-days) "days"
+
+  reset-date _date
+  reset-ticks
+  update-date-patch
+  print (word "Running spinup simulation for 365 days starting " (time:show _date "YYYY-mm-DD") " ..")
+  ;repeat 60 [ go ]
+end
+
+to ci-run-year [ _arg ]
+  let _date logodate _arg
+  ci-spinup-year _date
+  save-dynamic-dataset "Effort MWh"
+  print (word "Running production simulation for 365 days starting " (time:show _date "YYYY-mm-DD") " ..")
+  ;repeat 365 [ go ]
+  save-dynamic-dataset "Effort MWh"
 end
