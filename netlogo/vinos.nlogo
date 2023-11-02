@@ -29,6 +29,7 @@ __includes [
   "include/python.nls"
   "include/ci.nls"
   "include/video.nls"
+  "include/output.nls"
 ]
 
 ; The following breeds are defined in include files
@@ -277,6 +278,7 @@ to go
   update-scene
   ;update-drawings
   update-actions
+  update-output   ; updates the output diagnostics, see output.nls
 
   ; export the data every week on a Sunday (weekday 0)
   if (time:get "dayofweek"  date mod 7) = 0 [
@@ -344,27 +346,6 @@ end
 to calc-pollution
   ask n-of 100 patches with [platessa > 0] [set pollution-exceedance random-float 2.0]
 end
-
-;to train
-;  repeat 100 [
-;    ask boats [ learn ]
-;  ]
-;end
-
-;to learn
-;  let home-port-boat one-of link-neighbors
-;  let my-patch one-of patches with [accessible?]
-;  let my-costs boat-transportation-costs * distance my-patch
-  ; the following is still wrong
-;  let my-revenue 0 ; catch-efficiency-boat * ([item 2 port-prices] of home-port-boat * [platessa-summer] of my-patch + [item 0 port-prices] of home-port-boat * [solea-summer] of my-patch + [item 1 port-prices] of home-port-boat * [crangon-summer] of my-patch)
-;  let my-gain my-revenue - my-costs
-;  let my-pathway one-of link-neighbors with [breed = actions and action-gain < my-gain]
-;  if my-pathway != nobody [ask my-pathway [
-;    set action-patch my-patch
-;:    set action-gain my-gain
-;   ]
-;  ]
-;end
 
 to-report grayscale [x]
   report (round (10 * (x mod 10))) / 10
@@ -640,7 +621,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-6
+4
 
 BUTTON
 83
@@ -1240,6 +1221,13 @@ TEXTBOX
 11
 0.0
 1
+
+OUTPUT
+11
+510
+327
+578
+10
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
