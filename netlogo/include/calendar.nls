@@ -52,14 +52,21 @@ to setup-calendar
   set storm? is-storm?
   set ramadan? is-ramadan?
   set start-date date
+  set datetime date2datetime
+
+  ; Anchoring to ticks created problems when not called during
+  ; startup, so this is disabled for now
   ;set date time:anchor-to-ticks date 1 "day"
   ;set datetime time:anchor-to-ticks date2datetime 1 "day"
 
 end
 
-; Advance the calendar by one day, note that the date itself
-; is linked to ticks and automatically increases upon tick
+; Advance the calendar by one day, note that if the date itself
+; it is linked to ticks and automatically increases upon tick
 to advance-calendar
+
+  set date time:plus date 1 "days"
+  set datetime time:plus datetime 1 "days"
 
   set year time:get "year" date
   set month time:get "month" date
