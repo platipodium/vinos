@@ -640,7 +640,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-3
+6
 
 BUTTON
 83
