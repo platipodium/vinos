@@ -13,18 +13,70 @@ to update-output
   let _days days-in-past-year
   if _days < 1 [set _days 1E6] ; prevent division by zero
 
-  output-print (word "   Fuel Wage Land   Seadays   LPUE   Fuel-eff.")
-  output-print (word " n  €/d  €/d  kg/a        d   kg/d   l/kg")
+  output-print (word "   Fuel Wage Land   At-sea   LPUE   Fuel-eff.  pEffort   pEffort")
+  output-print (word " n  €/d  €/d  kt/a    d      kg/d   l/kg    h/a    MWh/a")
   output-print (word "            " round (10000 / count _shrimpers) "  75 ")
   output-print (word
     count _shrimpers " "
     round ( mean [ boat-fuel-lperh * boat-total-time-at-sea ] of _shrimpers * oil-price / 100 / _days) "  "
     round ( mean [ boat-total-time-at-sea] of _shrimpers  * wage / _days ) "  "
-    round ( mean [ boat-total-landings] of _shrimpers ) " "
-    round ( mean [sum fleet-monthly-effort-hours] of _shrimpers / _days ) " "
-    ;round ( [sum fleet-monthly-effort-mwatthours] of _shrimpers / _days ) " "
-    round ( mean [boat-total-time-at-sea] of _shrimpers / _days )  " "
-    round ( mean [boat-total-landings / boat-total-time-at-sea * 24] of _shrimpers ) " "
-    round(  mean [boat-total-fuel / boat-total-landings] of _shrimpers ) " "
+    round (fleet-annual-landing / 1000) " "
+    round (fleet-annual-effort-hours / 24) " "
+    ;round (fleet-lpue-days) " "
+    ;round ( sum [boat-total-fuel ] of _shrimpers  / fleet-annual-landing) " "
+    round patch-annual-effort-hours-per-boat " "
+    round patch-annual-effort-mwatthours-per-boat " "
+    round patch-annual-effort-mwatthours-per-boat " "
+    round fleet-annual-revenue
+  )
+end
+
+; Observer procedure, for each patch effort is upscaled to a full year and multiplied by its area
+; unit is h a-1 per boat
+; Its value should be around 880000 MWh for the fleet or 427 per MWh per boat
+to-report patch-annual-effort-hours-per-boat
+  let _days days-in-past-year
+  if _days < 1 [report 0]
+  report 365.25 / _days * (sum [ area * sum patch-monthly-effort-hours ] of water-patches)
+    / (sum [ area ] of water-patches) / count boats
+end
+
+; Observer procedure, for each patch effort is upscaled to a full year and multiplied by its area
+; unit is MWh a-1 per boat
+; Its value should be around 47000 for the fleet or 230 h per boat
+to-report patch-annual-effort-mwatthours-per-boat
+  let _days days-in-past-year
+  if _days < 1 [report 0]
+  report 365.25 / _days * (sum [ area * sum patch-monthly-effort-mwatthours ] of water-patches)
+    / (sum [ area ] of water-patches) / count boats
+end
+
+; Observer procedure, the shrimpers should report about 12 kt
+to-report fleet-annual-landing
+  let _days days-in-past-year
+  if _days < 1 [report 0]
+  report 365.25 / _days * sum fleet-monthly-landing
+end
+
+to-report fleet-annual-revenue
+  let _days days-in-past-year
+  if _days < 1 [report 0]
+  report 365.25 / _days * sum fleet-monthly-revenue
+end
+
+to-report fleet-annual-effort-hours
+  let _days days-in-past-year
+  if _days < 1 [report 0]
+  report 365.25 / _days * sum fleet-monthly-effort-hours
+end
+
+to-report depth-monitor
+  let _total sum [ sum patch-monthly-effort-hours ] of water-patches
+  let _sub10 (sum [ sum patch-monthly-effort-hours ] of (water-patches with [depth <= 10]))
+  let _sub20 (sum [ sum patch-monthly-effort-hours ] of (water-patches with [depth > 10 and depth <= 20]))
+
+  report (list
+    round (100 * _sub10 / _total)
+    round (100 * _sub20 / _total)
   )
 end
