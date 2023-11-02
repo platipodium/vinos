@@ -51,12 +51,6 @@ boats-own [
   other-catch-kg          ; other catch in kg for a fishing trip
   other-catch-euro        ; other catch in EUR 2015 for a fishing trip
 
-  boat-transportation-costs    ; costs for one km of the fishing trip, not known, work with a parameter
-                          ; comment: mainly driven by oil price, approx 10-20 percent of the revenue for crangon, up to 30 percent for solea and platessa according to press relesease March 2022 going up to 50 percent
-  boat-operating-costs         ; cost for opertating the boat, not known, work with a parameter
-                          ; comment: approximately 50 percent of the revenue
-  target-species          ; species primarily tragetted (solea, platessa, crangon)
-
   boat-time-at-sea
   boat-time-at-sea-left
   boat-distance-at-sea
@@ -178,8 +172,6 @@ to setup-boats
       set  costs-boat              n-values number-of-gears  [?1 -> 0 ]    ; costs for the fishing trip of the boat
       set  boat-gains               n-values number-of-gears  [?1 -> 0 ]    ; gain for the fishing trip of the boat
       set  boat-delta-priorities   n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
-      set  boat-transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
-      set  boat-operating-costs 0                                  ; start value, is calculated according to wage and time at sea
       set label ""                                             ; ????
 
       ; About 160 boats of the entire fleet don't change at all, make them have available only 1 gear
