@@ -355,8 +355,8 @@ end
 ; area concentration of the three species calculated from their winter and summer
 ; values and weighted by day of year
 to-report crangon
-  let _correction-factor 500
-  let _resupply 0.02
+  let _correction-factor 800
+  let _resupply 0.02 ; 100% replacement in 50 days
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Shrimp" patch-prey-names
@@ -506,7 +506,7 @@ end
 ; @todo expand to other gears, as this one
 to save-totals
 
-  let _boats boats with [boat-total-days-at-sea > 0 and ([gear-species] of item boat-current-gear-index boat-gears) =  "Shrimp"]
+  let _boats boats with [boat-total-time-at-sea > 0 and ([gear-species] of item boat-current-gear-index boat-gears) =  "Shrimp"]
   let _count count _boats
   let _filename (word "results/total_avg_shrimp_" (time:get "year" start-date)
       "-"  (time:get "month" start-date) "-" (time:get "day" start-date) ".csv")
@@ -523,8 +523,8 @@ to save-totals
     file-open _filename
     file-print csv:to-row (list ticks
       (time:get "year" date)   (time:get "month" date) (time:get "day" date) (time:get "dayofyear" date)
-      (sum [boat-total-days-at-sea ] of _boats )
-      (sum [boat-total-fuel-consumption] of _boats  )
+      (sum [boat-total-time-at-sea ] of _boats / 365.25)
+      (sum [boat-total-fuel] of _boats  )
       (sum [boat-total-landings] of _boats  )
       ;(sum [boat-total-fuel-consumption / boat-total-landings] of _boats / _count ) ; Fuel intensity
       ;(sum [boat-total-landings / boat-total-days-at-sea] of _boats / _count) ; LPUE
@@ -1074,23 +1074,12 @@ Benchmarks compare summary simulation results to observations for recent years.
 1
 
 MONITOR
-607
-440
-670
-485
-Seadays
-round (sum [boat-total-days-at-sea] of boats) \n/ count boats\n* 365.25 / ticks
-0
-1
-11
-
-MONITOR
 678
 441
 766
 486
 LPUE kg d-1
-round mean [boat-total-landings / boat-total-days-at-sea] of boats
+round mean [boat-total-landings / boat-total-time-at-sea * 24] of boats
 0
 1
 11
@@ -1101,7 +1090,7 @@ MONITOR
 853
 487
 Fuel l kg-1
-mean [boat-total-fuel-consumption / boat-total-landings] of boats
+mean [boat-total-fuel / boat-total-landings] of boats
 2
 1
 11
