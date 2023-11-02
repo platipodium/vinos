@@ -465,11 +465,16 @@ to calc-accessibility
   if year > 2023 or (year = 2023 and month > 4) [
     ask patches gis:intersecting load-dataset "Natura2000" [ set accessible? false ]
   ]
+
+  ; Fishery is excluded from national park from 1 Jan 2039 (hypothetical)
+  if year > 2038  [
+    ask patches gis:intersecting load-dataset "NP-SH" [ set accessible? false ]
+    ask patches gis:intersecting load-dataset "NP-NS" [ set accessible? false ]
+  ]
 end
 
 
 to setup-water-patches
-
   let depth-threshold -1
 
   ; By default, all patches are inaccessible
@@ -579,9 +584,9 @@ days
 
 BUTTON
 13
-100
+89
 79
-133
+122
 NIL
 setup
 NIL
@@ -596,19 +601,19 @@ NIL
 
 CHOOSER
 11
-200
+177
 159
-245
+222
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-19
+4
 
 BUTTON
 83
-101
+90
 152
-134
+123
 go
 go
 T
@@ -623,9 +628,9 @@ NIL
 
 BUTTON
 160
-200
+177
 215
-244
+221
 update
 update-scene
 NIL
@@ -688,7 +693,7 @@ oil-price
 oil-price
 25
 75
-25.0
+50.0
 5
 1
 ct l-1
@@ -707,7 +712,7 @@ Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
 TEXTBOX
 15
 53
-165
+223
 95
 To operate the model, wait until the map is loaded and then click on \"go\".
 11
@@ -715,20 +720,20 @@ To operate the model, wait until the map is loaded and then click on \"go\".
 1
 
 TEXTBOX
-14
-153
-177
-195
+13
+143
+219
+185
 Change the information for the basemap here and hit `update`
 11
 0.0
 1
 
 PLOT
-339
-539
-726
-784
+336
+635
+723
+785
 catch
 days
 catch/kg
@@ -846,20 +851,20 @@ Diesel for ships is tax-exempt and \ncosts on average 0.5 € l-1
 1
 
 TEXTBOX
-203
-436
-353
-464
+12
+508
+162
+536
 Staff costs are usually around 80 € h-1
 11
 0.0
 1
 
 SLIDER
-201
-466
-373
-499
+10
+538
+182
+571
 wage
 wage
 50
@@ -944,9 +949,9 @@ NIL
 
 SWITCH
 156
-102
+91
 246
-135
+124
 one?
 one?
 1
@@ -969,10 +974,10 @@ months from now
 HORIZONTAL
 
 TEXTBOX
-658
-660
-732
-700
+600
+655
+674
+695
 CSH = shrimp\nPLE = plaice\nSOL = sole\nTBB = beam trawl\nOTB = otter trawl
 6
 0.0
@@ -1024,30 +1029,20 @@ NIL
 
 SWITCH
 11
-249
+226
 159
-282
+259
 show-values?
 show-values?
 1
 1
 -1000
 
-TEXTBOX
-396
-443
-495
-525
-Benchmarks compare summary simulation results to observations for recent years.
-11
-0.0
-1
-
 MONITOR
-678
-441
-766
-486
+733
+442
+821
+487
 LPUE kg d-1
 round mean [boat-total-landings / boat-total-time-at-sea * 24] of boats
 0
@@ -1055,10 +1050,10 @@ round mean [boat-total-landings / boat-total-time-at-sea * 24] of boats
 11
 
 MONITOR
-774
-442
-853
-487
+829
+443
+908
+488
 Fuel l kg-1
 mean [boat-total-fuel / boat-total-landings] of boats
 2
@@ -1066,30 +1061,20 @@ mean [boat-total-fuel / boat-total-landings] of boats
 11
 
 TEXTBOX
-514
-487
-664
-505
-[ 47      88   ]
-11
-0.0
-1
-
-TEXTBOX
-789
-493
-840
-511
+844
+494
+895
+512
 0.5-1.0
 11
 0.0
 1
 
 TEXTBOX
-696
-494
-846
-512
+751
+495
+901
+513
 300-900
 11
 0.0
@@ -1140,10 +1125,10 @@ NIL
 0
 
 MONITOR
-865
-442
-991
-487
+920
+443
+1046
+488
 Effort% < 10, < 20
 depth-monitor
 0
@@ -1151,20 +1136,20 @@ depth-monitor
 11
 
 TEXTBOX
-884
-492
-1034
-510
+939
+493
+1089
+511
 43% .  47%
 11
 0.0
 1
 
 MONITOR
-1000
-442
-1078
-487
+1055
+443
+1133
+488
 Boat effort
 fleet-mean-effort-hours
 0
@@ -1172,20 +1157,20 @@ fleet-mean-effort-hours
 11
 
 TEXTBOX
-1019
-493
-1169
-511
+1074
+494
+1224
+512
 1012 h
 11
 0.0
 1
 
 OUTPUT
-11
-510
-327
-578
+263
+454
+700
+571
 10
 
 @#$#@#$#@

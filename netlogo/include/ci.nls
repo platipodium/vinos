@@ -20,9 +20,7 @@ to reset-date [_arg]
 
   reset-patches
   ask boats [
-    set boat-total-days-at-sea 0
-    set boat-total-fuel-consumption 0
-    set boat-total-landings 0
+    boat-reset-diagnostics
   ]
 end
 
@@ -42,6 +40,7 @@ to ci-maps
 
   ci-run-year 2020
   ci-run-year 2030
+  ci-run-year 2040
 
 end
 
@@ -92,12 +91,15 @@ to ci-spinup-year [ _arg ]
   reset-date _date
   reset-ticks
   update-date-patch
+  port-find-start-patch
   print (word "Running spinup simulation for " _spinup-days " days starting " (time:show _date "YYYY-MM-dd") " ..")
   repeat 60 [ go ]
 end
 
 to ci-run-year [ _arg ]
   let _date logodate _arg
+
+  port-find-start-patch
   ci-spinup-year _date
   save-dynamic-dataset "Effort MWh"
   print (word "Running production simulation for 365 days starting " (time:show _date "YYYY-MM-dd") " ..")
