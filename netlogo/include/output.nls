@@ -1,0 +1,20 @@
+; SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+; SPDX-License-Identifier: Apache-2.0
+; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+; Routines that are used to write to the UI output area
+
+; The output area should display a table of shrimper fleet statistics for
+; benchmarking, instead of using separate monitors
+to update-output
+
+  clear-output
+  let _shrimpers boats with [[gear-species] of item boat-current-gear-index boat-gears = "Shrimp"]
+  output-print (word
+    count _shrimpers " "
+    mean [ boat-fuel-lperh * boat-time-at-sea * oil-price / 100] of _shrimpers "€ "
+    mean [ boat-time-at-sea * wage] of _shrimpers "€ "
+    ;mean [ sum boat-monthly-effort-hours] of _shrimpers " "
+    ;mean [ sum boat-monthly-effort-mwatthours] of _shrimpers " "
+  )
+
+end

@@ -342,29 +342,16 @@ end
 ; here the optimization is done and the memory update
 to boat-land-port
   let _imonth time:get "month" date - 1
-
-  ; Diesel for shipping is usually 0.5 € l-1
-  ; In the end tranpsortatino costs should be 15% of crangon reenvu, up to 30% for platessa/sole
-  set boat-transportation-costs boat-fuel-consumption * oil-price / 100 * boat-distance-at-sea; typically 750 €
-
-  ; Typically there are 3 people aboard, i.e. 150 * 3 work hours per month.  Average wage is 5000+2*2000 per
-  ; gross salary per month, adding 40% costs gives 12600 EUR, i.e. 84 € h-1, there is slider wage
-  ; in the end operating costs should be around 50% of revenue
-  set boat-operating-costs wage * boat-time-at-sea ; is typically 4000 €
+  let _fuel-cost boat-trip-fuel-cost
+  let _wage-cost boat-trip-wage-cost
 
   if (sum boat-trip-gear-catches > 0 ) [
-    set costs-boat n-values (number-of-gears) [
-      i -> boat-transportation-costs + boat-operating-costs
-    ]
+    set costs-boat n-values (number-of-gears) [ i -> _fuel-cost + _wage-cost ]
   ]
 
-  ;let _prey-catches n-values count preys [ i -> 0]
-
   ; Calculate the boat revenue depending on the landed species and the port, simple assumption is 3 EUR kg-1
+  ; @todo: procedure which also considers the other species which are caugth
   set revenue-boat n-values (number-of-gears)[igear -> (item igear boat-trip-gear-catches  * (item boat-current-prey-index prey-prices))]
-
-
-  ;todo: procedure which also considers the other species which are caugth
 
   set boat-gains n-values (number-of-gears ) [i -> item i revenue-boat - item i costs-boat]
   let sum-boat-gains sum boat-gains
@@ -385,7 +372,7 @@ to boat-land-port
     item boat-current-prey-index prey-names "-"
     [gear-name] of item boat-current-gear-index boat-gears " "
     round item boat-current-gear-index revenue-boat  "€ - "
-    round boat-transportation-costs "€ - " round boat-operating-costs "€ = "
+    round _fuel-cost "€ - " round _wage-cost "€ = "
     round item boat-current-gear-index boat-gains "€"
     ;[action-catch] of boat-actions
     )
@@ -404,19 +391,18 @@ to boat-land-port
 
   write-log (word "Landed  " round _boat-catch " kg " item boat-current-prey-index prey-names)
   write-log (word "Sold fish for "round  _boat-revenue " €" )
-  write-log (word "Consumed " round (boat-fuel-consumption * boat-distance-at-sea)  " l diesel at " oil-price " ct l-1,  costing " round boat-transportation-costs " €")
-  write-log (word "Paid " round (wage * boat-time-at-sea)  " € for wages")
+  write-log (word "Consumed " round (boat-fuel-lperh * boat-time-at-sea)  " l diesel at " oil-price " ct l-1,  costing " round _fuel-cost " €")
+  write-log (word "Paid " round _wage-cost  " € for wages")
   write-log (word "Made net gain " round _boat-gain " €")
+
+  set boat-total-fuel-consumption boat-total-fuel-consumption +  boat-fuel-lperh * boat-time-at-sea
+  set boat-total-landings boat-total-landings +  item boat-current-gear-index boat-trip-gear-catches
 
   ; Boat time is in hours, add the trip's hours to the total boat sea days and
   ; reset the trip data
   set boat-total-days-at-sea boat-total-days-at-sea + ceiling (boat-time-at-sea / 24.0)
   set boat-time-at-sea  0
   set boat-time-at-sea-left 0
-
-  set boat-total-fuel-consumption boat-total-fuel-consumption +  boat-fuel-consumption
-  set boat-total-landings boat-total-landings +  item boat-current-gear-index boat-trip-gear-catches
-
 
   set boat-trip-gear-catches map [i -> 0] boat-trip-gear-catches
 
@@ -433,7 +419,7 @@ to boat-land-port
     let _catch boat-trip-best-catch
     let _patch boat-trip-best-patch
     let _prey-price item boat-current-prey-index prey-prices
-    let _boat-cost-per-km (boat-fuel-consumption * oil-price / 100  + wage / boat-steaming-speed)
+    let _boat-cost-per-km (boat-fuel-lperh * oil-price / 100  + wage) / boat-steaming-speed
 
     ; @todo make sure that actions have a minimum distance from one another...
     ifelse count boat-actions < memory-size [
@@ -497,7 +483,7 @@ to boat-choose-start
 
   let _patch nobody
   let _patches nobody
-  let _boat-cost-per-km (boat-fuel-consumption * oil-price / 100  + wage / boat-steaming-speed)
+  let _boat-cost-per-km (boat-fuel-lperh * oil-price / 100  + wage) / boat-steaming-speed
   let _prey-price item boat-current-prey-index prey-prices
   let _fishable-patches boat-fishable-patches
 
@@ -868,13 +854,28 @@ to-report boat-prey
   report [gear-species] of item boat-current-gear-index boat-gears
 end
 
-to-report boat-fuel-consumption
+; Boat procedure returning fuel consumption in l h-1
+to-report boat-fuel-lperh
   ; "Eins bleibt immer gleich: Pro Stunde rechnet man pro PS mit einem Konsum von 0,21 Liter bei einem
   ; Diesel und 0,29 Liter bei Benzin als Treibstoff.” https://www.boatsandstories.com/verbrauch_1-3-2/
-  ; At 150 PS and 48 h trip covering 300 km, the efficiency is 150*48*0,21/300 = 5 l km-1
-  ; @todo we can adjust this to boat-engine power
-  ; we scale the fuel-efficiency (0 to 1) with boat-fuel-consumption
-  report 48 * boat-engine *  1.35962 * 0.21 / 300 ; is typically 5 l km-1
+  ; The conversion from PS to kW is 1.35962, i.e. a typical boat uses 0,2855202 l kW-1 h-1
+  ; A 200 kW shrimper thus consumes 57 l h-1, or about 30 € h-1, regardless of steaming or fishing.
+  ; In the end transportation costs should be 15% of crangon revenue, up to 30% for platessa/sole
+  report boat-engine *  1.35962 * 0.21 ; is typically 60 l h-1
+end
+
+; Boat procedure returning fuel consumption in €
+to-report boat-trip-fuel-cost
+  report boat-fuel-lperh * oil-price / 100 * boat-time-at-sea ; typically 750 €
+end
+
+; Boat procedure returning wage cost in €
+to-report boat-trip-wage-cost
+  ; Typically there are 3 people aboard, i.e. 150 * 3 work hours per month.  Average wage is 5000+2*2000 per
+  ; gross salary per month, adding 40% costs gives 12600 EUR, i.e. 84 € h-1, there is slider wage to
+  ; adjust this
+  ; in the end operating costs should be around 50% of revenue.
+  report wage * boat-time-at-sea
 end
 
 to write-timestamp-log [_timestamp _entry ]

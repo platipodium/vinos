@@ -407,23 +407,22 @@ to show-dataset [_dataset-name]
     set _colors palette:scheme-colors "Sequential" "Blues" n
   ]
 
-  if _dataset-name = "Value" [
-    ask water-patches [ set temporary 0 ]
-
-    let _cost-per-km (mean [boat-fuel-consumption] of boats) * oil-price / 100  + wage / (mean [boat-steaming-speed] of boats)
-
-    foreach sort-on [who] ports [ p ->
-      ask water-patches [
-        let _distance  gis-scale * distance p
-        set temporary temporary + crangon-summer * 7 * area - _distance * _cost-per-km
-      ]
-    ]
-
-    set _values sort [ temporary ] of water-patches
-    set _qt quantile-thresholds _values n
-    set _colors palette:scheme-colors "Sequential" "Blues" n
-  ]
-
+;  if _dataset-name = "Value" [
+;    ask water-patches [ set temporary 0 ]
+;
+;    let _cost-per-km (mean [boat-fuel-consumption] of boats) * oil-price / 100  + wage / (mean [boat-steaming-speed] of boats)
+;
+;    foreach sort-on [who] ports [ p ->
+;      ask water-patches [
+;        let _distance  gis-scale * distance p
+;        set temporary temporary + crangon-summer * 7 * area - _distance * _cost-per-km
+;      ]
+;    ]
+;
+;    set _values sort [ temporary ] of water-patches
+;    set _qt quantile-thresholds _values n
+;    set _colors palette:scheme-colors "Sequential" "Blues" n
+;  ]
 
   if _dataset-name = "Tide" [
     calculate-tidal-depth
