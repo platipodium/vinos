@@ -92,15 +92,15 @@ to ci-spinup-year [ _arg ]
   reset-date _date
   reset-ticks
   update-date-patch
-  print (word "Running spinup simulation for 365 days starting " (time:show _date "YYYY-mm-DD") " ..")
-  ;repeat 60 [ go ]
+  print (word "Running spinup simulation for " _spinup-days " days starting " (time:show _date "YYYY-MM-dd") " ..")
+  repeat 60 [ go ]
 end
 
 to ci-run-year [ _arg ]
   let _date logodate _arg
   ci-spinup-year _date
   save-dynamic-dataset "Effort MWh"
-  print (word "Running production simulation for 365 days starting " (time:show _date "YYYY-mm-DD") " ..")
-  ;repeat 365 [ go ]
+  print (word "Running production simulation for 365 days starting " (time:show _date "YYYY-MM-dd") " ..")
+  repeat 365 [ go ]
   save-dynamic-dataset "Effort MWh"
 end
