@@ -11,8 +11,9 @@ to update-output
   let _shrimpers boats with [[gear-species] of item boat-current-gear-index boat-gears = "Shrimp"]
   output-print (word
     count _shrimpers " "
-    mean [ boat-fuel-lperh * boat-time-at-sea * oil-price / 100] of _shrimpers "€ "
-    mean [ boat-time-at-sea * wage] of _shrimpers "€ "
+    round mean [ boat-fuel-lperh * boat-time-at-sea * oil-price / 100] of _shrimpers "€ "
+    round mean [ boat-time-at-sea * wage] of _shrimpers "€ "
+    round mean [ item boat-current-gear-index boat-trip-gear-catches] of _shrimpers " "
     ;mean [ sum boat-monthly-effort-hours] of _shrimpers " "
     ;mean [ sum boat-monthly-effort-mwatthours] of _shrimpers " "
   )
