@@ -74,11 +74,11 @@ boats-own [
   ; Diagnostic facilties for
   ; Fuel intensity, i.e. Liters consumed per kg of catch l kg-1, should be 0.5-1
   ; LPUE  Landing Per Unit Effort as catch per seaday,  kg d-1, should be 300-900
-  boat-total-days-at-sea
-  boat-total-fuel-consumption
-  boat-total-landings
+  boat-total-time-at-sea  ; in hours
+  boat-total-fuel         ; in l
+  boat-total-landings     ; in kg
 
-  ; A boats log book
+  ; A boat's logbook agent
   boat-logbook
 ]
 
@@ -187,9 +187,9 @@ to setup-boats
       set boat-fishable-patches boat-accessible-patches ;with [traffic-suitability > 0.9]
       set boat-actions (turtle-set)
 
-      set boat-total-days-at-sea 0
+      set boat-total-time-at-sea 0
       set boat-total-landings 0
-      set boat-total-fuel-consumption 0
+      set boat-total-fuel 0
     ]
     ask my-links [set hidden? true]
   ]
@@ -387,19 +387,17 @@ to boat-land-port
   write-log (word "Paid " round _wage-cost  " € for wages")
   write-log (word "Made net gain " round _boat-gain " €")
 
-  set boat-total-fuel-consumption boat-total-fuel-consumption +  boat-fuel-lperh * boat-time-at-sea
+  set boat-total-fuel boat-total-fuel +  boat-fuel-lperh * boat-time-at-sea
   set boat-total-landings boat-total-landings +  item boat-current-gear-index boat-trip-gear-catches
 
   ; Boat time is in hours, add the trip's hours to the total boat sea days and
-  ; reset the trip data
-  set boat-total-days-at-sea boat-total-days-at-sea + ceiling (boat-time-at-sea / 24.0)
+  ; reset the trip data.  Sea days are converted from sea hours by convention
+  set boat-total-time-at-sea boat-total-time-at-sea + boat-time-at-sea
   set boat-time-at-sea  0
   set boat-time-at-sea-left 0
 
   set boat-trip-gear-catches map [i -> 0] boat-trip-gear-catches
-
   set boat-distance-at-sea 0
-
   set boat-trip-phase 0
 
   ; now update the memory from this trip's best catch and only if
@@ -615,15 +613,17 @@ to boat-make-haul
   ; Calculate conversion factor netlogo units to km, needs to be recalculated after
   ; every change of heading
   let _gis-scale gis-scale
-  let _haul-distance  (_boat-fishing-speed * _haul-time / _gis-scale)
-
-  let _patch patch-ahead _haul-distance
-
+  let _patch nobody
+  let _haul-distance 0
+  if _gis-scale > 0 [
+    set _haul-distance  (_boat-fishing-speed * _haul-time / _gis-scale)
+    set _patch patch-ahead _haul-distance
+  ]
   ; find (up to ten times) a straight line path with accessible patches by turning,
   ; first slow then more
   ; @todo also make sure no other boats in path
   let _counter 1
-  while [ (_counter < 10) and (_patch != nobody) and (not boat-accessible-path _haul-distance _sub-steps) ] [
+  while [ _gis-scale <= 0 and (_counter < 10) and (_patch != nobody) and (not boat-accessible-path _haul-distance _sub-steps) ] [
     set heading heading - 180 - _counter * 5 + random (_counter * 10 + 1)
     set _gis-scale gis-scale
     set _haul-distance  (_boat-fishing-speed * _haul-time / _gis-scale)
@@ -890,3 +890,20 @@ to write-log [_entry ]
     write-timestamp-log (word _timestamp " " (precision item 0 _envelope 2) "°E " (precision item 2 _envelope 2) "°N")_entry
   ]
 end
+<<<<<<< HEAD
+=======
+
+to-report fleet-mean-effort-hours
+  ; currently this is restricted to shrimpesr
+  report sum fleet-monthly-effort-hours / (count boats with [boat-type = 2])
+end
+
+to boat-reset-diagnostics
+  ask boat-actions [die]
+  set boat-actions (turtle-set)
+
+  set boat-total-time-at-sea 0
+  set boat-total-landings 0
+  set boat-total-fuel 0
+end
+>>>>>>> c7afe9e (Fixed division by zero of _gis-scale)

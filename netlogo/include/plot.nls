@@ -167,8 +167,8 @@ to plot-update-boat-property
     if ( boat-property-chooser =  "steaming-speed" ) [ set _values [ precision 1 boat-steaming-speed] of boats ]
     if ( boat-property-chooser =  "fuel-cost" ) [ set _values [ round oil-price / 100 * boat-fuel-lperh] of boats ]
     if ( boat-property-chooser =  "type" ) [ set _values [ round boat-type] of boats ]
-    if ( boat-property-chooser =  "boat-total-days-at-sea" ) [ set _values [ round boat-total-days-at-sea] of boats ]
-    if ( boat-property-chooser =  "boat-total-fuel-consumption" ) [ set _values [ round boat-total-fuel-consumption] of boats ]
+    if ( boat-property-chooser =  "boat-total-days-at-sea" ) [ set _values [ round boat-total-time-at-sea / 365.25] of boats ]
+    if ( boat-property-chooser =  "boat-total-fuel" ) [ set _values [ round boat-total-fuel] of boats ]
     if ( boat-property-chooser =  "boat-total-landings" ) [ set _values [ round boat-total-landings] of boats ]
 
     set-histogram-num-bars 9
