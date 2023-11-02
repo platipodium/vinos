@@ -72,7 +72,7 @@ globals [
 
   fleet-monthly-effort-hours       ; model diagnostic of the 12 recently simulated month's efforts
   fleet-monthly-landing            ; model diagnostic of the 12 recently simulated month's landings
-  fleet-monthly-revenue            ; model diagnostic of the 12 recently simulated month's landings
+  fleet-monthly-revenue            ; model diagnostic of the 12 recently simulated month's revenue
 
   fleet-landing-climatology        ; observational data from Temming et al. https://doi.org/10.3354/meps12325
 ]
@@ -549,25 +549,6 @@ to profile
   print (sentence ".. . saved profileing data in" _filename)
 end
 
-to-report effort-monitor
-  report (list
-    round (365.25 / days-in-past-year / 1000 * (sum [ area * sum patch-monthly-effort-hours ] of water-patches))
-    round (365.25 / days-in-past-year / 1000 * (sum [ area * sum patch-monthly-effort-mwatthours ] of water-patches))
-  )
-end
-
-to-report depth-monitor
-  let _total sum [ sum patch-monthly-effort-hours ] of water-patches
-  let _sub10 (sum [ sum patch-monthly-effort-hours ] of (water-patches with [depth <= 10]))
-  let _sub20 (sum [ sum patch-monthly-effort-hours ] of (water-patches with [depth > 10 and depth <= 20]))
-
-  report (list
-    round (100 * _sub10 / _total)
-    round (100 * _sub20 / _total)
-  )
-end
-
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -621,7 +602,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-4
+19
 
 BUTTON
 83
@@ -1051,17 +1032,6 @@ show-values?
 1
 1
 -1000
-
-MONITOR
-503
-439
-604
-484
-Effort kh, GWh
-effort-monitor
-0
-1
-11
 
 TEXTBOX
 396
