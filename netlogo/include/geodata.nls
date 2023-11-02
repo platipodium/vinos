@@ -78,7 +78,6 @@ to setup-maps
   gis:apply-raster crangon-winter-dataset crangon-winter
   ask patches with [not (crangon-winter < 0 or crangon-winter > -1) ] [ set crangon-winter -9999 ]
 
-
   ; Creep-fill with nearest neighbor
   set _patches patches with [crangon-winter < 0 and accessible?]
   repeat max-pxcor * 2 [
@@ -90,7 +89,6 @@ to setup-maps
     ]
     set _patches patches with [crangon-winter < 0 and depth > 0]
   ]
-
 
   gis:apply-raster solea-summer-dataset solea-summer
   ask patches with [not (solea-summer < 0 or solea-summer > -1) ] [ set solea-summer -9999 ]
@@ -533,7 +531,7 @@ to-report load-dataset [_dataset-name]
 
   if _dataset-name = "Natura2000" [ report gis:load-dataset "../data/natura2000/northsea/MPA_NorthSea_Shapes.shp"]
   if _dataset-name = "NP-NS" [ report gis:load-dataset "../data/nlwkn/NLP/Nationalparke_DTK25.shp"]
-  ;if _dataset-name = "NP-SH" [ report gis:load-dataset "../data/nlwkn/NLP/Nationalparke_DTK25.shp"]
+  if _dataset-name = "NP-SH" [ report gis:load-dataset "../data/lkn/Nationalpark_Schl.-H._Wattenmeer_final.shp"]
   if _dataset-name = "ICES" [ report gis:load-dataset "../data/ices/ICES_Statistical_Rectangles_Eco.shp"]
   if _dataset-name = "EEZ" [ report gis:load-dataset "../data/eez/eez.shp"]
   if _dataset-name = "Plaicebox" [ report gis:load-dataset "../data/plaicebox/DB_PlaiceBox_WGS84_vTIwi_Jan2001_G.shp"]
@@ -547,7 +545,8 @@ end
 
 to-report __test-load-dataset
   if load-dataset "Natura2000" = nobody [report false]
-  if load-dataset "NP" = nobody [report false]
+  if load-dataset "NP-SH" = nobody [report false]
+  if load-dataset "NP-NS" = nobody [report false]
   if load-dataset "ICES" = nobody [report false]
   if load-dataset "EEZ" = nobody [report false]
   if load-dataset "Plaicebox" = nobody [report false]
@@ -558,8 +557,7 @@ to-report __test-load-dataset
 end
 
 to-report  __test-draw-dataset
-
-  foreach (list "Natura2000" "NP" "ICES" "EEZ" "Plaicebox" "OWF" "SNS") [ i ->
+  foreach (list "Natura2000" "NP-NS" "NP-SH" "ICES" "EEZ" "Plaicebox" "OWF" "SNS") [ i ->
     draw-dataset i 5 + 10 * (random 14)
   ]
   report true
