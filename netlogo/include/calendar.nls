@@ -161,3 +161,18 @@ to-report days-in-past-year
   let _monthdays time:difference-between date (time:create (word (time:get "year" date) "-" (time:get "month" time:plus date 1 "months") "-1")) "days"
   report ( - _yeardays - _monthdays)
 end
+
+to-report logodate [_arg]
+  if is-agentset? _arg or is-list? _arg [ report nobody ]
+  if is-number? _arg [ report time:create (word round _arg "-01-01") ]
+  if is-string? _arg [ report time:create _arg ]
+  report _arg
+end
+
+to-report __test-logodate
+  let _date time:create "2022-01-01"
+  if _date != logodate 2022 [ report false ]
+  if _date != logodate "2022-01-01" [ report false ]
+  if _date != time:create "2022-01-01" [ report false ]
+  report true
+end
