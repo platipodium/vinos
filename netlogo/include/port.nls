@@ -104,5 +104,11 @@ to port-read
     ]
   ]
   file-close
+end
 
+to port-find-start-patch
+  calc-accessibility
+  ask ports [
+    set port-start-patch min-one-of patches with [depth > navigable-depth and distance myself > 2 and accessible?] [distance myself]
+  ]
 end

@@ -695,3 +695,25 @@ to-report monitor-nationalpark
   gis:apply-coverage _dataset "FLAECHE" temporary
   report sum [sum patch-monthly-effort-hours] of water-patches with [temporary > 0]
 end
+
+; Observer procedure
+; Read the Schleswig-Holstein Nationalpark outer boundaries and return
+; an set of water-patches contained in it.
+to-report patches-in-np-sh
+  let _dataset load-dataset "NP-SH"
+
+  ; Use the existing "area_km2" property
+  gis:apply-coverage _dataset "AREA_KM2" temporary
+  report water-patches with [temporary > 0.5]
+end
+
+; Observer procedure
+; Read the Lower Saxony Nationalpark outer boundaries and return
+; an set of water-patches contained in it.
+to-report patches-in-np-ns
+  let _dataset load-dataset "NP-NS"
+
+  ; Use the existing "area_km2" property
+  gis:apply-coverage _dataset "FLAECHE" temporary
+  report water-patches with [temporary > 0.5]
+end
