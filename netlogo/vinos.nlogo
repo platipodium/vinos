@@ -587,7 +587,6 @@ to-report depth-monitor
 end
 
 
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -727,7 +726,7 @@ oil-price
 oil-price
 25
 75
-50.0
+25.0
 5
 1
 ct l-1
@@ -1001,7 +1000,7 @@ time-offset
 time-offset
 -200
 200
--74.0
+-24.0
 1
 1
 months from now
