@@ -52,8 +52,8 @@ to setup-calendar
   set storm? is-storm?
   set ramadan? is-ramadan?
   set start-date date
-  set date time:anchor-to-ticks date 1 "day"
-  set datetime time:anchor-to-ticks date2datetime 1 "day"
+  ;set date time:anchor-to-ticks date 1 "day"
+  ;set datetime time:anchor-to-ticks date2datetime 1 "day"
 
 end
 
