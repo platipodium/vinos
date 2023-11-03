@@ -284,8 +284,9 @@ to go
   update-output   ; updates the output diagnostics, see output.nls
 
   ; export the data every week on a Sunday (weekday 0)
-  if (time:get "dayofweek"  date mod 7) = 0 [
-    ;save-dynamic-datasets
+  ;if (time:get "dayofweek"  date mod 7) = 0 [
+  if (time:get "dayofyear"  date  = 180) [
+    save-dynamic-datasets
   ]
   save-totals
 
@@ -358,8 +359,8 @@ end
 ; area concentration of the three species calculated from their winter and summer
 ; values and weighted by day of year
 to-report crangon
-  let _correction-factor 800
-  let _resupply 0.02 ; 100% replacement in 50 days
+  let _correction-factor 1800
+  let _resupply 0.01 ; 100% replacement in 100 days
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Shrimp" patch-prey-names
@@ -374,7 +375,7 @@ to-report crangon
 end
 
 to-report solea
-  let _correction-factor 5
+  let _correction-factor 15
   let _resupply 0.2
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
@@ -610,7 +611,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-4
+6
 
 BUTTON
 83
@@ -658,10 +659,10 @@ show-ports?
 -1000
 
 SLIDER
-10
-386
-249
-419
+12
+350
+251
+383
 adaptation
 adaptation
 0
@@ -673,10 +674,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-10
-345
-251
-378
+12
+309
+253
+342
 memory-size
 memory-size
 0
@@ -689,9 +690,9 @@ HORIZONTAL
 
 SLIDER
 11
-467
+421
 183
-500
+454
 oil-price
 oil-price
 25
@@ -733,10 +734,10 @@ Change the information for the basemap here and hit `update`
 1
 
 PLOT
-336
-635
-723
-785
+332
+595
+719
+745
 catch
 days
 catch/kg
@@ -750,10 +751,10 @@ true
 PENS
 
 PLOT
-732
-537
-1010
-657
+725
+500
+1003
+620
 gain-by-gear
 days
 gain/k€
@@ -767,10 +768,10 @@ false
 PENS
 
 PLOT
-733
-663
-1010
-783
+726
+626
+1003
+746
 priority-by-gear
 NIL
 NIL
@@ -845,9 +846,9 @@ NIL
 
 TEXTBOX
 15
-436
+390
 207
-475
+429
 Diesel for ships is tax-exempt and \ncosts on average 0.5 € l-1
 10
 0.0
@@ -855,9 +856,9 @@ Diesel for ships is tax-exempt and \ncosts on average 0.5 € l-1
 
 TEXTBOX
 12
-508
+462
 162
-536
+490
 Staff costs are usually around 80 € h-1
 11
 0.0
@@ -865,9 +866,9 @@ Staff costs are usually around 80 € h-1
 
 SLIDER
 10
-538
+492
 182
-571
+525
 wage
 wage
 50
@@ -879,10 +880,10 @@ wage
 HORIZONTAL
 
 PLOT
-13
-635
-331
-785
+9
+595
+327
+745
 boat-property
 NIL
 # boats
@@ -896,10 +897,10 @@ true
 PENS
 
 CHOOSER
-10
-583
-165
-628
+9
+541
+164
+586
 boat-property-chooser
 boat-property-chooser
 "distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "fuel-cost" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea" "effort h"
@@ -917,10 +918,10 @@ show-boats?
 -1000
 
 BUTTON
-168
-584
-240
-628
+167
+542
+239
+586
 update-plot
 plot-update-boat-property
 NIL
@@ -962,10 +963,10 @@ one?
 -1000
 
 SLIDER
-10
-307
-250
-340
+12
+271
+252
+304
 time-offset
 time-offset
 -200
@@ -987,7 +988,7 @@ CSH = shrimp\nPLE = plaice\nSOL = sole\nTBB = beam trawl\nOTB = otter trawl
 1
 
 PLOT
-1161
+1147
 661
 1375
 781
@@ -1004,7 +1005,7 @@ true
 PENS
 
 CHOOSER
-1160
+1147
 611
 1298
 656
@@ -1041,16 +1042,6 @@ show-values?
 1
 -1000
 
-TEXTBOX
-844
-494
-895
-512
-0.5-1.0
-11
-0.0
-1
-
 CHOOSER
 1144
 435
@@ -1063,9 +1054,9 @@ monthly-chooser
 
 PLOT
 1146
-484
+485
 1374
-604
+605
 Monthly statistics
 Month
 NIL
@@ -1095,60 +1086,18 @@ NIL
 NIL
 0
 
-MONITOR
-920
-443
-1046
-488
-Effort% < 10, < 20
-depth-monitor
-0
-1
-11
-
-TEXTBOX
-939
-493
-1089
-511
-43% .  47%
-11
-0.0
-1
-
-MONITOR
-1055
-443
-1133
-488
-Boat effort
-fleet-mean-effort-hours
-0
-1
-11
-
-TEXTBOX
-1074
-494
-1224
-512
-1012 h
-11
-0.0
-1
-
 OUTPUT
-261
-480
-728
-559
+247
+501
+718
+580
 10
 
 TEXTBOX
-261
-442
-411
-470
+247
+463
+397
+491
 Shrimper fleet aggregated data (per vessel and year)
 10
 0.0

@@ -13,9 +13,9 @@ to update-output
   let _days days-in-past-year
   if _days < 1 [set _days 1E6] ; prevent division by zero
 
-  let _header    (list  "n" "Fuel" "Wage" "Landed" "Sea" "LPUE" "Fuel-Eff" "pEffort"  "pEffort")
-  let _units     (list  ""  "€/d"  "€/d"  "kg/d"   "d"   "kg/d" "l/kg"     "h/a"      "MWh/a" )
-  let _reference (list  ""  ""     ""     "750"    75     750    ""        ""         "")
+  let _header    (list  "n" "Fuel" "Wage" "Landed" "Sea" "LPUE" "Fuel-Eff" "Revenue"  "pEffort"  "<10m"  "<20m")
+  let _units     (list  ""  "€/d"  "€/d"  "t"      "d"   "kg/d" "ml/kg"     "M€"      "MWh/a"    "%"     "%"   )
+  let _reference (list  ""  ""     ""     "10000"    75     750    750      ""         ""        ">43"   ">90" )
 
   let _padding n-values length _header [ _i -> max (list 4 (2
     + length item _i _header))]
@@ -27,18 +27,34 @@ to update-output
   foreach range length _reference [ _i ->  output-type right-pad item _i _reference item _i _padding]
   output-print ""
 
+  let  _fuel-cost mean [boat-fuel-lperh] of _shrimpers * oil-price / 100 / 365.25 / count _shrimpers
+  let  _wage-cost wage  / 365.25 / count _shrimpers
+  let _lpue 0
+  if annual-average fleet-monthly-hours > 0 [
+    set _lpue annual-average fleet-monthly-landing / annual-average fleet-monthly-hours * 24.0
+  ]
+  let _fuel-efficiency 0
+  if annual-average fleet-monthly-landing  > 0 [
+    set _fuel-efficiency annual-average fleet-monthly-landing / annual-average fleet-monthly-fuel * 1000
+  ]
+
+  let _total sum [ sum patch-monthly-effort-hours ] of water-patches
+  if _total = 0 [ set _total 1E6 ]
+  let _sub10 (sum [ sum patch-monthly-effort-hours ] of (water-patches with [depth <= 10]))
+  let _sub20 (sum [ sum patch-monthly-effort-hours ] of (water-patches with [depth <= 20]))
+
   let _values (list
     count _shrimpers
-    round ( mean [ boat-fuel-lperh * boat-total-time-at-sea ] of _shrimpers * oil-price / 100 / _days)
-    round ( mean [ boat-total-time-at-sea] of _shrimpers  * wage / _days )
-    round (fleet-annual-landing / 1000)
-    round (fleet-annual-effort-hours / 24)
-    ;round (fleet-lpue-days)
-    ;round ( sum [boat-total-fuel ] of _shrimpers  / fleet-annual-landing)
-    round patch-annual-effort-hours-per-boat
-    round patch-annual-effort-mwatthours-per-boat
-    round patch-annual-effort-mwatthours-per-boat
-    round fleet-annual-revenue
+    round ( annual-average fleet-monthly-fuel  * _fuel-cost )
+    round ( annual-average fleet-monthly-hours * _wage-cost )
+    round ( annual-average fleet-monthly-landing / 1000 )
+    round ( annual-average fleet-monthly-hours / 24 / count _shrimpers)
+    round ( _lpue)
+    round ( _fuel-efficiency )
+    round ( annual-average fleet-monthly-revenue  / 1E6 )
+    round ( patch-annual-effort-mwatthours-per-boat )
+    round ( _sub10 / _total * 100 )
+    round ( _sub20 / _total * 100 )
   )
 
   foreach range length _values [ _i ->  output-type right-pad item _i _values item _i _padding]
@@ -61,39 +77,17 @@ end
 to-report patch-annual-effort-mwatthours-per-boat
   let _days days-in-past-year
   if _days < 1 [report 0]
-  report 365.25 / _days * (sum [ area * sum patch-monthly-effort-mwatthours ] of water-patches)
-    / (sum [ area ] of water-patches) / count boats
+  report 365.25 / _days * (sum [ sum patch-monthly-effort-mwatthours ] of water-patches) / count boats
 end
 
-; Observer procedure, the shrimpers should report about 12 kt
-to-report fleet-annual-landing
+; Observer procedure reporting annual averages of
+; monthly data (like fleet-annual-effort-hours)
+to-report annual-average [_arg]
+  if not is-list? _arg [ error "Input needs to be a list"]
+  if length _arg != 12 [ error "Input needs to be a list of length 12"]
   let _days days-in-past-year
   if _days < 1 [report 0]
-  report 365.25 / _days * sum fleet-monthly-landing
-end
-
-to-report fleet-annual-revenue
-  let _days days-in-past-year
-  if _days < 1 [report 0]
-  report 365.25 / _days * sum fleet-monthly-revenue
-end
-
-to-report fleet-annual-effort-hours
-  let _days days-in-past-year
-  if _days < 1 [report 0]
-  report 365.25 / _days * sum fleet-monthly-effort-hours
-end
-
-to-report fleet-annual-hours
-  let _days days-in-past-year
-  if _days < 1 [report 0]
-  report 365.25 / _days * sum fleet-monthly-hours
-end
-
-to-report fleet-annual-fuel
-  let _days days-in-past-year
-  if _days < 1 [report 0]
-  report 365.25 / _days * sum fleet-monthly-fuel
+  report 365.25 / _days * sum _arg
 end
 
 to-report depth-monitor
