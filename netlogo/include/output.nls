@@ -13,22 +13,35 @@ to update-output
   let _days days-in-past-year
   if _days < 1 [set _days 1E6] ; prevent division by zero
 
-  output-print (word "   Fuel Wage Land   At-sea   LPUE   Fuel-eff.  pEffort   pEffort")
-  output-print (word " n  €/d  €/d  kt/a    d      kg/d   l/kg    h/a    MWh/a")
-  output-print (word "            " round (10000 / count _shrimpers) "  75 ")
-  output-print (word
-    count _shrimpers " "
-    round ( mean [ boat-fuel-lperh * boat-total-time-at-sea ] of _shrimpers * oil-price / 100 / _days) "  "
-    round ( mean [ boat-total-time-at-sea] of _shrimpers  * wage / _days ) "  "
-    round (fleet-annual-landing / 1000) " "
-    round (fleet-annual-effort-hours / 24) " "
-    ;round (fleet-lpue-days) " "
-    ;round ( sum [boat-total-fuel ] of _shrimpers  / fleet-annual-landing) " "
-    round patch-annual-effort-hours-per-boat " "
-    round patch-annual-effort-mwatthours-per-boat " "
-    round patch-annual-effort-mwatthours-per-boat " "
+  let _header    (list  "n" "Fuel" "Wage" "Landed" "Sea" "LPUE" "Fuel-Eff" "pEffort"  "pEffort")
+  let _units     (list  ""  "€/d"  "€/d"  "kg/d"   "d"   "kg/d" "l/kg"     "h/a"      "MWh/a" )
+  let _reference (list  ""  ""     ""     "750"    75     750    ""        ""         "")
+
+  let _padding n-values length _header [ _i -> max (list 4 (2 + length item _i _header))]
+
+  foreach range length _header [ _i ->  output-type right-pad item _i _header item _i _padding]
+  output-print ""
+  foreach range length _units [ _i ->  output-type right-pad item _i _units item _i _padding]
+  output-print ""
+  foreach range length _reference [ _i ->  output-type right-pad item _i _reference item _i _padding]
+  output-print ""
+
+  let _values (list
+    count _shrimpers
+    round ( mean [ boat-fuel-lperh * boat-total-time-at-sea ] of _shrimpers * oil-price / 100 / _days)
+    round ( mean [ boat-total-time-at-sea] of _shrimpers  * wage / _days )
+    round (fleet-annual-landing / 1000)
+    round (fleet-annual-effort-hours / 24)
+    ;round (fleet-lpue-days)
+    ;round ( sum [boat-total-fuel ] of _shrimpers  / fleet-annual-landing)
+    round patch-annual-effort-hours-per-boat
+    round patch-annual-effort-mwatthours-per-boat
+    round patch-annual-effort-mwatthours-per-boat
     round fleet-annual-revenue
   )
+
+  foreach range length _values [ _i ->  output-type right-pad item _i _values item _i _padding]
+
 end
 
 ; Observer procedure, for each patch effort is upscaled to a full year and multiplied by its area

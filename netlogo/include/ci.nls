@@ -33,14 +33,17 @@ to ci-maps
   set show-values? false
   set show-ports? false
   set show-boats? false
-  set box? true
+  set box? false
   set owf? false
   set one? false
   update-drawings
 
   ci-run-year 2020
-  ci-run-year 2030
-  ci-run-year 2040
+  ;draw-dataset "Natura2000" 1
+  ;ci-run-year 2030
+  ;draw-dataset "NP-SH" 1
+  ;draw-dataset "NP-NS" 1
+  ;ci-run-year 2040
 
 end
 
@@ -84,6 +87,7 @@ to save-tides
   ]
 end
 
+; Observer procedure, to be called by ci-run-year
 to ci-spinup-year [ _arg ]
   let _spinup-days 100
   let _date time:plus (logodate _arg) (- _spinup-days) "days"
@@ -92,8 +96,9 @@ to ci-spinup-year [ _arg ]
   reset-ticks
   update-date-patch
   port-find-start-patch
-  print (word "Running spinup simulation for " _spinup-days " days starting " (time:show _date "YYYY-MM-dd") " ..")
-  repeat 60 [ go ]
+  type (word "Running spinup simulation for " _spinup-days " days starting " (time:show _date "YYYY-MM-dd") " ..")
+  repeat _spinup-days [ go ]
+  print " done"
 end
 
 to ci-run-year [ _arg ]
@@ -102,7 +107,11 @@ to ci-run-year [ _arg ]
   port-find-start-patch
   ci-spinup-year _date
   save-dynamic-dataset "Effort MWh"
-  print (word "Running production simulation for 365 days starting " (time:show _date "YYYY-MM-dd") " ..")
+  type (word "Running production simulation for 365 days starting " (time:show _date "YYYY-MM-dd") " ..")
   repeat 365 [ go ]
-  save-dynamic-dataset "Effort MWh"
+  ;save-dynamic-dataset "Accessibility"
+  ;save-dynamic-dataset "Effort MWh"
+  save-static-datasets
+  save-dynamic-datasets
+  print " done"
 end

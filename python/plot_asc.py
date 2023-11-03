@@ -230,8 +230,9 @@ if __name__ == '__main__':
     # Read plaicebox to mask data offshore (which we should not compare)
     mask, lon, lat = read_asc(f'../netlogo/results/plaicebox.asc')
     emod, lon, lat = read_asc(f'../netlogo/results/emodnet_effort.asc')
-    tbb2020, lon, lat = read_asc(f'../netlogo/results/effort_mwh_0365_20210301-0000.asc')
-    tbb2030, lon, lat = read_asc(f'../netlogo/results/effort_mwh_0365_20310302-0000.asc')
+    tbb2020, lon, lat = read_asc(f'../netlogo/results/effort_mwh_0465_20201231-0000.asc')
+    tbb2030, lon, lat = read_asc(f'../netlogo/results/effort_mwh_0465_20310101-0000.asc')
+    tbb2040, lon, lat = read_asc(f'../netlogo/results/effort_mwh_0465_20401231-0000.asc')
 
 
     ax = basemap()
@@ -244,6 +245,10 @@ if __name__ == '__main__':
     ax.set_title('Effort 2020')
     plt.savefig('effort_2020.png', dpi=400)
 
+    ax = basemap()
+    plot_grid(ax, tbb2040, lon, lat, var="effort")
+    ax.set_title('Effort 2040')
+    plt.savefig('effort_2040.png', dpi=400)
 
     data = emod * (1-mask)
 
@@ -263,3 +268,8 @@ if __name__ == '__main__':
     ax = basemap()
     plot_grid(ax, diff, lon, lat, var="delta_effort")
     plt.savefig('delta_effort_2030-2020.png', dpi=400)
+
+    diff = tbb2040 - tbb2020
+    ax = basemap()
+    plot_grid(ax, diff, lon, lat, var="delta_effort")
+    plt.savefig('delta_effort_2040-2020.png', dpi=400)
