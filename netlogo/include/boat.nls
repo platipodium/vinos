@@ -59,8 +59,6 @@ boats-own [
   boat-trip-phase
   boat-trip-best-patch   ; location of patch with the highest catch during a trip
   boat-trip-best-catch   ; catch in kg of highest catch during a trip
-  boat-trip-effort       ; Effort in hours of the current trip
-
   boat-needs-return?
 
   boat-hour ; Internal hour of the day to facility event-based scheduling
@@ -253,7 +251,7 @@ to boat-rest-port
   let _imonth time:get "month" date - 1
 
   ; Boats rest for at least 11 hours and regain their ability to stay offshore
-  set boat-trip-effort 0
+  set boat-time-at-sea 0
   set boat-time-at-sea-left boat-max-duration
   write-log (word "Need to rest 11 hours")
   set boat-hour boat-hour + 11
@@ -377,7 +375,8 @@ to boat-land-port
   if ([gear-name] of (item boat-current-gear-index boat-gears) = "TBB20CSH") [
     set  fleet-monthly-landing replace-item _imonth fleet-monthly-landing (item _imonth fleet-monthly-landing + _boat-catch)
     set  fleet-monthly-revenue replace-item _imonth fleet-monthly-revenue (item _imonth fleet-monthly-revenue + _boat-revenue)
-    set  fleet-monthly-effort-hours replace-item _imonth fleet-monthly-effort-hours (item _imonth fleet-monthly-effort-hours + boat-trip-effort)
+    set  fleet-monthly-effort-hours replace-item _imonth fleet-monthly-effort-hours (item _imonth fleet-monthly-effort-hours + boat-time-at-sea)
+    set  fleet-monthly-effort-mwatthours replace-item _imonth fleet-monthly-effort-mwatthours (item _imonth fleet-monthly-effort-mwatthours + boat-time-at-sea * boat-engine / 1000)
     set  fleet-monthly-hours replace-item _imonth fleet-monthly-hours (item _imonth fleet-monthly-hours + boat-time-at-sea)
     set  fleet-monthly-fuel replace-item _imonth fleet-monthly-fuel (item _imonth fleet-monthly-fuel + boat-time-at-sea * boat-fuel-lperh)
   ]
@@ -554,7 +553,8 @@ to boat-choose-start
   ]
 end
 
-; This is a boat procedure
+; This is a boat procedure that occurs in two steps.  First, go to the
+; port start patch of a home port, then go to the port itself.
 to boat-return-port
 
   let _patch [port-start-patch] of boat-home-port
@@ -673,7 +673,6 @@ to boat-make-haul
             ((item _patch-prey-index  patch-prey-biomasses ) * area - (item _gear-index _new-catches) )/ area
         )]
       ]
-      set boat-trip-effort boat-trip-effort  + _step-time * _boat-fishing-speed
 
       ;if (not member? (patch-ahead _step-distance) boat-fishable-patches ) [
       ;  error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(haul)")
@@ -894,11 +893,6 @@ to write-log [_entry ]
 end
 <<<<<<< HEAD
 =======
-
-to-report fleet-mean-effort-hours
-  ; currently this is restricted to shrimpesr
-  report sum fleet-monthly-effort-hours / (count boats with [boat-type = 2])
-end
 
 to boat-reset-diagnostics
   ask boat-actions [die]
