@@ -70,9 +70,11 @@ globals [
 
   water-patches
 
+  fleet-monthly-hours              ; model diagnostic of the 12 recently simulated months' seahours
   fleet-monthly-effort-hours       ; model diagnostic of the 12 recently simulated month's efforts
-  fleet-monthly-landing            ; model diagnostic of the 12 recently simulated month's landings
-  fleet-monthly-revenue            ; model diagnostic of the 12 recently simulated month's revenue
+  fleet-monthly-landing            ; model diagnostic of the 12 recently simulated months' landings
+  fleet-monthly-revenue            ; model diagnostic of the 12 recently simulated months' revenue
+  fleet-monthly-fuel               ; model diagnostic of the 12 recently simulated months' fuel consumption
 
   fleet-landing-climatology        ; observational data from Temming et al. https://doi.org/10.3354/meps12325
 ]
@@ -607,7 +609,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-4
+6
 
 BUTTON
 83
@@ -808,7 +810,7 @@ SWITCH
 274
 box?
 box?
-0
+1
 1
 -1000
 
@@ -1008,7 +1010,7 @@ CHOOSER
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast" "age"
-1
+5
 
 BUTTON
 1301
@@ -1038,28 +1040,6 @@ show-values?
 1
 -1000
 
-MONITOR
-733
-442
-821
-487
-LPUE kg d-1
-round mean [boat-total-landings / boat-total-time-at-sea * 24] of boats
-0
-1
-11
-
-MONITOR
-829
-443
-908
-488
-Fuel l kg-1
-mean [boat-total-fuel / boat-total-landings] of boats
-2
-1
-11
-
 TEXTBOX
 844
 494
@@ -1070,28 +1050,18 @@ TEXTBOX
 0.0
 1
 
-TEXTBOX
-751
-495
-901
-513
-300-900
-11
-0.0
-1
-
 CHOOSER
-1157
+1144
 435
-1295
+1293
 480
 monthly-chooser
 monthly-chooser
-"Landing t" "Revenue k€" "Effort MWh" "Effort h" "Fleet effort h"
-2
+"Fleet land. t" "Fleet revenue k€" "Fleet effort h" "Fleet seadays" "Effort MWh" "Effort h"
+3
 
 PLOT
-1158
+1146
 484
 1374
 604
@@ -1167,11 +1137,21 @@ TEXTBOX
 1
 
 OUTPUT
-263
-454
-700
-571
+261
+480
+728
+559
 10
+
+TEXTBOX
+261
+442
+411
+470
+Shrimper fleet aggregated data (per vessel and year)
+10
+0.0
+1
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries

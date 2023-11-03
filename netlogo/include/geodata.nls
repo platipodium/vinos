@@ -525,7 +525,7 @@ end
 
 to save-dynamic-datasets
   no-display
-  let _dynamic (list "Effort" "Depth" "Tide" "Action" "Catch")
+  let _dynamic (list "Effort MWh" "Effort h" "Depth" "Tide" "Action" "Catch" "Shrimp")
 
   foreach _dynamic [ s -> save-dynamic-dataset s]
 end
@@ -672,9 +672,11 @@ to reset-monthly
       set  _p replace-item _imonth _p 0
     ]
   ]
-  foreach (list fleet-monthly-landing fleet-monthly-revenue fleet-monthly-effort-hours) [ _p ->
+  foreach (list fleet-monthly-landing fleet-monthly-revenue fleet-monthly-effort-hours
+    fleet-monthly-hours fleet-monthly-fuel) [ _p ->
     set  _p replace-item _imonth _p 0
   ]
+  print fleet-monthly-hours
 end
 
 ; Observer procedure that is called at setup time
@@ -689,6 +691,8 @@ to setup-monthly
   ]
 
   set fleet-monthly-landing n-values 12 [ i -> 0 ]
+  set fleet-monthly-hours n-values 12 [ i -> 0 ]
+  set fleet-monthly-fuel n-values 12 [ i -> 0 ]
   set fleet-monthly-revenue n-values 12 [ i -> 0 ]
   set fleet-monthly-effort-hours n-values 12 [ i -> 0 ]
 end
