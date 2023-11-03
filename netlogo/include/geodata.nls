@@ -667,16 +667,20 @@ end
 ; and updates the time global and monthly storage
 to reset-monthly
   let _imonth time:get "month" date - 1
+
   ask water-patches [
-    foreach (list patch-monthly-effort-hours patch-monthly-effort-hours patch-monthly-swept-area) [ _p ->
-      set  _p replace-item _imonth _p 0
-    ]
+    set patch-monthly-effort-hours replace-item _imonth patch-monthly-effort-hours 0
+    set patch-monthly-effort-mwatthours replace-item _imonth patch-monthly-effort-mwatthours 0
+    set patch-monthly-swept-area replace-item _imonth patch-monthly-swept-area 0
   ]
-  foreach (list fleet-monthly-landing fleet-monthly-revenue fleet-monthly-effort-hours
-    fleet-monthly-hours fleet-monthly-fuel) [ _p ->
-    set  _p replace-item _imonth _p 0
-  ]
-  print fleet-monthly-hours
+
+  set fleet-monthly-hours replace-item _imonth fleet-monthly-hours 0
+  set fleet-monthly-effort-hours replace-item _imonth fleet-monthly-effort-hours 0
+  set fleet-monthly-effort-mwatthours replace-item _imonth fleet-monthly-effort-mwatthours 0
+  set fleet-monthly-fuel replace-item _imonth fleet-monthly-fuel 0
+  set fleet-monthly-landing replace-item _imonth fleet-monthly-landing 0
+  set fleet-monthly-revenue replace-item _imonth fleet-monthly-revenue 0
+  print fleet-monthly-effort-hours
 end
 
 ; Observer procedure that is called at setup time
@@ -695,6 +699,7 @@ to setup-monthly
   set fleet-monthly-fuel n-values 12 [ i -> 0 ]
   set fleet-monthly-revenue n-values 12 [ i -> 0 ]
   set fleet-monthly-effort-hours n-values 12 [ i -> 0 ]
+  set fleet-monthly-effort-mwatthours n-values 12 [ i -> 0 ]
 end
 
 to-report monitor-nationalpark

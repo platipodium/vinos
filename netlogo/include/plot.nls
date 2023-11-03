@@ -154,7 +154,6 @@ to plot-update-boat-property
     ]
   ][
     ; for numerical values, adjust x-range automatically
-    if ( boat-property-chooser =  "effort h" ) [ set _values [ round boat-trip-effort] of boats ]
     if ( boat-property-chooser =  "max-duration" ) [ set _values [ round boat-max-duration] of boats ]
     if ( boat-property-chooser =  "max-distance" ) [ set _values [ round boat-max-distance] of boats ]
     if ( boat-property-chooser =  "time-at-sea" ) [ set _values [ round boat-time-at-sea] of boats ]
@@ -254,6 +253,7 @@ to plot-update-month-histogram
   if (monthly-chooser = "Fleet fuel t")  [ set _value map [ i -> i / 1000 ] fleet-monthly-fuel ]
   if (monthly-chooser = "Fleet revenue k€") [ set _value map [ i -> i / 1000 ] fleet-monthly-revenue ]
   if (monthly-chooser = "Fleet effort h") [ set _value map [ i -> i ] fleet-monthly-effort-hours ]
+  if (monthly-chooser = "Fleet effort MWh") [ set _value map [ i -> i ] fleet-monthly-effort-mwatthours ]
   if (monthly-chooser = "Fleet seadays") [ set _value map [ i -> i / 24 ] fleet-monthly-hours ]
   if (monthly-chooser = "Effort h")   [ set _value n-values 12 [ i -> sum [item i patch-monthly-effort-hours * area] of water-patches ]]
   if (monthly-chooser = "Effort MWh") [ set _value n-values 12 [ i -> sum [item i patch-monthly-effort-mwatthours * area] of water-patches ]]

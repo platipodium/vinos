@@ -72,6 +72,7 @@ globals [
 
   fleet-monthly-hours              ; model diagnostic of the 12 recently simulated months' seahours
   fleet-monthly-effort-hours       ; model diagnostic of the 12 recently simulated month's efforts
+  fleet-monthly-effort-mwatthours  ; model diagnostic of the 12 recently simulated month's efforts
   fleet-monthly-landing            ; model diagnostic of the 12 recently simulated months' landings
   fleet-monthly-revenue            ; model diagnostic of the 12 recently simulated months' revenue
   fleet-monthly-fuel               ; model diagnostic of the 12 recently simulated months' fuel consumption
@@ -609,7 +610,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-6
+4
 
 BUTTON
 83
@@ -1058,7 +1059,7 @@ CHOOSER
 monthly-chooser
 monthly-chooser
 "Fleet land. t" "Fleet revenue k€" "Fleet effort h" "Fleet seadays" "Effort MWh" "Effort h"
-3
+2
 
 PLOT
 1146
