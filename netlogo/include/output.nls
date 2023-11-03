@@ -17,7 +17,8 @@ to update-output
   let _units     (list  ""  "€/d"  "€/d"  "kg/d"   "d"   "kg/d" "l/kg"     "h/a"      "MWh/a" )
   let _reference (list  ""  ""     ""     "750"    75     750    ""        ""         "")
 
-  let _padding n-values length _header [ _i -> max (list 4 (2 + length item _i _header))]
+  let _padding n-values length _header [ _i -> max (list 4 (2
+    + length item _i _header))]
 
   foreach range length _header [ _i ->  output-type right-pad item _i _header item _i _padding]
   output-print ""
@@ -81,6 +82,18 @@ to-report fleet-annual-effort-hours
   let _days days-in-past-year
   if _days < 1 [report 0]
   report 365.25 / _days * sum fleet-monthly-effort-hours
+end
+
+to-report fleet-annual-hours
+  let _days days-in-past-year
+  if _days < 1 [report 0]
+  report 365.25 / _days * sum fleet-monthly-hours
+end
+
+to-report fleet-annual-fuel
+  let _days days-in-past-year
+  if _days < 1 [report 0]
+  report 365.25 / _days * sum fleet-monthly-fuel
 end
 
 to-report depth-monitor

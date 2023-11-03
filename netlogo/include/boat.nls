@@ -378,6 +378,8 @@ to boat-land-port
     set  fleet-monthly-landing replace-item _imonth fleet-monthly-landing (item _imonth fleet-monthly-landing + _boat-catch)
     set  fleet-monthly-revenue replace-item _imonth fleet-monthly-revenue (item _imonth fleet-monthly-revenue + _boat-revenue)
     set  fleet-monthly-effort-hours replace-item _imonth fleet-monthly-effort-hours (item _imonth fleet-monthly-effort-hours + boat-trip-effort)
+    set  fleet-monthly-hours replace-item _imonth fleet-monthly-hours (item _imonth fleet-monthly-hours + boat-time-at-sea)
+    set  fleet-monthly-fuel replace-item _imonth fleet-monthly-fuel (item _imonth fleet-monthly-fuel + boat-time-at-sea * boat-fuel-lperh)
   ]
 
   write-log (word "Landed  " round _boat-catch " kg " item boat-current-prey-index prey-names)
