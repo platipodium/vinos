@@ -292,7 +292,6 @@ to boat-rest-port
     write-log (word "Won't go out for expected bad catch")
     set boat-trip-phase 0
   ]
-
  end
 
 ; Boat trip phase 1. This is a boat procedure initializing a new
@@ -453,6 +452,7 @@ to boat-land-port
         ask _my-action [
           set action-gear [item 0 boat-gears] of myself ; @todo update index
           set action-catch [boat-trip-best-catch] of myself
+          set action-age 0
           move-to [boat-trip-best-patch] of myself
         ]
         write-log (word "Udate remember this fishing location " boat-trip-best-patch " with catch " boat-trip-best-catch " kg")

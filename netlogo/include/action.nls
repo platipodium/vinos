@@ -18,5 +18,5 @@ actions-own [
 
 to update-actions
   ask actions [set action-age action-age + 1]
-  ;ask actions with [action-age > 100] [die]
+  ;ask actions with [action-age > 3 * memory-size] [die]
 end
