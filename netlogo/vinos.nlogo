@@ -94,11 +94,13 @@ patches-own [
 
   ; Environmental boundary data
   pollution-exceedance
+
   depth
   owf-fraction
   accessible?                     ; false if not accessible to fishery for steaming
   unrestricted?                   ; false if close to port, too shallow, restricted area
   plaice-box?
+  patch-only-nephrops?            ; true if in nephrops reservation area
 
   ; Diagnostics
   prey-catches                      ; annual prey catches

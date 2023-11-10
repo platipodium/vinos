@@ -158,6 +158,9 @@ to setup-maps
   ;ask patches with [temporary > 100] [ set traffic-suitability 0.01  ]
   ask patches with [temporary > 150] [ set traffic-suitability 0.1  ]
 
+  ask patches [ set patch-only-nephrops? false ]
+  ask patches gis:intersecting load-dataset "Nephrops" [ set patch-only-nephrops? true ]
+
 end
 
 to update-owf
@@ -391,7 +394,8 @@ to show-dataset [_dataset-name]
 
   if _dataset-name = "Accessibility" [
     ask water-patches [ set temporary boolean2int accessible? ]
-    set _qt (list 0 1)
+    ask water-patches with [accessible? and (plaice-box? or patch-only-nephrops?)] [set temporary 0.5]
+    set _qt (list 0 0.5 1)
     set n (length _qt) - 1
   ]
 
@@ -486,7 +490,7 @@ to show-dataset [_dataset-name]
   ][
     foreach  (range length _patches) [ i ->
       ask item i _patches [
-        set pcolor scale-color blue temporary 1 0
+        set pcolor scale-color gray temporary 1 0
       ]
     ]
   ]
@@ -532,6 +536,7 @@ end
 
 to-report load-dataset [_dataset-name]
 
+  if _dataset-name = "Nephrops" [ report gis:load-dataset "../data/bsh/Fishery.shp"]
   if _dataset-name = "Natura2000" [ report gis:load-dataset "../data/natura2000/northsea/MPA_NorthSea_Shapes.shp"]
   if _dataset-name = "NP-NS" [ report gis:load-dataset "../data/nlwkn/NLP/Nationalparke_DTK25.shp"]
   if _dataset-name = "NP-SH" [ report gis:load-dataset "../data/lkn/Nationalpark_Schl.-H._Wattenmeer_final.shp"]
@@ -547,6 +552,7 @@ to-report load-dataset [_dataset-name]
 end
 
 to-report __test-load-dataset
+  if load-dataset "Nephrops" = nobody [report false]
   if load-dataset "Natura2000" = nobody [report false]
   if load-dataset "NP-SH" = nobody [report false]
   if load-dataset "NP-NS" = nobody [report false]
@@ -560,7 +566,7 @@ to-report __test-load-dataset
 end
 
 to-report  __test-draw-dataset
-  foreach (list "Natura2000" "NP-NS" "NP-SH" "ICES" "EEZ" "Plaicebox" "OWF" "SNS") [ i ->
+  foreach (list "Natura2000" "NP-NS" "NP-SH" "ICES" "EEZ" "Plaicebox" "OWF" "SNS" "Nephrops") [ i ->
     draw-dataset i 5 + 10 * (random 14)
   ]
   report true
