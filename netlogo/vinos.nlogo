@@ -123,9 +123,11 @@ patches-own [
 ; The startup procedure is called when the model is opened by NetLogo.  This automates
 ; the execution of setup.  We use a fixed random seed to enable replicable simulations
 to startup
+  license-message
   random-seed 123456789
   setup
 end
+
 
 to setup
   clear-all
@@ -559,6 +561,27 @@ to profile
   profiler:reset
   print (sentence ".. . saved profileing data in" _filename)
 end
+
+to license-message
+  print "Viable North Sea"
+  print ""
+  print "Copyright 2022-2023 Helmholtz-Zentrum hereon GmbH"
+  print "Copyright 2022-2023 Universität Hamburg"
+  print "Copyright 2022-2023 Hochschule Bremerhaven"
+  print ""
+  print "Licensed under the Apache License, Version 2.0 (the 'License');"
+  print "you may not use this file except in compliance with the License."
+  print "You may obtain a copy of the License at"
+  print "    http://www.apache.org/licenses/LICENSE-2.0"
+  print ""
+  print "Unless required by applicable law or agreed to in writing, software"
+  print "distributed under the License is distributed on an 'AS IS' BASIS,"
+  print "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied."
+  print "See the License for the specific language governing permissions and"
+  print "limitations under the License."
+  print ""
+end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -1140,9 +1163,12 @@ We acknowledge contributions from W. Nikolaus Probst, Seong Jieun, Verena Mühlb
 
 ### License
 
-Copyright: 2022-2023 Helmholtz-Zentrum hereon GmbH, Universität Hamburg, Hochschule Bremerhaven
-Authors: Carsten Lemmen, Sascha Hokamp, Serra Örey
-License: Apache 2.0
+Authors Carsten Lemmen, Sascha Hokamp, Serra Örey
+Copyright 2022-2023 Helmholtz-Zentrum hereon GmbH, Universität Hamburg, Hochschule Bremerhaven
+
+Licensed under the **Apache License, Version 2.0** (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 ![Hereon](../assets/logo-hereon.png)       ![UHH](../assets/logo-uhh.png)     ![HSB](../assets/logo-hsb.png)
 
