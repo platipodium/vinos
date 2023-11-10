@@ -768,7 +768,9 @@ to-report boat-accessible-patches
   if (boat-engine > 221 and _prey = "Plaice") [
     set _patches _patches with [not plaice-box?]
   ]
-
+  if (_prey != "Nephrops") [
+    set _patches _patches with [not patch-only-nephrops?]
+  ]
   report _patches
 
 end
