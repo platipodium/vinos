@@ -19,7 +19,6 @@ boats-own [
   ; Static properties individual to each boat
   boat-capacity           ; size of the boat, @todo should be in kg
   boat-steaming-speed     ; speed when steaming
-  fishing-speed           ; speed when fishing (replaced by gear-speed later on)
   boat-landing-port       ; favorite-landing-port (in the current state there is the one favorite port, which is the landing port)
   boat-home-port          ; Home Port (in the current state only German home ports are considered
   boat-gears              ; set of available gears on this boat
@@ -29,7 +28,6 @@ boats-own [
 
   boat-max-distance
   boat-max-duration  ; cluster-dependent typical trip length
-
 
   boat-trip-gear-catches       ; for each boat a vector of fish catches accumulated during a trip
   ;boat-history-prey-catches    ; for each boat a vector of total harvest of the fish species
@@ -42,7 +40,6 @@ boats-own [
   boat-delta-priorities      ; change in priority
   boat-gear-priorities            ; priority for the pathway
   priority-weighted-average  ; priority weighted average of gain
-
 
   ; @todo make into a vector for the species
   solea-catch-kg          ; catch of solea in kg for a fishing trip
@@ -66,9 +63,9 @@ boats-own [
 
   ; value encoding the state the boat is in during a fishing trip.
   boat-trip-phase
-
   boat-trip-best-patch   ; location of patch with the highest catch during a trip
-  boat-trip-best-catch
+  boat-trip-best-catch   ; catch in kg of highest catch during a trip
+  boat-trip-effort       ; Effort in hours of the current trip
 
   boat-needs-return?
 
@@ -97,7 +94,6 @@ logbooks-own [
 
 
 to setup-boats
-
   if any? actions [ask actions [die]]
 
   set-default-shape boats "boat top"
@@ -115,10 +111,6 @@ to setup-boats
   let triplength-distribution csv-property "triplength"
   let length-distribution csv-property "VE_LEN"
   let hours-distribution csv-property "total_fishinghours"
-
-  ; @todo get th fishing speed from gear-speed
-  let fishing-speed-mean 5.556 ; unit is km/h (= 3kn)
-  let fishing-speed-sdev 0.926 ; unit is km/h (= 0.5kn)
 
   ; @todo introduce quotas (=> Serra, asks Jonas)
   ask home-ports [
@@ -186,7 +178,6 @@ to setup-boats
       set  boat-delta-priorities   n-values number-of-gears  [?1 -> 0 ]    ; change of priority for the pathway
       set  boat-transportation-costs  0                            ; start value, is calculated according to trip-length, fuel efficiency and oil-price
       set  boat-operating-costs 0                                  ; start value, is calculated according to wage and time at sea
-      set  fishing-speed random-normal fishing-speed-mean fishing-speed-sdev                        ; range 2 kn to 4 kn to get km multiply by 1.852 ; ranging from 3.7 to 7.4 km/h
       set label ""                                             ; ????
 
       ; About 160 boats of the entire fleet don't change at all, make them have available only 1 gear
@@ -268,6 +259,7 @@ to boat-rest-port
   let _imonth time:get "month" date - 1
 
   ; Boats rest for at least 11 hours and regain their ability to stay offshore
+  set boat-trip-effort 0
   set boat-time-at-sea-left boat-max-duration
   write-log (word "Need to rest 11 hours")
   set boat-hour boat-hour + 11
@@ -306,6 +298,7 @@ to boat-rest-port
     write-log (word "Won't go out for expected bad catch")
     set boat-trip-phase 0
   ]
+
  end
 
 ; Boat trip phase 1. This is a boat procedure initializing a new
@@ -404,13 +397,14 @@ to boat-land-port
   if ([gear-name] of (item boat-current-gear-index boat-gears) = "TBB20CSH") [
     set  fleet-monthly-landing replace-item _imonth fleet-monthly-landing (item _imonth fleet-monthly-landing + _boat-catch)
     set  fleet-monthly-revenue replace-item _imonth fleet-monthly-revenue (item _imonth fleet-monthly-revenue + _boat-revenue)
+    set  fleet-monthly-effort-hours replace-item _imonth fleet-monthly-effort-hours (item _imonth fleet-monthly-effort-hours + boat-trip-effort)
   ]
 
-  write-log (word "Landed  " round _boat-catch " kg " item boat-current-prey-index prey-names)
-  write-log (word "Sold fish for "round  _boat-revenue " €" )
-  write-log (word "Consumed " round (boat-fuel-consumption * boat-distance-at-sea)  " l diesel at " oil-price " ct l-1,  costing " round boat-transportation-costs " €")
-  write-log (word "Paid " round (wage * boat-time-at-sea)  " € for wages")
-  write-log (word "Made net gain " round _boat-gain " €")
+  write-log (word "-" boat-hour " landed  " round _boat-catch "kg of" item boat-current-prey-index prey-names)
+  write-log (word "-" boat-hour " sold fish for "round  _boat-revenue "€" )
+  write-log (word "-" boat-hour " consumed " round (boat-fuel-consumption * boat-distance-at-sea)  "l Diesel at " oil-price " ct l-1,  costing me " round boat-transportation-costs "€")
+  write-log (word "-" boat-hour " paid " round (wage * boat-time-at-sea)  "€ for wages")
+  write-log (word "-" boat-hour " resulting in gain of " round _boat-gain "€")
 
   ; Boat time is in hours, add the trip's hours to the total boat sea days and
   ; reset the trip data
@@ -620,7 +614,10 @@ end
 to boat-make-haul
 
   ; A boat deploys the gear with the highest priority
-  let _haul-width [gear-width] of item boat-current-gear-index boat-gears
+  let _boat-gear item boat-current-gear-index boat-gears
+  let _haul-width [gear-width] of _boat-gear
+
+  ; @todo should we adjust the gear-speed with the boat-engine?
   let _fishing-speed [gear-speed] of item boat-current-gear-index boat-gears
   let _prey [gear-species] of  item boat-current-gear-index boat-gears
   let _haul-time 1 ; one hour @todo maybe set differnet haul-time depanding on gear? (crangon could be 1.5h?)
@@ -692,6 +689,7 @@ to boat-make-haul
             ((item _patch-prey-index  patch-prey-biomasses ) * area - (item _boat-gear-index _new-catches) )/ area
         )]
       ]
+      set boat-trip-effort boat-trip-effort  + _step-time * _fishing-speed
 
       ;if (not member? (patch-ahead _step-distance) boat-fishable-patches ) [
       ;  error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(haul)")
@@ -881,6 +879,11 @@ to write-timestamp-log [_timestamp _entry ]
     file-print (word _timestamp " " _entry)
     file-close
   ]]
+end
+
+to-report fleet-mean-effort-hours
+  ; currently this is restricted to shrimpesr
+  report sum fleet-monthly-effort-hours / (count boats with [boat-type = 2])
 end
 
 to write-log [_entry ]

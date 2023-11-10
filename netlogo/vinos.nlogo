@@ -69,6 +69,7 @@ globals [
 
   water-patches
 
+  fleet-monthly-effort-hours       ; model diagnostic of the 12 recently simulated month's efforts
   fleet-monthly-landing            ; model diagnostic of the 12 recently simulated month's landings
   fleet-monthly-revenue            ; model diagnostic of the 12 recently simulated month's landings
 
@@ -590,7 +591,6 @@ end
 
 
 
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -644,7 +644,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-6
+3
 
 BUTTON
 83
@@ -936,8 +936,8 @@ CHOOSER
 628
 boat-property-chooser
 boat-property-chooser
-"distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea"
-0
+"distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "transportation-costs" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea" "effort h"
+19
 
 SWITCH
 1244
@@ -1021,10 +1021,10 @@ CSH = shrimp\nPLE = plaice\nSOL = sole\nTBB = beam trawl\nOTB = otter trawl
 1
 
 PLOT
-1020
-663
-1234
-783
+1161
+661
+1375
+781
 action
 NIL
 # action
@@ -1038,20 +1038,20 @@ true
 PENS
 
 CHOOSER
-1019
-613
-1157
-658
+1160
+611
+1298
+656
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast" "age"
 1
 
 BUTTON
-1160
-612
-1234
-658
+1301
+610
+1375
+656
 update
 plot-update-action-histogram
 NIL
@@ -1160,20 +1160,20 @@ TEXTBOX
 1
 
 CHOOSER
-1016
-437
-1154
-482
+1157
+435
+1295
+480
 monthly-chooser
 monthly-chooser
-"Landing t" "Revenue k€" "Effort MWh" "Effort h"
-0
+"Landing t" "Revenue k€" "Effort MWh" "Effort h" "Fleet effort h"
+4
 
 PLOT
-1017
-486
-1233
-606
+1158
+484
+1374
+604
 Monthly statistics
 Month
 NIL
@@ -1187,10 +1187,10 @@ false
 PENS
 
 BUTTON
-1158
-438
-1232
-482
+1299
+436
+1373
+480
 update
 plot-update-month-histogram
 NIL
@@ -1220,6 +1220,27 @@ TEXTBOX
 1034
 510
 43% .  47%
+11
+0.0
+1
+
+MONITOR
+1000
+442
+1078
+487
+Boat effort
+fleet-mean-effort-hours
+0
+1
+11
+
+TEXTBOX
+1019
+493
+1169
+511
+1012 h
 11
 0.0
 1
