@@ -881,6 +881,11 @@ to write-timestamp-log [_timestamp _entry ]
   ]]
 end
 
+to-report fleet-mean-effort-hours
+  ; currently this is restricted to shrimpesr
+  report sum fleet-monthly-effort-hours / (count boats with [boat-type = 2])
+end
+
 to write-log [_entry ]
   if is-logbook? (boat-logbook) [
     let _timestamp (word time:show date "YYYY-MM-dd " int boat-hour ":" round ((boat-hour mod 1) * 5 / 3))
