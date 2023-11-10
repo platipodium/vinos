@@ -557,7 +557,6 @@ to profile
   profiler:reset
   print (sentence ".. . saved profileing data in" _filename)
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 262

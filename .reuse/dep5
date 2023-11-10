@@ -3,6 +3,10 @@ Upstream-Name:  Agent-based model of North Sea fisheries
 Upstream-Contact: Carsten Lemmen <carsten.lemmen@hereon.de
 Source: https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species
 
+Files: data/bsh/Fishery.*
+Copyright: 2021 Bundesamt für Seeschifffahrt und Hydrographie
+License: LicenseRef-DL-DE-BY-2.0
+
 Files: data/thuenen/dis**asc
 Copyright: 2023 Johann Heinrich von Thünen-Institut
 License: LicenseRef-DL-DE-BY-2.0
