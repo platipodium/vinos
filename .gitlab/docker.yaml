@@ -14,7 +14,7 @@
     CONTAINER_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE/netlogo:${NETLOGO_VERSION}
   parallel:
     matrix:
-      - NETLOGO_VERSION: ["6.3.0", "6.2.2"]
+      - NETLOGO_VERSION: ["6.4.0-beta1", "6.3.0", "6.2.2"]
   allow_failure: false
   interruptible: true
   rules:
