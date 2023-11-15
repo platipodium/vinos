@@ -2,9 +2,15 @@
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
-FROM netlogo:${NETLOGO_VERSION}
+FROM ${DOCKERHUB_NAMESPACE}/netlogo:${NETLOGO_VERSION}
 
 ARG NETLOGO_VERSION=6.3.0
+ARG DOCKERHUB_NAMESPACE=platipodium
+
+LABEL description="Viable North Sea (ViNoS) NetLogo model"
+LABEL author="Carsten Lemmen <carsten.lemmen@hereon.de>"
+LABEL license="CC0-1.0"
+LABEL copyright="2023 Helmholtz-Zentrum hereon GmbH"
 
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8
