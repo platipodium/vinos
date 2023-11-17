@@ -25,6 +25,8 @@ boats-own [
   boat-type               ; Number 1-4 of the named cluster
   boat-length             ; length of boat in m, related (yet unknown) to capacity.
   boat-engine             ; power of the engine in kW
+  boat-name               ; name of the boat
+  boat-captain            ; name of the captain
 
   boat-max-distance
   boat-max-duration  ; cluster-dependent typical trip length
@@ -103,6 +105,7 @@ to setup-boats
   let triplength-distribution csv-property "triplength"
   let length-distribution csv-property "VE_LEN"
   let hours-distribution csv-property "total_fishinghours"
+  let _names boat-names
 
   ; @todo introduce quotas (=> Serra, asks Jonas)
   ask home-ports [
@@ -117,6 +120,18 @@ to setup-boats
 
     ask link-neighbors [
       move-to [port-start-patch] of myself
+
+      ; Choose a unique name for the boat
+      let _name item 2 (item random length _names _names)
+      if any? other boats with [boat-name = _name] [ set _name (word _name " I") ]
+      while [any? other boats with [boat-name = _name]] [ set _name (word _name "I") ]
+      set boat-name _name
+
+      ; Choose a unique name for the captain
+      let _surname item 1 (item random length _names _names)
+      set _name item 0 (item random length _names _names)
+      while [any? other boats with [ boat-captain = (word _name " " _surname) ]] [set _name item 0 (item random length _names _names)]
+      set boat-captain (word _name " " _surname)
 
       ; Create a boat with Gaussian distribution around mean with stdev
       set boat-length value-from-distribution butfirst butfirst item boat-type length-distribution
@@ -202,8 +217,9 @@ to setup-boats
       set _logbook self
     ]
     set boat-logbook _logbook
-    write-log (word "Logbook of boat " who )
-    write-log (word "Boat is a " round boat-length " m trawler with engine power "
+    write-log (word "Logbook of " boat-name "(" who "), commanded by " boat-captain )
+    write-log (word "Home port is " [port-name] of boat-home-port )
+    write-log (word boat-name " is a " round boat-length " m trawler with engine power "
         round boat-engine " kW")
     write-log(word "Steaming speed is " precision boat-steaming-speed 1 "km a-1")
     write-log (word "Equipped with gear " [gear-name] of (item boat-current-gear-index boat-gears)
@@ -899,4 +915,14 @@ to boat-reset-diagnostics
   set boat-total-time-at-sea 0
   set boat-total-landings 0
   set boat-total-fuel 0
+end
+
+; Observer procedure to read a list of typical names
+to-report boat-names
+  let _filename (word "include/names.csv")
+  let _data csv:from-file _filename
+  ; Remove any comments starting with #
+  ;print starts-with _data "#"
+  ;while [starts-with _data "#" ] [ print first _data set _data butfirst _data]
+  report butfirst butfirst butfirst butfirst _data
 end
