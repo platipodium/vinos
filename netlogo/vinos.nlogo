@@ -581,7 +581,6 @@ to license-message
   print "limitations under the License."
   print ""
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 262

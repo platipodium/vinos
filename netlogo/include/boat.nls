@@ -217,13 +217,14 @@ to setup-boats
       set _logbook self
     ]
     set boat-logbook _logbook
-    write-log (word "Logbook of " boat-name "(" who "), commanded by " boat-captain )
+    write-log (word "Logbook of " boat-name ", commanded by " boat-captain )
     write-log (word "Home port is " [port-name] of boat-home-port )
     write-log (word boat-name " is a " round boat-length " m trawler with engine power "
         round boat-engine " kW")
-    write-log(word "Steaming speed is " precision boat-steaming-speed 1 "km a-1")
+    write-log(word "Steaming speed is " precision boat-steaming-speed 1 " km h-1")
     write-log (word "Equipped with gear " [gear-name] of (item boat-current-gear-index boat-gears)
         ", targets " item boat-current-prey-index prey-names)
+    write-log(word "Fishing speed is " precision [gear-speed] of (item boat-current-gear-index boat-gears) 1 " km h-1")
   ]
 
 end
@@ -902,7 +903,7 @@ end
 
 to write-log [_entry ]
   if is-logbook? (boat-logbook) [
-    let _timestamp (word time:show date "YYYY-MM-dd " int boat-hour ":" round ((boat-hour mod 1) * 5 / 3))
+    let _timestamp (word time:show date "YYYY-MM-dd " leading-zero boat-hour 2 ":" leading-zero round ((boat-hour mod 1) * 5 / 3) 2 )
     let _envelope gis:envelope-of self
     write-timestamp-log (word _timestamp " " (precision item 0 _envelope 2) "°E " (precision item 2 _envelope 2) "°N")_entry
   ]
