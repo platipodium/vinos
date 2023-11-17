@@ -218,7 +218,8 @@ to setup-boats
     ]
     set boat-logbook _logbook
     write-log (word "Logbook of " boat-name ", commanded by " boat-captain )
-    write-log (word "Home port is " [port-name] of boat-home-port )
+    write-log (word "Home port is " [port-name] of boat-home-port " with fishing radius " ceiling boat-max-distance " km")
+    write-log (word "Regular stay at sea is " ceiling boat-max-duration " h" )
     write-log (word boat-name " is a " round boat-length " m trawler with engine power "
         round boat-engine " kW")
     write-log(word "Steaming speed is " precision boat-steaming-speed 1 " km h-1")
@@ -320,7 +321,7 @@ to boat-leave-port
   ; Determine start end end patches of fishing activity.  This is usually the start/landing
   ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
   ; patch outside the plaice box.
-  write-log (word "Leaves port " [port-name] of boat-home-port)
+  write-log (word "Leaving port " [port-name] of boat-home-port)
   let _patch [port-start-patch] of boat-home-port    ; starting patch of the boat
   face _patch
   let _gis-scale gis-scale
@@ -340,7 +341,7 @@ to boat-leave-port
   set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
   set boat-hour boat-hour + _distance / boat-steaming-speed
 
-  write-log (word "Arrives at sea")
+  write-log (word "Arrived in open water")
 
   set boat-trip-phase 2 ; available at start patch
 
@@ -499,18 +500,21 @@ to boat-choose-start
   let _fishable-patches boat-fishable-patches
 
   ifelse count boat-actions < memory-size  or memory-size < 1 [
-    ; random patch if not sufficient memory accumulated yet (learning phase)
+      write-log (word "Learning more than " count boat-actions " out of " memory-size " locations " (sentence [ (word xcor "," ycor) ] of boat-actions))
+      ; random patch if not sufficient memory accumulated yet (learning phase)
 
     ifelse patch-here = [port-start-patch] of boat-home-port  [
-      set _patches n-of 10 boat-fishable-patches in-radius boat-max-distance ; with [ count boats-here = 0 and distance myself < boat-max-distance]
+      write-log (word "Need to search for new fishing opportunities within " round boat-max-distance  " km")
+      ;set _patches n-of 10 boat-fishable-patches in-radius boat-max-distance ; with [ count boats-here = 0 and distance myself < boat-max-distance]
+      set _patches boat-find-patches 3 boat-max-distance
       set _patch max-one-of _patches [traffic-suitability]
       if one? [ print (sentence "Boat" who "leaves from home and searches in radius"  boat-max-distance)]
-      write-log (word "Searched for new fishing opportunities in distance " boat-max-distance " km")
     ][
-      set _patches n-of 10 boat-fishable-patches in-radius (boat-max-distance / 2)
+      write-log (word "Need to search new fishing opportunities within distance " round (boat-max-distance / 2) " km")
+      ;set _patches n-of 10 boat-fishable-patches in-radius (boat-max-distance / 2)
+      set _patches boat-find-patches 3 (boat-max-distance / 2)
       set _patch max-one-of _patches [traffic-suitability]
-      if one? [ print (sentence "Boat" who "leaves from " patch-here "and searches in radius"  (boat-max-distance / 2))]
-      write-log (word "Searched for new fishing opportunities in distance " (boat-max-distance / 2) " km")
+      if one? [ print (sentence "Boat" who "leaves from " patch-here "and searches in radius"  round (boat-max-distance / 2))]
     ]
 
   ][
@@ -529,8 +533,8 @@ to boat-choose-start
 
     if _action != nobody [
       set _patch [ patch-here ] of _action
-      if one? [ print (sentence "Boat" who "leaves from " patch-here "to memorized " _patch "with expected gain" [action-gain] of _action)]
-      write-log (word "Remembered fishing location at " _patch " with expected gain " [action-gain] of _action " €")
+      if one? [ print (sentence "Boat" who "leaves from " patch-here "to memorized " _patch " with expected gain" [action-gain] of _action)]
+      write-log (word "Remembered fishing location at " _patch " with expected gain " round [action-gain] of _action " €")
     ]
 
     ; Introduce some random component
@@ -542,7 +546,7 @@ to boat-choose-start
       if _nearby-patch != nobody [
         set _patch _nearby-patch
         if one? [ print (sentence "Boat" who "corrects position to " _patch )]
-        write-log (word "Corrected position to " _patch)
+        write-log (word "Corrected target patch to " _patch)
       ]
     ]
   ]
@@ -558,15 +562,16 @@ to boat-choose-start
     ; Do not show the movement during choosing start unless we're following one boat
     if not one? [pen-up]
     move-to _patch
-    if not [accessible?] of patch-here [
-      error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(choose start)")
-    ]
 
     set boat-distance-at-sea boat-distance-at-sea + _distance
     set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
     set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
     set boat-hour boat-hour + _distance / boat-steaming-speed
-    write-log (word "Found suitable location, ready to deploy gear")
+
+    write-log (word "Steamed here with speed " round boat-steaming-speed " km h-1 to sail " round _distance " km")
+    if not [accessible?] of patch-here [
+      error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(choose start)")
+    ]
 
     set boat-trip-phase 3 ; ready to fish
     set heading random 360
@@ -903,9 +908,9 @@ end
 
 to write-log [_entry ]
   if is-logbook? (boat-logbook) [
-    let _timestamp (word time:show date "YYYY-MM-dd " leading-zero boat-hour 2 ":" leading-zero round ((boat-hour mod 1) * 5 / 3) 2 )
+    let _timestamp (word time:show date "YYYY-MM-dd " leading-zero boat-hour 2 ":" leading-zero round ((boat-hour mod 1) * 60) 2 )
     let _envelope gis:envelope-of self
-    write-timestamp-log (word _timestamp " " (precision item 0 _envelope 2) "°E " (precision item 2 _envelope 2) "°N")_entry
+    write-timestamp-log (word _timestamp " " (precision item 0 _envelope 3) "°E " (precision item 2 _envelope 3) "°N")_entry
   ]
 end
 
@@ -926,4 +931,16 @@ to-report boat-names
   ;print starts-with _data "#"
   ;while [starts-with _data "#" ] [ print first _data set _data butfirst _data]
   report butfirst butfirst butfirst butfirst _data
+end
+
+; Boat procedure that generates a list of _n fishable patches within a given _distance
+to-report boat-find-patches [_n _distance]
+  let _patches (patch-set)
+  while [count _patches < _n] [
+    set heading random 360
+    let _patch patch-ahead random-float (_distance / gis-scale)
+    if _patch != nobody and [accessible?] of _patch
+      and member? _patch boat-fishable-patches [set _patches (patch-set _patches _patch)]
+  ]
+  report _patches
 end
