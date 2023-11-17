@@ -269,7 +269,10 @@ to boat-rest-port
   ifelse _day-of-week = 6 or holiday?
   or (boat-prey = "Crangon" and is-ramadan?) [
     set boat-hour 24
-    write-log (word "Won't go out this " time:show date "EEEE" " at all")
+    let _reason time:show date "EEEE"
+    if holiday? [ set _reason (word "holiday " _reason) ]
+    if (boat-prey = "Crangon" and is-ramadan?) [ set _reason (word "Ramadan " _reason) ]
+    write-log (word "Won't go out this " _reason " at all")
   ][
     set boat-trip-phase 1 ; ready to leave port
   ]

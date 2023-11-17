@@ -2,10 +2,12 @@
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
-FROM ${DOCKERHUB_NAMESPACE}/jdk
-
 ARG NETLOGO_VERSION=6.3.0
-ARG DOCKERHUB_NAMESPACE=platipodium
+ARG TARGETARCH
+
+FROM platipodium/jdk
+
+ARG NETLOGO_VERSION
 
 LABEL description="NetLogo image based on ubuntu:rolling/jdk"
 LABEL author="Carsten Lemmen <carsten.lemmen@hereon.de>"
@@ -21,8 +23,11 @@ ENV NETLOGO_URL=https://ccl.northwestern.edu/netlogo/${NETLOGO_VERSION}/${NETLOG
 RUN mkdir /opt/netlogo
 RUN curl ${NETLOGO_URL} --output ${NETLOGO_NAME}-64.tgz
 RUN tar xzf ${NETLOGO_NAME}-64.tgz -C /opt/netlogo --strip-components=1
+RUN rm -f ${NETLOGO_NAME}-64.tgz
 
 # Inject JVM options
 RUN sed -i '16i JVM_OPTS+=("-Dsun.java2d.xrender=false")' /opt/netlogo/netlogo-gui.sh
 
 CMD /bin/bash
+
+# Execute this image with `docker run -i -t platipodium/netlogo:6.3.0`

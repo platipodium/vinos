@@ -2,10 +2,10 @@
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
-FROM ${DOCKERHUB_NAMESPACE}/netlogo:${NETLOGO_VERSION}
-
 ARG NETLOGO_VERSION=6.3.0
-ARG DOCKERHUB_NAMESPACE=platipodium
+FROM platipodium/netlogo:${NETLOGO_VERSION}
+
+ARG NETLOGO_VERSION
 
 LABEL description="Viable North Sea (ViNoS) NetLogo model"
 LABEL author="Carsten Lemmen <carsten.lemmen@hereon.de>"
@@ -32,7 +32,7 @@ COPY ./ReadMe.md ${HOME}
 
 #RUN sed -i 's/^NetLogo 6..../NetLogo '${NETLOGO_VERSION}'/g' ${HOME}/netlogo/${MODEL_NAME}
 
-ENV PATH=${PATH}:/opt/netlogo
+ENV PATH=${PATH}:/opt/netlogo/bin
 CMD /opt/netlogo/netlogo-gui.sh ${HOME}/netlogo/${MODEL_NAME}
 
 # docker run -i -v /tmp/.X11-unix:/tmp/.X11-unix --user="$(id --user):$(id --group)" -t ulogo
