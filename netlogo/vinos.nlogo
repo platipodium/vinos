@@ -279,7 +279,7 @@ to go
     ]
     set _boats _active-boats with [boat-hour < 24]
   ]
-  ask boats [ set boat-hour boat-hour mod 24 ]
+  ask boats [ set boat-hour boat-hour - 24 ]
 
   update-plots
   update-scene
@@ -677,7 +677,7 @@ SWITCH
 156
 show-ports?
 show-ports?
-1
+0
 1
 -1000
 
@@ -936,7 +936,7 @@ SWITCH
 193
 show-boats?
 show-boats?
-1
+0
 1
 -1000
 

@@ -263,23 +263,14 @@ end
 ; 4 at sea, needing to go home
 ; 5  in port, need to unload
 
-; Boat phase 0.  Boat procedure to rest.  This is dependent on weekends and for
+; Boat phase 0.  Boat procedure to stay i port.  This is dependent on weekends and for
 ; shrimpers also on Ramadan in Morocco, where 90% of landed shrimp is processed.
 to boat-rest-port
   let _imonth time:get "month" date - 1
+  let _day-of-week time:get "dayofweek" date
 
-  ; Boats rest for at least 11 hours and regain their ability to stay offshore
   set boat-time-at-sea 0
   set boat-time-at-sea-left boat-max-duration
-  write-log (word "Need to rest 11 hours")
-  set boat-hour boat-hour + 11
-
-  ; If on Monday, rest at least until 4 am
-  let _day-of-week time:get "dayofweek" date
-  if  _day-of-week = 1 and boat-hour < 4 [
-    write-log (word "Need to wait until 4 am")
-    set boat-hour 4
-  ]
 
   ; Boats arriving in port on Saturday don't go out again, neither do boats go
   ; out on a Sunday or before Monday 4 am.  Shrimpers don't go out during Ramadan.
@@ -298,19 +289,27 @@ to boat-rest-port
   ; Introduce some weather, based on statistics of wind speeds exceeding
   ; a threshold.  See calendar.nls for details of the implementation
   if boat-trip-phase = 1 and storm? [
-    set boat-hour 24
+    set boat-hour boat-hour + 12
     set boat-trip-phase 0
-    write-log (word "Won't go out for bad weather")
+    write-log (word "There's a storm, let's wait it out for 12 h")
   ]
 
   ; Introduce gain expectation from data be Temming et al. MEPS
   ; This is highlgy variable (from 1.5 to 15), so choose with that
   ; probablity whether to go out or stay in port
   if (boat-trip-phase = 1  and item _imonth fleet-landing-climatology < random-float max fleet-landing-climatology) [
-    set boat-hour 24
-    write-log (word "Won't go out for expected bad catch")
+    set boat-hour boat-hour + 12
+    write-log (word "I feel it's not worth it, let's wait for 12 h")
     set boat-trip-phase 0
   ]
+
+  if  boat-trip-phase = 1 [
+    ; need to wait for 1 hour before next high water
+    let _high-water boat-next-high-water
+    write-log (word "Need to wait for high water for " precision _high-water 2 " hours")
+    set boat-hour boat-hour + _high-water
+  ]
+
  end
 
 ; Boat trip phase 1. This is a boat procedure initializing a new
@@ -446,7 +445,7 @@ to boat-land-port
           set action-age 0
           move-to _patch
         ]
-        write-log (word "Remember this fishing location " _patch " with catch " _catch "kg")
+        write-log (word "Remember this fishing location " _patch " with catch " precision _catch 1 "kg")
       ]
 
       set boat-actions  (turtle-set _my-action boat-actions)
@@ -484,9 +483,10 @@ to boat-land-port
   set boat-trip-best-catch 0
   set boat-trip-best-patch nobody
 
-  ; @todo find out how long it takes to land the catch and clean the boat, here, we assume 2 hours
+  ; @todo find out how long it takes to land the catch, clean and refule the boat, here, we assume 2 hours
   set boat-hour boat-hour + 2
-  write-log (word "Unloading for 2 hours finished")
+  write-log (word "Finished unloading, cleaning and refuelling " boat-name ", now rest for 8 hours")
+  set boat-hour boat-hour + 8
 end
 
 ; This is a boat procedure  where a boat
@@ -590,24 +590,26 @@ to boat-return-port
   ; don't show returning to port
   pen-up
   move-to _patch
-  write-log (word "Arrived at port entry location")
 
   set boat-distance-at-sea boat-distance-at-sea + _distance
   set boat-time-at-sea boat-time-at-sea  + _time
   set boat-time-at-sea-left boat-time-at-sea-left - _time
   set boat-hour boat-hour + _time
+
+  write-log (word "Arrived at port entry location")
 
   face boat-home-port
   set _distance gis-scale * distance boat-home-port
   set _time _distance / boat-steaming-speed
 
   move-to boat-home-port
-  write-log (word "Arrived in  port " [port-name] of boat-home-port)
 
   set boat-distance-at-sea boat-distance-at-sea + _distance
   set boat-time-at-sea boat-time-at-sea  + _time
   set boat-time-at-sea-left boat-time-at-sea-left - _time
   set boat-hour boat-hour + _time
+
+  write-log (word "Arrived in  port " [port-name] of boat-home-port)
 
   set boat-trip-phase 5 ; need to land
 
@@ -705,8 +707,9 @@ to boat-make-haul
       forward _step-distance
 
       set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
+      set boat-hour boat-hour + _step-time
 
-      write-log (word "Trawl filling with another " (precision item boat-current-gear-index _new-catches 1)" kg" )
+      write-log (word "Trawl net gained " (precision item boat-current-gear-index _new-catches 1) " kg" )
 
       if item boat-current-gear-index _new-catches > boat-trip-best-catch [
         set boat-trip-best-catch item boat-current-gear-index _new-catches
@@ -722,12 +725,12 @@ to boat-make-haul
     set boat-time-at-sea boat-time-at-sea  + _haul-time
     set boat-distance-at-sea boat-distance-at-sea + _haul-distance
     set boat-time-at-sea-left boat-time-at-sea-left - _haul-time
-    set boat-hour boat-hour + _haul-time
 
     let distance-left boat-steaming-speed * boat-time-at-sea-left ; at typical speed of 19 km / h this is 1368 km
     face  [port-start-patch] of boat-home-port
 
     if distance-left < 1.1 * gis-scale * distance [port-start-patch] of boat-home-port [
+      write-log (word "Need to return home, have only fuel left for " round distance-left " km")
       set boat-trip-phase 4
     ]
 
@@ -773,6 +776,7 @@ end
 
 ; This boat procedure return the agent-set of accessible patches considering
 ; the plaice box restriction if highest priority gear's prey is plaice.
+; @todo synchronize this with global tide model
 to-report boat-accessible-patches
 
   let _patches patches with [accessible?]
@@ -908,7 +912,10 @@ end
 
 to write-log [_entry ]
   if is-logbook? (boat-logbook) [
-    let _timestamp (word time:show date "YYYY-MM-dd " leading-zero boat-hour 2 ":" leading-zero round ((boat-hour mod 1) * 60) 2 )
+    let _minute leading-zero round ((boat-hour mod 1) * 60) 2
+    let _hour leading-zero  (boat-hour mod 24) 2
+    let _date time:show (time:plus date boat-hour "hours" ) "YYYY-MM-dd "
+    let _timestamp (word _date " " _hour ":" _minute)
     let _envelope gis:envelope-of self
     write-timestamp-log (word _timestamp " " (precision item 0 _envelope 3) "°E " (precision item 2 _envelope 3) "°N")_entry
   ]
@@ -943,4 +950,17 @@ to-report boat-find-patches [_n _distance]
       and member? _patch boat-fishable-patches [set _patches (patch-set _patches _patch)]
   ]
   report _patches
+end
+
+; Boat procedure, there is some redundancy with the global tide procedure
+; returns the time until the next 1 hour before high water
+; @todo calculation needs verification
+to-report boat-next-high-water
+  let _amphidrome one-of amphidromes
+
+  ; assume 12.4167 lunar semidurnal (M2) tide, and convert from hours to degree, than add heading
+  let _m2-phase (boat-hour + 24 * time:get "dayofyear" datetime + 365.25 * time:get "year" datetime)  / ([m2-period] of _amphidrome) * 360
+  ask _amphidrome [face myself]
+
+  report ((90 -  _m2-phase mod 360 - [heading] of _amphidrome) / 360.0 * 24  - 1 ) mod 12.4167
 end
