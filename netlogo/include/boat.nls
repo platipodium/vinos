@@ -193,7 +193,7 @@ to setup-boats
       ; Also include every 3 months when gear change is deliberated the previous year's experience
       ; Add location and fishing trip length in option pathways.
 
-      set boat-trip-phase 1 ; in port and available
+      set boat-trip-phase 0 ; in port and resting
       set boat-home-port myself
       set boat-needs-return? false
       set boat-hour 0
@@ -501,6 +501,7 @@ to boat-choose-start
 
   ifelse count boat-actions < memory-size  or memory-size < 1 [
       write-log (word "Learning more than " count boat-actions " out of " memory-size " locations " (sentence [ (word xcor "," ycor) ] of boat-actions))
+      write-log (word "Previous trips' best catches were " (sentence [ round action-catch ] of boat-actions) " kg")
       ; random patch if not sufficient memory accumulated yet (learning phase)
 
     ifelse patch-here = [port-start-patch] of boat-home-port  [
@@ -520,11 +521,13 @@ to boat-choose-start
   ][
     ask boat-actions [
       ; @todo improve heading-dependent gis-scale calculation
+      face myself
       let _action-distance  gis-scale * distance myself
       set action-gain action-catch * _prey-price - _action-distance * _boat-cost-per-km
     ]
 
     let _mean-gain median [action-gain] of boat-actions
+    write-log (word "Estimated gains from previous trips are " (sentence [ (word action-gain) ] of boat-actions) " €" )
 
     ; How do we choose our next action, this could be a random action better than
     ; average, or it could be simply the best action at hand.
@@ -551,7 +554,7 @@ to boat-choose-start
     ]
   ]
 
-  ; If there are not accessible patches found, go home and try again
+  ; If there are no accessible patches found, go home and try again
   ifelse (_patch = nobody or [not accessible?] of _patch) [
     set boat-trip-phase 4 ; need to go home
     write-log (word "Couldn't find good fishing location, returning home")
@@ -575,6 +578,19 @@ to boat-choose-start
 
     set boat-trip-phase 3 ; ready to fish
     set heading random 360
+
+    let _n count other boats-here
+    ifelse _n > 0 [
+      ifelse _n > 5 [
+        write-log (word "Sighted another " _n " boats here, too crowded for me")
+      ][
+        write-log (word "Sighted another " _n " boats here, will deploy gear here")
+        set boat-trip-phase 2 ; continue looking for suitable locations
+      ]
+    ][
+      write-log (word "No other boats here, will deploy gear here")
+    ]
+
   ]
 end
 
@@ -714,7 +730,7 @@ to boat-make-haul
       if item boat-current-gear-index _new-catches > boat-trip-best-catch [
         set boat-trip-best-catch item boat-current-gear-index _new-catches
         set boat-trip-best-patch patch-here
-        write-log (word "Noting particularly good location " boat-trip-best-patch " catching " round boat-trip-best-catch " kg")
+        write-log (word "Noting this trip's best location " boat-trip-best-patch " catching " round boat-trip-best-catch " kg")
       ]
     ] ; end of repeat _sub-steps
 
@@ -729,8 +745,11 @@ to boat-make-haul
     let distance-left boat-steaming-speed * boat-time-at-sea-left ; at typical speed of 19 km / h this is 1368 km
     face  [port-start-patch] of boat-home-port
 
+    write-log (word "So far spent " round boat-time-at-sea " h and " round boat-distance-at-sea " km at sea")
+    write-log (word "Estimate to have left " round boat-time-at-sea-left " h and " round distance-left " km on this trip")
+
     if distance-left < 1.1 * gis-scale * distance [port-start-patch] of boat-home-port [
-      write-log (word "Need to return home, have only fuel left for " round distance-left " km")
+      write-log (word "Need to return home")
       set boat-trip-phase 4
     ]
 
@@ -830,7 +849,9 @@ to-report boat-accessible-path [_distance _n]
     ;let _patch-ahead patch-ahead ((_i + 1) * _distance / _n)
     ;set _patches-ahead (patch-set _patches-ahead _patch-ahead)
     ;  if not member? _patch-ahead _fishable-patches [report false]
-    if not member? (patch-ahead ((_i + 1) * _distance / _n)) _fishable-patches [report false]
+    let _patch-ahead patch-ahead ((_i + 1) * _distance / _n)
+    if any? other boats-on _patch-ahead [report false]
+    if not member? _patch-ahead _fishable-patches [report false]
   ]
 
   report true
