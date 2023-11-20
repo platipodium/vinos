@@ -677,7 +677,7 @@ SWITCH
 156
 show-ports?
 show-ports?
-0
+1
 1
 -1000
 
@@ -690,7 +690,7 @@ adaptation
 adaptation
 0
 1
-0.739
+0.784
 0.001
 1
 NIL
@@ -936,7 +936,7 @@ SWITCH
 193
 show-boats?
 show-boats?
-0
+1
 1
 -1000
 
