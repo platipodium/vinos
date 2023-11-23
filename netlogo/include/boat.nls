@@ -115,6 +115,7 @@ to setup-boats
         ; The 1-based boat types are
         ; 3: "typical" 1: "longer typical" 2: "flexible" 4: "not shrimper"
         set boat-type i
+        set boat-name ""
       ]
     ])
 
@@ -123,8 +124,10 @@ to setup-boats
 
       ; Choose a unique name for the boat
       let _name item 2 (item random length _names _names)
-      if any? other boats with [boat-name = _name] [ set _name (word _name " I") ]
-      while [any? other boats with [boat-name = _name]] [ set _name (word _name "I") ]
+      if any? other boats with [boat-name = _name] [
+        let _count count boats with [ item 0 split " " boat-name = _name ] + 1
+        set _name (word _name " " (romanize _count  ))
+      ]
       set boat-name _name
 
       ; Choose a unique name for the captain
