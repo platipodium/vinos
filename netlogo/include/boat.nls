@@ -427,66 +427,8 @@ to boat-land-port
   set boat-distance-at-sea 0
   set boat-trip-phase 0
 
-  ; now update the memory from this trip's best catch and only if
-  ; this location is not a preferred one for more than 10 other boats
-  let _min-action-distance 5 ; minimum patch distance between two actions
-  let _my-action nobody
-  if boat-trip-best-catch > 0 and count actions-on boat-trip-best-patch < 11 [
+  boat-update-memory
 
-    let _catch boat-trip-best-catch
-    let _patch boat-trip-best-patch
-    let _prey-price item boat-current-prey-index prey-prices
-    let _boat-cost-per-km (boat-fuel-lperh * oil-price / 100  + wage) / boat-steaming-speed
-
-    ; @todo make sure that actions have a minimum distance from one another...
-    ifelse count boat-actions < memory-size [
-
-      ifelse any? boat-actions with [distance _patch < _min-action-distance][
-        ; don't do anything
-      ][
-        hatch-actions 1 [
-          set _my-action self
-          ; @todo fix gear selection (has no impact yet)
-          set action-gear [item 0 boat-gears] of myself
-          set action-catch _catch
-          set action-age 0
-          move-to _patch
-        ]
-        write-log (word "Remember this fishing location " _patch " with catch " precision _catch 1 "kg")
-      ]
-
-      set boat-actions  (turtle-set _my-action boat-actions)
-    ][
-
-      ask boat-actions [
-        ; @todo improve heading-dependent gis-scale calculation
-        let _action-distance  gis-scale * distance myself
-        set action-gain action-catch * _prey-price - _action-distance * _boat-cost-per-km
-      ]
-
-      ; Check whether the boat already remembers this patch and
-      ; update its catch accordingly, otherwise choose one with
-      ; lower previous catch
-      let _nearby-actions boat-actions with [distance _patch < _min-action-distance]
-      ifelse any? _nearby-actions [
-        set _my-action min-one-of _nearby-actions [action-gain]
-        write-log (word "Choose to try at nearby remembered location")
-      ][
-        set _my-action min-one-of boat-actions [action-gain]
-        write-log (word "Choose to try at other remembered location")
-      ]
-      if _my-action != nobody [
-        ; replace properties of that action
-        ask _my-action [
-          set action-gear [item 0 boat-gears] of myself ; @todo update index
-          set action-catch [boat-trip-best-catch] of myself
-          set action-age 0
-          move-to [boat-trip-best-patch] of myself
-        ]
-        write-log (word "Update remember this fishing location " boat-trip-best-patch " with catch " boat-trip-best-catch " kg")
-      ]
-    ]
-  ]
   set boat-trip-best-catch 0
   set boat-trip-best-patch nobody
 
@@ -509,7 +451,8 @@ to boat-choose-start
   let _actions (list)
   if any? boat-actions [ set _actions reverse sort-on [action-catch] boat-actions ]
 
-  ; Try to fish at known locations if there are sufficiently many
+  ; Try to fish at known locations other than the one I am on, and only
+  ; if there are sufficiently many
   if length _actions >= memory-size and memory-size > 0 [
     foreach _actions [ a ->
       ; @todo improve heading-dependent gis-scale calculation
@@ -519,7 +462,7 @@ to boat-choose-start
     ]
 
     let _action nobody
-    set _actions filter [ a -> [action-gain] of a > 0] _actions
+    set _actions filter [ a -> [action-gain] of a > 0 and [patch-here] of a != patch-here] _actions
     if length _actions > 0 [
       let _gains map [ a -> [round action-gain] of a] _actions
       let _mean-gain median _gains
@@ -565,7 +508,7 @@ to boat-choose-start
   ]
 
   ; If there are no accessible patches found, go home and try again
-  ifelse (_patch = nobody or [not accessible?] of _patch) [
+  ifelse (_patch = nobody or [not accessible?] of _patch or _patch = patch-here) [
     set boat-trip-phase 4 ; need to go home
     write-log (word "Couldn't find good fishing location, returning home")
   ][
@@ -942,7 +885,7 @@ to write-log [_entry ]
     let _minute leading-zero round ((boat-hour mod 1) * 60) 2
     let _hour leading-zero  (boat-hour mod 24) 2
     let _date time:show (time:plus date boat-hour "hours" ) "YYYY-MM-dd "
-    let _timestamp (word _date " " _hour ":" _minute)
+    let _timestamp (word _date _hour ":" _minute)
     let _envelope gis:envelope-of self
     write-timestamp-log (word _timestamp " " (precision item 0 _envelope 3) "°E " (precision item 2 _envelope 3) "°N")_entry
   ]
@@ -1007,4 +950,66 @@ to-report boat-fuzzy-position [ _patch ]
     ]
   ]
   report _patch
+end
+
+; Boat procedure to update its memory of actions
+to boat-update-memory
+  let _catch boat-trip-best-catch
+  let _patch boat-trip-best-patch
+
+  if round _catch < 1 [ stop ]
+  if count actions-on _patch > 10 [ stop ]
+
+  let _min-action-distance 5 ; minimum patch distance between two actions
+  let _action nobody
+  let _actions (list)
+  let _prey-price item boat-current-prey-index prey-prices
+  let _boat-cost-per-km (boat-fuel-lperh * oil-price / 100  + wage) / boat-steaming-speed
+
+  ; @todo make sure that actions have a minimum distance from one another...
+  ifelse count boat-actions < memory-size [
+    ifelse any? boat-actions with [distance _patch < _min-action-distance][
+      ; don't do anything
+    ][
+      hatch-actions 1 [
+        set _action self
+        set action-gear [item  boat-current-gear-index boat-gears] of myself
+        set action-catch _catch
+        set action-age 0
+        move-to _patch
+      ]
+      write-log (word "Remember new fishing location " _patch " with catch " precision _catch 1 " kg")
+      set boat-actions  (turtle-set _action boat-actions)
+    ]
+  ][
+    ; Check whether the boat already remembers this patch
+    set _action one-of  boat-actions with [patch-here = _patch]
+    ifelse _action != nobody [
+      write-log (word "Update existing location with catch "
+        precision [action-catch] of _action 1 " => " precision _catch 1 " kg")
+    ][
+      ; Otherwise choose one in the neighborhood with lesser catch
+      set _actions boat-actions with [distance _patch < _min-action-distance and action-catch < _catch]
+      ifelse any? _actions [
+        set _action min-one-of _actions [action-catch]
+        write-log (word "Update existing nearby location with catch "
+          precision [action-catch] of _action 1 " => " precision _catch 1 " kg")
+       ][
+        ; Recalculate expected gains for existing actions, this is necessary as this value
+        ; gets updated during the location search in open water
+        ask boat-actions [
+          let _action-distance  gis-scale * distance myself
+          set action-gain action-catch * _prey-price - _action-distance * _boat-cost-per-km
+        ]
+        set _action min-one-of boat-actions [action-gain]
+        write-log (word "Update existing least gain location with catch " precision [action-catch] of _action 1 " => " precision _catch 1 " kg")
+       ]
+    ]
+    if _action != nobody [ ask _action [
+      set action-gear [item boat-current-gear-index boat-gears] of myself
+      set action-catch _catch
+      set action-age 0
+      move-to _patch
+    ]]
+  ]
 end

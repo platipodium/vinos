@@ -216,7 +216,7 @@ to go
   update-date-patch
 
   ; Every new year recompute exclusion area from OWF
-  if (time:get "dayofyear" date = 1) [ update-owf calc-accessibility ]
+  if (time:get "dayofyear" date = 1) [ calc-accessibility ]
 
   ;let _total-prey-landed sum ([port-prey-landed] of ports)
   ; Todo: adjust price, leave for next version
@@ -263,7 +263,7 @@ to go
     ]
     set _boats-in-phase _boats with [boat-trip-phase = 2]
     if any? _boats-in-phase [
-      ;print (word "  .. repositioning " count _boats-in-phase " boats ..")
+      ;print (word "  .. choosing new start " count _boats-in-phase " boats ..")
       ask _boats-in-phase [boat-choose-start]
     ]
     set _boats-in-phase _boats with [boat-trip-phase = 1]
@@ -459,7 +459,8 @@ to calc-accessibility
   setup-water-patches
 
   ask patches [set plaice-box? false]
-  load-plaice-box
+  let _dataset load-dataset "Plaicebox"
+  ask patches gis:intersecting _dataset [ set plaice-box? true ]
 
   ; Boats are not allowed within OWF areas
   update-owf
@@ -633,7 +634,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-6
+4
 
 BUTTON
 83
@@ -1034,7 +1035,7 @@ CHOOSER
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast" "age"
-5
+0
 
 BUTTON
 1301
