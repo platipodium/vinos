@@ -227,16 +227,15 @@ to go
   ;let _active-boats n-of 10 boats
   let _active-boats boats
 
-
   ; Enable a simulation with only one active boat that can be closely
   ; followed.  This is off by default
   ifelse one? [
-    set _active-boats min-n-of 1 boats [who]
+    set _active-boats min-n-of 1 (boats with [boat-logbook != 0 ]) [who]
     let _boat one-of _active-boats
 
     if subject != _boat [
-      watch _boat
-      inspect _boat
+      ;watch _boat
+      ;inspect _boat
     ]
   ][
     if subject != nobody [
