@@ -217,27 +217,12 @@ to setup-boats
     let _logbook nobody
     hatch-logbooks 1 [
       set hidden? true
-      set logbook-file-name (word "results/logbook_" [who] of myself ".txt")
+      set logbook-file-name (word "results/logbook_learn_" [who] of myself ".txt")
       if file-exists? logbook-file-name [carefully [file-delete logbook-file-name][]]
       set _logbook self
     ]
     set boat-logbook _logbook
-    write-log (word "Logbook of " boat-name ", commanded by " boat-captain )
-    write-log (word "Home port is " [port-name] of boat-home-port " with fishing radius " ceiling boat-max-distance " km")
-    write-log (word "Regular stay at sea is " ceiling boat-max-duration " h" )
-    write-log (word boat-name " is a " round boat-length " m trawler with engine power "
-        round boat-engine " kW and capacity " round boat-capacity " kg")
-    write-log(word "Steaming speed is " precision boat-steaming-speed 1 " km h-1")
-    write-log (word "Equipped with gear " [gear-name] of (item boat-current-gear-index boat-gears)
-        ", targets " item boat-current-prey-index prey-names)
-    write-log(word "Fishing speed is " precision [gear-speed] of (item boat-current-gear-index boat-gears) 1 " km h-1")
-    if any? other boats-here [
-      let _other-boats other boats-here
-      foreach sort other boats-here [ b ->
-        write-log(word "Also in " [port-name] of boat-home-port " is " [boat-name] of b " commanded by " [boat-captain] of b " with gear "
-          [gear-name] of (item [boat-current-gear-index] of b [boat-gears] of b))
-      ]
-    ]
+    boat-logbook-header
   ]
 
 end
@@ -582,7 +567,7 @@ to boat-return-port
   set boat-time-at-sea-left boat-time-at-sea-left - _time
   set boat-hour boat-hour + _time
 
-  write-log (word "Arrived in  port " [port-name] of boat-home-port)
+  write-log (word "Arrived in port " [port-name] of boat-home-port)
 
   set boat-trip-phase 5 ; need to land
 
@@ -692,7 +677,7 @@ to boat-make-haul
       ]
     ] ; end of repeat _sub-steps
 
-    write-log (word "Hauled " (round item boat-current-gear-index _haul-catches) " kg abord")
+    write-log (word "Hauled " (precision item boat-current-gear-index _haul-catches 1)  " kg abord")
 
     let _next-heading heading - 180 - 10 + random (21 + 1)
 
@@ -702,15 +687,16 @@ to boat-make-haul
 
     let distance-left boat-steaming-speed * boat-time-at-sea-left ; at typical speed of 19 km / h this is 1368 km
     face  [port-start-patch] of boat-home-port
+    let _home-distance-km gis-scale * distance [port-start-patch] of boat-home-port
 
     ; If the catch is not worth keeping, discard it entirely. Fishers do not want to keep
     ; the bad haul, as this  would restrict their left time, but only there are > 24 hours left
     ; On the other hand, on good haul make sure to return within 24 hours to keep it fresh
     if (boat-time-at-sea-left > 24) [
       ifelse item boat-current-gear-index _haul-catches < min-fresh-catch [
-        set _haul-catches n-values length boat-gears [i -> 0]
         set boat-trip-phase 2
         write-log (word "Discarded catch " (precision item boat-current-gear-index _haul-catches 1) " as insufficient")
+        set _haul-catches n-values length boat-gears [i -> 0]
       ][
         set boat-time-at-sea-left 24
         write-log (word "Need to return within next 24 hours to keep catch fresh")
@@ -719,10 +705,11 @@ to boat-make-haul
     set boat-trip-gear-catches n-values (number-of-gears) [i -> (item i boat-trip-gear-catches + item i _haul-catches)]
 
     write-log (word "So far spent " round boat-time-at-sea " h and " round boat-distance-at-sea " km at sea")
-    write-log (word "Estimate to have left " round boat-time-at-sea-left " h and " round distance-left " km on this trip")
+    write-log (word "Estimate to have left " precision boat-time-at-sea-left 1 " h and " round distance-left " km on this trip")
+    write-log (word "Home is " precision (_home-distance-km / boat-steaming-speed) 1 " h or " round _home-distance-km " km away")
 
-    if distance-left < 1.1 * gis-scale * distance [port-start-patch] of boat-home-port [
-      write-log (word "Need to return home")
+    if distance-left < 1.1 * _home-distance-km [
+      write-log (word "Need to return to safely get home with available fuel")
       set boat-trip-phase 4
     ]
     ; If the boat is full, also need to return
@@ -892,7 +879,7 @@ to write-log [_entry ]
     let _date time:show (time:plus date boat-hour "hours" ) "YYYY-MM-dd "
     let _timestamp (word _date _hour ":" _minute)
     let _envelope gis:envelope-of self
-    write-timestamp-log (word _timestamp " " (precision item 0 _envelope 3) "°E " (precision item 2 _envelope 3) "°N")_entry
+    write-timestamp-log (word _timestamp " " (precision item 0 _envelope 4) "°E " (precision item 2 _envelope 4) "°N")_entry
   ]
 end
 
@@ -1016,5 +1003,28 @@ to boat-update-memory
       set action-age 0
       move-to _patch
     ]]
+  ]
+end
+
+to boat-logbook-header
+  if not is-logbook? boat-logbook [stop]
+  let _port-name [port-name] of boat-home-port
+  write-log (word "Logbook of " boat-name ", commanded by " boat-captain )
+  write-log (word "Home port is " [port-name] of boat-home-port " with fishing radius " ceiling boat-max-distance " km")
+  write-log (word "Regular stay at sea is " ceiling boat-max-duration " h" )
+  write-log (word boat-name " is a " round boat-length " m trawler with engine power "
+        round boat-engine " kW and capacity " round boat-capacity " kg")
+  write-log(word "Steaming speed is " precision boat-steaming-speed 1 " km h-1 / "
+    precision (boat-steaming-speed / 1.852) 1 " knots")
+  write-log (word "Equipped with gear " [gear-name] of (item boat-current-gear-index boat-gears)
+      ", targets " item boat-current-prey-index prey-names)
+  write-log(word "Fishing speed is " precision [gear-speed] of (item boat-current-gear-index boat-gears) 1 " km h-1 / "
+  precision ([gear-speed] of (item boat-current-gear-index boat-gears) / 1.852) 1 " knots" )
+  if any? other boats with [[port-name] of boat-home-port = _port-name] [
+    let _other-boats other boats-here
+    foreach sort other boats-here [ b ->
+      write-log(word "Also in " [port-name] of boat-home-port " is " [boat-name] of b " commanded by " [boat-captain] of b " with gear "
+        [gear-name] of (item [boat-current-gear-index] of b [boat-gears] of b))
+    ]
   ]
 end

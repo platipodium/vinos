@@ -285,6 +285,7 @@ to go
   ;update-drawings
   update-actions
   update-output   ; updates the output diagnostics, see output.nls
+  update-logbooks
 
   ; export the data every week on a Sunday (weekday 0)
   ;if (time:get "dayofweek"  date mod 7) = 0 [
@@ -518,7 +519,6 @@ end
 ; called by go each time step
 ; @todo expand to other gears, as this one
 to save-totals
-
   let _boats boats with [boat-total-time-at-sea > 0 and ([gear-species] of item boat-current-gear-index boat-gears) =  "Shrimp"]
   let _count count _boats
   let _filename (word "results/total_avg_shrimp_" (time:get "year" start-date)
@@ -581,6 +581,18 @@ to license-message
   print "limitations under the License."
   print ""
 end
+
+to update-logbooks
+  ask boats with [is-turtle? boat-logbook and count boat-actions = memory-size] [
+    if [logbook-file-name] of boat-logbook = (word "results/logbook_learn_" who ".txt") [
+      ask boat-logbook [
+        set logbook-file-name (word "results/logbook_" [who] of myself ".txt")
+        if file-exists? logbook-file-name [carefully [file-delete logbook-file-name][]]
+      ]
+      boat-logbook-header
+    ]
+  ]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -634,7 +646,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-4
+6
 
 BUTTON
 83
@@ -1524,7 +1536,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.3.0
+NetLogo 6.4.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
