@@ -169,6 +169,7 @@ to plot-update-boat-property
     if ( boat-property-chooser =  "boat-total-days-at-sea" ) [ set _values [ round boat-total-time-at-sea / 365.25] of boats ]
     if ( boat-property-chooser =  "boat-total-fuel" ) [ set _values [ round boat-total-fuel] of boats ]
     if ( boat-property-chooser =  "boat-total-landings" ) [ set _values [ round boat-total-landings] of boats ]
+    if ( boat-property-chooser =  "capital" ) [ set _values [ round (boat-capital / 1000) ] of boats ]
 
     set-histogram-num-bars 9
     set _x-range (list (min _values) (max _values))

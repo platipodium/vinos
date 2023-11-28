@@ -583,8 +583,9 @@ to license-message
 end
 
 to update-logbooks
-  ask boats with [is-turtle? boat-logbook and count boat-actions = memory-size] [
-    if [logbook-file-name] of boat-logbook = (word "results/logbook_learn_" who ".txt") [
+  ask boats with [boat-is-learning? and count boat-actions = memory-size] [
+    set boat-is-learning? false
+    if is-turtle? boat-logbook [
       ask boat-logbook [
         set logbook-file-name (word "results/logbook_" [who] of myself ".txt")
         if file-exists? logbook-file-name [carefully [file-delete logbook-file-name][]]
@@ -938,7 +939,7 @@ CHOOSER
 586
 boat-property-chooser
 boat-property-chooser
-"distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "fuel-cost" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea" "effort h"
+"distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "capital" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "fuel-cost" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea" "effort h"
 0
 
 SWITCH
