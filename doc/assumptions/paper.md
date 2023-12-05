@@ -48,6 +48,18 @@ This Assumptions Provenance document provides a detailed account of the many, an
 | Convenience         | Something to make the model work (or work more efficiently)                                                        |
 | Simplicity          | Something to make the modeling easier/simpler (often just an acceptable version of “Convenience”)                  |
 
+# Assumption provenance
+
+## Assumptions on entities
+
+The major entities in ViNoS are boats, preys, and ports.
+
+We assume that boat captains memorize a bounded set of prior fishing locations and the amount of the last catch at those locations. The size of the memory is a **_Guesswork_** assumption and ranges between 1 and 20; where the upper threshold is a **_Convenience_** assumption to control maximum memory usage. The size of the memory can be manipulated and its effects explored by the interactive model dashboard.
+
+The memorized location is not exact but depends on the resolution of the model, it is typically a 1.4 sqkm square area (dependent on model resolution) that is remembered. This restriction is a **_Convenience_** assumption to be able to manage efficiently overlapping (esp: avoiding nearby duplicates) memory. Also, the direction of the fishing activity within this square area is not recorded for **_Simplicity_**.
+
+The update of the memory follows the rule that new and better catches replace the memory of older and lesser catches. This is a **_Common sense_** assumption that fishers rather remember good catches than bad ones. Also, the catch at an already remembered location is updated with the most recent catch, also a **_Common Sense_** assumption.
+
 ### References
 
 Volker Grimm (2023), Ecology needs to overcome siloed modelling, Trends in Ecology & Evolution, Volume 38, Issue 12, Pages 1122-1124, https://doi.org/10.1016/j.tree.2023.09.011.
