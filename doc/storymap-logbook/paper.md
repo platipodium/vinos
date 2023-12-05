@@ -1,5 +1,5 @@
 ---
-title: "A shrimper's tale"
+title: "A shrimp fisher's personal account"
 tags:
   - NetLogo
   - Agent-based Model
@@ -34,9 +34,13 @@ SPDX-FileContributor: Carsten Lemmen
 
 Edda Bakker is owner and captain of a small shrimper boat. Her boat "Linda" is anchored in the Northern German coastal town Norddeich (7.1583°E, 53.625°N). Linda was built in 1972, and with a length of 24 m is one of the larger coastal fishery shrimpers. She's equipped with a 215 kW engine, just below the critical limit of 221 kW that carries restrictions on where to fish. Usually, Linda -- painted in the Frisian colors green, white and red, makes about 8.5 knots (15.7 km/h) in open water, and about 5 knots when the two 10-m beams to the right and left trawl the seafloor for shrimp.
 
-Edda's family operates three boats out of Norddeich: next to Linda, there's her brother Jost's boat Dorsch IV, and her mother Bentje's Dock III. Overall, eleven shrimpers operate out of the port of Norddeich. Actually, there is no captain Edda in Norddeich, nor is there a boat called "Linda", but she could be one of the virtual boats whose activities are simulated in our educational computer model "Viable North Sea". You can download this model and experience, even influence Edda's actions in this interactive model simulation. Here's the outcome, as a commented log book, of such a simulation.
+Edda's family operates three boats out of Norddeich: next to Linda, there's her brother Jost's boat Dorsch IV, and her mother Bentje's Dock III; overall, eleven shrimpers operate out of the port of Norddeich. This port is one of several mainland Wadden Sea ports that are protected by the Frisian barrier island archipelago and the mudflats of the Wadden Sea. To go fishing, most boats navigate the tidal channels subject to ebb and flood (Fig. 1).
+
+> Actually, there is no captain Edda in Norddeich, nor is there a boat called "Linda", but she could be one of the virtual boats whose activities are simulated in our educational computer model "Viable North Sea". You can download this model and experience, even influence Edda's actions in this interactive model simulation. Here's the outcome, as a commented log book, of such a simulation.
 
 ## The departure
+
+![Figure 1: The Norddeich port approach requires navigating the tidal channel between the islands of Norddeich and Juist.  Map by OpenStreetMap](assets/norddeich-approach.png){ width=30% }
 
 ```{.txt}
 2022-04-21 15:01 7.1583°E 53.625°N Leaving port Norddeich
@@ -49,9 +53,9 @@ Edda's family operates three boats out of Norddeich: next to Linda, there's her 
 2022-04-21 15:36 7.0875°E 53.6875°N Found suitable straight-line fishing path in direction 269°N
 ```
 
-[A shrimper from the North Sea port Fedderwardersiel with beam trawl. Photo pixabay/Wolfgang Claussen](https://pixabay.com/get/g427e7d61142817d668ba8d8ef6e7f7538a552e46878a7b63e498bdba3930249a7693d5069b68ad82edf04b321c45b36b813282b7cfec9607dc7f780470ef8a5d6019f483d8e203a5f2487691a74d2b12_1280.jpg?attachment=)
+![Figure 2: Shrimpers waiting in port of Norddeich.  Photo by Christian Walther](assets/walther_nor_kutter.png){ width=50% }
 
-As most days, on this 21st of April Linda leaves the port, arrives in open water and Edda calculates expected catches and gains near Linda's current location, based on prior fishing trips. She chooses one of those locations, steams there, lays out a straight line haul path with no other ship obstructing this path.
+As most days, on this 21st of April 2021 the Linda leaves the port, arrives in open water and Edda calculates expected catches and gains near Linda's current location, based on Edda's experience from prior fishing trips. She chooses one of her preferred fishing locations, steams there, and lays out a straight line haul path with no other ship obstructing this path.
 
 ## A single haul
 
@@ -70,7 +74,7 @@ As most days, on this 21st of April Linda leaves the port, arrives in open water
 2022-04-21 16:36 6.9469°E 53.685°N Need to return within next 24 hours to keep catch fresh
 ```
 
-Once at a suitable location, the gear is lowered into the water and the trawl begins. Usually, a single haul lasts one hour, and every 6 minutes the weight change in the dragged net is recorded to monitor the catch. Today, the net is filling only slowly and after 1 hour 16.4 kg shrimp are hauled abord. Well, better than nothing: Edda makes a not to return within the next 24 hours to land the catch while it's still fresh.
+Once at a suitable location, the gear is lowered into the water and the trawl begins. Usually, a single haul lasts one hour, and every six minutes the weight change in the dragged net is recorded to monitor the catch. Today, the net is filling only slowly and after one hour 16.4 kg shrimp are hauled abord. Well, better than nothing: Edda makes a note to return within the next 24 hours to land the catch while it's still fresh.
 
 ## Zigzagging the sea
 
@@ -80,7 +84,7 @@ Once at a suitable location, the gear is lowered into the water and the trawl be
 2022-04-21 16:36 6.9469°E 53.685°N Home is 0.7 h or 11 km away
 2022-04-21 16:36 6.9469°E 53.685°N Found suitable straight-line fishing path in direction 87°N
 2022-04-21 16:42 6.9609°E 53.6858°N Trawl net gained 3 kg
-2022-04-21 16:42 6.9609°E 53.6858°N Noting this trip's best location (patch 198 27) catching 3 kg
+2022-04-21 16:42 6.9609°E 53.6858°N Noting this trip's best location catching 3 kg
 2022-04-21 16:48 6.975°E 53.6865°N Trawl net gained 1.8 kg
 [...]
 2022-04-21 17:36 7.087°E 53.6924°N Trawl net gained 1.9 kg
@@ -88,6 +92,8 @@ Once at a suitable location, the gear is lowered into the water and the trawl be
 ```
 
 The Linda zigzags back on a southerly course for the next haul. Edda monitors the fuel remaining, the freshness of the catch and the distance from her home port Norddeich; she also records the best locations during each haul.
+
+![Figure 3: A shrimper from the North Sea port Fedderwardersiel with beam trawl. Photo by Wolfgang Claussen](assets/kutter_claussen.png){ width=50% }
 
 ```{.txt}
 2022-04-21 17:36 7.087°E 53.6924°N Found suitable straight-line fishing path in direction 266°N
@@ -140,7 +146,7 @@ After almost 27 hours, Linda is back in Norddeich. Although she has a capacity o
 2021-10-27 14:22 7.1583°E 53.625°N Made net gain 8351 €
 ```
 
-October should be the best month to catch shrimp. Later in the year, Edda looks back at her calculations for October. Overall, she went out on 12 trips, and made a net gain of 1500 EUR, but only thanks to two exceptionally good trips on the second and the 27th, where she made a fortune. In between, there were severe losses, with really bad days where she lost over 3000 EUR on a single trip.
+Later in the year, Edda looks back at her calculations for October. October should be the best month to catch shrimp! Overall, she went out on 12 trips, and made a net gain of 1500 EUR, but only thanks to two exceptionally good trips on the second and the 27th, where she made a fortune. In between, there were severe losses, with really bad days where she lost over 3000 EUR on a single trip.
 
 ## Bad expectations
 
@@ -170,3 +176,11 @@ As on so many occasions in wintertime, the expectation for catching shrimp is lo
 ## Try yourself
 
 How could a viable shrimp fishery for the North Sea look like? What happens if more areas are closed to fisheries and reserved for nature protection and offshore energy production? And how do fishermen and women at our coast adapt to rising diesel prices and a potential migration of their preferred target with Climate Heating? We developed the Viable North Sea model to tackle these questions.
+
+![The Viable North Sea interactive dashboard for developing German coastal small-scale fishery scenarios.  Download from [CoMSES Computational Model Library](https://www.comses.net/codebases/f654945f-8129-46a8-9c2d-f2a1b923f543/releases)](assets/vinos_screenshot.png)
+
+### References
+
+Lemmen, C., Hokamp, S., Örey, S., & Scheffran, J. (2023). Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries. Journal of Open Source Software, under review. Available from: [https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138)
+
+Lemmen, C., Hokamp, S., Örey, S., Scheffran, J., & Seo, J. (2023). ODD Protocol for Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries. CoMSES Computational Model Library. Available from: [https://www.comses.net/codebases/f654945f-8129-46a8-9c2d-f2a1b923f543/releases/](https://www.comses.net/codebases/f654945f-8129-46a8-9c2d-f2a1b923f543/releases/)

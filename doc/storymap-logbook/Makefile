@@ -45,7 +45,7 @@ txt:  $(TXT) $(SRC) Makefile
 	$(CMD) --to=plain -o $@ $<
 
 %.html:	%.md Makefile
-	$(CMD) --to=html -o $@ $<
+	$(CMD) -s --to=html -o $@ $<
 
 %.epub:	%.md  Makefile
 	$(CMD) --to=epub -s -o $@ $<
