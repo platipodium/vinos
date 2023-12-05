@@ -303,7 +303,7 @@ to show-dataset [_dataset-name]
     set _unit ""
     ;set _values sort [ temporary ] of water-patches
     ;set _qt quantile-thresholds _values n
-    set _qt (list 0.01 0.1 0.5 1.0 5.0 20.0 100.0 )
+    set _qt (list 0.5 1.0 5.0 20.0 100.0 )
     set _min 0.01
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Oranges" n
