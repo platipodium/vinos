@@ -65,7 +65,7 @@ def create_gridspec(df, filename: pathlib.Path, bbox = (3, 53 , 10, 56)):
     nc.history = "Created " + time.ctime(time.time()) + " by " + sys.argv[0] #+ " from " + sys.argv[1]
     nc.creator = "Carsten Lemmen <carsten.lemmen@hereon.de>"
     nc.license = "Creative Commons Attribution Share-Alike (CC-BY-SA 4.0)"
-    nc.copyright = "Helmholtz-Zentrum hereon GmBH"
+    nc.copyright = "Helmholtz-Zentrum hereon GmbH"
     nc.Conventions = "CF-1.7"
 
     ilon=np.array(range(0,nlon))
