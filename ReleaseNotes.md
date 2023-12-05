@@ -4,9 +4,9 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
 
-# Release notes for version 1.2.4 - Dec 5
+# Release notes for version 1.3.0 - Dec 5
 
-Version 1.2.4 is a maintenance release of our Viable North Sea (ViNoS) software. The main purpose of this release are benchmarks and realism improvements.
+Version 1.3.0 is a feature release of our Viable North Sea (ViNoS) software. The main purpose of this release are benchmarks and realism improvements, as well as a new storymap and individual logbooks.
 
 - added storymap
 - added individual fisher's logbook
