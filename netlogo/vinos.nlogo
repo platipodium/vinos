@@ -216,7 +216,7 @@ to go
   update-date-patch
 
   ; Every new year recompute exclusion area from OWF
-  if (time:get "dayofyear" date = 1) [ update-owf calc-accessibility ]
+  if (time:get "dayofyear" date = 1) [ calc-accessibility ]
 
   ;let _total-prey-landed sum ([port-prey-landed] of ports)
   ; Todo: adjust price, leave for next version
@@ -227,16 +227,15 @@ to go
   ;let _active-boats n-of 10 boats
   let _active-boats boats
 
-
   ; Enable a simulation with only one active boat that can be closely
   ; followed.  This is off by default
   ifelse one? [
-    set _active-boats min-n-of 1 boats [who]
+    set _active-boats min-n-of 1 (boats with [boat-logbook != 0 ]) [who]
     let _boat one-of _active-boats
 
     if subject != _boat [
-      watch _boat
-      inspect _boat
+      ;watch _boat
+      ;inspect _boat
     ]
   ][
     if subject != nobody [
@@ -264,7 +263,7 @@ to go
     ]
     set _boats-in-phase _boats with [boat-trip-phase = 2]
     if any? _boats-in-phase [
-      ;print (word "  .. repositioning " count _boats-in-phase " boats ..")
+      ;print (word "  .. choosing new start " count _boats-in-phase " boats ..")
       ask _boats-in-phase [boat-choose-start]
     ]
     set _boats-in-phase _boats with [boat-trip-phase = 1]
@@ -279,13 +278,14 @@ to go
     ]
     set _boats _active-boats with [boat-hour < 24]
   ]
-  ask boats [ set boat-hour boat-hour mod 24 ]
+  ask boats [ set boat-hour boat-hour - 24 ]
 
   update-plots
   update-scene
   ;update-drawings
   update-actions
   update-output   ; updates the output diagnostics, see output.nls
+  update-logbooks
 
   ; export the data every week on a Sunday (weekday 0)
   ;if (time:get "dayofweek"  date mod 7) = 0 [
@@ -460,7 +460,8 @@ to calc-accessibility
   setup-water-patches
 
   ask patches [set plaice-box? false]
-  load-plaice-box
+  let _dataset load-dataset "Plaicebox"
+  ask patches gis:intersecting _dataset [ set plaice-box? true ]
 
   ; Boats are not allowed within OWF areas
   update-owf
@@ -518,7 +519,6 @@ end
 ; called by go each time step
 ; @todo expand to other gears, as this one
 to save-totals
-
   let _boats boats with [boat-total-time-at-sea > 0 and ([gear-species] of item boat-current-gear-index boat-gears) =  "Shrimp"]
   let _count count _boats
   let _filename (word "results/total_avg_shrimp_" (time:get "year" start-date)
@@ -582,6 +582,18 @@ to license-message
   print ""
 end
 
+to update-logbooks
+  ask boats with [boat-is-learning? and count boat-actions = memory-size] [
+    set boat-is-learning? false
+    if is-turtle? boat-logbook [
+      ask boat-logbook [
+        set logbook-file-name (word "results/logbook_" [who] of myself ".txt")
+        if file-exists? logbook-file-name [carefully [file-delete logbook-file-name][]]
+      ]
+      boat-logbook-header
+    ]
+  ]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -691,7 +703,7 @@ adaptation
 adaptation
 0
 1
-0.739
+0.784
 0.001
 1
 NIL
@@ -927,7 +939,7 @@ CHOOSER
 586
 boat-property-chooser
 boat-property-chooser
-"distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "fuel-cost" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea" "effort h"
+"distance-at-sea" "capacity" "catch-efficiency" "gear" "engine" "capital" "length" "max-distance" "max-duration" "operating-costs" "prey" "steaming-speed" "time-at-sea" "time-at-sea-left" "fuel-cost" "trip-phase" "type" "boat-total-landings" "boat-total-fuel-consumption" "boat-total-days-at-sea" "effort h"
 0
 
 SWITCH
@@ -1036,7 +1048,7 @@ CHOOSER
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast" "age"
-5
+0
 
 BUTTON
 1301
@@ -1525,7 +1537,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.3.0
+NetLogo 6.4.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

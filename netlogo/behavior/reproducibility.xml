@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+SPDX-License-Identifier: Apache-2.0
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+-->
+<!DOCTYPE experiments SYSTEM "behaviorspace.dtd">
+<experiments>
+  <experiment name="reproducibility" repetitions="1" sequentialRunOrder="false" runMetricsEveryStep="false">
+    <setup>random-seed 123456789
+setup
+reset-date "2021-04-01"</setup>
+    <go>go</go>
+    <final>save-dynamic-datasets</final>
+    <timeLimit steps="10"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="owf?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="time-offset">
+      <value value="-24"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="scene">
+      <value value="&quot;Bathymetry&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="one?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sar?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="box?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="adaptation">
+      <value value="0.739"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-values?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="action-chooser">
+      <value value="&quot;age&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="memory-size">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="boat-property-chooser">
+      <value value="&quot;distance-at-sea&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="oil-price">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-boats?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-ports?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="wage">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="monthly-chooser">
+      <value value="&quot;Fleet effort h&quot;"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>

@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+FROM ubuntu:rolling
+ARG TARGETARCH
+
+RUN apt update && apt install -y \
+  curl vim xserver-xorg \
+  default-jdk \
+  python3-poetry
+
+ENV JAVA_HOME=/usr
+
+CMD /bin/bash

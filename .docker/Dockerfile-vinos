@@ -2,33 +2,21 @@
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
-FROM ubuntu:rolling AS jdk
-
 ARG NETLOGO_VERSION=6.3.0
+FROM platipodium/netlogo:${NETLOGO_VERSION}
+
+ARG NETLOGO_VERSION
+
+LABEL description="Viable North Sea (ViNoS) NetLogo model"
+LABEL author="Carsten Lemmen <carsten.lemmen@hereon.de>"
+LABEL license="CC0-1.0"
+LABEL copyright="2023 Helmholtz-Zentrum hereon GmbH"
 
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8
 
 ENV MODEL_NAME=vinos.nlogo
 ENV NETLOGO_NAME=NetLogo-${NETLOGO_VERSION}
-ENV NETLOGO_URL=https://ccl.northwestern.edu/netlogo/${NETLOGO_VERSION}/${NETLOGO_NAME}-64.tgz
-
-RUN apt update && apt install -y \
-  curl vim xserver-xorg \
-  default-jdk \
-  python3-poetry
-
-FROM jdk AS netlogo-${NETLOGO-VERSION}
-RUN mkdir /opt/netlogo
-RUN mkdir /model
-RUN curl ${NETLOGO_URL} --output ${NETLOGO_NAME}-64.tgz
-RUN tar xzf ${NETLOGO_NAME}-64.tgz -C /opt/netlogo --strip-components=1
-
-# Inject JVM options
-
-RUN sed -i '16i JVM_OPTS+=("-Dsun.java2d.xrender=false")' /opt/netlogo/netlogo-gui.sh
-
-FROM netlogo AS vinos
 
 RUN groupadd -g 1009 model
 RUN useradd -d /home/model -s /bin/bash -m model -u 1009 -g 1009
@@ -44,14 +32,7 @@ COPY ./ReadMe.md ${HOME}
 
 #RUN sed -i 's/^NetLogo 6..../NetLogo '${NETLOGO_VERSION}'/g' ${HOME}/netlogo/${MODEL_NAME}
 
-ENV JAVA_HOME=/usr
-ENV PATH=${PATH}:/opt/netlogo
-
+ENV PATH=${PATH}:/opt/netlogo/bin
 CMD /opt/netlogo/netlogo-gui.sh ${HOME}/netlogo/${MODEL_NAME}
-
-#ENTRYPOINT ["/opt/netlogo/netlogo-headless.sh", \
-# "--model", "/model/netlogo/${MODEL_NAME}", \
-# "--table", "/model/netlogo/results/table-output.csv", \
-# "--spreadsheet", "/model/netlogo/results/spreadsheet-output.csv"]
 
 # docker run -i -v /tmp/.X11-unix:/tmp/.X11-unix --user="$(id --user):$(id --group)" -t ulogo

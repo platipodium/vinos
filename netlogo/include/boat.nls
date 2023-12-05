@@ -25,6 +25,10 @@ boats-own [
   boat-type               ; Number 1-4 of the named cluster
   boat-length             ; length of boat in m, related (yet unknown) to capacity.
   boat-engine             ; power of the engine in kW
+  boat-name               ; name of the boat
+  boat-captain            ; name of the captain
+  boat-capital            ; capital accumulated through losses and gains
+  boat-is-learning?       ; whether the boat has enough experience, only then do gains count towards capital
 
   boat-max-distance
   boat-max-duration  ; cluster-dependent typical trip length
@@ -103,6 +107,7 @@ to setup-boats
   let triplength-distribution csv-property "triplength"
   let length-distribution csv-property "VE_LEN"
   let hours-distribution csv-property "total_fishinghours"
+  let _names boat-names
 
   ; @todo introduce quotas (=> Serra, asks Jonas)
   ask home-ports [
@@ -112,11 +117,26 @@ to setup-boats
         ; The 1-based boat types are
         ; 3: "typical" 1: "longer typical" 2: "flexible" 4: "not shrimper"
         set boat-type i
+        set boat-name ""
       ]
     ])
 
     ask link-neighbors [
       move-to [port-start-patch] of myself
+
+      ; Choose a unique name for the boat
+      let _name item 2 (item random length _names _names)
+      if any? other boats with [boat-name = _name] [
+        let _count count boats with [ item 0 split " " boat-name = _name ] + 1
+        set _name (word _name " " (romanize _count  ))
+      ]
+      set boat-name _name
+
+      ; Choose a unique name for the captain
+      let _surname item 1 (item random length _names _names)
+      set _name item 0 (item random length _names _names)
+      while [any? other boats with [ boat-captain = (word _name " " _surname) ]] [set _name item 0 (item random length _names _names)]
+      set boat-captain (word _name " " _surname)
 
       ; Create a boat with Gaussian distribution around mean with stdev
       set boat-length value-from-distribution butfirst butfirst item boat-type length-distribution
@@ -157,8 +177,10 @@ to setup-boats
 
       set boat-current-prey-index position (item boat-current-gear-index gear-prey-names)  prey-names
 
-      ; Boat capacity is not relevant for shrimpers as freshness is key concern
+      ; Boat capacity is not relevant for shrimpers as freshness is key concern, but still let's restrict this
+      ; to 10 * engine power
       set  boat-capacity 100000                                  ; kg of storage
+      if boat-type < 3 [ set boat-capacity boat-engine * 10]; so usually 2200 kg for shrimpers of 220 kW
 
       set  boat-trip-gear-catches         n-values number-of-gears  [?1 -> 0 ]
       set  catch-efficiency-boat   n-values number-of-gears  [igear -> 1
@@ -178,7 +200,7 @@ to setup-boats
       ; Also include every 3 months when gear change is deliberated the previous year's experience
       ; Add location and fishing trip length in option pathways.
 
-      set boat-trip-phase 1 ; in port and available
+      set boat-trip-phase 0 ; in port and resting
       set boat-home-port myself
       set boat-needs-return? false
       set boat-hour 0
@@ -188,6 +210,9 @@ to setup-boats
       set boat-total-time-at-sea 0
       set boat-total-landings 0
       set boat-total-fuel 0
+
+      set boat-capital 100000 ; start with 100000 EUR
+      set boat-is-learning? true
     ]
     ask my-links [set hidden? true]
   ]
@@ -197,17 +222,12 @@ to setup-boats
     let _logbook nobody
     hatch-logbooks 1 [
       set hidden? true
-      set logbook-file-name (word "results/logbook_" [who] of myself ".txt")
+      set logbook-file-name (word "results/logbook_learn_" [who] of myself ".txt")
       if file-exists? logbook-file-name [carefully [file-delete logbook-file-name][]]
       set _logbook self
     ]
     set boat-logbook _logbook
-    write-log (word "Logbook of boat " who )
-    write-log (word "Boat is a " round boat-length " m trawler with engine power "
-        round boat-engine " kW")
-    write-log(word "Steaming speed is " precision boat-steaming-speed 1 "km a-1")
-    write-log (word "Equipped with gear " [gear-name] of (item boat-current-gear-index boat-gears)
-        ", targets " item boat-current-prey-index prey-names)
+    boat-logbook-header
   ]
 
 end
@@ -245,23 +265,14 @@ end
 ; 4 at sea, needing to go home
 ; 5  in port, need to unload
 
-; Boat phase 0.  Boat procedure to rest.  This is dependent on weekends and for
+; Boat phase 0.  Boat procedure to stay i port.  This is dependent on weekends and for
 ; shrimpers also on Ramadan in Morocco, where 90% of landed shrimp is processed.
 to boat-rest-port
   let _imonth time:get "month" date - 1
+  let _day-of-week time:get "dayofweek" date
 
-  ; Boats rest for at least 11 hours and regain their ability to stay offshore
   set boat-time-at-sea 0
   set boat-time-at-sea-left boat-max-duration
-  write-log (word "Need to rest 11 hours")
-  set boat-hour boat-hour + 11
-
-  ; If on Monday, rest at least until 4 am
-  let _day-of-week time:get "dayofweek" date
-  if  _day-of-week = 1 and boat-hour < 4 [
-    write-log (word "Need to wait until 4 am")
-    set boat-hour 4
-  ]
 
   ; Boats arriving in port on Saturday don't go out again, neither do boats go
   ; out on a Sunday or before Monday 4 am.  Shrimpers don't go out during Ramadan.
@@ -269,7 +280,10 @@ to boat-rest-port
   ifelse _day-of-week = 6 or holiday?
   or (boat-prey = "Crangon" and is-ramadan?) [
     set boat-hour 24
-    write-log (word "Won't go out this " time:show date "EEEE" " at all")
+    let _reason time:show date "EEEE"
+    if holiday? [ set _reason (word "holiday " _reason) ]
+    if (boat-prey = "Crangon" and is-ramadan?) [ set _reason (word "Ramadan " _reason) ]
+    write-log (word "Won't go out this " _reason " at all")
   ][
     set boat-trip-phase 1 ; ready to leave port
   ]
@@ -277,19 +291,27 @@ to boat-rest-port
   ; Introduce some weather, based on statistics of wind speeds exceeding
   ; a threshold.  See calendar.nls for details of the implementation
   if boat-trip-phase = 1 and storm? [
-    set boat-hour 24
+    set boat-hour boat-hour + 12
     set boat-trip-phase 0
-    write-log (word "Won't go out for bad weather")
+    write-log (word "There's a storm, let's wait it out for 12 h")
   ]
 
   ; Introduce gain expectation from data be Temming et al. MEPS
   ; This is highlgy variable (from 1.5 to 15), so choose with that
   ; probablity whether to go out or stay in port
   if (boat-trip-phase = 1  and item _imonth fleet-landing-climatology < random-float max fleet-landing-climatology) [
-    set boat-hour 24
-    write-log (word "Won't go out for expected bad catch")
+    set boat-hour boat-hour + 12
+    write-log (word "I feel it's not worth it, let's wait for 12 h")
     set boat-trip-phase 0
   ]
+
+  if  boat-trip-phase = 1 [
+    ; need to wait for 1 hour before next high water
+    let _high-water boat-next-high-water
+    write-log (word "Need to wait for high water for " precision _high-water 2 " hours")
+    set boat-hour boat-hour + _high-water
+  ]
+
  end
 
 ; Boat trip phase 1. This is a boat procedure initializing a new
@@ -300,7 +322,7 @@ to boat-leave-port
   ; Determine start end end patches of fishing activity.  This is usually the start/landing
   ; patch of a harbour, but for fishery subject to plaice box restriction, this is the nearest
   ; patch outside the plaice box.
-  write-log (word "Leaves port " [port-name] of boat-home-port)
+  write-log (word "Leaving port " [port-name] of boat-home-port)
   let _patch [port-start-patch] of boat-home-port    ; starting patch of the boat
   face _patch
   let _gis-scale gis-scale
@@ -320,7 +342,7 @@ to boat-leave-port
   set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
   set boat-hour boat-hour + _distance / boat-steaming-speed
 
-  write-log (word "Arrives at sea")
+  write-log (word "Arrived in open water")
 
   set boat-trip-phase 2 ; available at start patch
 
@@ -381,14 +403,15 @@ to boat-land-port
     set  fleet-monthly-fuel replace-item _imonth fleet-monthly-fuel (item _imonth fleet-monthly-fuel + boat-time-at-sea * boat-fuel-lperh)
   ]
 
-  write-log (word "Landed  " round _boat-catch " kg " item boat-current-prey-index prey-names)
-  write-log (word "Sold fish for "round  _boat-revenue " €" )
+  write-log (word "Landed  " (precision _boat-catch 1) " kg " item boat-current-prey-index prey-names)
+  write-log (word "Sold fish for " round  _boat-revenue " €" )
   write-log (word "Consumed " round (boat-fuel-lperh * boat-time-at-sea)  " l diesel at " oil-price " ct l-1,  costing " round _fuel-cost " €")
   write-log (word "Paid " round _wage-cost  " € for wages")
   write-log (word "Made net gain " round _boat-gain " €")
 
   set boat-total-fuel boat-total-fuel +  boat-fuel-lperh * boat-time-at-sea
   set boat-total-landings boat-total-landings +  item boat-current-gear-index boat-trip-gear-catches
+  set boat-capital boat-capital + _boat-gain
 
   ; Boat time is in hours, add the trip's hours to the total boat sea days and
   ; reset the trip data.  Sea days are converted from sea hours by convention
@@ -400,72 +423,17 @@ to boat-land-port
   set boat-distance-at-sea 0
   set boat-trip-phase 0
 
-  ; now update the memory from this trip's best catch and only if
-  ; this location is not a preferred one for more than 10 other boats
-  let _min-action-distance 5 ; minimum patch distance between two actions
-  let _my-action nobody
-  if boat-trip-best-catch > 0 and count actions-on boat-trip-best-patch < 11 [
+  boat-update-memory
 
-    let _catch boat-trip-best-catch
-    let _patch boat-trip-best-patch
-    let _prey-price item boat-current-prey-index prey-prices
-    let _boat-cost-per-km (boat-fuel-lperh * oil-price / 100  + wage) / boat-steaming-speed
-
-    ; @todo make sure that actions have a minimum distance from one another...
-    ifelse count boat-actions < memory-size [
-
-      ifelse any? boat-actions with [distance _patch < _min-action-distance][
-        ; don't do anything
-      ][
-        hatch-actions 1 [
-          set _my-action self
-          ; @todo fix gear selection (has no impact yet)
-          set action-gear [item 0 boat-gears] of myself
-          set action-catch _catch
-          set action-age 0
-          move-to _patch
-        ]
-        write-log (word "Remember this fishing location " _patch " with catch " _catch "kg")
-      ]
-
-      set boat-actions  (turtle-set _my-action boat-actions)
-    ][
-
-      ask boat-actions [
-        ; @todo improve heading-dependent gis-scale calculation
-        let _action-distance  gis-scale * distance myself
-        set action-gain action-catch * _prey-price - _action-distance * _boat-cost-per-km
-      ]
-
-      ; Check whether the boat already remembers this patch and
-      ; update its catch accordingly, otherwise choose one with
-      ; lower previous catch
-      let _nearby-actions boat-actions with [distance _patch < _min-action-distance]
-      ifelse any? _nearby-actions [
-        set _my-action min-one-of _nearby-actions [action-gain]
-        write-log (word "Choose to try at nearby remembered location")
-      ][
-        set _my-action min-one-of boat-actions [action-gain]
-        write-log (word "Choose to try at other remembered location")
-      ]
-      if _my-action != nobody [
-        ; replace properties of that action
-        ask _my-action [
-          set action-gear [item 0 boat-gears] of myself ; @todo update index
-          set action-catch [boat-trip-best-catch] of myself
-          set action-age 0
-          move-to [boat-trip-best-patch] of myself
-        ]
-        write-log (word "Udate remember this fishing location " boat-trip-best-patch " with catch " boat-trip-best-catch " kg")
-      ]
-    ]
-  ]
   set boat-trip-best-catch 0
   set boat-trip-best-patch nobody
 
-  ; @todo find out how long it takes to land the catch and clean the boat, here, we assume 2 hours
+  write-log (word "Other boats here in " [port-name] of boat-home-port " " (sentence [boat-name] of other boats-here) )
+
+  ; @todo find out how long it takes to land the catch, clean and refule the boat, here, we assume 2 hours
   set boat-hour boat-hour + 2
-  write-log (word "Unloading for 2 hours finished")
+  write-log (word "Finished unloading, cleaning and refuelling " boat-name ", now rest for 8 hours")
+  set boat-hour boat-hour + 8
 end
 
 ; This is a boat procedure  where a boat
@@ -476,59 +444,67 @@ to boat-choose-start
   let _patches nobody
   let _boat-cost-per-km (boat-fuel-lperh * oil-price / 100  + wage) / boat-steaming-speed
   let _prey-price item boat-current-prey-index prey-prices
-  let _fishable-patches boat-fishable-patches
+  let _actions (list)
+  if any? boat-actions [ set _actions reverse sort-on [action-catch] boat-actions ]
 
-  ifelse count boat-actions < memory-size  or memory-size < 1 [
-    ; random patch if not sufficient memory accumulated yet (learning phase)
-
-    ifelse patch-here = [port-start-patch] of boat-home-port  [
-      set _patches n-of 10 boat-fishable-patches in-radius boat-max-distance ; with [ count boats-here = 0 and distance myself < boat-max-distance]
-      set _patch max-one-of _patches [traffic-suitability]
-      if one? [ print (sentence "Boat" who "leaves from home and searches in radius"  boat-max-distance)]
-      write-log (word "Searched for new fishing opportunities in distance " boat-max-distance " km")
-    ][
-      set _patches n-of 10 boat-fishable-patches in-radius (boat-max-distance / 2)
-      set _patch max-one-of _patches [traffic-suitability]
-      if one? [ print (sentence "Boat" who "leaves from " patch-here "and searches in radius"  (boat-max-distance / 2))]
-      write-log (word "Searched for new fishing opportunities in distance " (boat-max-distance / 2) " km")
-    ]
-
-  ][
-    ask boat-actions [
+  ; Try to fish at known locations other than the one I am on, and only
+  ; if there are sufficiently many
+  if length _actions >= memory-size and memory-size > 0 [
+    foreach _actions [ a ->
       ; @todo improve heading-dependent gis-scale calculation
-      let _action-distance  gis-scale * distance myself
-      set action-gain action-catch * _prey-price - _action-distance * _boat-cost-per-km
+      ask a [ face myself]
+      let _action-distance  gis-scale * distance a
+      ask a [ set action-gain action-catch * _prey-price - _action-distance * _boat-cost-per-km ]
     ]
 
-    let _mean-gain median [action-gain] of boat-actions
+    let _action nobody
+    set _actions filter [ a -> [action-gain] of a > 0 and [patch-here] of a != patch-here] _actions
+    if length _actions > 0 [
+      let _gains map [ a -> [round action-gain] of a] _actions
+      let _mean-gain median _gains
+      write-log (word "Estimated gains at prior locations are " _gains " €" )
 
-    ; How do we choose our next action, this could be a random action better than
-    ; average, or it could be simply the best action at hand.
-    let _action one-of boat-actions with [ action-gain > _mean-gain ]
-    ;let _action max-one-of boat-actions [action-gain]
+      ; How do we choose our next action? this could be a random action better than
+      ; average, or it could be simply the best action at hand.  For now choose one
+      ; that is better then the median
+      set _actions filter [ a -> [_mean-gain] of a > 0] _actions
+      if length _actions > 0 [ set _action item random length _actions _actions ]
+    ]
 
     if _action != nobody [
       set _patch [ patch-here ] of _action
-      if one? [ print (sentence "Boat" who "leaves from " patch-here "to memorized " _patch "with expected gain" [action-gain] of _action)]
-      write-log (word "Remembered fishing location at " _patch " with expected gain " [action-gain] of _action " €")
-    ]
-
-    ; Introduce some random component
-    set _patches (patch-set _patch [neighbors] of _patch) with [member? self _fishable-patches ]
-    ;set _patches boat-fishable-patches with [ count other boats-here = 0 and distance _patch < 6 ]
-    if _patches != nobody [
-      if count _patches > 10 [ set _patches n-of 10 _patches ]
-      let _nearby-patch max-one-of _patches [traffic-suitability]
-      if _nearby-patch != nobody [
-        set _patch _nearby-patch
-        if one? [ print (sentence "Boat" who "corrects position to " _patch )]
-        write-log (word "Corrected position to " _patch)
-      ]
+      if one? [ print (sentence "Boat" who "leaves from " patch-here "to memorized " _patch " with expected gain" [action-gain] of _action)]
+      write-log (word "Remembered location at " _patch " with expected gain " round [action-gain] of _action " €")
+      set _patch boat-fuzzy-position _patch
     ]
   ]
 
-  ; If there are not accessible patches found, go home and try again
-  ifelse (_patch = nobody or [not accessible?] of _patch) [
+  ; If there is not yet sufficient memory built up, or if the choice of a patch from memory
+  ; failed, need to scout waters anew
+  if _patch = nobody  [
+    if any? boat-actions [ set _actions reverse sort-on [action-catch] boat-actions ]
+    write-log (word "Need to scout waters, so far remember " length _actions "/" memory-size " locations")
+    if length _actions > 0 [
+      write-log (word "Previous trips' best catches were " (sentence map  [ a -> [ precision action-catch 1] of a] _actions) " kg")
+    ]
+
+    ifelse patch-here = [port-start-patch] of boat-home-port  [
+      write-log (word "Need to search for new fishing opportunities within " round boat-max-distance  " km")
+      ;set _patches n-of 10 boat-fishable-patches in-radius boat-max-distance ; with [ count boats-here = 0 and distance myself < boat-max-distance]
+      set _patches boat-find-patches 3 boat-max-distance
+      set _patch max-one-of _patches [traffic-suitability]
+      if one? [ print (sentence "Boat" who "leaves from home and searches in radius"  boat-max-distance)]
+    ][
+      write-log (word "Need to search new fishing opportunities within distance " round (boat-max-distance / 2) " km")
+      ;set _patches n-of 10 boat-fishable-patches in-radius (boat-max-distance / 2)
+      set _patches boat-find-patches 3 (boat-max-distance / 2)
+      set _patch max-one-of _patches [traffic-suitability]
+      if one? [ print (sentence "Boat" who "leaves from " patch-here "and searches in radius"  round (boat-max-distance / 2))]
+    ]
+  ]
+
+  ; If there are no accessible patches found, go home and try again
+  ifelse (_patch = nobody or [not accessible?] of _patch or _patch = patch-here) [
     set boat-trip-phase 4 ; need to go home
     write-log (word "Couldn't find good fishing location, returning home")
   ][
@@ -538,18 +514,31 @@ to boat-choose-start
     ; Do not show the movement during choosing start unless we're following one boat
     if not one? [pen-up]
     move-to _patch
-    if not [accessible?] of patch-here [
-      error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(choose start)")
-    ]
 
     set boat-distance-at-sea boat-distance-at-sea + _distance
     set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
     set boat-time-at-sea-left boat-time-at-sea-left - _distance / boat-steaming-speed
     set boat-hour boat-hour + _distance / boat-steaming-speed
-    write-log (word "Found suitable location, ready to deploy gear")
+
+    write-log (word "Steamed here with speed " round boat-steaming-speed " km h-1 to sail " round _distance " km")
+    if not [accessible?] of patch-here [
+      error (sentence "Boat" who "on inaccessible patch" patch-here "during phase" boat-trip-phase "(choose start)")
+    ]
 
     set boat-trip-phase 3 ; ready to fish
     set heading random 360
+
+    let _n count other boats-here
+    ifelse _n > 0 [
+      ifelse _n > 5 [
+        write-log (word "Sighted another " _n " boats here, too crowded for me")
+      ][
+        write-log (word "Sighted another " _n " boats here, will deploy gear here")
+        set boat-trip-phase 2 ; continue looking for suitable locations
+      ]
+    ][
+      write-log (word "No other boats here, will deploy gear here")
+    ]
   ]
 end
 
@@ -565,24 +554,26 @@ to boat-return-port
   ; don't show returning to port
   pen-up
   move-to _patch
-  write-log (word "Arrived at port entry location")
 
   set boat-distance-at-sea boat-distance-at-sea + _distance
   set boat-time-at-sea boat-time-at-sea  + _time
   set boat-time-at-sea-left boat-time-at-sea-left - _time
   set boat-hour boat-hour + _time
+
+  write-log (word "Arrived at port entry location")
 
   face boat-home-port
   set _distance gis-scale * distance boat-home-port
   set _time _distance / boat-steaming-speed
 
   move-to boat-home-port
-  write-log (word "Arrived in  port " [port-name] of boat-home-port)
 
   set boat-distance-at-sea boat-distance-at-sea + _distance
   set boat-time-at-sea boat-time-at-sea  + _time
   set boat-time-at-sea-left boat-time-at-sea-left - _time
   set boat-hour boat-hour + _time
+
+  write-log (word "Arrived in port " [port-name] of boat-home-port)
 
   set boat-trip-phase 5 ; need to land
 
@@ -600,6 +591,7 @@ to boat-make-haul
   let _imonth time:get "month" date - 1
   let _gear-index boat-current-gear-index ; needed to make accessible to patches
   let _patch-prey-index position _prey patch-prey-names
+  let _haul-catches n-values length boat-gears [i -> 0]
 
   ; A boat deploys the gear with the highest priority
   let _haul-width [gear-width] of _gear
@@ -641,7 +633,7 @@ to boat-make-haul
     write-log (word "Found suitable straight-line fishing path in direction " heading "°N")
 
     let _new-catches n-values length boat-gears [i -> 0]
-    let _haul-catches n-values length boat-gears [i -> 0]
+    set _haul-catches n-values length boat-gears [i -> 0]
     ; @todo the following call gives a wrong value
     ; let _step-distance (fishing-speed * _step-time / _gis-scale)
     ; print (sentence _step-distance "=" _boat-fishing-speed "*" _step-time "/" _gis-scale)
@@ -680,42 +672,37 @@ to boat-make-haul
       forward _step-distance
 
       set _haul-catches n-values (number-of-gears) [i -> (item i _haul-catches + item i _new-catches)]
+      set boat-hour boat-hour + _step-time
 
-      write-log (word "Trawl filling with another " (precision item boat-current-gear-index _new-catches 1)" kg" )
+      write-log (word "Trawl net gained " (precision item boat-current-gear-index _new-catches 1) " kg" )
 
       if item boat-current-gear-index _new-catches > boat-trip-best-catch [
         set boat-trip-best-catch item boat-current-gear-index _new-catches
         set boat-trip-best-patch patch-here
-        write-log (word "Noting particularly good location " boat-trip-best-patch " catching " round boat-trip-best-catch " kg")
+        write-log (word "Noting this trip's best location " boat-trip-best-patch " catching " round boat-trip-best-catch " kg")
       ]
     ] ; end of repeat _sub-steps
 
-    write-log (word "Hauled " (round item boat-current-gear-index _haul-catches) " kg abord")
+    write-log (word "Hauled " (precision item boat-current-gear-index _haul-catches 1)  " kg abord")
 
     let _next-heading heading - 180 - 10 + random (21 + 1)
 
     set boat-time-at-sea boat-time-at-sea  + _haul-time
     set boat-distance-at-sea boat-distance-at-sea + _haul-distance
     set boat-time-at-sea-left boat-time-at-sea-left - _haul-time
-    set boat-hour boat-hour + _haul-time
 
     let distance-left boat-steaming-speed * boat-time-at-sea-left ; at typical speed of 19 km / h this is 1368 km
     face  [port-start-patch] of boat-home-port
-
-    if distance-left < 1.1 * gis-scale * distance [port-start-patch] of boat-home-port [
-      set boat-trip-phase 4
-    ]
-
-    set heading _next-heading
+    let _home-distance-km gis-scale * distance [port-start-patch] of boat-home-port
 
     ; If the catch is not worth keeping, discard it entirely. Fishers do not want to keep
     ; the bad haul, as this  would restrict their left time, but only there are > 24 hours left
     ; On the other hand, on good haul make sure to return within 24 hours to keep it fresh
     if (boat-time-at-sea-left > 24) [
       ifelse item boat-current-gear-index _haul-catches < min-fresh-catch [
-        set _haul-catches n-values length boat-gears [i -> 0]
         set boat-trip-phase 2
-        write-log (word "Discarded catch " (round item boat-current-gear-index _haul-catches) " as insufficient")
+        write-log (word "Discarded catch " (precision item boat-current-gear-index _haul-catches 1) " as insufficient")
+        set _haul-catches n-values length boat-gears [i -> 0]
       ][
         set boat-time-at-sea-left 24
         write-log (word "Need to return within next 24 hours to keep catch fresh")
@@ -723,31 +710,39 @@ to boat-make-haul
     ]
     set boat-trip-gear-catches n-values (number-of-gears) [i -> (item i boat-trip-gear-catches + item i _haul-catches)]
 
+    write-log (word "So far spent " round boat-time-at-sea " h and " round boat-distance-at-sea " km at sea")
+    write-log (word "Estimate to have left " precision boat-time-at-sea-left 1 " h and " round distance-left " km on this trip")
+    write-log (word "Home is " precision (_home-distance-km / boat-steaming-speed) 1 " h or " round _home-distance-km " km away")
+
+    if distance-left < 1.1 * _home-distance-km [
+      write-log (word "Need to return to safely get home with available fuel")
+      set boat-trip-phase 4
+    ]
     ; If the boat is full, also need to return
-    if item boat-current-gear-index boat-trip-gear-catches > boat-capacity [
+    if boat-trip-phase != 4 and item boat-current-gear-index boat-trip-gear-catches > boat-capacity [
        write-log (word "Boat reached capacity " boat-capacity ", returning to port")
       set boat-trip-phase 4
     ]
+
+    set heading _next-heading
+
   ][
-    ; Could not find a straight-line haul from hear, so continue steaming
+    ; Could not find a straight-line haul from here, so continue steaming
     set boat-trip-phase 2
     write-log (word "Could not find strait-line haul, continue to steam")
   ]
 
-  ; After a haul, create the action properties
-  ; -> patch location of the haul
-  ; -> gain during this haul
-  ; -> gear used during this haul
-
-  ; After the action is created
-  ; -> add to patthways if length pathways < memory-size
-  ; -> or, replace lowest-ranking (in terms of gain) item in pathways list
+  if boat-trip-phase = 3 and count boat-actions > 0 and (item boat-current-gear-index _haul-catches < 0.1 * mean [action-catch] of boat-actions) [
+    ; This haul was not satisifying so keep looking for another place
+    set boat-trip-phase 2
+    write-log (word "Insufficient catch, need to look elswewhere")
+  ]
 
 end
 
-
 ; This boat procedure return the agent-set of accessible patches considering
 ; the plaice box restriction if highest priority gear's prey is plaice.
+; @todo synchronize this with global tide model
 to-report boat-accessible-patches
 
   let _patches patches with [accessible?]
@@ -801,7 +796,9 @@ to-report boat-accessible-path [_distance _n]
     ;let _patch-ahead patch-ahead ((_i + 1) * _distance / _n)
     ;set _patches-ahead (patch-set _patches-ahead _patch-ahead)
     ;  if not member? _patch-ahead _fishable-patches [report false]
-    if not member? (patch-ahead ((_i + 1) * _distance / _n)) _fishable-patches [report false]
+    let _patch-ahead patch-ahead ((_i + 1) * _distance / _n)
+    if any? other boats-on _patch-ahead [report false]
+    if not member? _patch-ahead _fishable-patches [report false]
   ]
 
   report true
@@ -883,9 +880,12 @@ end
 
 to write-log [_entry ]
   if is-logbook? (boat-logbook) [
-    let _timestamp (word time:show date "YYYY-MM-dd " int boat-hour ":" round ((boat-hour mod 1) * 5 / 3))
+    let _minute leading-zero round ((boat-hour mod 1) * 60) 2
+    let _hour leading-zero  (boat-hour mod 24) 2
+    let _date time:show (time:plus date boat-hour "hours" ) "YYYY-MM-dd "
+    let _timestamp (word _date _hour ":" _minute)
     let _envelope gis:envelope-of self
-    write-timestamp-log (word _timestamp " " (precision item 0 _envelope 2) "°E " (precision item 2 _envelope 2) "°N")_entry
+    write-timestamp-log (word _timestamp " " (precision item 0 _envelope 4) "°E " (precision item 2 _envelope 4) "°N")_entry
   ]
 end
 
@@ -896,4 +896,141 @@ to boat-reset-diagnostics
   set boat-total-time-at-sea 0
   set boat-total-landings 0
   set boat-total-fuel 0
+end
+
+; Observer procedure to read a list of typical names
+to-report boat-names
+  let _filename (word "include/names.csv")
+  let _data csv:from-file _filename
+  ; Remove any comments starting with #
+  ;print starts-with _data "#"
+  ;while [starts-with _data "#" ] [ print first _data set _data butfirst _data]
+  report butfirst butfirst butfirst butfirst _data
+end
+
+; Boat procedure that generates a list of _n fishable patches within a given _distance
+to-report boat-find-patches [_n _distance]
+  let _patches (patch-set)
+  while [count _patches < _n] [
+    set heading random 360
+    let _patch patch-ahead random-float (_distance / gis-scale)
+    if _patch != nobody and [accessible?] of _patch
+      and member? _patch boat-fishable-patches [set _patches (patch-set _patches _patch)]
+  ]
+  report _patches
+end
+
+; Boat procedure, there is some redundancy with the global tide procedure
+; returns the time until the next 1 hour before high water
+; @todo calculation needs verification
+to-report boat-next-high-water
+  let _amphidrome one-of amphidromes
+
+  ; assume 12.4167 lunar semidurnal (M2) tide, and convert from hours to degree, than add heading
+  let _m2-phase (boat-hour + 24 * time:get "dayofyear" datetime + 365.25 * time:get "year" datetime)  / ([m2-period] of _amphidrome) * 360
+  ask _amphidrome [face myself]
+
+  report ((90 -  _m2-phase mod 360 - [heading] of _amphidrome) / 360.0 * 24  - 1 ) mod 12.4167
+end
+
+; Boat procedure to fuzzify a target patch, here restrict to its 1-patch distance surroundings
+; and choosing the least traffic patch
+to-report boat-fuzzy-position [ _patch ]
+  let _fishable-patches boat-fishable-patches
+  let _patches (patch-set _patch [neighbors] of _patch) with [member? self _fishable-patches ]
+  if _patches != nobody [
+    if count _patches > 10 [ set _patches n-of 10 _patches ]
+    let _nearby-patch max-one-of _patches [traffic-suitability]
+    if _nearby-patch != nobody [
+      set _patch _nearby-patch
+      if one? [ print (sentence "Boat" who "corrects position to " _patch )]
+      write-log (word "Corrected target patch to " _patch)
+    ]
+  ]
+  report _patch
+end
+
+; Boat procedure to update its memory of actions
+to boat-update-memory
+  let _catch boat-trip-best-catch
+  let _patch boat-trip-best-patch
+
+  if round _catch < 1 [ stop ]
+  if count actions-on _patch > 10 [ stop ]
+
+  let _min-action-distance 5 ; minimum patch distance between two actions
+  let _action nobody
+  let _actions (list)
+  let _prey-price item boat-current-prey-index prey-prices
+  let _boat-cost-per-km (boat-fuel-lperh * oil-price / 100  + wage) / boat-steaming-speed
+
+  ; @todo make sure that actions have a minimum distance from one another...
+  ifelse count boat-actions < memory-size [
+    ifelse any? boat-actions with [distance _patch < _min-action-distance][
+      ; don't do anything
+    ][
+      hatch-actions 1 [
+        set _action self
+        set action-gear [item  boat-current-gear-index boat-gears] of myself
+        set action-catch _catch
+        set action-age 0
+        move-to _patch
+      ]
+      write-log (word "Remember new fishing location " _patch " with catch " precision _catch 1 " kg")
+      set boat-actions  (turtle-set _action boat-actions)
+    ]
+  ][
+    ; Check whether the boat already remembers this patch
+    set _action one-of  boat-actions with [patch-here = _patch]
+    ifelse _action != nobody [
+      write-log (word "Update existing location with catch "
+        precision [action-catch] of _action 1 " => " precision _catch 1 " kg")
+    ][
+      ; Otherwise choose one in the neighborhood with lesser catch
+      set _actions boat-actions with [distance _patch < _min-action-distance and action-catch < _catch]
+      ifelse any? _actions [
+        set _action min-one-of _actions [action-catch]
+        write-log (word "Update existing nearby location with catch "
+          precision [action-catch] of _action 1 " => " precision _catch 1 " kg")
+       ][
+        ; Recalculate expected gains for existing actions, this is necessary as this value
+        ; gets updated during the location search in open water
+        ask boat-actions [
+          let _action-distance  gis-scale * distance myself
+          set action-gain action-catch * _prey-price - _action-distance * _boat-cost-per-km
+        ]
+        set _action min-one-of boat-actions [action-gain]
+        write-log (word "Update existing least gain location with catch " precision [action-catch] of _action 1 " => " precision _catch 1 " kg")
+       ]
+    ]
+    if _action != nobody [ ask _action [
+      set action-gear [item boat-current-gear-index boat-gears] of myself
+      set action-catch _catch
+      set action-age 0
+      move-to _patch
+    ]]
+  ]
+end
+
+to boat-logbook-header
+  if not is-logbook? boat-logbook [stop]
+  let _port-name [port-name] of boat-home-port
+  write-log (word "Logbook of " boat-name ", commanded by " boat-captain )
+  write-log (word "Home port is " [port-name] of boat-home-port " with fishing radius " ceiling boat-max-distance " km")
+  write-log (word "Regular stay at sea is " ceiling boat-max-duration " h" )
+  write-log (word boat-name " is a " round boat-length " m trawler with engine power "
+        round boat-engine " kW and capacity " round boat-capacity " kg")
+  write-log(word "Steaming speed is " precision boat-steaming-speed 1 " km h-1 / "
+    precision (boat-steaming-speed / 1.852) 1 " knots")
+  write-log (word "Equipped with gear " [gear-name] of (item boat-current-gear-index boat-gears)
+      ", targets " item boat-current-prey-index prey-names)
+  write-log(word "Fishing speed is " precision [gear-speed] of (item boat-current-gear-index boat-gears) 1 " km h-1 / "
+  precision ([gear-speed] of (item boat-current-gear-index boat-gears) / 1.852) 1 " knots" )
+  if any? other boats with [[port-name] of boat-home-port = _port-name] [
+    let _other-boats other boats-here
+    foreach sort other boats-here [ b ->
+      write-log(word "Also in " [port-name] of boat-home-port " is " [boat-name] of b " commanded by " [boat-captain] of b " with gear "
+        [gear-name] of (item [boat-current-gear-index] of b [boat-gears] of b))
+    ]
+  ]
 end

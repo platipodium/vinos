@@ -10,6 +10,8 @@ to update-output
   let _shrimpers boats with [[gear-species] of item boat-current-gear-index boat-gears = "Shrimp"
     and boat-total-landings > 0 and boat-total-time-at-sea > 0]
 
+  if not any? _shrimpers [stop]
+
   let _days days-in-past-year
   if _days < 1 [set _days 1E6] ; prevent division by zero
 
@@ -27,6 +29,8 @@ to update-output
   foreach range length _reference [ _i ->  output-type right-pad item _i _reference item _i _padding]
   output-print ""
 
+  ;print _shrimpers
+  ;print [boat-fuel-lperh] of _shrimpers * oil-price / 100 / 365.25 / count _shrimpers
   let  _fuel-cost mean [boat-fuel-lperh] of _shrimpers * oil-price / 100 / 365.25 / count _shrimpers
   let  _wage-cost wage  / 365.25 / count _shrimpers
   let _lpue 0

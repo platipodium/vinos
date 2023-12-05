@@ -1,6 +1,6 @@
 <!--
-SPDX-FileCopyrightText: Helmholtz-Zentrum hereon GmbH
-SPDX-FileContributor: Carsten Lemmen
+SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 SPDX-License-Identifier: CC0-1.0
 -->
 
