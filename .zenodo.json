@@ -87,5 +87,10 @@
       "resource_type": "dataset",
       "scheme": "doi"
     }
+  ],
+  "grants": [
+    {
+      "id": "04pz7b180::03F0862A"
+    }
   ]
 }
