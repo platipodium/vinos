@@ -82,6 +82,9 @@ boats-own [
 
   ; A boat's logbook agent
   boat-logbook
+
+  ; A boat's client in a participatory simulation
+  boat-client
 ]
 
 logbooks-own [
@@ -118,6 +121,7 @@ to setup-boats
         ; 3: "typical" 1: "longer typical" 2: "flexible" 4: "not shrimper"
         set boat-type i
         set boat-name ""
+        set boat-client nobody
       ]
     ])
 
@@ -343,6 +347,7 @@ to boat-leave-port
   set boat-hour boat-hour + _distance / boat-steaming-speed
 
   write-log (word "Arrived in open water")
+  if is-turtle? boat-client and boat-client != nobody [ send-position ]
 
   set boat-trip-phase 2 ; available at start patch
 
@@ -428,12 +433,15 @@ to boat-land-port
   set boat-trip-best-catch 0
   set boat-trip-best-patch nobody
 
+  if is-turtle? boat-client and boat-client != nobody [ send-position ]
   write-log (word "Other boats here in " [port-name] of boat-home-port " " (sentence [boat-name] of other boats-here) )
 
   ; @todo find out how long it takes to land the catch, clean and refule the boat, here, we assume 2 hours
   set boat-hour boat-hour + 2
   write-log (word "Finished unloading, cleaning and refuelling " boat-name ", now rest for 8 hours")
   set boat-hour boat-hour + 8
+  if is-turtle? boat-client and boat-client != nobody [ send-position ]
+
 end
 
 ; This is a boat procedure  where a boat
@@ -514,6 +522,7 @@ to boat-choose-start
     ; Do not show the movement during choosing start unless we're following one boat
     if not one? [pen-up]
     move-to _patch
+    if is-turtle? boat-client and boat-client != nobody [ send-position ]
 
     set boat-distance-at-sea boat-distance-at-sea + _distance
     set boat-time-at-sea  boat-time-at-sea + _distance / boat-steaming-speed
@@ -554,6 +563,7 @@ to boat-return-port
   ; don't show returning to port
   pen-up
   move-to _patch
+  if is-turtle? boat-client and boat-client != nobody [ send-position ]
 
   set boat-distance-at-sea boat-distance-at-sea + _distance
   set boat-time-at-sea boat-time-at-sea  + _time
@@ -567,6 +577,7 @@ to boat-return-port
   set _time _distance / boat-steaming-speed
 
   move-to boat-home-port
+  if is-turtle? boat-client and boat-client != nobody [ send-position ]
 
   set boat-distance-at-sea boat-distance-at-sea + _distance
   set boat-time-at-sea boat-time-at-sea  + _time
@@ -675,6 +686,7 @@ to boat-make-haul
       set boat-hour boat-hour + _step-time
 
       write-log (word "Trawl net gained " (precision item boat-current-gear-index _new-catches 1) " kg" )
+      if is-turtle? boat-client and boat-client != nobody [ send-position ]
 
       if item boat-current-gear-index _new-catches > boat-trip-best-catch [
         set boat-trip-best-catch item boat-current-gear-index _new-catches
@@ -885,7 +897,7 @@ to write-log [_entry ]
     let _date time:show (time:plus date boat-hour "hours" ) "YYYY-MM-dd "
     let _timestamp (word _date _hour ":" _minute)
     let _envelope gis:envelope-of self
-    write-timestamp-log (word _timestamp " " (precision item 0 _envelope 4) "°E " (precision item 2 _envelope 4) "°N")_entry
+    write-timestamp-log (word _timestamp " " (precision item 0 _envelope 4) "°E " (precision item 2 _envelope 4) "°N") _entry
   ]
 end
 

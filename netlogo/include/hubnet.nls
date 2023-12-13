@@ -1,0 +1,155 @@
+; SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+; SPDX-License-Identifier: Apache-2.0
+; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+
+; create a breed of turtles that the participats control through the clients
+; there will be one client turtle for each client.
+breed [ clients client ]
+
+clients-own [
+  user-id   ;; clients choose a user name when they log in whenever you receive a
+            ;; message from the client associated with this turtle hubnet-message-source
+            ;; will contain the user-id
+  step-size ;; you should have a turtle variable for every widget in the client interface that
+            ;; stores a value (sliders, choosers, and switches). You will receive a message
+            ;; from the client whenever the value changes. However, you will not be able to
+            ;; retrieve the value at will unless you store it in a variable on the server.
+  client-boat
+]
+
+to setup-hubnet
+  hubnet-reset
+
+  ;clear-patches
+  ;clear-drawing
+  ;clear-output
+  ;; during setup you do not want to kill all the turtles
+  ;; (if you do you'll lose any information you have about the clients)
+  ;; so reset any variables you want to default values, and let the clients
+  ;; know about the change if the value appears anywhere in their interface.
+  ask clients [
+    ;hubnet-send user-id "client-boat" one-of boats
+  ]
+  ;; calling reset-ticks enables the 'go' button
+  ;reset-ticks
+
+end
+
+to listen-clients
+  ;; as long as there are more messages from the clients
+  ;; keep processing them.
+  while [ hubnet-message-waiting? ]
+  [
+    ;; get the first message in the queue
+    hubnet-fetch-message
+    ifelse hubnet-enter-message? ;; when clients enter we get a special message
+    [ create-new-client ]
+    [
+      ifelse hubnet-exit-message? ;; when clients exit we get a special message
+      [
+
+        remove-client ]
+      [ ask clients with [user-id = hubnet-message-source]
+        [ execute-command hubnet-message-tag ] ;; otherwise the message means that the user has
+      ]                                        ;; done something in the interface hubnet-message-tag
+                                               ;; is the name of the widget that was changed
+    ]
+  ]
+end
+
+
+;; when a user logs out make sure to clean up the turtle
+;; that was associated with that user (so you don't try to
+;; send messages to it after it is gone) also if any other
+;; turtles of variables reference this turtle make sure to clean
+;; up those references too.
+to remove-client
+  ask clients with [user-id = hubnet-message-source][ die ]
+  print (word "Removed client user with id " hubnet-message-source)
+end
+
+;; when a new user logs in create a student turtle
+;; this turtle will store any state on the client
+;; values of sliders, etc.
+to create-new-client
+  create-clients 1
+  [
+    ;; store the message-source in user-id now
+    ;; so when you get messages from this client
+    ;; later you will know which turtle it affects
+    set user-id hubnet-message-source
+    set label user-id
+    ;; initialize turtle variables to the default
+    ;; value of the corresponding widget in the client interface
+    set client-boat one-of boats
+    ask client-boat [ set boat-client myself]
+    ;; update the clients with any information you have set
+    send-info-to-clients
+  ]
+  print (word "Created client user with id " hubnet-message-source)
+
+end
+
+;; Other messages correspond to users manipulating the
+;; client interface, handle these individually.
+to execute-command [command]
+  ;; you should have one if statement for each widget that
+  ;; can affect the outcome of the model, buttons, sliders, switches
+  ;; choosers and the view, if the user clicks on the view you will receive
+  ;; a message with the tag "View" and the hubnet-message will be a
+  ;; two item list of the coordinates
+  print (word "Executing client user command " command)
+  if command = "step-size"
+  [
+    ;; note that the hubnet-message will vary depending on
+    ;; the type of widget that corresponds to the tag
+    ;; for example if the widget is a slider the message
+    ;; will be a number, of the widget is switch the message
+    ;; will be a boolean value
+    set step-size hubnet-message
+    stop
+  ]
+  if command = "up"
+  [ execute-move 0 stop ]
+  if command = "down"
+  [ execute-move 180 stop ]
+  if command = "right"
+  [ execute-move 90 stop ]
+  if command = "left"
+  [ execute-move 270 stop ]
+end
+
+
+to execute-move [new-heading]
+  print (word "Sending info to client users ")
+  send-info-to-clients
+end
+
+
+;; whenever something in world changes that should be displayed in
+;; a monitor on the client send the information back to the client
+to send-info-to-clients
+
+  hubnet-send user-id "Home port" (word [boat-home-port] of client-boat )
+  hubnet-send user-id "Vessel information" (word [boat-name] of client-boat " " [boat-captain] of client-boat)
+end
+
+; this is a boat procedure
+to send-position
+  if not is-turtle? boat-client or boat-client = nobody [ stop ]
+
+  let _user-id [user-id] of boat-client
+
+  let _minute leading-zero round ((boat-hour mod 1) * 60) 2
+  let _hour leading-zero  (boat-hour mod 24) 2
+  let _date time:show (time:plus date boat-hour "hours" ) "YYYY-MM-dd "
+  let _timestamp (word _date _hour ":" _minute)
+  let _envelope gis:envelope-of self
+  let _message (word _timestamp " " (precision item 0 _envelope 4) "°E " (precision item 2 _envelope 4) "°N")
+
+  hubnet-send _user-id  "Location" _message
+  ;hubnet-send-follow ( [user-id] of boat-client ) self 10
+  hubnet-send-override _user-id self "color" [ red ]
+  hubnet-send-override _user-id self "shape" [ "car" ]
+  ;hubnet-send-override _user-id self "pcolor" [ green ]
+end

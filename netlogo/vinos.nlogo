@@ -30,6 +30,7 @@ __includes [
   "include/ci.nls"
   "include/video.nls"
   "include/output.nls"
+  "include/hubnet.nls"
 ]
 
 ; The following breeds are defined in include files
@@ -1542,6 +1543,68 @@ NetLogo 6.4.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+VIEW
+338
+71
+657
+190
+0
+0
+0
+1
+1
+1
+1
+1
+0
+1
+1
+1
+0
+319
+0
+119
+
+MONITOR
+7
+64
+135
+113
+Home port
+NIL
+3
+1
+
+MONITOR
+7
+10
+261
+59
+Vessel information
+NIL
+3
+1
+
+MONITOR
+8
+126
+241
+175
+user-id
+NIL
+3
+1
+
+MONITOR
+11
+192
+167
+241
+Location
+NIL
+3
+1
+
 @#$#@#$#@
 default
 0.0
