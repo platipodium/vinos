@@ -149,7 +149,9 @@ to send-position
 
   hubnet-send _user-id  "Location" _message
   ;hubnet-send-follow ( [user-id] of boat-client ) self 10
+  hubnet-send-override _user-id self "hidden?" [ false ]
   hubnet-send-override _user-id self "color" [ red ]
   hubnet-send-override _user-id self "shape" [ "car" ]
+  ;hubnet-send-override _user-id water-patches "pcolor" [ blue + 3 ]
   ;hubnet-send-override _user-id self "pcolor" [ green ]
 end
