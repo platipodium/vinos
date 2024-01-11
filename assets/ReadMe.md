@@ -1,15 +1,15 @@
 <!--
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
-SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
 
 SPDX-License-Identifier: CC0-1.0
 -->
 
-This directory contains graphical elements used in the NetLogo model and its documentations
+This directory contains graphical elements used in the NetLogo model and its documentation.
 
 ## Image-based processing
 
-Portable Network Graphics (png) images were used with the following projection information to fit to the
+Portable Network Graphics (`.png`) images were used with the following projection information to fit to the
 geospatial environment of the model.
 
 ```
