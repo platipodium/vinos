@@ -20,10 +20,6 @@ repos:
   #    rev: master
   #    hooks:
   #    -   id: markdownlint
-  #-   repo: https://gitlab.com/smop/pre-commit-hooks
-  #    rev: master
-  #    hooks:
-  #    -   id: check-gitlab-ci
   # -   repo: https://github.com/Data-Liberation-Front/csvlint.rb
   #     rev: v1.2.0
   #     hooks:
@@ -47,3 +43,13 @@ repos:
       - id: check-github-workflows
       - id: check-gitlab-ci
       - id: check-readthedocs
+# For the following, an up-to-date zenode deposit schema is
+# need which is currently broken upstream
+# - repo: https://github.com/python-jsonschema/check-jsonschema
+#   rev: 0.27.3
+#   hooks:
+#     - id: check-jsonschema
+#       name: "Check Zenodo Metadata"
+#       files: ^\.zenodo.json$
+#       types: [json]
+#       args: ["--schemafile", "https://json.schemastore.org/github-workflow"]

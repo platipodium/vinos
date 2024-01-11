@@ -18,7 +18,7 @@
     {
       "orcid": "0000-0003-3483-6036",
       "name": "Lemmen, Carsten",
-      "affiliation": "Helmholtz-Zentrum Hereon"
+      "affiliation": "Helmholtz-Zentrum hereon GmbH"
     },
     {
       "orcid": "0000-0002-2192-4013",
@@ -90,7 +90,8 @@
   ],
   "grants": [
     {
-      "id": "04pz7b180::03F0862A"
+      "id": "04pz7b180::03F0862A",
+      "id": "04pz7b180::03F0862D"
     }
   ]
 }
