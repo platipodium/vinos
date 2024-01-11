@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de
 # See https://pre-commit.com for more information
@@ -40,3 +40,10 @@ repos:
     rev: "v3.0.0-alpha.9-for-vscode"
     hooks:
       - id: prettier
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.27.3
+    hooks:
+      - id: check-github-actions
+      - id: check-github-workflows
+      - id: check-gitlab-ci
+      - id: check-readthedocs
