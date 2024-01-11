@@ -30,7 +30,6 @@ __includes [
   "include/ci.nls"
   "include/video.nls"
   "include/output.nls"
-  "include/hubnet.nls"
 ]
 
 ; The following breeds are defined in include files

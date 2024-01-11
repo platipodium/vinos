@@ -9,9 +9,9 @@ import pathlib
 import datetime
 import io
 import numpy as np
+import matplotlib.pyplot as plt
 
 base_url = "https://www.ble.de/SharedDocs/Downloads/DE/Fischerei/Fischwirtschaft/"
-
 
 
 def get_remote_or_local(year, month):
@@ -101,7 +101,7 @@ def data_from_csv(year, month):
 
 def get_all_csv():
 
-    filenames = pathlib.Path(f"../data/ble/").glob("national_landings_*.csv")
+    filenames = pathlib.Path(f"../data/ble/").glob("national_landings_????_??.csv")
     df = pd.DataFrame()
 
     for f in filenames:
@@ -112,8 +112,11 @@ def get_all_csv():
 if __name__ == "__main__":
 
     # Data is available from 2009 to 2023
-    for year in range(2009,2017):
+    for year in range(2009,2023):
         for month in range(1,13):
+
+            csvname = pathlib.Path(f"../data/ble/national_landings_{year:04d}_{month:02d}.csv")
+            if csvname.exists(): continue
 
             if datetime.date.today().year == year:
                 if month >= datetime.date.today().month - 1:
@@ -131,13 +134,29 @@ if __name__ == "__main__":
             df["year"] = year
             df["month"] = month
 
-            filename = pathlib.Path(f"../data/ble/national_landings_{year:04d}_{month:02d}.csv")
-            df.to_csv(filename, sep=";")
+            df.to_csv(csvname, sep=";")
             print(df)
 
     df = get_all_csv()
+
+    csvname = '../data/ble/national_landings_monthly.csv'
+    with open(csvname,'w') as fid:
+        fid.write('''# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-FileCopyrightText: 2023 Bundesministerium für Landwirtschaft und Ernährung
+# SPDX-License-Identifier: LicenseRef-DL-DE-BY-2.0
+''')
+
+    df.to_csv(csvname, index=False, mode='a', header=df.columns)
+
+
     df["yearmonth"] = df.year + (df.month - 0.5)/12
     df = df.sort_values(by=["yearmonth"])
 
-    for s in ("Speisekrabbe","Scholle","Seezunge"):
-        df[df["Species"] == s].plot(x="yearmonth",y="€ kg-1", title=s)
+
+
+    for s in ("Speisekrabbe","Scholle","Seezunge","Flunder","Scharbe (Kliesche)","Hering","Kabeljau/Dorsch","Taschenkrebs","Sprotte","Wittling","Hummer","Kaisergranat"):
+        fig, ax = plt.subplots(nrows=3, ncols=1, sharex=True, sharey=False)
+        df[df["Species"] == s].plot(x="yearmonth",y="t", title=s,ax=ax[0])
+        df[df["Species"] == s].plot(x="yearmonth",y="k€", ax=ax[1],title="")
+        df[df["Species"] == s].plot(x="yearmonth",y="€ kg-1", ax=ax[2],title="")
