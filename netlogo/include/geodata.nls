@@ -1,5 +1,5 @@
-; SPDX-FileCopyrightText: 2022-2023 Universität Hamburg
 ; SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
+; SPDX-FileCopyrightText: 2022-2023 Universität Hamburg
 ; SPDX-License-Identifier: Apache-2.0
 ; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
@@ -503,7 +503,9 @@ to save-static-dataset [_dataset-name]
   let _name lower _dataset-name
   set _name replace-pattern _name " -" "_"
   export-view (word "./results/" _name ".png")
-  gis:store-dataset gis:patch-dataset temporary (word "./results/" _name)
+  carefully [
+    gis:store-dataset gis:patch-dataset temporary (word "./results/" _name)
+  ][ gis:store-dataset gis:patch-dataset temporary (word "./results/" _name) ]
 end
 
 to save-dynamic-dataset [_dataset-name]
@@ -513,7 +515,12 @@ to save-dynamic-dataset [_dataset-name]
   set _name replace-pattern _name " -" "_"
   let _ticks ifelse-value ticks > 0 [ ticks ][ 0 ]
   export-view (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short ".png")
-  gis:store-dataset gis:patch-dataset temporary (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short)
+
+  carefully [
+    gis:store-dataset gis:patch-dataset temporary (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short)
+  ][
+    gis:store-dataset gis:patch-dataset temporary (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short ".asc")
+  ]
 end
 
 to save-static-datasets

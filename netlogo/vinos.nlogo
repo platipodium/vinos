@@ -592,7 +592,7 @@ end
 
 ; export the data occording to the global variable output-frequency
 to export-data
-  if output-frequency = "none" [ exit ]
+  if output-frequency = "none" [ stop ]
   if output-frequency = "daily" [
     save-dynamic-datasets stop
   ]
