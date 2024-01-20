@@ -592,6 +592,7 @@ end
 
 ; export the data occording to the global variable output-frequency
 to export-data
+  if output-frequency = "none" [ exit ]
   if output-frequency = "daily" [
     save-dynamic-datasets stop
   ]
@@ -1161,8 +1162,8 @@ CHOOSER
 479
 output-frequency
 output-frequency
-"daily" "weekly" "monthly" "yearly"
-1
+"none" "daily" "weekly" "monthly" "yearly"
+2
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
