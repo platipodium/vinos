@@ -148,7 +148,6 @@ to setup
   calc-pollution
   calc-fish
 
-
   setup-ports
   calc-initial-values
   calculate-distance-to-port
@@ -287,11 +286,7 @@ to go
   update-output   ; updates the output diagnostics, see output.nls
   update-logbooks
 
-  ; export the data every week on a Sunday (weekday 0)
-  ;if (time:get "dayofweek"  date mod 7) = 0 [
-  if (time:get "dayofyear"  date  = 180) [
-    save-dynamic-datasets
-  ]
+  export-data
   save-totals
 
   tick
@@ -594,6 +589,26 @@ to update-logbooks
     ]
   ]
 end
+
+; export the data occording to the global variable output-frequency
+to export-data
+  if output-frequency = "daily" [
+    save-dynamic-datasets stop
+  ]
+  if output-frequency = "weekly" and (time:get "dayofweek"  date mod 7) = 0 [
+    ; on Sundays
+    save-dynamic-datasets stop
+  ]
+  if output-frequency = "monthly" and (time:get "day"  date) = 1 [
+    ; on the first of the month
+    save-dynamic-datasets stop
+  ]
+  if output-frequency = "yearly" and (time:get "dayofyear"  date) = 1 [
+    ; on the first of the year
+    save-dynamic-datasets stop
+  ]
+end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 262
@@ -1139,6 +1154,16 @@ Shrimper fleet aggregated data (per vessel and year)
 0.0
 1
 
+CHOOSER
+1000
+434
+1138
+479
+output-frequency
+output-frequency
+"daily" "weekly" "monthly" "yearly"
+1
+
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
 
@@ -1545,8 +1570,8 @@ NetLogo 6.4.0
 VIEW
 338
 71
-657
-190
+658
+191
 0
 0
 0
