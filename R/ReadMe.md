@@ -4,5 +4,6 @@ SPDX-FileCopyrightText: 2024 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: CC0-1.0
 -->
 
-This folder contains graphical material shared by the web site, the
-NetLogo model and supplementary routines.
+This folder contains supplementary R routines. They are not
+needed to run the NetLogo model, but can be consulted to understand
+how input data was preprocessed.

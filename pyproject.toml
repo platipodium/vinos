@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de
 
@@ -27,6 +27,8 @@ holidays = "^0.24"
 clevercsv = "^0.8.0"
 convert = "^0.1.2"
 pre-commit = "^3.6.0"
+flake8 = "^7.0.0"
+black = "^23.12.1"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^3.2.2"

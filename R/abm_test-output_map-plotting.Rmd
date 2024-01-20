@@ -5,7 +5,7 @@ date: "7/13/2022"
 output: html_document
 ---
 
-SPDX-FileCopyrightText: 2022 Hochschule Bremerhaven  
+SPDX-FileCopyrightText: 2022 Hochschule Bremerhaven
 SPDX-License-Identifier: Apache-2.0
 
 
@@ -33,20 +33,20 @@ library(rnaturalearth)
 ```
 
 Paths, parameters...
-  
+ 
 ```{r paths_parameters, include=F}
 
 my_project<-"220713-abm_test_meeting"
 
 #paths####
-data_main<- "~/shared_vmsdata/"; #for all the 
+data_main<- "~/shared_vmsdata/"; #for all the
 data_in<- paste0("M:/01_Projects/",my_project,"/data_in")
 data_out<-paste0("M:/01_Projects/",my_project,"/data_out")
 
 #parameters####
 prj<-"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" #map projection
 
- 
+
 #PARAMETERS:
 # set map limits smaller (ALL CRANGON FLEET)
 limlo = c(2, 9.4)
@@ -87,8 +87,8 @@ eez_12nm_v3<-eez_12nm_v3 %>% dplyr::filter(TERRITORY1%in%some.eu.countries)
 #convert to data.frame
 abm_df <-
   as.data.frame(abm, xy = TRUE) %>%
-  #remove cells with NA for any of the layers  
-  mutate_all(funs(replace_na(.,0))) 
+  #remove cells with NA for any of the layers
+  mutate_all(funs(replace_na(.,0)))
 
 #take a look
 head(abm_df)
@@ -98,12 +98,12 @@ my_breaks <- c(1,5,10,50,100,200)
 ggplot() +
   geom_raster(data = abm_df,aes(x = x, y = y, fill = `X220713.effort`),alpha=0.8) +
   scale_fill_fermenter(breaks=my_breaks,palette = "RdYlBu")+
-  
-  geom_sf(data = coastline, 
+
+  geom_sf(data = coastline,
                fill = alpha("gray",1), color = "black", size=0.1)+
-  geom_sf(data = eez_v11, 
+  geom_sf(data = eez_v11,
                fill = NA, color = "black", size=1,alpha=0.5,linetype="solid")+
-  geom_sf(data = eez_12nm_v3, 
+  geom_sf(data = eez_12nm_v3,
                fill = NA, color = "black", size=1,alpha=0.5,linetype="solid")+
 
   coord_sf(xlim = limlo,ylim=limla,expand = F,crs = prj)+
@@ -111,12 +111,9 @@ ggplot() +
   theme_light() +
   theme(legend.position = "right",axis.title = element_blank() )+
   annotation_scale(location = "bl", width_hint = 0.25) +
-  annotation_north_arrow(location = "bl", which_north = "true", 
+  annotation_north_arrow(location = "bl", which_north = "true",
                          height = unit(0.3, "in"), width = unit(0.3, "in"),
                          pad_x = unit(0.2, "in"), pad_y = unit(0.3, "in"),
                          style = north_arrow_orienteering)
 
 ```
-
-
-

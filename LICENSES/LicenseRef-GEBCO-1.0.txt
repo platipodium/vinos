@@ -8,4 +8,3 @@ Users must:
 • Acknowledge the source of The GEBCO Grid. A suitable form of attribution is given in the documentation that accompanies The GEBCO Grid.
 • Not use The GEBCO Grid in a way that suggests any official status or that GEBCO, or the IHO or IOC, endorses any particular application of The GEBCO Grid.
 • Not mislead others or misrepresent The GEBCO Grid or its source.
-
