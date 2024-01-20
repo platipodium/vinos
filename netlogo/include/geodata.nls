@@ -538,7 +538,7 @@ to-report load-dataset [_dataset-name]
 
   if _dataset-name = "Nephrops" [ report gis:load-dataset "../data/bsh/Fishery.shp"]
   if _dataset-name = "Natura2000" [ report gis:load-dataset "../data/natura2000/northsea/MPA_NorthSea_Shapes.shp"]
-  if _dataset-name = "NP-NS" [ report gis:load-dataset "../data/nlwkn/NLP/Nationalparke_DTK25.shp"]
+  if _dataset-name = "NP-NS" [ report gis:load-dataset "../data/nlwkn/Nationalparke_DTK25.shp"]
   if _dataset-name = "NP-SH" [ report gis:load-dataset "../data/lkn/Nationalpark_Schl.-H._Wattenmeer_final.shp"]
   if _dataset-name = "ICES" [ report gis:load-dataset "../data/ices/ICES_Statistical_Rectangles_Eco.shp"]
   if _dataset-name = "EEZ" [ report gis:load-dataset "../data/eez/eez.shp"]
