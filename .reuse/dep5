@@ -51,7 +51,7 @@ Files: data/wgs1984.prj
 Copyright: 2022-2023 International Earth Rotation Service
 License: CC0-1.0
 
-Files: data/nlwkn/NLP/*
+Files: data/nlwkn/*
 Copyright: 2022-2023 Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz
 License: LicenseRef-DL-DE-BY-2.0
 
