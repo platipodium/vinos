@@ -1,6 +1,6 @@
  
  % SPDX-FileCopyrightText: 2018-2023 Multidisciplinary Digital Publishing Institute
-% SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+% SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 % SPDX-License-Identifier: CC-BY-SA-4.0
 % SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 

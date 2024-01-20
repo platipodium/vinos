@@ -39,7 +39,7 @@ citation_author: Lemmen et al.
 year: 2023
 license: CC-BY-4.0
 bibliography: paper.bib
-SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 SPDX-FileCopyrightText: 2023 Universität Hamburg
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0

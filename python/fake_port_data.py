@@ -18,7 +18,7 @@ import pathlib
 def write_header(fid):
     fid.write(
         f"""
-# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 # File created with {sys.argv[0]} on {dt.datetime.now()}

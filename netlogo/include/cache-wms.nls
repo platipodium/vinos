@@ -3,7 +3,7 @@
 ; these WMS images are downloaded with the gis extensions's gis:import-wms-drawing procedure
 ;
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
-; SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
+; SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
 ; SPDX-License-Identifier: CC-BY-4.0
 
 

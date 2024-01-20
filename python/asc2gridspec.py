@@ -3,7 +3,7 @@
 This script creates from an ESRII ASC raster data file
 a GRIDSPEC compliant NetCDF file.
 
-SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
 SPDX-FileCopyrightText: 2014-2021 Helmholtz-Zentrum Geesthacht
 SPDX-License-Identifier: Apache-2.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>

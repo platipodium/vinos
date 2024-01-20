@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 # SPDX-FileContributor: Carsten Lemmen
 # SPDX-License-Identifier: CC0-1.0
 

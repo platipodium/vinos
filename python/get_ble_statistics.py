@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de
 
@@ -151,7 +151,7 @@ if __name__ == "__main__":
     with open(csvname, "w") as fid:
         fid.write(
             """# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
-# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 # SPDX-FileCopyrightText: 2023 Bundesministerium für Landwirtschaft und Ernährung
 # SPDX-License-Identifier: LicenseRef-DL-DE-BY-2.0
 """

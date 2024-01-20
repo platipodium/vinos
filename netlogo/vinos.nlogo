@@ -1,5 +1,5 @@
 ; SPDX-FileCopyrightText: 2022-2023 Universität Hamburg
-; SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
+; SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
 ; SPDX-License-Identifier: Apache-2.0
 ;
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
@@ -565,7 +565,7 @@ end
 to license-message
   print "Viable North Sea"
   print ""
-  print "Copyright 2022-2023 Helmholtz-Zentrum hereon GmbH"
+  print "Copyright 2022-2024 Helmholtz-Zentrum hereon GmbH"
   print "Copyright 2022-2023 Universität Hamburg"
   print "Copyright 2022-2023 Hochschule Bremerhaven"
   print ""
@@ -1176,7 +1176,7 @@ We acknowledge contributions from W. Nikolaus Probst, Seong Jieun, Verena Mühlb
 ### License
 
 Authors Carsten Lemmen, Sascha Hokamp, Serra Örey
-Copyright 2022-2023 Helmholtz-Zentrum hereon GmbH, Universität Hamburg, Hochschule Bremerhaven
+Copyright 2022-2024 Helmholtz-Zentrum hereon GmbH, Universität Hamburg, Hochschule Bremerhaven
 
 Licensed under the **Apache License, Version 2.0** (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 
