@@ -48,7 +48,7 @@ Fishers in the North Sea face area competition with other uses of the sea---long
 
 # Statement of need
 
-The purpose of this ABM is to provide an interactive simulation environment that describes spatial, temporal and structural adaptations of a fishery fleet. It is intended to be used for scenario development for future sustainable fisheries. The ABM adaptively describes
+Socio-economic fishery models are among the earliest application of coupled human and natural systems modeling [@Allen1987]. They have often concentrated on Maximum Sustainable Yield, and have been neglecting adaptive behaviour and diversity of fishers [@Wijermans2021]. The description of the patial, temporal and structural adaptations of a fishery fleet is the purpose of the ViNoS ABM. It is intended to be used for scenario development for future sustainable fisheries. The ABM describes foremost
 
 - where to fish and how far to go out to sea,
 - how often to go out,
