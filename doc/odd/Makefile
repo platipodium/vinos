@@ -21,7 +21,7 @@ CMD=$(PANDOC) $(MDFORMAT) $(BIBCMD) $(TOCCMD)
 
 ## All markdown files in the working directory
 #SRC = $(wildcard *.$(MEXT))
-SRC = paper.$(MEXT)
+SRC = odd.$(MEXT)
 
 ## Location of Pandoc support files.
 PREFIX = $(HOME)/.pandoc
@@ -62,8 +62,8 @@ txt:  $(TXT) $(SRC) Makefile
 
 # %.pdf:	%.md Makefile ../templates/comses-template.tex  tex
 #	$(CMD) -s  --template=../templates/comses-template.tex  -o $@ $<
-#	latexmk -pvc -pdf -e '$$pdflatex=q/xelatex %O -interaction=nonstopmode %S/' -f paper
-#	pdflatex paper
+#	latexmk -pvc -pdf -e '$$pdflatex=q/xelatex %O -interaction=nonstopmode %S/' -f odd
+#	pdflatex odd
 
 %.docx:	%.md  %.bib Makefile
 	$(CMD)--to=docx -s -o $@ $<
@@ -81,6 +81,6 @@ clean:
 	@rm -f $(EPUB) $(TXT)
 	@rm -f allbib.html allbib.pdf
 
-bib: paper.bib
-	pandoc allbib.tex -o allbib.html --citeproc --bibliography paper.bib
-	pandoc allbib.tex -o allbib.pdf --citeproc --bibliography paper.bib
+bib: odd.bib
+	pandoc allbib.tex -o allbib.html --citeproc --bibliography odd.bib
+	pandoc allbib.tex -o allbib.pdf --citeproc --bibliography odd.bib
