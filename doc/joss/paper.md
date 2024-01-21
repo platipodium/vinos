@@ -82,9 +82,8 @@ To date, most NetLogo models have not exploited continuous integration (CI) and 
 
 # Model documentation and license
 
-The model is documented in short form in the IDE's `info` section. A full documentation following the Overview, Design, and Details [ODD, @Grimm2020] standard protocol for ABMs is available in the repository as `doc/odd/paper.md`. Data from third parties is licensed under a multitude of open source licenses. The model, its results and own proprietary data are released under open source licenses, mostly Apache 2.0 and CC-by-SA-4.0. A comprehensive documentation of all licenses is provided via @FSF2023.
-
-<!-- @todo Refer to the published ODD version (once this is published) -->
+The model is documented in short form in the NetLogo IDE's `info` section. A full documentation follows the Overview, Design concepts, and Details [ODD, @Grimm2020] standard protocol for ABMs. This standard intends to facilitate model replication and declares, amongst others, a model's purpose, entitities, scales, processes and scheduling, and initial and boundary data. The ViNoS ODD is available in the repository as `doc/odd/paper.md`.
+Data from third parties are licensed under a multitude of open source licenses. The model, its results and own proprietary data are released under open source licenses, mostly Apache 2.0 and CC-by-SA 4.0. A comprehensive documentation of all licenses is provided via @FSF2023.
 
 # Acknowledgements
 
