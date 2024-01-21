@@ -64,6 +64,6 @@ The update of the memory follows the rule that new and better catches replace th
 
 Volker Grimm (2023), Ecology needs to overcome siloed modelling, Trends in Ecology & Evolution, Volume 38, Issue 12, Pages 1122-1124, https://doi.org/10.1016/j.tree.2023.09.011.
 
-Lemmen, C., Hokamp, S., Örey, S., & Scheffran, J. (2023). Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries. Journal of Open Source Software, under review. Available from: [https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138)
+Lemmen, C., Hokamp, S., Örey, S., & Scheffran, J. (2024). Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries. Journal of Open Source Software, under review. Available from: [https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138](https://joss.theoj.org/papers/84a737c77c6d676d0aefbcef8974b138)
 
 Lemmen, C., Hokamp, S., Örey, S., Scheffran, J., & Seo, J. (2023). ODD Protocol for Viable North Sea (ViNoS): A NetLogo Agent-based Model of German Small-scale Fisheries. CoMSES Computational Model Library. Available from: [https://www.comses.net/codebases/f654945f-8129-46a8-9c2d-f2a1b923f543/releases/](https://www.comses.net/codebases/f654945f-8129-46a8-9c2d-f2a1b923f543/releases/)
