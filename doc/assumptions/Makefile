@@ -19,7 +19,7 @@ CMD=$(PANDOC) $(MDFORMAT) $(BIBCMD) $(TOCCMD)
 
 ## All markdown files in the working directory
 #SRC = $(wildcard *.$(MEXT))
-SRC = paper.$(MEXT)
+SRC = assumptions.$(MEXT)
 
 ## Location of Pandoc support files.
 PREFIX = $(HOME)/.pandoc
