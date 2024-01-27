@@ -3,9 +3,9 @@ title: 'ODD Protocol for Viable North Sea (ViNoS): A NetLogo Agent-based Model o
 keywords: "NetLogo; Agent-based Model; ABM; North Sea; Fisheries; MuSSeL project; ODD; VIABLE; ViNoS"
 journal: comses
 csl-refs: true
-type: article
+type: protocol
 classoption: moreauthors=true
-status:
+status: accept
 author:
   - name: Carsten Lemmen
     orcid: 0000-0003-3483-6036

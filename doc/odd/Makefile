@@ -54,10 +54,10 @@ txt:  $(TXT) $(SRC) Makefile
 %.epub:	%.md  %.bib Makefile
 	$(CMD) --to=epub -s -o $@ $<  # --epub-cover-image=cover-image.gif
 
-%.tex:	%.md  %.bib Makefile
+%.tex:	%.md  %.bib Makefile style
 	$(CMD) -s  --template=./comses-template.tex  -o $@ $<
 
-%.pdf:	%.md  %.bib Makefile
+%.pdf:	%.md  %.bib Makefile style
 	$(CMD) -s  --template=./comses-template.tex  -o $@ $<
 
 # %.pdf:	%.md Makefile ../templates/comses-template.tex  tex
@@ -81,6 +81,8 @@ clean:
 	@rm -f $(EPUB) $(TXT)
 	@rm -f allbib.html allbib.pdf
 
-bib: odd.bib
+style: comses.cls
+
+bib: odd.bib mdpi-bst
 	pandoc allbib.tex -o allbib.html --citeproc --bibliography odd.bib
 	pandoc allbib.tex -o allbib.pdf --citeproc --bibliography odd.bib
