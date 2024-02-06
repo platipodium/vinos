@@ -1,5 +1,5 @@
+; SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
 ; SPDX-FileCopyrightText: 2022-2023 Universität Hamburg
-; SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
 ; SPDX-License-Identifier: Apache-2.0
 ; SPDX-FileContributor: Sascha Hokamp <sascha.hokamp@uni-hamburg.de>
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
@@ -503,7 +503,9 @@ to save-static-dataset [_dataset-name]
   let _name lower _dataset-name
   set _name replace-pattern _name " -" "_"
   export-view (word "./results/" _name ".png")
-  gis:store-dataset gis:patch-dataset temporary (word "./results/" _name)
+  carefully [
+    gis:store-dataset gis:patch-dataset temporary (word "./results/" _name)
+  ][ gis:store-dataset gis:patch-dataset temporary (word "./results/" _name) ]
 end
 
 to save-dynamic-dataset [_dataset-name]
@@ -513,7 +515,12 @@ to save-dynamic-dataset [_dataset-name]
   set _name replace-pattern _name " -" "_"
   let _ticks ifelse-value ticks > 0 [ ticks ][ 0 ]
   export-view (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short ".png")
-  gis:store-dataset gis:patch-dataset temporary (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short)
+
+  carefully [
+    gis:store-dataset gis:patch-dataset temporary (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short)
+  ][
+    gis:store-dataset gis:patch-dataset temporary (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short ".asc")
+  ]
 end
 
 to save-static-datasets
@@ -538,7 +545,7 @@ to-report load-dataset [_dataset-name]
 
   if _dataset-name = "Nephrops" [ report gis:load-dataset "../data/bsh/Fishery.shp"]
   if _dataset-name = "Natura2000" [ report gis:load-dataset "../data/natura2000/northsea/MPA_NorthSea_Shapes.shp"]
-  if _dataset-name = "NP-NS" [ report gis:load-dataset "../data/nlwkn/NLP/Nationalparke_DTK25.shp"]
+  if _dataset-name = "NP-NS" [ report gis:load-dataset "../data/nlwkn/Nationalparke_DTK25.shp"]
   if _dataset-name = "NP-SH" [ report gis:load-dataset "../data/lkn/Nationalpark_Schl.-H._Wattenmeer_final.shp"]
   if _dataset-name = "ICES" [ report gis:load-dataset "../data/ices/ICES_Statistical_Rectangles_Eco.shp"]
   if _dataset-name = "EEZ" [ report gis:load-dataset "../data/eez/eez.shp"]

@@ -16,7 +16,7 @@ Dies gilt nur soweit die datenhaltende Stelle die Angaben 1. bis 3. zum Quellenv
 
 (3) Veränderungen, Bearbeitungen, neue Gestaltungen oder sonstige Abwandlungen sind im Quellenvermerk mit dem Hinweis zu versehen, dass die Daten geändert wurden.
 
- 
+
 
 Data licence Germany – attribution – version 2.0
 
@@ -36,6 +36,6 @@ This applies only if the entity keeping the data provides the pieces of informat
 
 (3) Changes, editing, new designs or other amendments must be marked as such in the source note.
 
- 
+
 
 URL: http://www.govdata.de/dl-de/by-2-0

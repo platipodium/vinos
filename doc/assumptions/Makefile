@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
@@ -19,7 +19,7 @@ CMD=$(PANDOC) $(MDFORMAT) $(BIBCMD) $(TOCCMD)
 
 ## All markdown files in the working directory
 #SRC = $(wildcard *.$(MEXT))
-SRC = paper.$(MEXT)
+SRC = assumptions.$(MEXT)
 
 ## Location of Pandoc support files.
 PREFIX = $(HOME)/.pandoc

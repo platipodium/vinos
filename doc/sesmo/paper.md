@@ -13,7 +13,7 @@ citation_author: Lemmen et al.
 date: submitted to SESMO, June 2022
 license: CC-BY-4.0
 bibliography: paper.bib
-SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 SPDX-FileCopyrightText: 2023 Universität Hamburg
 SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0

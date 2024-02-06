@@ -1,6 +1,6 @@
 <!--
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
-SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: CC0-1.0
 -->
 
@@ -37,7 +37,7 @@ Upon opening the model, all data are loaded, variables are initialized with defa
 Different spatial results can be shown by selecting in the chooser (NetLogo's term for dropdown menus) other variables than bathymetry. We typically look at fishing effort. Different statistical results about the boats can be shown by selection in the chooser for boat properties. You need to hit the `update` button after changing a chooser's value.
 
 Please refer to the `Info` tab in the graphical NetLogo model to learn quickly more about the model and it's mathematical implementation. There is a full documentation of the agent-based model in ODD format available in
-[./doc/odd/paper.md](./doc/odd/paper.md).
+[./doc/odd/paper.md](./doc/odd/paper.md). In the [./doc](./doc) folder, there are also sources to open access presentations and other documentations of the model available.
 
 ## Evaluating a model simulation
 
@@ -47,7 +47,7 @@ The model does write out geospatial data for later analysis with third-party GIS
 
 ## Data and supplementary routines
 
-The simulation model uses open data available in the [./data](./data) folder. Some of the routines to convert data into a format usable by the NetLogo model are available as `R` or `python` routines in the folders [./R](./R), and [./python](./python), respectively. You do not need `R` or `python` to run the simulation, unless you would like to recreate some of the input data or project metadata.
+The simulation model uses open data available in the [./data](./data) folder. Some of the routines to convert data into a format usable by the NetLogo model are available as `R` or `python` routines in the folders [./R](./R), and [./python](./python), respectively. You do not need `R` or `python` to run the simulation, unless you would like to recreate some of the input data or project metadata. The [./assets](./assets) folder contains graphical material used jointly by the NetLogo model and its documentation.
 
 ## Licenses
 
@@ -61,16 +61,13 @@ Some data and utility routines were also contributed by the Thünen Institute, b
 non-governmental organizations and government agencies; some are available under licenses different
 from Apache 2.0. Please refer to the license information available for each individual file in
 this project for details, and to the full terms of each license available in [./LICENSES/](./LICENSES).
-You may use [REUSE.software](https://reuse.software) to view all licenses.
+You may use [REUSE.software](https://reuse.software) facilities to view all licenses.
 
 ## Funding
 
-Funding for this software development was obtained by the German Federal Ministry for Education
-and Research (BMBF) in the project Multiple Stressors on North Sea Life (MuSSeL) in the
-framework of the agenda Küstenforschung Nordsee-Ostsee (KüNO III) within the
-ministry's Forschung für Nachhaltigkeit (FONA) program; the grant number is 03F0862A through E.
+Initial funding for this software development 2019-2023 was obtained by the German Federal Ministry for Education and Research (BMBF) in the project Multiple Stressors on North Sea Life (MuSSeL) in the framework of the agenda Küstenforschung Nordsee-Ostsee (KüNO III) within the ministry's Forschung für Nachhaltigkeit (FONA) program; the grant number is 03F0862A through E. MuSSeL is a collaborative project by [Hereon](https://ror.org/03qjp1d79), [Universität Hamburg](https://ror.org/00g30e956), [Hochschule Bremerhaven](https://ror.org/001yqrb02), [Thünen Institut](https://ror.org/00mr84n67) and the [Bundesamt für Seeschiffahrt und Hydrografie](https://ror.org/03ycvrj88).
 
-MuSSeL is a collaborative project by [Hereon](https://ror.org/03qjp1d79), [Universität Hamburg](https://ror.org/00g30e956), [Hochschule Bremerhaven](https://ror.org/001yqrb02), [Thünen Institut](https://ror.org/00mr84n67) and the [Bundesamt für Seeschiffahrt und Hydrografie](https://ror.org/03ycvrj88).
+Further development is supported by the program-oriented funding of the Helmholtz-Gemeinschaft deutscher Forschungszentren within their Earth and Environmental topic "Changing Coasts".
 
 ## Contributing and reporting
 

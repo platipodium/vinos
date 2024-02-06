@@ -3,13 +3,18 @@ SPDX-FileCopyright: 2019 Flanders Marine Institute
 SPDX-License: CC-by-4.0
 -->
 
-LICENSE, TERMS OF USE & CITATION
-LICENSE
+This directory contains marine regions data obtained from the Flanders Marine Institute
+
+# LICENSE, TERMS OF USE & CITATION
+
+## LICENSE
+
 Marine Regions’ data is licensed under CC-By (https://creativecommons.org/licenses/by/4.0/).
 Please contact us for other uses of the Licensed Material beyond license terms.
 We kindly request our users not to make our products available for download elsewhere and to always refer to marineregions.org for the most up-to-date products and services.
 
-TERMS OF USE
+## TERMS OF USE
+
 Marine Regions is not meant to be used for legal, economical (in the sense of exploration of natural resources) or navigational purposes.
 It is developed solely for scientific, educational and research purposes.
 
@@ -22,7 +27,8 @@ Marine Regions can be used according to the terms and conditions mentioned in th
 The provisions above in no way replace the provisions of the CC-license.
 If any of the abovementioned provisions divert from or contradict the provisions of the CC-license in any way, the CC-license provisions prevail.
 
-FEEDBACK
+## FEEDBACK
+
 If Marine Regions' data is used for a publication or product, we kindly request to inform us (info@marineregions.org) and we'll add the publication to our users page (https://marineregions.org/stats_pubs.php).
 
 Feedback of the users of Marine Regions is more than welcome.

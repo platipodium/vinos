@@ -1,6 +1,6 @@
 <!--
 SPDX-FileCopyrightText: 2023 Universität Hamburg
-SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: CC0-1.0
 SPDX-FileContributor: Verena Mühlberger <verena.muehlberger@uni-hamburg.de>
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>

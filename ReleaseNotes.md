@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: CC0-1.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
@@ -8,9 +8,10 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
 Version 1.3.1 is a maintenance release of our Viable North Sea (ViNoS) software.
 
-- assumptions document
+- new assumptions document
+- frequency of exporting patch data is now a chooser
 
-# Release notes for version 1.3.0 - Dec 5
+# Release notes for version 1.3.0 - Dec 5, 2023
 
 Version 1.3.0 is a feature release of our Viable North Sea (ViNoS) software. The main purpose of this release are benchmarks and realism improvements, as well as a new storymap and individual logbooks.
 
@@ -20,7 +21,7 @@ Version 1.3.0 is a feature release of our Viable North Sea (ViNoS) software. The
 - added monthly reporting
 - added benchmark monitors
 
-# Release notes for version 1.2.3 - Oct 23
+# Release notes for version 1.2.3 - Oct 20, 2023
 
 Version 1.2.3 is a maintenance release of our Viable North Sea (ViNoS) software. The main purpose of this release are further improvements to the user interface and trip optimization.
 
@@ -31,7 +32,7 @@ Version 1.2.3 is a maintenance release of our Viable North Sea (ViNoS) software.
 - display of map values and nicer legend
 - better python visualization of maps
 
-# Release notes for version 1.2.2 - Oct 11
+# Release notes for version 1.2.2 - Oct 11, 2023
 
 Version 1.2.2 is a maintenance release of our Viable North Sea (ViNoS) software. The
 main purpose of this release are improvements to the user interface.

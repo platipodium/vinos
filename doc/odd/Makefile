@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FieContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 PANDOC=pandoc
@@ -21,7 +21,7 @@ CMD=$(PANDOC) $(MDFORMAT) $(BIBCMD) $(TOCCMD)
 
 ## All markdown files in the working directory
 #SRC = $(wildcard *.$(MEXT))
-SRC = paper.$(MEXT)
+SRC = odd.$(MEXT)
 
 ## Location of Pandoc support files.
 PREFIX = $(HOME)/.pandoc
@@ -54,16 +54,16 @@ txt:  $(TXT) $(SRC) Makefile
 %.epub:	%.md  %.bib Makefile
 	$(CMD) --to=epub -s -o $@ $<  # --epub-cover-image=cover-image.gif
 
-%.tex:	%.md  %.bib Makefile
+%.tex:	%.md  %.bib Makefile style
 	$(CMD) -s  --template=./comses-template.tex  -o $@ $<
 
-%.pdf:	%.md  %.bib Makefile
+%.pdf:	%.md  %.bib Makefile style
 	$(CMD) -s  --template=./comses-template.tex  -o $@ $<
 
 # %.pdf:	%.md Makefile ../templates/comses-template.tex  tex
 #	$(CMD) -s  --template=../templates/comses-template.tex  -o $@ $<
-#	latexmk -pvc -pdf -e '$$pdflatex=q/xelatex %O -interaction=nonstopmode %S/' -f paper
-#	pdflatex paper
+#	latexmk -pvc -pdf -e '$$pdflatex=q/xelatex %O -interaction=nonstopmode %S/' -f odd
+#	pdflatex odd
 
 %.docx:	%.md  %.bib Makefile
 	$(CMD)--to=docx -s -o $@ $<
@@ -81,6 +81,8 @@ clean:
 	@rm -f $(EPUB) $(TXT)
 	@rm -f allbib.html allbib.pdf
 
-bib: paper.bib
-	pandoc allbib.tex -o allbib.html --citeproc --bibliography paper.bib
-	pandoc allbib.tex -o allbib.pdf --citeproc --bibliography paper.bib
+style: comses.cls
+
+bib: odd.bib mdpi-bst
+	pandoc allbib.tex -o allbib.html --citeproc --bibliography odd.bib
+	pandoc allbib.tex -o allbib.pdf --citeproc --bibliography odd.bib

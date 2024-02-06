@@ -3,7 +3,7 @@
 # This script creates from an ESRII ASC raster data file
 # a SCRIP compliant NetCDF file.
 #
-SPDX-FileCopyrightText: 2022-2023 Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
 SPDX-FileCopyrightText: 2014-2021 Helmholtz-Zentrum Geesthacht
 SPDX-License-Identifier: Apache-2.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
@@ -14,16 +14,16 @@ import sys
 import numpy as np
 import time
 
-def create_scrip(header, data):
 
+def create_scrip(header, data):
     nlon = int(header["NROWS"])
     nlat = int(header["NCOLS"])
     ll_lon = header["XLLCORNER"]
     ll_lat = header["YLLCORNER"]
     delta_lon = header["CELLSIZE"]
-    delta_lat = header["CELLSIZE"] # always square
+    delta_lat = header["CELLSIZE"]  # always square
 
-    filename  = header["NAME"].replace(".asc", "_scrip.nc")
+    filename = header["NAME"].replace(".asc", "_scrip.nc")
 
     nc = netCDF4.Dataset(filename, "w", format="NETCDF3_CLASSIC")
 
@@ -56,7 +56,14 @@ def create_scrip(header, data):
     var.missing_value = header["NODATA_VALUE"]
 
     # Meta data
-    nc.history = "Created " + time.ctime(time.time()) + " by " + sys.argv[0] + " from " + sys.argv[1]
+    nc.history = (
+        "Created "
+        + time.ctime(time.time())
+        + " by "
+        + sys.argv[0]
+        + " from "
+        + sys.argv[1]
+    )
     nc.creator = "Carsten Lemmen <carsten.lemmen@hereon.de>"
     nc.license = "Creative Commons Attribution Share-Alike (CC-BY-SA 4.0)"
     nc.copyright = "Helmholtz-Zentrum hereon GmBH"
@@ -90,30 +97,33 @@ def create_scrip(header, data):
     var[:] = data.flatten()
     nc.close()
 
-def asc_reader(filename):
 
-    header_rows = 6 # six rows for header information
+def asc_reader(filename):
+    header_rows = 6  # six rows for header information
     header = {"NAME": filename, "VARIABLE": "var"}
     row_ite = 1
 
-    with open(filename, 'rt') as fid:
-      for line in fid:
-        if row_ite <= header_rows:
-          line = line.split(" ", 1)
-          header[line[0]] = float(line[1])
-        else:
-          break
+    with open(filename, "rt") as fid:
+        for line in fid:
+            if row_ite <= header_rows:
+                line = line.split(" ", 1)
+                header[line[0]] = float(line[1])
+            else:
+                break
 
-        row_ite = row_ite+1
+            row_ite = row_ite + 1
     # read data array
-    data  = np.loadtxt(filename, skiprows=header_rows, dtype='float64')
+    data = np.loadtxt(filename, skiprows=header_rows, dtype="float64")
     return header, data
 
+
 def main():
-    if len(sys.argv) < 2: return
+    if len(sys.argv) < 2:
+        return
 
     header, data = asc_reader(sys.argv[1])
     create_scrip(header, data)
+
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+# SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FieContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 PANDOC=pandoc

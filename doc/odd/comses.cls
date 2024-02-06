@@ -1,5 +1,5 @@
 % SPDX-FileCopyrightText: 2018-2023 Multidisciplinary Digital Publishing Institute
-% SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+% SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 % SPDX-License-Identifier: CC-BY-SA-4.0
 % SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
@@ -556,19 +556,8 @@
 					\hfill \href{https://www.comses.net}{%
 					\includegraphics[height=1.5cm]{assets/logo-comses}}\vspace{0.5cm}%
 					}{
-					\href{http://www.mdpi.com/journal/\@journal}{
-					\includegraphics[height=1.2cm]{assets/\@journal-logo.eps}}%
-					\hfill
-					\ifthenelse{\equal{\@journal}{proceedings}}{
-						\href{http://www.mdpi.com/journal/\@journal}{
-						\includegraphics[height=1.2cm]{assets/logo-conference.eps}
-						\hfill}
-						}{}
-					\ifthenelse{\equal{\@journal}{scipharm}}{%
-						\href{http://www.mdpi.com}{\includegraphics[height=1cm]{assets/logo-comses-scipharm.eps}}%
-						}{%
-						\href{http://www.mdpi.com}{\includegraphics[height=1cm]{assets/logo-comses.eps}}%
-						}%
+						\hfill \href{https://www.comses.net}{%
+						\includegraphics[height=1.5cm]{assets/logo-comses}}\vspace{0.5cm}%
 					}%
 			}%
 		\par
@@ -803,7 +792,6 @@
 \hrule
 \vspace{12pt}
 }
-
 
 %%%% Print maketitle and abstractkeywords
 \ifthenelse{\equal{\@arttype}{Supfile}}{
@@ -1167,7 +1155,7 @@
 			\noindent \copyright{} {\@ \the\year} by the authors. %
 			Submitted to {\em \journalname} for %
 			possible open access publication %
-			under the terms and conditions of the Creative Commons Attribution %
+			under the terms and conditions of the Creative Commons Attribution Share-Alike%
 			\ifthenelse{\equal{\@journal}{ijtpp}}{NonCommercial NoDerivatives (CC BY-NC-ND)}{(CC BY)} %
 			license %
 			\ifthenelse{\equal{\@journal}{ijtpp}}{
@@ -1176,27 +1164,26 @@
 			{https://creativecommons.org/licenses/by-nc-nd/4.0/}).%
 			}{%
 			(\changeurlcolor{black}%
-			\href{http://creativecommons.org/licenses/by/4.0/.}%
-			{http://creativecommons.org/licenses/by/4.0/}).}
+			\href{http://creativecommons.org/licenses/by-sa/4.0/.}%
+			{http://creativecommons.org/licenses/by-sa/4.0/}).}
 			}{
 			\begin{minipage}{.2\textwidth}
 				\hspace{-1.2mm}%
 				\vspace{2mm}%
 				\href{http://creativecommons.org/}{%
 				\ifthenelse{\equal{\@journal}{ijtpp}}{%
-					\includegraphics[width=0.94\textwidth]{assets/logo-ccby-nc-nd.eps}%
+					\includegraphics[width=0.94\textwidth]{../../assets/cc-by-sa.pdf}%
 					}{%
-					\includegraphics[width=0.94\textwidth]{assets/logo-ccby.eps}
+					\includegraphics[width=0.94\textwidth]{../../assets/cc-by-sa.pdf}
 					}
 				}
 			\end{minipage}%
 			\begin{minipage}{.79\textwidth}
 				\copyright \ {\@copyrightyear} by the \@authornum. %
-				Licensee MDPI, Basel, Switzerland. %
 				This article is an open access article %
 				distributed under the terms and conditions %
-				of the Creative Commons Attribution %
-				\ifthenelse{\equal{\@journal}{ijtpp}}{NonCommercial NoDerivatives (CC BY-NC-ND)}{(CC BY)} %
+				of the Creative Commons Attribution Share-Alike%
+				\ifthenelse{\equal{\@journal}{ijtpp}}{NonCommercial NoDerivatives (CC BY-NC-ND)}{ (CC BY-SA)} %
 				license %
 				\ifthenelse{\equal{\@journal}{ijtpp}}{
 				(\changeurlcolor{black}%
@@ -1204,8 +1191,8 @@
 				{https://creativecommons.org/licenses/by-nc-nd/4.0/}).%
 				}{%
 				(\changeurlcolor{black}%
-				\href{http://creativecommons.org/licenses/by/4.0/.}%
-				{http://creativecommons.org/licenses/by/4.0/}).}
+				\href{http://creativecommons.org/licenses/by-sa/4.0/.}%
+				{http://creativecommons.org/licenses/by-sa/4.0/}).}
 				\end{minipage}
 			}
 		}

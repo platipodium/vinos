@@ -35,7 +35,7 @@ affiliations:
 date: 4 Oct 2023
 year: 2023
 bibliography: paper.bib
-SPDX-FileCopyrightText: 2022-2023  Helmholtz-Zentrum hereon GmbH
+SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: CC-BY-4.0
 SPDX-FileContributor: Carsten Lemmen
 ---
@@ -48,15 +48,15 @@ Fishers in the North Sea face area competition with other uses of the sea---long
 
 # Statement of need
 
-The purpose of this ABM is to provide an interactive simulation environment that describes spatial, temporal and structural adaptations of a fishery fleet. It adaptively describes
+Socio-economic fishery models are among the earliest application of coupled human and natural systems modeling [@Allen1987]. They have often concentrated on Maximum Sustainable Yield, and have been neglecting adaptive behaviour and diversity of fishers [@Wijermans2021]. The description of the patial, temporal and structural adaptations of a fishery fleet is the purpose of the ViNoS ABM. It is intended to be used for scenario development for future sustainable fisheries. The ABM describes foremost
 
 - where to fish and how far to go out to sea,
 - how often to go out,
 - what gear to use and what species to target.
 
-Its scope are the German North Sea small-scale fisheries. These encompass some 300 vessels based and landing in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone. The target species described by the model are currently limited to the most important ones in this sector: plaice, sole and brown shrimp; the model is extensible to further target species like Norwegian lobster, whiting, or sprat.
+Its scope is the German North Sea small-scale fisheries. These encompass some 300 vessels based and landing in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone. The target species described by the model are currently limited to the commercially most important ones in this sector: plaice, sole and brown shrimp; the model is extensible to further target species like Norwegian lobster, whiting, or sprat.
 
-The intended audience of the ABM are marine researchers, educators and government agencies concerned with spatial planning, environmental status assessment, and climate change mitigation. The ABM can assist in a stakeholder dialogue with tourism and fishers to contextualize the complexity of the interactions between fisheries economics, changing resources and regulatory restrictions. It is intended to be used for scenario development for future sustainable fisheries.
+The intended audience of the ABM are marine researchers, educators and government agencies concerned with spatial planning, environmental status assessment, and climate change mitigation. The ABM can assist in a stakeholder dialogue with tourism and fishers to contextualize the complexity of the interactions between fisheries economics, changing resources and regulatory restrictions.
 
 # Key features of the ABM
 
@@ -70,15 +70,20 @@ The user `interface` provides an interactive environment, perusing all NetLogo's
 
 # Notable programming and software development features
 
+This NetLogo model is a showcase of the integrated use of several extensions to the base language, featuring, amongst other
+
+- reading and writing of tabular data (`csv` extension),
+- import and export of Geographical Information System layers, both ESRII raster `.asc` and vector shapefiles `.shp`, both as local data and interacting with Web Mapping Services and Web Feature Services, from different projections and converted from other file formats like NetCDF and geoTiff (using the `gis` extension and `python` preprocessing),
+- a real-time calendar using the `time` extension and both tick-based (daily model timestep) as well as discrete event scheduling for substepping.
+
 A notable programming feature is the integration of the legend with the `view`, a feature that is lacking from the default capabilities of NetLogo. There have been discussions on how to implement a legend using the `plot` element and using the `bitmap` extension [@Stackoverflow2018], but so far this is the only NetLogo model known to the authors implementing a legend with the `view` using NetLogo's intrinsic capabilities.
 
 To date, most NetLogo models have not exploited continuous integration (CI) and continous deployment (CD). With our implementation, we demonstrate how CI can be used for NetLogo by making use of NetLogo's `BehaviorSpace` tool that runs a suite of unit tests. We also use `BehaviorSpace` for the CD of generating the resulting maps of fishing effort under different scenarios.
 
 # Model documentation and license
 
-The model is documented in short form in the IDE's `info` section. A full documentation following the Overview, Design, and Details [ODD, @Grimm2020] standard protocol for ABMs is available in the repository as `doc/odd/paper.md`. Data from third parties is licensed under a multitude of open source licenses. The model, its results and own proprietary data are released under open source licenses, mostly Apache 2.0 and CC-by-SA-4.0. A comprehensive documentation of all licenses is provided via @FSF2023.
-
-<!-- @todo Refer to the published ODD version (once this is published) -->
+The model is documented in short form in the NetLogo IDE's `info` section. A full documentation follows the Overview, Design concepts, and Details [ODD, @Grimm2020] standard protocol for ABMs. This standard intends to facilitate model replication and declares, amongst others, a model's purpose, entitities, scales, processes and scheduling, and initial and boundary data. The ViNoS ODD is available in the repository as `doc/odd/paper.md`.
+Data from third parties are licensed under a multitude of open source licenses. The model, its results and own proprietary data are released under open source licenses, mostly Apache 2.0 and CC-by-SA 4.0. A comprehensive documentation of all licenses is provided via @FSF2023.
 
 # Acknowledgements
 

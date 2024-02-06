@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2024 Helmholtz-Zentrum hereon GmbH
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de
+
+[flake8]
+ignore = E203, E266, E501, W503, F403, F401, E722
+max-line-length = 89
+max-complexity = 18
+select = B,C,E,F,W,T4,B9
