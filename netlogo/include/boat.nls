@@ -313,11 +313,13 @@ to boat-rest-port
   ]
 
   ; If a boat is still resting (boat-trip-phase = 0), then there is time to exchange
-  ; with other fishermen in the same harbor.  Let's assume this takes 3 hours
+  ; with other fishermen in the same harbor.  Let's assume this takes 3 hours.
+  ; Testing revealed that leads to even more concentration of overfishing, so
+  ; we'll disable it for now.
   if  boat-trip-phase = 0 [
-    let _others other boats-here
-    if any? _others [set boat-hour boat-hour + 3]
-    boat-copy-actions _others
+    ;let _others other boats-here
+    ;if any? _others [set boat-hour boat-hour + 3]
+    ;boat-copy-actions _others
   ]
  end
 
