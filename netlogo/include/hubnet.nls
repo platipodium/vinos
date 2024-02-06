@@ -1,4 +1,4 @@
-; SPDX-FileCopyrightText: 2023 Helmholtz-Zentrum hereon GmbH
+; SPDX-FileCopyrightText: 2023-2024 Helmholtz-Zentrum hereon GmbH
 ; SPDX-License-Identifier: Apache-2.0
 ; SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
@@ -7,9 +7,9 @@
 breed [ clients client ]
 
 clients-own [
-  user-id   ;; clients choose a user name when they log in whenever you receive a
+  client-id   ;; clients choose a user name when they log in whenever you receive a
             ;; message from the client associated with this turtle hubnet-message-source
-            ;; will contain the user-id
+            ;; will contain the client-id
   step-size ;; you should have a turtle variable for every widget in the client interface that
             ;; stores a value (sliders, choosers, and switches). You will receive a message
             ;; from the client whenever the value changes. However, you will not be able to
@@ -28,7 +28,9 @@ to setup-hubnet
   ;; so reset any variables you want to default values, and let the clients
   ;; know about the change if the value appears anywhere in their interface.
   ask clients [
-    ;hubnet-send user-id "client-boat" one-of boats
+    ;hubnet-send client-id "boat-client" one-of boats with [boat-client = nobody]
+    ;set client-boat one-of boats with [boat-client = client-id]
+    ;print (sentence "Client " client-id " is controlling boat " [who] of client-boat)
   ]
   ;; calling reset-ticks enables the 'go' button
   ;reset-ticks
@@ -49,7 +51,7 @@ to listen-clients
       [
 
         remove-client ]
-      [ ask clients with [user-id = hubnet-message-source]
+      [ ask clients with [client-id = hubnet-message-source]
         [ execute-command hubnet-message-tag ] ;; otherwise the message means that the user has
       ]                                        ;; done something in the interface hubnet-message-tag
                                                ;; is the name of the widget that was changed
@@ -64,7 +66,7 @@ end
 ;; turtles of variables reference this turtle make sure to clean
 ;; up those references too.
 to remove-client
-  ask clients with [user-id = hubnet-message-source][ die ]
+  ask clients with [client-id = hubnet-message-source][ die ]
   print (word "Removed client user with id " hubnet-message-source)
 end
 
@@ -74,11 +76,11 @@ end
 to create-new-client
   create-clients 1
   [
-    ;; store the message-source in user-id now
+    ;; store the message-source in client-id now
     ;; so when you get messages from this client
     ;; later you will know which turtle it affects
-    set user-id hubnet-message-source
-    set label user-id
+    set client-id hubnet-message-source
+    set label client-id
     ;; initialize turtle variables to the default
     ;; value of the corresponding widget in the client interface
     set client-boat one-of boats
@@ -130,16 +132,15 @@ end
 ;; a monitor on the client send the information back to the client
 to send-info-to-clients
 
-  hubnet-send user-id "Home port" (word [boat-home-port] of client-boat )
-  hubnet-send user-id "Vessel information" (word [boat-name] of client-boat " " [boat-captain] of client-boat)
+  hubnet-send client-id "Home port" (word [boat-home-port] of client-boat )
+  hubnet-send client-id "Vessel information" (word [boat-name] of client-boat " " [boat-captain] of client-boat)
 end
 
 ; this is a boat procedure
 to send-position
   if not is-turtle? boat-client or boat-client = nobody [ stop ]
 
-  let _user-id [user-id] of boat-client
-
+  let _client-id [client-id] of boat-client
   let _minute leading-zero round ((boat-hour mod 1) * 60) 2
   let _hour leading-zero  (boat-hour mod 24) 2
   let _date time:show (time:plus date boat-hour "hours" ) "YYYY-MM-dd "
@@ -147,11 +148,11 @@ to send-position
   let _envelope gis:envelope-of self
   let _message (word _timestamp " " (precision item 0 _envelope 4) "°E " (precision item 2 _envelope 4) "°N")
 
-  hubnet-send _user-id  "Location" _message
-  ;hubnet-send-follow ( [user-id] of boat-client ) self 10
-  hubnet-send-override _user-id self "hidden?" [ false ]
-  hubnet-send-override _user-id self "color" [ red ]
-  hubnet-send-override _user-id self "shape" [ "car" ]
-  ;hubnet-send-override _user-id water-patches "pcolor" [ blue + 3 ]
-  ;hubnet-send-override _user-id self "pcolor" [ green ]
+  hubnet-send _client-id  "Location" _message
+  ;hubnet-send-follow ( [client-id] of boat-client ) self 10
+  hubnet-send-override _client-id self "hidden?" [ false ]
+  hubnet-send-override _client-id self "color" [ red ]
+  hubnet-send-override _client-id self "shape" [ "car" ]
+  ;hubnet-send-override _client-id water-patches "pcolor" [ blue + 3 ]
+  ;hubnet-send-override _client-id self "pcolor" [ green ]
 end

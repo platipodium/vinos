@@ -137,6 +137,8 @@ to setup
   setup-logo
   display
 
+  setup-hubnet
+
   reset-ticks
 end
 
@@ -263,6 +265,7 @@ to go
   export-data
   save-totals
 
+  listen-clients
   tick
 end
 
