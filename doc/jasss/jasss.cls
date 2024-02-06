@@ -112,10 +112,10 @@
 \renewcommand{\maketitle}{%
 	\thispagestyle{fancy}
 	{
-	\includegraphics[width=1\textwidth]{bar} %\hrule
+	\includegraphics[width=1\textwidth]{./assets/bar} %\hrule
 	\begin{minipage}{0.3\textwidth}
 		\vspace{4mm}
-		\includegraphics[width=1\textwidth]{JASSS}
+		\includegraphics[width=1\textwidth]{./assets/JASSS}
 	\end{minipage}
 	\hfill
 	\begin{minipage}[t]{0.65\textwidth}
@@ -134,7 +134,7 @@
 	\end{minipage}
 	%\vspace{0.3cm}
 
-	\includegraphics[width=1\textwidth]{bar} %\hrule
+	\includegraphics[width=1\textwidth]{./assets/bar} %\hrule
 	}
 }
 
@@ -146,7 +146,7 @@
 
 \makeatletter
 
-\def\@seccntformat#1{\protect\makebox[0pt][r]{\protect\includegraphics[width=4mm]{SectionIcon} \csname the#1\endcsname\hspace{2.75mm}}}
+\def\@seccntformat#1{\protect\makebox[0pt][r]{\protect\includegraphics[width=4mm]{./assets/SectionIcon} \csname the#1\endcsname\hspace{2.75mm}}}
 
 
 %% The code below was extracted from the parano package (parano.sty)
