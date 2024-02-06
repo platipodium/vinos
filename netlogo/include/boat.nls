@@ -312,6 +312,13 @@ to boat-rest-port
     set boat-hour boat-hour + _high-water
   ]
 
+  ; If a boat is still resting (boat-trip-phase = 0), then there is time to exchange
+  ; with other fishermen in the same harbor.  Let's assume this takes 3 hours
+  if  boat-trip-phase = 0 [
+    let _others other boats-here
+    if any? _others [set boat-hour boat-hour + 3]
+    boat-copy-actions _others
+  ]
  end
 
 ; Boat trip phase 1. This is a boat procedure initializing a new
@@ -948,6 +955,38 @@ to-report boat-fuzzy-position [ _patch ]
     ]
   ]
   report _patch
+end
+
+; Boat procedure that takes an agentset as input and learns from other
+; boats better actions
+to boat-copy-actions [other-boats]
+  if other-boats = nobody [stop]
+  write-log (word "Talking to " count other-boats " other boat owners")
+  let _minimum-action min-one-of boat-actions [action-gain]
+  let _other-action nobody
+  let _myself self
+  let _action-distance 0
+  let _prey-price item boat-current-prey-index prey-prices
+  let _boat-cost-per-km (boat-fuel-lperh * oil-price / 100  + wage) / boat-steaming-speed
+  let _action-gain 0
+
+  ask other-boats [
+    set _other-action max-one-of boat-actions [action-catch]
+    if _other-action != nobody and _minimum-action != nobody [
+      ask _other-action [
+        set _action-distance  gis-scale * distance _myself
+        set _action-gain action-catch * _prey-price - _action-distance * _boat-cost-per-km
+      ]
+      if _action-gain > [action-gain] of _minimum-action [
+        ask _minimum-action [
+          move-to _other-action
+          set action-catch [action-catch] of _other-action
+          set action-gain _action-gain
+        ]
+        write-log (word "Learned from " self " new action")
+      ]
+    ]
+  ]
 end
 
 ; Boat procedure to update its memory of actions

@@ -604,7 +604,7 @@ A notable programming feature is the integration of the legend with the (map) `v
 
 ## Model documentation and license
 
-The model is documented  with the Overview, Design, and Details (ODD, [2]) standard protocol for ABMs, available in the repository as [doc/odd/paper.md](doc/odd/paper.md)
+The model is documented  with the Overview, Design, and Details (ODD, [2]) standard protocol for ABMs, available in the repository as [../doc/odd/odd.md](../doc/odd/odd.md)
 All data from third parties is licensed under various open source licenses.  The model, its results and own proprietary data was released under open source licenses, mostly Apache 2.0 and CC-BY-SA-4.0.  A comprehensive documentation of all is provided via REUSE [3].
 
 ### Acknowledgements
