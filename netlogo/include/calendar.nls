@@ -15,6 +15,7 @@ globals [
   ramadan?
   start-date
   datetime
+  oil-prices
 ]
 
 to setup-calendar
@@ -53,6 +54,8 @@ to setup-calendar
   set ramadan? is-ramadan?
   set start-date date
   set datetime date2datetime
+
+  set oil-prices ts-load "../data/oil_price/eia_1986-2023.csv"
 
   ; Anchoring to ticks created problems when not called during
   ; startup, so this is disabled for now
@@ -104,6 +107,10 @@ to-report datetime-long
   report time:show datetime "MMM dd HH:mm"
 end
 
+to-report current-oil-price
+  let _current ts-nearest oil-prices date
+  report ts-get oil-prices _current "ct_per_liter"
+end
 
 to-report is-holiday?
   report (ts-member? holidays-germany date) or (time:get "dayofweek" date mod 7 = 0)

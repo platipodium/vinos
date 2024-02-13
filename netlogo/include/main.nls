@@ -52,6 +52,8 @@ globals [
   fleet-monthly-fuel               ; model diagnostic of the 12 recently simulated months' fuel consumption
 
   fleet-landing-climatology        ; observational data from Temming et al. https://doi.org/10.3354/meps12325
+
+  oil-price
 ]
 
 patches-own [
@@ -145,12 +147,15 @@ to setup-defaults
   set memory-size 25
   set adaptation 0.6
   set time-offset -92 ; months from today
-  set oil-price 62 ; ct l-1
+  set diesel-price 62 ; ct l-1
   set wage 80 ; € h-1
 end
 
 
 to setup-globals
+
+  ifelse diesel-price > 0 [ set oil-price diesel-price][set oil-price current-oil-price]
+
   set min-fresh-catch 10
   set navigable-depth 2
   set boat-property-chooser "distance-at-sea"
@@ -187,6 +192,7 @@ to go
 
   advance-calendar
   update-date-patch
+  ifelse diesel-price > 0 [ set oil-price diesel-price][set oil-price current-oil-price]
 
   ; Every new year recompute exclusion area from OWF
   if (time:get "dayofyear" date = 1) [ calc-accessibility ]

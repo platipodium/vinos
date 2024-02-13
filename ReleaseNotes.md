@@ -10,6 +10,7 @@ Version 1.3.1 is a maintenance release of our Viable North Sea (ViNoS) software.
 
 - new assumptions document
 - frequency of exporting patch data is now a chooser
+- added dynamic oil price 1986-2023
 
 # Release notes for version 1.3.0 - Dec 5, 2023
 

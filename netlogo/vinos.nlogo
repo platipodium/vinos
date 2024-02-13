@@ -132,7 +132,7 @@ adaptation
 adaptation
 0
 1
-0.784
+0.779
 0.001
 1
 NIL
@@ -158,11 +158,11 @@ SLIDER
 421
 183
 454
-oil-price
-oil-price
-25
-75
-50.0
+diesel-price
+diesel-price
+0
+100
+0.0
 5
 1
 ct l-1
@@ -312,9 +312,9 @@ NIL
 TEXTBOX
 15
 390
-207
-429
-Diesel for ships is tax-exempt and \ncosts on average 0.5 € l-1
+260
+417
+Diesel for ships is tax-exempt and  costs on average 0.5 € l-1. If zero, then history used.
 10
 0.0
 1
@@ -984,8 +984,8 @@ NetLogo 6.4.0
 VIEW
 338
 71
-658
-191
+883
+502
 0
 0
 0
