@@ -11,6 +11,6 @@ odd-paper:
     - make -C doc/odd pdf
   artifacts:
     paths:
-      - doc/odd/paper.pdf
+      - doc/odd/odd.pdf
   needs: []
   stage: deploy

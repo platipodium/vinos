@@ -94,7 +94,7 @@ pages:
   stage: deploy
   script:
     - cp -r .gitlab/public .
-    - cp ./doc/odd/paper.pdf public/odd.pdf
+    - cp ./doc/odd/odd.pdf public/odd.pdf
     - cp ./doc/joss/paper.pdf public/joss.pdf
   #    - cp ./netlogo/results/effort*png public/effort.png
   artifacts:

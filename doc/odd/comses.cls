@@ -215,7 +215,7 @@
 \sloppy
 
 %%%% References
-\RequirePackage[sort&compress]{natbib}
+\RequirePackage[round,sort,comma,numbers]{natbib}
 
 
 \renewcommand\NAT@set@cites{%
@@ -429,7 +429,7 @@
 
 %% ORCID
 % Make Orcid icon
-\newcommand{\orcidicon}{\includegraphics[width=0.32cm]{assets/logo-orcid.eps}}
+\newcommand{\orcidicon}{\includegraphics[width=0.32cm]{assets/logo-orcid-eps-converted-to.pdf}}
 
 % Define link and button for each author
 \foreach \x in {A, ..., Z}{%
@@ -1179,7 +1179,7 @@
 				}
 			\end{minipage}%
 			\begin{minipage}{.79\textwidth}
-				\copyright \ {\@copyrightyear} by the \@authornum. %
+				\copyright 2023--\ {\@copyrightyear} by the \@authornum. %
 				This article is an open access article %
 				distributed under the terms and conditions %
 				of the Creative Commons Attribution Share-Alike%
