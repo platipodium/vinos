@@ -76,8 +76,8 @@ def data_from_pdf(pdf_data):
             stream=True,
             guess=False,
             encoding="utf-8",
-            area=(136, 0, 500, 213),
-            pandas_options={"columns": ("Species", "t", "k€")},
+            area=(136, 0, 500, 243),
+            pandas_options={"columns": ("Species", "t", "k€", "€_per_kg")},
         )
     except:
         return None
@@ -87,13 +87,31 @@ def data_from_pdf(pdf_data):
         else:
             df = df[0]
 
+    df.dropna(subset=["Species"], inplace=True)
+
+    if "(ohne Futter)" in df["Species"].values:
+        df = df[df["Species"] != "Garnelen"]
+        df["Species"] = df["Species"].str.replace("(ohne Futter)", "Speisekrabbe")
+
+    if "(einschl. Fleisch)" in df["Species"].values:
+        df = df[df["Species"] != "Muscheln"]
+        df["Species"] = df["Species"].str.replace("(einschl. Fleisch)", "Muscheln")
+
     df["t"] = df["t"].astype(str).str.replace(".", "").str.replace(",", ".")
     df["k€"] = df["k€"].astype(str).str.replace(".", "").str.replace(",", ".")
+    df["€_per_kg"] = (
+        df["€_per_kg"].astype(str).str.replace(".", "").str.replace(",", ".")
+    )
 
     df["t"] = df["t"].apply(float_or_nan)
     df["k€"] = df["k€"].apply(float_or_nan)
+    df["€_per_kg"] = df["€_per_kg"].apply(float_or_nan)
 
     df["€ kg-1"] = df["k€"] / df["t"]
+
+    # @todo test this equality:
+    # df["€ kg-1"] ==df["€_per_kg"]
+
     return df
 
 
@@ -117,6 +135,7 @@ def get_all_csv():
 
 if __name__ == "__main__":
     # Data is available from 2009 to 2023
+    # for year in range(2009, 2023):
     for year in range(2009, 2023):
         for month in range(1, 13):
             csvname = pathlib.Path(
@@ -180,3 +199,7 @@ if __name__ == "__main__":
         df[df["Species"] == s].plot(x="yearmonth", y="t", title=s, ax=ax[0])
         df[df["Species"] == s].plot(x="yearmonth", y="k€", ax=ax[1], title="")
         df[df["Species"] == s].plot(x="yearmonth", y="€ kg-1", ax=ax[2], title="")
+        df[df["Species"] == s].plot(x="yearmonth", y="€_per_kg", ax=ax[2], title="")
+
+
+df[df["Species"] == s].plot(x="yearmonth", y="€ kg-1", ax=ax[2], title="")
