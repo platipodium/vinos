@@ -4,6 +4,12 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
 
+# Release notes for version 1.3.2 - in development
+
+Version 1.3.2 is a maintenance release of our Viable North Sea (ViNoS) software.
+
+- fix gitlab and github pipelines
+
 # Release notes for version 1.3.1 - Feb 16, 2024
 
 Version 1.3.1 is a maintenance release of our Viable North Sea (ViNoS) software.
