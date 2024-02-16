@@ -4,13 +4,14 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
 
-# Release notes for version 1.3.1 - in development
+# Release notes for version 1.3.1 - Feb 16, 2024
 
 Version 1.3.1 is a maintenance release of our Viable North Sea (ViNoS) software.
 
-- new assumptions document
+- new assumptions document draft
 - frequency of exporting patch data is now a chooser
 - added dynamic oil price 1986-2023
+- add random component to catch
 
 # Release notes for version 1.3.0 - Dec 5, 2023
 

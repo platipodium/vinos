@@ -787,9 +787,12 @@ to-report boat-catch-species [haul-length]
   let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) patch-prey-names ]
 
   report n-values (number-of-gears) [ igear ->
-     (item igear catch-efficiency-boat) * (item (item igear ispecieslist) patch-prey-biomasses)
-      * (([gear-width] of item igear boat-gears) * haul-length) * (boolean2int (item (item igear ispecieslist) patch-prey-biomasses > 0) )
-      * [traffic-suitability] of patch-here
+     (item igear catch-efficiency-boat)                              ; individual catch efficiency
+      * (item (item igear ispecieslist) patch-prey-biomasses)        ; mean resource amount
+      * random-float 2.0                                             ; lucky punch
+      * (([gear-width] of item igear boat-gears) * haul-length)      ; width of gear
+      * (boolean2int (item (item igear ispecieslist) patch-prey-biomasses > 0) ) ; filter NaN
+      * [traffic-suitability] of patch-here                          ; modulate with traffic
   ]
 end
 
