@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: 2024 Universität Hamburg
+SPDX-FileCopyrightText: 2024 Helmholtz-Zentrum hereon GmbH
+SPDX-License-Identifier: Apache-2.0
+SPDX-FileContributor: Verena Bulitta-van Zyl <verena@bulitta.com>
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+-->
+<!DOCTYPE experiments SYSTEM "behaviorspace.dtd">
+<experiments>
+  <experiment name="vary-wage" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="1000"/>
+    <metric>["annual-average fleet-monthly-hours"]</metric>
+    <enumeratedValueSet variable="time-offset">
+      <value value="-24"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="output-frequency">
+      <value value="&quot;monthly&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="adaptation">
+      <value value="0.851"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="memory-size">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="diesel-price">
+      <value value="80"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="wage" first="20" step="10" last="120"/>
+  </experiment>
+</experiments>

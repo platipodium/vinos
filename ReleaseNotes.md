@@ -9,6 +9,7 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 Version 1.3.2 is a maintenance release of our Viable North Sea (ViNoS) software.
 
 - fix gitlab and github pipelines
+- add more BehaviorSpace experiments
 
 # Release notes for version 1.3.1 - Feb 16, 2024
 
