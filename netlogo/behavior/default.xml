@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: 2024 Helmholtz-Zentrum hereon GmbH
+SPDX-License-Identifier: Apache-2.0
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+-->
+<!DOCTYPE experiments SYSTEM "behaviorspace.dtd">
+<experiments>
+  <experiment name="default" repetitions="1" sequentialRunOrder="false" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="10"/>
+    <enumeratedValueSet variable="output-frequency">
+      <value value="&quot;weekly&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="one?">
+      <value value="false"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>

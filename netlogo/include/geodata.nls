@@ -502,10 +502,10 @@ to save-static-dataset [_dataset-name]
   show-dataset _dataset-name
   let _name lower _dataset-name
   set _name replace-pattern _name " -" "_"
-  export-view (word "./results/" _name ".png")
+  export-view (word results-folder _name ".png")
   carefully [
-    gis:store-dataset gis:patch-dataset temporary (word "./results/" _name)
-  ][ gis:store-dataset gis:patch-dataset temporary (word "./results/" _name) ]
+    gis:store-dataset gis:patch-dataset temporary (word results-folder _name)
+  ][ gis:store-dataset gis:patch-dataset temporary (word results-folder _name) ]
 end
 
 to save-dynamic-dataset [_dataset-name]
@@ -514,12 +514,12 @@ to save-dynamic-dataset [_dataset-name]
   let _name lower _dataset-name
   set _name replace-pattern _name " -" "_"
   let _ticks ifelse-value ticks > 0 [ ticks ][ 0 ]
-  export-view (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short ".png")
+  export-view (word results-folder _name "_"  (formatted-int _ticks 4) "_" datetime-short ".png")
 
   carefully [
-    gis:store-dataset gis:patch-dataset temporary (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short)
+    gis:store-dataset gis:patch-dataset temporary (word results-folder _name "_"  (formatted-int _ticks 4) "_" datetime-short)
   ][
-    gis:store-dataset gis:patch-dataset temporary (word "results" "/" _name "_"  (formatted-int _ticks 4) "_" datetime-short ".asc")
+    gis:store-dataset gis:patch-dataset temporary (word results-folder _name "_"  (formatted-int _ticks 4) "_" datetime-short ".asc")
   ]
 end
 

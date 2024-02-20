@@ -7,6 +7,9 @@ SPDX-License-Identifier: CC0-1.0
 This folder contains NetLogo BehaviorSpace definition files
 in XML format.
 
+default.xml
+: Simple experiment setting one? = false and output-frequency to weekly, to be used as a quick test for functionality of the behavior space output
+
 effort-map.xml
 : Creates the primary product, an effort map
 

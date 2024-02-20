@@ -19,5 +19,5 @@
 ;    update-scene
 ;    vid:record-view
 ;  ]
-;  vid:save-recording (word "./results/tide.mp4")
+;  vid:save-recording (word results-folder "tide.mp4")
 ;end

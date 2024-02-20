@@ -222,7 +222,7 @@ to setup-boats
     let _logbook nobody
     hatch-logbooks 1 [
       set hidden? true
-      set logbook-file-name (word "results/logbook_learn_" [who] of myself ".txt")
+      set logbook-file-name (word results-folder "logbook_learn_" [who] of myself ".txt")
       if file-exists? logbook-file-name [carefully [file-delete logbook-file-name][]]
       set _logbook self
     ]
