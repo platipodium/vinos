@@ -61,10 +61,10 @@ reproducibility:
     - sed  -i 's/^NetLogo 6..../NetLogo 6.2.2/g' vinos.nlogo
     - 'bash /opt/netlogo/netlogo-headless.sh --model ./vinos.nlogo --setup-file ./behavior/reproducibility.xml
       --experiment "reproducibility" --table - '
-    - md5sum results/effort_h_0010_20210411-0000.png > results/effort_h_0010_20210411-0000.png.md5
+    - md5sum results/reproducibility_1_effort_h_0010_20210411-0000.png > results/reproducibility_1_effort_h_0010_20210411-0000.png.md5
   artifacts:
     paths:
-      - "./netlogo/results/effort_h_0010_20210411-0000.png.md5"
+      - "./netlogo/results/reproducibility_1_effort_h_0010_20210411-0000.png.md5"
   needs: []
   allow_failure: false
   interruptible: true

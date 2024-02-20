@@ -47,7 +47,7 @@ reset-date "2021-04-01"</setup>
     <enumeratedValueSet variable="boat-property-chooser">
       <value value="&quot;distance-at-sea&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="oil-price">
+    <enumeratedValueSet variable="diesel-price">
       <value value="50"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="show-boats?">
