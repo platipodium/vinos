@@ -60,7 +60,7 @@ def create_gridspec(header, data):
     )
     nc.creator = "Carsten Lemmen <carsten.lemmen@hereon.de>"
     nc.license = "Creative Commons Attribution (CC-BY 4.0)"
-    nc.copyright = "2023 Helmholtz-Zentrum hereon GmbH, 2021-2023 International Council for the Exploration of the Seas (ICES)"
+    nc.copyright = "2023-2024 Helmholtz-Zentrum hereon GmbH, 2021-2023 International Council for the Exploration of the Seas (ICES)"
     nc.institution_id = ("https://ror.org/03qjp1d79, https://ror.org/03hg53255",)
 
     ilon = np.array(range(0, nlon))
