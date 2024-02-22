@@ -76,6 +76,9 @@ abbreviations:
 
 The German North Sea shrimp fishery is a traditional sector of near-coastal and local fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast. It's economic value is estimated at XXXX M€ annually, employing roughly XXXX people directly, and sustaining the livelihood of XXXX communities along the coast. Processing and distribution of shrimp employs another XXX people and ultimatle yupports up to XXXX people.
 
+<!-- WGCRAN 2022
+The Brown Shrimp, Crangon crangon supports the fourth most valuable European fishery in the North Sea (EUR 169 million in 2018). The fishing fleets of Germany, the Netherlands and Denmark are responsible for over 90% of the yearly landings.-->
+
 <!-- Characterization of shrimper -->
 
 <!-- Goti Aralucea 2021:
@@ -120,6 +123,22 @@ Brown shrimp (Crangon crangon) fisheries are economically im- portant in northwe
 million e [Food and Agriculture Organization of the United Nations database http://faostat3.fao.org]. Total annual commer- cial landings from the North Sea have increased consistently since the 1970s, with the highest recorded landings of 38 000 t in 2005 and 37 500 t in 2014 (ICES, 2014b). Over the last decade, total annual landings fluctuated around 35 000 t. Brown shrimp is a gadoid food source.
 Apart from the number of licenses, the compulsory use of a sieve net—a net adaptation to reduce large sized bycatch—and a weekend closure in the Dutch shrimp fisheries, the current shrimp fishery is unregulated (ICES, 2013).
 We used German and Dutch annual coastal beam trawl surveys (ICES, 2014a) to estimate depth- and area-stratified densities of brown shrimp at the time of peak occurrence (September–October) (Tulp et al., 2012).
+-->
+
+<!-- WGCRAN 2022:
+The Harvest Control Rule has led to effort reductions by the German fleet in three cases so far in 2016 to 2018: in calendar weeks 22 and 23 in 2016, in calendar weeks 15 and 16 in 2017, and incalendar week 16 in 2018. In all three cases, effort was limited to 72 hours at sea per vessel per week.
+e.g. 213 vessels (200 actively fishing) for the German fleet
+
+Bottom trawling is generally viewed as a main source of physical human disturbance of the sea-bed, with consequences for organisms living there (Eigaard et al. 2017; Hiddink et al. 2017; Kaiser et al. 2002).  Shrimp trawls are lighter in weight compared to beam trawls used for flatfish fishing and instead  of tickler chains, shrimp trawls have bobbins that roll over the bottom. A full shrimp net dragged over the bottom will however cause seabed disturbance, but the effects on the seabed and its
+fauna are less than the effects of heavier fishig gear (Rijnsdorp et al., 2020). It has been concluded that wind may have a greater effect on the benthic community than shrimp fisheries (Prins et al. 2020). However, Pérez Rodríguez & Van Kooten (2019) found that although physical disturbance from winter storms does have a large impact on benthic animals, clear negative effects of shrimp fishing on long-liv
+
+Joint Recommendation regarding Fisheries Management Measures under Article 11 and 18 of the Regulation (EU) No 1380/2013 of the European Parliament and of the Council of 11 December 2013 on the Common Fisheries Policy (CFP-Regulation) within the Natura 2000 sites Sylt Outer Reef, Borkum Reef Ground and Dogger Bank as Special Area of
+Conservation under the Habitats Directive 92/43/EEC of 21 May 1992, and the Natura 2000 site Eastern German Bight as Special Protection Area under the Birds Directive 2009/147/EC of 30 November 2009” was agreed to by the member states with fishing interests in the area and offi cially sent to the EU commission (Figure 1). Of the seven proposed management measures, the measures 1 a (Sylt Outer Reef), 2 (Amrum Bank) and 5 (Borkum Reef Ground) are most relevant for the shrimp fisheries (Figure 2).
+Year-round exclusion of all mobile bottom-contacting gears (measure 1a) in the central area of the Natura 2000 site Sylt Outer Reef and year-round exclusion of mobile bottom-contacting gears with the exception of brown shrimp fisheries with beam trawls in the eastern area (measure 1b),
+
+Fishing vessels of the Netherlands or Denmark are only allowed to fish as close as 3nm
+miles to the shore
+
 -->
 
 The North Sea brown shrimp (_Crangon crangon_, Brown shrimp, Nordseekrabbe) has no catch restriction concerning a maximum allowable catch. Because of its very short life cycle, reliable stock estimates are not yet established. Since 2011 the fishery uses the harvest control rule (HCR) as a management measure. Beam trawlers between 12-24 m are the most important segment within both the Dutch and German coastal fleet. Currently, nets have a standard cod end and diamond mesh sizes of 20 mm. For the voluntery Marine Stewardship Certification (MSC) process sieb nets are required by the certified vessels to reduce bycatch and bigger mesh sizes are in discussion. There is no area restrictions apply to shrimp fishers in the German North Sea [@aviat2011north,@ICES2019wgcran].
@@ -278,7 +297,7 @@ In Germany, fisheries are often criticised for overfishing and for inducing nega
 
 However, in terms of employment and cultural aspects, the small-scale sector is of considerable importance, Brown shrimps account for almost the entire catch and revenue of the German small-scale beam trawler fleet with annual catches having fluctuated around 15,000 t since 2002, while revenues show a much broader range than expected from the quantity of catches (see Fig. 23.10). In 2011, revenues had dropped to €25 million. Two years later in 2013, they stood at €52 million while in 2014, the total catch was again approximately 15,000 t while revenue stood at €44 million.
 
-The brown shrimp fishery is a typical example of offering a unique regional product, which cannot be substituted by any other species, nor caught by another fleet segment (except similar vessels in the Netherlands, Belgium and Denmark). However, current market prices are biased through a high number of fishers acting as vendors as opposed to only two dominant first hand buyers. Thus, the result was that the pricing system was detrimental to the fishery (Aviat et al. 2011).
+The brown shrimp fishery is a typical example of offering a unique regional product, which cannot be substituted by any other species, nor caught by another fleet segment (except similar vessels in the Netherlands, Belgium and Denmark). However, current market prices are biased through a high number of fishers acting as vendors as opposed to only two dominant first hand buyers. Thus, the result was that the pricing system was detrimental to the fishery (Aviat et al. 2011). The main problem for shrimp fishers is the market power of the processing companies. This forced the fishers to introduce their own effort regulations, which are sometimes extremely susceptible to European cartel regulations. Nevertheless, self-regulation has kept brown shrimp prices at a comparably high level and the segment in an economically stable situation as the shrimp fishers limited themselves with weekly quotas, which the majority accepted.
 
 -->
 
