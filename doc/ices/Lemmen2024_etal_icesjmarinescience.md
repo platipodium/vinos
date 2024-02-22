@@ -126,6 +126,25 @@ Cells carry information on shrimp resources, and regulatory fishery closure area
 
 The temporal domain is multiple years and the temporal resolution is 1 day. With the progress of the calendar, surrogate weather is introduced that may influence a boat's decision to go on a fishing trip. Seasonal information is used to describe the annual variation of prey resources.
 
+To enable learning, boats implement a memory of best hauls, recording the amount caught and the cell location. This memory has size 20. After a training phase, boats may choose to steam preferentially to one of the best 10 past experienced locations to start fishing. Boats sense the resource availability of each cell, as well as global fuel prices and port-dependent market prices.
+
+Ports and boats are initialized from empirical statistics available for the year 2015. The resources are initialized from a species distribution model (SDM) based on stock assessments and environmental data for the period 2015-2020. Time is initialized with current wall clock time.
+
+| **Description**                                        | **Source**                                                                            |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| Clustered vessel data                                  | Hochschule Bremerhaven                                                                |
+| Species distribution of plaice, sole, and brown shrimp | Thünen Institute                                                                      |
+| Species information                                    | Food and Agriculture Organization (FAO)                                               |
+| Bathymetry                                             | General Bathymetry Chart of the Oceans (GEBCO)                                        |
+| Offshore Wind Farms (OWF)                              | European Commission, European Marine Observation and Data Network (EMODnet)           |
+| Exclusive economic zone (EEZ)                          | United Nations Convention on the Law of the Sea                                       |
+| Subregional divisions                                  | International Council for the Exploration of the Seas (ICES) Spatial Facility         |
+| Plaice box                                             | European Commision                                                                    |
+| Geodetic information                                   | International Earth Rotation Service (IERS)                                           |
+| National Park boundaries                               | Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz (NLWKN) |
+
+: Data and their sources for the ViNoS model.
+
 <!-- @todo  Make landings a prognostic variable for ports -->
 
 ## Scenario development
@@ -161,121 +180,22 @@ We evaluated the areal imprint of fishery by looking at fishing effort, represen
 
 Fig 1 shows the fishing effort as observed by Global Fishery Watch (GFW) and as reported to EMODNEt. GFW effort is based on AIS data and therefore differs from the ICES-reported VMS-based data reported on EMODnet; also GFW effort is reporte in h a-1 spent fishing whereas VMS-data is weighted by vessel power and is reported in MWh a-1.
 
-The comparison of effort for the year 2020 shows that ViNoS is able to reproduce the spatial fishing pattern in the German Bight. Differences in offshore areas are due to flatfish activities, and differences beyond the state regulated area to non-German fishers, who are excluded from the National Park area. On average,
+The comparison of effort for the year 2020 shows that ViNoS is able to reproduce the spatial fishing pattern in the German Bight. Differences in offshore areas are due to flatfish activities, and differences beyond the state regulated area to non-German fishers, who are excluded from the National Park area.
 
 # Discussion
 
-Some of the ecomonically important species in the North Sea show a northward habitat shift due to the climate change related warming of the water [@dulvy2008climate]; this suggests that also the fishing grounds may have to shift. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price, price fluctuations related to the oligopolic processing market, and the need for re-investing into their aging vessels [@Goti-Aralucea2021].
+The economic viability of shrimp fishery has been questioned for several years. Low expection has lead to a historic low of the number of people employed. Low expectation created difficulties to take on mortgages to invest in the aging fleet. Labour is in shortage. And the resource is highly variable in space and time, making the catch unpredictable.
+
+An explanation of why the fishery still exists then, lies in its deep cultural roots in coastal livelihoods. It creates identity (for few) and it shapes the perception of the coast for many.
+
+Our scenarios show that OWF area closures do not impact the current fishery spatial pattern besides small shifts in fishing grounds. The largest change comes from the closure of MPA: Those more offshore (Amrumbank, Sylter Außenriff, Borkum Riffgrund) seem not to change fishery patterns at large: there is a spatial shift of fishery to areas outside the MPAs and along their fringes. A closure of the WSH, on the other hand, would be a major disruption of the current area exploited by shrimp fishers. On average, fishers have to travel about XXX km further on each trip, and the amount of shrimp caught in a single hauls is expected to decline by a factor XXX, leading to much longer fishfing trips to recover the same amount of catch.
+
+Other factors have been proposed to lead to shifts in fishgin pattersn: Some of the ecomonically important species in the North Sea show a northward habitat shift due to the climate change related warming of the water [@dulvy2008climate]; this suggests that also the fishing grounds may have to shift. Most likely, however, this does not affect shrimp. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price, price fluctuations related to the oligopolic processing market, and the need for re-investing into their aging vessels [@Goti-Aralucea2021].
 
 # Conclusion
 
-<!-- @todo  Add the change of gear -->
-<!-- @todo  Add SAR diagnostic -->
-<!-- @todo  Add removal and recovery of prey -->
-
-<!-- @todo Use the weather -->
-
-## Process overview and scheduling
-
-The global timestep of the model is one day. Within the 24-hour period, we use Discrete Event Simulation (DES) to trigger the action of boats within 6 phases:
-
-| **Phase**     | **Location** | **Description**                            |
-| ------------- | ------------ | ------------------------------------------ |
-| Phase 0 rest  | port         | Boats are resting, not ready to go out     |
-| Phase 1 ready | port-sea     | Boats are ready to go out and are deployed |
-| Phase 2 steam | sea          | Boats steam in open water                  |
-| Phase 3 fish  | sea          | Boats fish open water                      |
-| Phase 4 steam | sea          | Boats need to return                       |
-| Phase 5 land  | port         | Boats are offloading                       |
-
-: The 6 phases used with Discrete Event Simulation in ViNoS.
-
-Boats cycle through all phases consecutively, keeping a record of how much time they spend. Boats in **phase 0** keep the legal resting time of 11 hours, and rest during the weekend (from Saturday noon to Monday 4 am, as well as on holidays). After the resting period, they make a decision on whether to go out or not. This decision may depend on weather and seasonally expected catch. If the decision is positive, a boat enters phase 1. Boats in **phase 1** directly (straight line, without environmental sensing) steam from the port location to the port's closest open sea deployment location. Adding this phase makes it possible for the ports to be located on dry ground at the available grid resolution, as many ports are located upstream of the coastline demarcation. Having arrived at the deployment location, boats enter phase 2.
-
-Boats in **phase 2** steam to a preferred location for the next fishing haul. This preferred location is individually chosen by proximity to prior successful hauls, but constrained by fuel limitation, maximum distance, cargo shipping activity, and presence of other fishing boats. Phase 2 may also be entered after an unsuccessful fishing haul. At the new location, a boat enters **phase 3** for fishing. Fishing is done in several hauls; a haul is directed across only accessible water, and at the end of a haul the ship turns around (with slight variation) and continues to the next haul.
-
-To record the fishing activity on the cells, a haul is subdivided into time substeps of 6 minutes duration. The time spent in a cell and the area swept is recorded for the gear with the highest priority. The catch is calculated separately for each gear (and the gear-associated target species), taking into account the target species' biomass at the haul location, the gear width and haul distance and the boat's catch efficiency.
-Hauls are repeated until one of the following constraints is met (always taking into account the time and fuel cost of the return trip):
-
-1. The maximum preferred time at sea is exhausted;
-2. the maximum time from the first successful catch (24 hours to keep fresh) is exhausted;
-3. the fuel is exhausted;
-4. the loading capacity is exhausted;
-5. the catch is considered insufficient.
-
-<div>
-![Decision pathway for a simulated fishing trip.\label{fig:flowchart}](../../assets/abm_flowchart.pdf){ width=90% height=30% }
-</div>
-
-On an insufficient catch, the boat enters phase 2 to look for a different location. On a successful catch and after having spent the allocated time or fuel, the boat enters phase 4. Boats in **phase 4** need to return. They directly steam in a straight line to their deployment location and on to their port. At the port, they enter **phase 5** to unload their catch and clean the boat. Priorities for the different gears are updated based on the relative change of the deployed gears and catches.
-Finally, boats re-enter phase 0 and restart the cycle. A summary view of the model scheduling is depicted in \autoref{fig:flowchart}.
-
-## Design concepts
-
-### Basic principles
-
-<!-- German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045.  -->
-
-The ABM is an adaptive model with the **objective** of increasing value gains (here: net profits), subject to environmental, economic, and individual constraints. The **adaptation** is currently restricted to changing gear with shifting priorities for allocating fishing effort, and described by the ABM framework VIABLE (Values and Investments from Agent-Based interaction and Learning in Environmental systems) [@BenDor2019;@Scheffran2000].
-
-| **Symbol** | **Description**                                                                                                               |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| $k$        | Action pathway, here: gear selected out of $m$ possibilities $k = 1\ldots m$.                                                 |
-| $C$        | Cost of a haul, composed of time-dependent cost (e.g. wages) and distance costs (fuel), measured in €                         |
-| $H$        | Fish catch, or harvest, during a haul measured in kg. Calculated from catch efficiency $e$, prey density $X$, and effort $E$. |
-| $E$        | Effort of fishing activity measured in hours. Fishers typically fish 1500 to 2000 hours per year.                             |
-| $X$        | Density of fish at fishing ground, expressed in kg m^-2^ trawled.                                                             |
-| $e$        | Catch efficiency, expressed in units of m^2^ h^-1^.                                                                           |
-| $p$        | Price of the fish, expresses in € kg^-1^.                                                                                     |
-| $V$        | Value, here: net gain of haul, i.e. fish catch $H$ times price $p$ minus cost $C$, measured in €.                             |
-| $r_k$      | Priority for action pathway $k$ with $0\leq r_k\leq 1$ and $\sum_1^m r_k = 1$.                                                |
-| $v_k$      | Marginal change of value with priority $v_k=\partial{V}/\partial{r_k}$, expressed in €.                                       |
-| $a$        | Adaptation rate (sensitivity) of a change in priority from a change in value.                                                 |
-
-: Notation used in the VIABLE approach.
-
-In the VIABLE approach, each boat carries a list of priorities for certain fishing actions that are subject to change based on the boat’s perception and evaluation of its activities. During each haul, the costs of that haul (wage and fuel) $C$ are subtracted from the benefits, i.e. the income from the catch (harvest) $H$ times the market price $p$ for each fish:
-
-$$
-V = p H - C.
-$$
-
-The fish catch $H$ from a haul is a function of fishing effort $E$ (in work hours), density of a particular fish species $X$ in the area of fishing and the catch efficiency $e$ for the respective gear type interacting with this particular fish:
-
-$$
-H = e X E.
-$$
-
-If for each boat there are several gear types (termed "action pathways" in the VIABLE approach) $k = 1 \ldots m$ available, according to the gradient decision rule each agent changes priority $r_k$ in proportion to the product of marginal value $v_k$ and priority $r_k$ for each gear type, multiplied by an adaptation rate $a$ determining how strong agents adapt action to value.
-The marginal value van be the change in $V_k$ when choosing priority $k$ or in mathematical terms the partial derivative of the value function with respect to priority $v_k=\partial{V}/\partial{r_k}$, if that function is known.
-Althogether, the temporal change of the priorities $r_k$ is given by
-
-$$
-\frac{dr_k}{dt} = a r_k \cdot \frac{v_k - \sum r_k v_k }{\sum v_k}
-$$
-
-Both sums are for normalisation purposes to make sure that all priorities add up to 1. The first sum means that pathways $k$ with marginal value above average $v_k$ increase and below average decrease, indicating a competition to select the "better" gear.
-
-### Learning
-
-To enable learning, boats implement a memory of best hauls, recording the amount caught and the cell location. This memory has size 20. After a training phase, boats may choose to steam preferentially to one of the best 10 past experienced locations to start fishing. Boats sense the resource availability of each cell, as well as global fuel prices and port-dependent market prices.
-
-Ports and boats are initialized from empirical statistics available for the year 2015. The resources are initialized from a species distribution model (SDM) based on stock assessments and environmental data for the period 2015-2020. Time is initialized with current wall clock time.
-
-| **Description**                                        | **Source**                                                                            |
-| ------------------------------------------------------ | ------------------------------------------------------------------------------------- |
-| Clustered vessel data                                  | Hochschule Bremerhaven                                                                |
-| Species distribution of plaice, sole, and brown shrimp | Thünen Institute                                                                      |
-| Species information                                    | Food and Agriculture Organization (FAO)                                               |
-| Bathymetry                                             | General Bathymetry Chart of the Oceans (GEBCO)                                        |
-| Offshore Wind Farms (OWF)                              | European Commission, European Marine Observation and Data Network (EMODnet)           |
-| Exclusive economic zone (EEZ)                          | United Nations Convention on the Law of the Sea                                       |
-| Subregional divisions                                  | International Council for the Exploration of the Seas (ICES) Spatial Facility         |
-| Plaice box                                             | European Commision                                                                    |
-| Geodetic information                                   | International Earth Rotation Service (IERS)                                           |
-| National Park boundaries                               | Niedersächsischer Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz (NLWKN) |
-
-: Data and their sources for the ViNoS model.
+We demonstrated the capability of the novel Viable North Sea (ViNoS) agent-based model to represent present-day fishing effort of the German North Sea shrimp fishery. We defined future scenarios considering area closure to this fishery for energy production and marine protection. Within a range of plausible scenarios, we showed that this fishery can be sustained with little evasive behavior; only a scenario where the Wadden Sea heritage area was closed, posed such severy restrictions on the fishery that it would not be anymore economically sustainable.
+To mitigate such a drastic reduction of fishing grounds, we explored ... and found that - at least in the model context, even a closure of the WSH area could be mitigated and a fisihery could be viable both economically and ecologically.
 
 # CRediT authorship contribution statement
 
