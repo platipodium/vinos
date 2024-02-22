@@ -10,9 +10,7 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
     <setup>setup save-static-datasets</setup>
     <go>ci-maps</go>
     <timeLimit steps="1"/>
-    <enumeratedValueSet variable="oil-price">
-      <value value="50"/>
-    </enumeratedValueSet>
+    <steppedValueSet variable="oil-price" first="20" step="10" last="120"/>
     <enumeratedValueSet variable="wage">
       <value value="75"/>
     </enumeratedValueSet>
