@@ -91,6 +91,11 @@ Fisheries in the North Sea face area competition with other uses of the sea -- l
 
 The North Sea brown shrimp (_Crangon crangon_, Brown shrimp, Nordseekrabbe) has no catch restriction concerning a maximum allowable catch. Because of its very short life cycle, reliable stock estimates are not yet established. Since 2011 the fishery uses the harvest control rule (HCR) as a management measure. Beam trawlers between 12-24 m are the most important segment within both the Dutch and German coastal fleet. Currently, nets have a standard cod end and diamond mesh sizes of 20 mm. For the voluntery Marine Stewardship Certification (MSC) process sieb nets are required by the certified vessels to reduce bycatch and bigger mesh sizes are in discussion. There is no area restrictions apply to shrimp fishers in the German North Sea [@aviat2011north,@ICES2019wgcran].
 
+<!-- Respondek 2014: The international North Sea brown shrimp fishery involves 600 vessels, mainly from Germany, Netherlands and Denmark, and gen- erates annual landings in the range of 30 000 t annually. Catch value varies with annual prices but can exceed 100 million E per year. However, in spite of the economic importance and the scale of this fishery there is currently no management regime in place, neither through quota restrictions, nor through effort management.
+
+German fishery statistics only recorded the number of trips without any further detail for most of the past decades (Neudecker et al., 2011). However, it is known that there is a trend of increasing mean boat size and that the shrimp fishery has gone through some difficult years in the past, with variable shrimp and fuel prices both potentially influencing fishing behaviour.
+-->
+
 Shrimp typically occur in high numbers at the edge of tidal channels, so also a the edge of navigational channels. Traffic on the North Sea has seen an increase by XXX % in the recent two decades, driving shrimp fishers away from shrimp-rich navigational channels.
 
 <!-- @todo  in theory the german EEZ allready is protected by about 30% https://www.bfn.de/nationale-meeresschutzgebiete#anchor-6205, hmm, in EEZ 8000/28500 km2 protected, i.e. 28%, (only german) -->
@@ -191,6 +196,8 @@ An explanation of why the fishery still exists then, lies in its deep cultural r
 Our scenarios show that OWF area closures do not impact the current fishery spatial pattern besides small shifts in fishing grounds. The largest change comes from the closure of MPA: Those more offshore (Amrumbank, Sylter Außenriff, Borkum Riffgrund) seem not to change fishery patterns at large: there is a spatial shift of fishery to areas outside the MPAs and along their fringes. A closure of the WSH, on the other hand, would be a major disruption of the current area exploited by shrimp fishers. On average, fishers have to travel about XXX km further on each trip, and the amount of shrimp caught in a single hauls is expected to decline by a factor XXX, leading to much longer fishfing trips to recover the same amount of catch.
 
 Other factors have been proposed to lead to shifts in fishgin pattersn: Some of the ecomonically important species in the North Sea show a northward habitat shift due to the climate change related warming of the water [@dulvy2008climate]; this suggests that also the fishing grounds may have to shift. Most likely, however, this does not affect shrimp. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price, price fluctuations related to the oligopolic processing market, and the need for re-investing into their aging vessels [@Goti-Aralucea2021].
+
+Outlook: other markets GB? othe rshelf seas?
 
 # Conclusion
 
