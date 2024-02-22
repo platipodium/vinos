@@ -12,7 +12,9 @@ SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="1000"/>
-    <metric></metric>
+    <metric>fleet-monthly-revenue</metric>
+    <metric>fleet-monthly-landing</metric>
+    <metric>fleet-monthly-hours</metric>
     <enumeratedValueSet variable="time-offset">
       <value value="-24"/>
     </enumeratedValueSet>
