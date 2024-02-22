@@ -128,7 +128,40 @@ The temporal domain is multiple years and the temporal resolution is 1 day. With
 
 <!-- @todo  Make landings a prognostic variable for ports -->
 
+## Scenario development
+
+Scenarios were developed for area closures with spatial information derived from the Marine Spatial Plan for German national waters, released by BSH in January, 2022 (BSH2022); the realization of closure areas for OWF was derived from the status information available at XXXX. With the federal state regulated areas, the National Park boundaries were obtained from the respecitve state agencies LLUR, NLWKN.
+
+Scenarios were developed for the year 2020 (historic, actual area), the year 2025 (closure of Amrumbank, closure of National Park), and the year 2035 (closure of Sylt Außenriff, Borkum Riffgrund and National Park).
+
+| **Scenario** | **Year** | **Description**                            |
+| ------------ | -------- | ------------------------------------------ |
+| Historic     | 2020     | Historic fishing grounds, no new closures  |
+| BAU25        | 2025     | Current regulation (Amrumbank closure)     |
+| MPA25        | 2025     | Current regulation (Amrumbank, WS closure) |
+| BAU35        | 2025     | Current regulation (Amrumbank closure)     |
+| MPA35        | 2025     | Current regulation (all MPA closed)        |
+
+Scenario development for 2025 was guided by expert assessment from Stelzenmueller2024.
+
+## Experimental design
+
+Experiments were drafted as NetLogo BehaviorSpace (Wilensky1999) descriptions. For a complete definition of all behaviours see the Supplementary Material provided. Common assumptions for all experiments were
+
+1. The size of the shrimper fleet stays the same
+2. The location of the home port of the fleet stays the same
+3. The operating costs (fuel, wages) are balanced by market price
+4. Investment costs are disregarded.
+
+We evaluated the areal imprint of fishery by looking at fishing effort, represented both as effort h as well as power effort h. We also evaluated the simulated monthly landings of the fleet.
+
+<!-- todo add anual landing variable -->
+
 # Results
+
+Fig 1 shows the fishing effort as observed by Global Fishery Watch (GFW) and as reported to EMODNEt. GFW effort is based on AIS data and therefore differs from the ICES-reported VMS-based data reported on EMODnet; also GFW effort is reporte in h a-1 spent fishing whereas VMS-data is weighted by vessel power and is reported in MWh a-1.
+
+The comparison of effort for the year 2020 shows that ViNoS is able to reproduce the spatial fishing pattern in the German Bight. Differences in offshore areas are due to flatfish activities, and differences beyond the state regulated area to non-German fishers, who are excluded from the National Park area. On average,
 
 # Discussion
 
@@ -247,17 +280,11 @@ Ports and boats are initialized from empirical statistics available for the year
 # CRediT authorship contribution statement
 
 C. Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing.
-
-# S. Hokamp: Conceptualization, Software, Methodology, Writing – review & editing.
-
 S. Örey: Conceptualization, Data curation, Writing – review & editing.
-J. Scheffran: Conceptualization, Formal analysis, Writing – review & editing
-J. Seo: Writing – original draft.
-V. Mühlberger: Data curation.
 
 <!--
-## Sub-models
-1. **Sub-models**
+S. Hokamp: Conceptualization, Software, Methodology, Writing – review & editing.
+J. Scheffran: Conceptualization, Formal analysis, Writing – review & editing
 -->
 
 # References
