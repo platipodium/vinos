@@ -78,6 +78,32 @@ The German North Sea shrimp fishery is a traditional sector of near-coastal and 
 
 <!-- Characterization of shrimper -->
 
+<!-- Goti Aralucea 2021:
+In 2020, the German brown shrimp fishery constituted a total of 195
+vessels, all have two beam trawls as gear, but they differ in their vessel
+size, from 5 to 25 m (9.7% 0–12 m; 51% 12–18 m, 36% 18–24 m) and
+crew size (1–3 persons). Ownership of the vessels is German or Dutch,
+with most vessels probably being owner-operated, as there are only
+eleven owners of 2 or 3 vessels. The management plan specifies the gear (Beam trawl with
+bobbin/roller groundrope), mesh size (minimum 20 mm) and the
+maximum beam length (10 m).The producer organisations
+represented by the MSC label do not follow a quota plan or TAC management
+but they occasionally agree on maximum weekly catches for all
+vessels to distribute catch opportunities fairly between all members.
+These maximum weekly catches are coordinated with the wholesalers
+and normally applied when their maximum processing capacity is
+reached, and therefore the amount of brown shrimp they can buy is
+exhausted.
+
+The current situation of the brown shrimp fishery was already
+problematic before the outbreak of the pandemic, as they came from a
+year of low revenues in 2019 and they were getting prepared to resume
+the season in March, after the seasonal stop from December to February.
+Therefore the current economic situation of the fishery is considered as
+“at risk” [70].
+
+-->
+
 The shrimper vessels are typically small near-coastal vessels with a gross weight of XXX tons, length between XXXX m and holding capacity of XXX kg shrimp. They are typically staffed by one up to three persons, and go on fishing trips between a few hours and a few days. The gears typically used by shrimper vessels is bottom-touching trawling gear, using a pair of beam trawls (ICES classification TBB) of each 4-10 m length. From the 20 ports of landing, the product is shipped to one of three processing plants, then sent overseas for peeling; small quantities are sold locally from the harbour unpeeled. One company (De Beer) controls the processing, shipping, and redistribution to the wholesale market.
 
 <!-- Environmental impact -->
@@ -89,11 +115,21 @@ In the North Sea, the German small-scale fishing fleet's biggest group are the s
 
 Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extraction, and currently increasing ones like marine protection areas and offshore wind farms (OWF, @stelzenmuller2022plate). German authorities released a new maritime spatial plan in 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045 [@WindSeeG2023].
 
+<!-- Tulp 2016:
+Brown shrimp (Crangon crangon) fisheries are economically im- portant in northwestern Europe and especially in The Netherlands, Germany, and Denmark (ICES, 2014b). Between 2009 and 2013, the North Sea fishery for brown shrimp ranked 23rd in landings, but 6th in value, with an annual average of 109
+million e [Food and Agriculture Organization of the United Nations database http://faostat3.fao.org]. Total annual commer- cial landings from the North Sea have increased consistently since the 1970s, with the highest recorded landings of 38 000 t in 2005 and 37 500 t in 2014 (ICES, 2014b). Over the last decade, total annual landings fluctuated around 35 000 t. Brown shrimp is a gadoid food source.
+Apart from the number of licenses, the compulsory use of a sieve net—a net adaptation to reduce large sized bycatch—and a weekend closure in the Dutch shrimp fisheries, the current shrimp fishery is unregulated (ICES, 2013).
+We used German and Dutch annual coastal beam trawl surveys (ICES, 2014a) to estimate depth- and area-stratified densities of brown shrimp at the time of peak occurrence (September–October) (Tulp et al., 2012).
+-->
+
 The North Sea brown shrimp (_Crangon crangon_, Brown shrimp, Nordseekrabbe) has no catch restriction concerning a maximum allowable catch. Because of its very short life cycle, reliable stock estimates are not yet established. Since 2011 the fishery uses the harvest control rule (HCR) as a management measure. Beam trawlers between 12-24 m are the most important segment within both the Dutch and German coastal fleet. Currently, nets have a standard cod end and diamond mesh sizes of 20 mm. For the voluntery Marine Stewardship Certification (MSC) process sieb nets are required by the certified vessels to reduce bycatch and bigger mesh sizes are in discussion. There is no area restrictions apply to shrimp fishers in the German North Sea [@aviat2011north,@ICES2019wgcran].
 
 <!-- Respondek 2014: The international North Sea brown shrimp fishery involves 600 vessels, mainly from Germany, Netherlands and Denmark, and gen- erates annual landings in the range of 30 000 t annually. Catch value varies with annual prices but can exceed 100 million E per year. However, in spite of the economic importance and the scale of this fishery there is currently no management regime in place, neither through quota restrictions, nor through effort management.
 
 German fishery statistics only recorded the number of trips without any further detail for most of the past decades (Neudecker et al., 2011). However, it is known that there is a trend of increasing mean boat size and that the shrimp fishery has gone through some difficult years in the past, with variable shrimp and fuel prices both potentially influencing fishing behaviour.
+
+Fuel prices normally represent a large fraction of the total costs in an active fishery (Gasalla et al., 2010), and in the case of the German shrimp fishery this share has been estimated as up to 18% of the total operating costs (EAEF, 2006).
+
 -->
 
 Shrimp typically occur in high numbers at the edge of tidal channels, so also a the edge of navigational channels. Traffic on the North Sea has seen an increase by XXX % in the recent two decades, driving shrimp fishers away from shrimp-rich navigational channels.
@@ -102,7 +138,20 @@ Shrimp typically occur in high numbers at the edge of tidal channels, so also a 
 
 In XXX, the United Nations High Seas Treaty was agreed upon, aiming at protecting 30% of the world's oceans, and declaring no-use zones in on third of those areas, effectively barring 10% of the world's oceans from any use. In 2023, this lead to new regulation in Germany regarding the protection levels of the already exsiting MPAs Borkum riffgrund and Sylter Außenriff. Within these, a partial closure to fishery activity - including shrimp fishing - was achieved. In addition, the XXXX commission discussed lifting the excpetion for Shrimp fishery within the Wadden Sea effective 2025. Though this plan was dismissed, it stirred unrest in the fishery community (XXXX). Less overlapping with the traditional shrimp fishery grounds are areas now (or in the future to be) reserved for offshore wind farming. The 70 GW energy production aim described in the National strategy XXX mostly claims offshore areas affecting other fisheries; only a small area south of Borkum Riffgrund is claimed for both OWF and brown shrimp fishery activity.
 
+<!-- Berkenhagen 2010:
+The current approval procedure for wind farm proposals in the German EEZ only considers site specificonflict analysis between the wind farm and fisheries. Due to the relatively small spatial coverage of the sites potential opportunity losses to the fisheries are always considered as low or negligible. Cumulative effects on fisheries that will occur once all proposed wind farms are in place are not yet considered adequately. However, those cumulative effects will be quite substantial because, in particular, opportunities to catch such valuable species as flatfish will be considerably reduced.
+1.6% of shrimp are cauth in OWF areas, 98.4% outside.
+-->
+
 In this study we apply for the first time the novel Viable North Sea (ViNoS) agent-based model of German small-scale fisheries. We establish that it is able to represent past and current spatial distribution and economic balance of the German brown shrimp fishery, and generate scenarios for areas claimed for OWF or MPA. We investigate the reaction of artificial fishers in the model context to these area closures, and evaluat its economic impact. We also explore potential adaptations in the fishery's behavior that mitigates area closures and helps to ensure a sustainable future fishery under new area constraints.
+
+<!-- Goti-Aralucea 2021:
+After stock collapses, fuel crisis, and the economic crisis, and with
+the current and future effects of climate change, the COVID 19 crisis
+brings about a new scenario for which small-scale fisheries (SSF) do not
+seem to show the necessary preparedness [1,2].
+
+>
 
 # Material and Methods
 
@@ -112,7 +161,9 @@ Its scope s the German North sea small-scale fisheries. This encompasses some 30
 
 <div>
 <!-- Original picture is 22,26 x 14,89 cm -->
+
 ![Primary and subsidiary agents of the ViNoS ABM.\label{fig:agents}](../../assets/agents.pdf){ width=75% height=30% }
+
 </div>
 
 ## Agents in ViNoS
@@ -179,7 +230,31 @@ Experiments were drafted as NetLogo BehaviorSpace (Wilensky1999) descriptions. F
 
 We evaluated the areal imprint of fishery by looking at fishing effort, represented both as effort h as well as power effort h. We also evaluated the simulated monthly landings of the fleet.
 
-<!-- todo add anual landing variable -->
+## Mitigation scenario
+
+<!-- Steenbergen 2015:
+The 2-step harvest control rule (HCR) which relies on a LPUE threshold value to trigger. When
+LPUE falls below 75% of this trigger value, Maximum total weekly time at sea is reduced to 72
+hours. When LPUE falls below 50% of the trigger value, time at sea is reduced to 24 hours
+(Figure 16). This HCR criterion is evaluated on a weekly basis: LPUE is evaluated at the end of
+each week, and if it is below 75% or 50% of the trigger value, effort for the coming week is
+limited.
+• Number of days at sea: in- or decreased with 2 days per week, from 5 to 3 days or 7 days
+fishing per week. Where 7 days is basically similar to the situation of no management at all.
+• More/fever ships: in- or decreased by 200 vessels, from 500 to 700, or from 500 to 300 vessels
+• Effort creep: increase the effective number of fishing hours per fishing day from 12 to 18.
+Searching behaviour and skills at sea is the second factor that was mentioned as a basis to distinguish groups. One respondent refers to this division as the difference between knowledge fishermen and hours fishermen. The knowledge fishermen do not need as many hours to realise a good revenue as the hours fishermen. The knowledge fishermen depend on their knowledge during fishing, while the hours fishermen depend more on the luck to find something. The respondent estimates that one third of the shrimp fishers are knowledge fishermen and the rest are hours fishermen. This division is relevant for management, as hours fishermen would most likely be more resistant against measures that limit days at sea or hours at sea, because they depend on the time they are fishing for their revenue.
+
+Fuel price is considered of low relevance for deciding the fishing area because fuel consumption is relatively low in shrimp fisheries.
+• Seasonal variation is important in the movement of the shrimp fleet. In winter, when the shrimps go to deeper waters (for instance the Sylt area, the German Bight), part of the fleet that is equipped for the deeper waters will follow the shrimp. The estimation is that 50-70 vessels on average fish in the Sylt area in winter.
+
+One important conclusion from the harvest control rule HCR simulations is that the current exploitation of brown shrimp in the North Sea occurs at an intensity which clearly leads to growth overfishing. A reduction in fishing mortality leads not only to an increased efficiency (higher LPUE) but also to higher overall catches, despite a lower effort. Furthermore, because the shrimp are allowed to grow (on average) longer, fewerare fished up before reaching commercial size, resulting in reduced bycatches of undersized shrimp.
+The effect of limiting the fishing effort to 3 days per week is similar to introducing a HCR: it reduces growth overfishing, reduces effort from ~52000 to ~45000 days per year and increases total annual landings from ~30000 to ~35000 ton.
+Decreasing the fleet size from 500 to 300 vessels is, on a fleet level, similar to going from a 5- to a 3- day week limit: annual effort decreases from 52000 to 46000 days, while landings increase from 30000 to 37000 tons. On the vessel level however, the reduced fleet size means that the increase in landings is shared among fewer vessels. So on a per-vessel basis, landings more than double
+
+
+
+-->
 
 # Results
 
@@ -192,6 +267,20 @@ The comparison of effort for the year 2020 shows that ViNoS is able to reproduce
 The economic viability of shrimp fishery has been questioned for several years. Low expection has lead to a historic low of the number of people employed. Low expectation created difficulties to take on mortgages to invest in the aging fleet. Labour is in shortage. And the resource is highly variable in space and time, making the catch unpredictable.
 
 An explanation of why the fishery still exists then, lies in its deep cultural roots in coastal livelihoods. It creates identity (for few) and it shapes the perception of the coast for many.
+
+<!-- Döring 2020: In olden times, typical Wadden Sea resources like clams, mussels, oysters and shrimp were harvested by walking onto the tidal flats during low tide,
+The most important fishery today, the brown shrimp fishery, was originally carried out using trap-nets with the overall fishing effort being extremely low. However, with rapid technological development during the nineteenth century, new fisheries developed quickly. Steamboats were able to employ effective bottom trawling and dredging techniques and later, with the introduction of beam trawls, a large fishery targeting brown shrimp and flatfish developed (Schnakenbeck 1953, 49ff).
+in West Germany, fishers owned their vessels and were self-employed. In many cases, owners of smaller vessels also formed cooperatives, while larger vessels were mostly private, family-owned businesses outside of cooperative organisations. With the introduction of the Common Fisheries Policy (CFP), fishers were urged to form producer organisations as a central part of managing the fleet and marketing fish. The economic situation of the small-scale fishery in the North Sea (dominated by brown shrimp beam trawlers) continues to differ from that of the Baltic Sea. Over the last two decades, the number of vessels has been decreasing constantly, although the economic situation is still better for those remaining in business. Brown shrimp (Crangon crangon) can be marketed as a unique regional product for a relatively high price, as it is a typical Wadden Sea species, which cannot be substituted with any other product.
+
+250 -> 190 German beam trawlers between 2002 and 2015
+
+In Germany, fisheries are often criticised for overfishing and for inducing negative impacts on non-target species and benthic habitats. In small-scale fisheries, beam trawlers are most heavily criticised as the gear not only impacts habitat structure, but also benthic communities.  In the North Sea, the brown shrimp fishery successfully applied for MSC certification.
+
+However, in terms of employment and cultural aspects, the small-scale sector is of considerable importance, Brown shrimps account for almost the entire catch and revenue of the German small-scale beam trawler fleet with annual catches having fluctuated around 15,000 t since 2002, while revenues show a much broader range than expected from the quantity of catches (see Fig. 23.10). In 2011, revenues had dropped to €25 million. Two years later in 2013, they stood at €52 million while in 2014, the total catch was again approximately 15,000 t while revenue stood at €44 million.
+
+The brown shrimp fishery is a typical example of offering a unique regional product, which cannot be substituted by any other species, nor caught by another fleet segment (except similar vessels in the Netherlands, Belgium and Denmark). However, current market prices are biased through a high number of fishers acting as vendors as opposed to only two dominant first hand buyers. Thus, the result was that the pricing system was detrimental to the fishery (Aviat et al. 2011).
+
+-->
 
 Our scenarios show that OWF area closures do not impact the current fishery spatial pattern besides small shifts in fishing grounds. The largest change comes from the closure of MPA: Those more offshore (Amrumbank, Sylter Außenriff, Borkum Riffgrund) seem not to change fishery patterns at large: there is a spatial shift of fishery to areas outside the MPAs and along their fringes. A closure of the WSH, on the other hand, would be a major disruption of the current area exploited by shrimp fishers. On average, fishers have to travel about XXX km further on each trip, and the amount of shrimp caught in a single hauls is expected to decline by a factor XXX, leading to much longer fishfing trips to recover the same amount of catch.
 
