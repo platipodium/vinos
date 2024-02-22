@@ -83,91 +83,62 @@ The shrimper vessels are typically small near-coastal vessels with a gross weigh
 <!-- Environmental impact -->
 
 The shrimp fishery has long been under scrutiny from nature protection aspects because of its disturbance effect on the sea floor. CITATIONS
-No area of today's North Sea can be claimed to be free of such disturbance, and much of the ocean floor is disturbed several times per year. This has been known for long
-
-Their fishing grounds traditionally overlap with the Wadden Sea World Heritage marine protected area (MPA) and - to a lesser extent - with areas that could be reserved for other uses in the recent and future Marine Spatial Plan. The pressure to close these areas to fishery comes from both nature protection, not the least the United Nations High Seas Treaty to protect 30% of the world's oceans, of which 1/3 should be no-use area, and from the national energy targets to provide up to 70 GW energy from OWF.
-
-We here explore different plausible scenarios of area closure for OWF and MPA to shrimp fishery, using the novel Viable North Sea (ViNoS) agent-based model. We confirm previously formulated expectations of fishers that their mode of subsistence would be unsustainable given the many area closures, and we quantify foreseen economic losses. At the same time, we are able to demonstrate the existence of adaptive strategies that could mitigate the impact of area closures lead to economically and ecologically viable shrimp fishery in the next two decades.
-
-# Material and Methods
-
-# Results
-
-# Discussion
-
-# Conclusion
-
-Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German North Sea Small-scale Fisheries in a Social-Ecological Systems (SES) framework focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes.This model description follows the Overview, Design concepts, Details (ODD) protocol for describing individual- and agent-based models (@Grimm2010, @Grimm2020). By following this protocol, we aim to document the ABM such that it is replicable independently of the current implementation in NetLogo [@Wilensky1999].
-
-## Purpose, scope and audience
+No area of today's North Sea can be claimed to be free of such disturbance, and much of the ocean floor is disturbed several times per year. This has been known for long, in fact, when the Wadden Sea heritage area was established in 1991, the shrimp fishers were granted an exception for their use.
 
 In the North Sea, the German small-scale fishing fleet's biggest group are the shrimp beam trawlers. This small-scale fishing fleet is typically run by owner-operated family enterprises that uses boats smaller than 24 meters [@Döring2020]. These vessels' target species are mainly demersal (living near the bottom), and include plaice, sole, and brown shrimp [@Letschert2023].
 
 Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extraction, and currently increasing ones like marine protection areas and offshore wind farms (OWF, @stelzenmuller2022plate). German authorities released a new maritime spatial plan in 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045 [@WindSeeG2023].
 
+The North Sea brown shrimp (_Crangon crangon_, Brown shrimp, Nordseekrabbe) has no catch restriction concerning a maximum allowable catch. Because of its very short life cycle, reliable stock estimates are not yet established. Since 2011 the fishery uses the harvest control rule (HCR) as a management measure. Beam trawlers between 12-24 m are the most important segment within both the Dutch and German coastal fleet. Currently, nets have a standard cod end and diamond mesh sizes of 20 mm. For the voluntery Marine Stewardship Certification (MSC) process sieb nets are required by the certified vessels to reduce bycatch and bigger mesh sizes are in discussion. There is no area restrictions apply to shrimp fishers in the German North Sea [@aviat2011north,@ICES2019wgcran].
+
+Shrimp typically occur in high numbers at the edge of tidal channels, so also a the edge of navigational channels. Traffic on the North Sea has seen an increase by XXX % in the recent two decades, driving shrimp fishers away from shrimp-rich navigational channels.
+
 <!-- @todo  in theory the german EEZ allready is protected by about 30% https://www.bfn.de/nationale-meeresschutzgebiete#anchor-6205, hmm, in EEZ 8000/28500 km2 protected, i.e. 28%, (only german) -->
 
-Some of the ecomonically important species in the North Sea show a northward habitat shift due to the climate change related warming of the water [@dulvy2008climate]; this suggests that also the fishing grounds may have to shift. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price, price fluctuations related to the oligopolic processing market, and the need for re-investing into their aging vessels [@Goti-Aralucea2021].
+In XXX, the United Nations High Seas Treaty was agreed upon, aiming at protecting 30% of the world's oceans, and declaring no-use zones in on third of those areas, effectively barring 10% of the world's oceans from any use. In 2023, this lead to new regulation in Germany regarding the protection levels of the already exsiting MPAs Borkum riffgrund and Sylter Außenriff. Within these, a partial closure to fishery activity - including shrimp fishing - was achieved. In addition, the XXXX commission discussed lifting the excpetion for Shrimp fishery within the Wadden Sea effective 2025. Though this plan was dismissed, it stirred unrest in the fishery community (XXXX). Less overlapping with the traditional shrimp fishery grounds are areas now (or in the future to be) reserved for offshore wind farming. The 70 GW energy production aim described in the National strategy XXX mostly claims offshore areas affecting other fisheries; only a small area south of Borkum Riffgrund is claimed for both OWF and brown shrimp fishery activity.
 
-The **purpose** of this ABM is to provide an interactive simulation environment that describes spatial, temporal and structural adaptations of the fleet. It adaptively describes
+In this study we apply for the first time the novel Viable North Sea (ViNoS) agent-based model of German small-scale fisheries. We establish that it is able to represent past and current spatial distribution and economic balance of the German brown shrimp fishery, and generate scenarios for areas claimed for OWF or MPA. We investigate the reaction of artificial fishers in the model context to these area closures, and evaluat its economic impact. We also explore potential adaptations in the fishery's behavior that mitigates area closures and helps to ensure a sustainable future fishery under new area constraints.
 
-- where to fish and how far to go out to sea
-- how often to go out
-- what gear to use and what species to target
+# Material and Methods
 
-Its **scope** is the German North sea small-scale fisheries. This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The currently simulated target species are the three most important ones: plaice, sole and brown shrimp, but the model is in principle extensible to further species like Norwegian lobster, sprat or whiting.
-
-The **intended audience** of the ABM are marine researchers and government agencies concerned with spatial planning, environmental status assessment, and climate change mitigation. It can also assist in a stakeholder dialogue with tourism and fishers to contextualize the complexity of the interactions between fisheries economics, changing resources and regulatory restrictions. It is intended to be used for communication of and scenario development for future sustainable fisheries at the German North Sea coast.
-
-## Entities, state variables, and scales
-
-The fishery target species are denoted _preys_. Currently, the ABM describes three different species (\autoref{fig:agents}). The primary agents in the ABM are the fishing vessels, denoted as _boats_. They are linked to supplementary classes of agents that describe the _gears_ used for fishing, the target species denoted as _preys_, and the _ports_ where boats land their catch. The agents interact with the _environment_ that describes the _spatial domain_ and resource and regulatory changes.
+Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German North Sea Small-scale Fisheries in a Social-Ecological Systems (SES) framework focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. The numerical model's Overview, Design concepts, and Details (ODD) have been published by @Lemmen2023; the ViNoS software itself is published as open source [@Lemmen2024].
+The purpose of this ABM is to provide an interactive simulation environment that describes spatial, temporal and structural adaptations of the fleet. It adaptively describes (1) where to fish and how far to go out to sea; and (2) how often to go out.
+Its scope s the German North sea small-scale fisheries. This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The currently simulated target species are the three most important ones: plaice, sole and brown shrimp.
 
 <div>
 <!-- Original picture is 22,26 x 14,89 cm -->
 ![Primary and subsidiary agents of the ViNoS ABM.\label{fig:agents}](../../assets/agents.pdf){ width=75% height=30% }
 </div>
 
-### The primary agent: boats
+## Agents in ViNoS
 
-Boats are located at ports, according to the empirical distribution of the German fleet in those ports. In the German fleet there are four distinct clusters of small-scale fisheries vessels that have typical vessel and crew size, gear and fishing strategy [@Oerey2023]. With those come physical (speed, length, capacity, engine power) and economic properties (fixed and variable costs). Boats have a catch efficiency that tries to model the experience of the individual boat owners.
-Boats go on fishing trips and record the catch and the revenue. They internally record the economic balance of their activites and continuously adapt priorities, e.g., for choosing a specific gear, based on value gains.
-
-<!-- @todo  we need to work on addinng area-flexbilty, max distance and other variables to memory -->
-
-### Subsidiary agents: ports, preys, gears
+Boats are located at ports, according to the empirical distribution of the German fleet in those ports. In the German fleet there are four distinct clusters of small-scale fisheries vessels that have typical vessel and crew size, gear and fishing strategy [@Oerey2023]. With those come physical (speed, length, capacity, engine power) and economic properties (fixed and variable costs). Boats have a catch efficiency that tries to model the experience of the individual boat owners. Boats go on fishing trips and record the catch and the revenue. They internally record the economic balance of their activites and continuously adapt priorities, e.g., for choosing a specific gear, based on value gains.
 
 Ports, preys, and gears are immobile agents that are introduced to structure the model in object-oriented design and encapsulated their state variables and methods.
 Ports are the boats' favourite landing ports. Boats start their activity from a port and dock to unload at a port. They can stay in a port when deciding not to fish. Along the German North Sea coast, there are 54 ports for which boat and landing statistics are available. At the ports, the simulated landings are recorded.
 
+Boats and preys are connected via the _gears_ agent: The gear prescribes the geometric area that can be fished, the speed at which fishing can occur, and the prey that is caught. A gear can be installed, or changed, on a boat, subject to economic (investment cost) and physical (weight, size) constraints. The gear also determines the impact of the fishing activity on the environment, i.e. how much prey is removed and how much of the sea floor is swept as the beam size of the gear changes depending on the target species.
+
+The spatial domain is described by a grid, whose cells carry spatial information on the environment and record activity information. The domain itself is the German Bight including Germany's EEZ. It is represented geographically in the WGS84 datum and as equilateral cells in latitude and longitude, thus corresponding to the Concise Spatial QUery And REpresentation System (c-squares) on which much of the reported data is available. The model domain is bounded by the rectangle spanned by the coordinates (2° E; 53° N) and (10° E; 56° N); the resolution is 0.025 x 0.025 degree (1.5 arc minutes, or approximately 1.7 x 2.9 km). The resulting grid has a size of 320 columns x 120 rows.
+
+The domain is divided into an active part (water) and an inactive part (land). The demarcation between land and water is achieved by using the General Bathymetry Chart of the Oceans (GEBCO) bathymetry bounded by European Environmental Agency's coastline dataset. Using a creep-fill algorithm a continuous accessible domain is ensured.
+Cells carry information on shrimp resources, and regulatory fishery closure areas (offshore wind and trawling exclusion zones). They record activity of the fishery occuring in the grid cell as area swept and as hours fished.
+
+The temporal domain is multiple years and the temporal resolution is 1 day. With the progress of the calendar, surrogate weather is introduced that may influence a boat's decision to go on a fishing trip. Seasonal information is used to describe the annual variation of prey resources.
+
 <!-- @todo  Make landings a prognostic variable for ports -->
 
-The North Sea brown shrimp (_Crangon crangon_, Brown shrimp, Nordseekrabbe) has no catch restriction concerning a maximum allowable catch. Because of its very short life cycle, reliable stock estimates are not yet established. Since 2011 the fishery uses the harvest control rule (HCR) as a management measure. Beam trawlers between 12-24 m are the most important segment within both the Dutch and German coastal fleet. Currently, nets have a standard cod end and diamond mesh sizes of 20 mm. For the voluntery Marine Stewardship Certification (MSC) process sieb nets are required by the certified vessels to reduce bycatch and bigger mesh sizes are in discussion. There is no area restrictions apply to shrimp fishers in the German North Sea [@aviat2011north,@ICES2019wgcran].
+# Results
 
-The second important group of target species in the German bight are the flatfish. Two commercially important fish species are plaice (_Pleuronectes platessa_, European plaice, Scholle) and sole (_Solea solea_, European sole, Seezunge). Both species are regulated with total allowable catch (TAC) measures. Additionally, several technical measures apply to both of the fisheries including a mesh size regulations, a minimum landing size, gear restrictions and a closed area along the continental coast where beam trawlers with engine power higher than 221 kW are not allowed to fish (the so-called "plaice box", @rijnsdorp2020different)
+# Discussion
 
-The model is designed to accommodate further species relevant in the small-scale fishery such as whiting (_Merlangius merlangus_), sprat (_Sprattus sprattus_), or Norwegian lobster (_Nephrops norvegicus_). Each prey species is assigned a price obtained from historic prices of the last decades.
+Some of the ecomonically important species in the North Sea show a northward habitat shift due to the climate change related warming of the water [@dulvy2008climate]; this suggests that also the fishing grounds may have to shift. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price, price fluctuations related to the oligopolic processing market, and the need for re-investing into their aging vessels [@Goti-Aralucea2021].
 
-Boats and preys are connected via the _gears_ agent: The gear prescribes the geometric area that can be fished, the speed at which fishing can occur, and the prey that is caught. A gear can be installed, or changed, on a boat, subject to economic (investment cost) and physical (weight, size) constraints. The gear also determines the impact of the fishing activity on the environment, i.e. how much prey is removed and how much of the sea floor is swept as the beam size of the gear changes depending on the target species.
+# Conclusion
 
 <!-- @todo  Add the change of gear -->
 <!-- @todo  Add SAR diagnostic -->
 <!-- @todo  Add removal and recovery of prey -->
-
-### Spatial units
-
-The spatial domain is described by a grid, whose cells (in NetLogo: patches) carry spatial information on the environment and record activity information. The domain itself is the German Bight including Germany's EEZ. It is represented geographically in the WGS84 datum and as equilateral cells in latitude and longitude, thus corresponding to the Concise Spatial QUery And REpresentation System (c-squares) on which much of the reported data is available. The model domain is bounded by the rectangle spanned by the coordinates (2° E; 53° N) and (10° E; 56° N); the resolution is 0.025 x 0.025 degree (1.5 arc minutes, or approximately 1.7 x 2.9 km). The resulting grid has a size of 320 columns x 120 rows.
-
-All distance and speed calculations are performed in geographical coordinates using great circle distance; these length calculation are then converted to NetLogo coordinate distances for agent sensing and movement.
-
-The domain is divided into an active part (water) and an inactive part (land). The demarcation between land and water is achieved by using the General Bathymetry Chart of the Oceans (GEBCO) bathymetry bounded by European Environmental Agency's coastline dataset. Using a creep-fill algorithm a continuous accessible domain is ensured.
-Cells carry information on resources (fish stocks of the respective species, at climatological seasonal resolution), and regulatory fishery closure areas (offshore wind and trawling exclusion zones). They record activity of the fishery occuring in the grid cell as area swept and as hours fished.
-
-<!-- @todo add SAR -->
-
-### Nonspatial environment
-
-A calendar records time. The temporal domain is multiple years and the temporal resolution is 1 day. With the progress of the calendar, surrogate weather is introduced that may influence a boat's decision to go on a fishing trip. Seasonal information is used to describe the annual variation of prey resources.
 
 <!-- @todo Use the weather -->
 
@@ -252,40 +223,11 @@ $$
 
 Both sums are for normalisation purposes to make sure that all priorities add up to 1. The first sum means that pathways $k$ with marginal value above average $v_k$ increase and below average decrease, indicating a competition to select the "better" gear.
 
-<!--
-This equation is universal, also applies to fishery, requiring more details on value function. In this paper further details are not given, e.g. fishing efficiency which is a key variable and depends on gear type. This requires a full paper with more math. For more details see BenDor/Scheffran 2019, Chapter 8 or Scheffran 2000.
--->
-
-### Emergence
-
-The emergent property is the spatial pattern of fishing activities, which is best recorded as maps of effort or maps of swept area ratio (SAR). This property can be compared to existing data on effort or SAR, and it gives information on the location of the largest potential environmental impact of fisheries.
-
 ### Learning
 
-To enable learning, boats implement a memory of best hauls, recording the amount caught and the cell location. This memory has size 20. After a training phase, boats may choose to steam preferentially to one of the best 10 past experienced locations to start fishing. Learning is not used in the current version of the model.
-
-### Prediction
-
-When deliberating to change to a gear with higher priority, boats have to discount the installation cost of a new gear and compare this with future expected gains. They can only switch gears if the predicted future gain with the new gear minus the installation cost is higher than the predicted future gain of the current gear.
-
-### Sensing and Interaction
-
-Boats sense the resource availability of each cell, as well as global fuel prices and port-dependent market prices. There is no direct **interaction** between boats. A feedback of the boats onto the cells by depleting their prey resource is foreseen but currently not implemented.
-
-### Stochasticity
-
-Boats are distributed across harbors according to empirical data. Their assignation to one of the four clusters is stochastic within the empirical distribution. Physical data of the boats are stochastic within the empirical limits of their cluster.
-
-The direction of a haul is random across all accessible directions. The weather is stochastic within the limits of a typical North sea storm climatology.
-
-## Initialization
+To enable learning, boats implement a memory of best hauls, recording the amount caught and the cell location. This memory has size 20. After a training phase, boats may choose to steam preferentially to one of the best 10 past experienced locations to start fishing. Boats sense the resource availability of each cell, as well as global fuel prices and port-dependent market prices.
 
 Ports and boats are initialized from empirical statistics available for the year 2015. The resources are initialized from a species distribution model (SDM) based on stock assessments and environmental data for the period 2015-2020. Time is initialized with current wall clock time.
-
-## Input data
-
-The model makes use of extensive external data sources to describe the environment and to initialize the agents.
-All data are publicly available and licensed for use. The data sources are
 
 | **Description**                                        | **Source**                                                                            |
 | ------------------------------------------------------ | ------------------------------------------------------------------------------------- |
@@ -305,7 +247,9 @@ All data are publicly available and licensed for use. The data sources are
 # CRediT authorship contribution statement
 
 C. Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing.
-S. Hokamp: Conceptualization, Software, Methodology, Writing – review & editing.
+
+# S. Hokamp: Conceptualization, Software, Methodology, Writing – review & editing.
+
 S. Örey: Conceptualization, Data curation, Writing – review & editing.
 J. Scheffran: Conceptualization, Formal analysis, Writing – review & editing
 J. Seo: Writing – original draft.
