@@ -26,8 +26,9 @@ SPDX-FileCopyrightText: 2024 Helmholtz-Zentrum hereon GmbH
 #SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
 abstract: "The German North Sea shrimp fishery is a traditional sector of near-coastal and local fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast.  Their fishing grounds traditionally overlap with the Wadden Sea World Heritage marine protected area (MPA) and - to a lesser extent - with areas that could be reserved for other uses in the recent and future Marine Spatial Plan.  The pressure to close these areas to fishery comes from both nature protectino, not the least the United Nations High Seas Treaty to protect 30% of the world's oceans, of which 1/3 should be no-use area, and from the national energy targets to provide up to 70 GW energy from OWF. We here explore different plausible scenarios of area closure for OWF and MPA to shrimp fishery, using the novel Viable North Sea (ViNoS) agent-based model.  We confirm previously formulated expectations of fishers that their mode of subsistence would be unsustainable given the many area closures, and we quantify foreseen economic losses.  At the same time, we are able to demonstrate the existence of adaptive strategies that could mitigate the impact of area closures lead to economically and ecologically viable shrimp fishery in the next two decades."
-acknowledgement: "The authors thank W.N. Probst for providing species distribution data as a forcing to this model.  We thank Kai W. Wirtz, S. Hokamp, J. Scheffran for intensive discussions on the results of the model.  The development of the model was funded by the German Ministry of Education and Research through the KüNO project 'Multiple Stressors on North Sea Life' (MuSSeL) with grant number 03F0862A.  We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others."
+acknowledgement: "We thank Kai W. Wirtz, S. Hokamp, J. Scheffran for intensive discussions on the results of the model.  The development of the model was funded by the German Ministry of Education and Research through the KüNO project 'Multiple Stressors on North Sea Life' (MuSSeL) with grant number 03F0862A.  We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others."
 conflictsofinterests: "The authors declare that no conflict of interest has arisen from this work."
+authorcontributions: "C. Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing. S. Örey: Conceptualization, Data curation, Writing – review & editing. W.N. Probst: Data curation, Writing - review & editing"
 abbreviations:
   - short: ABM
     long: "Agent-based Model"
@@ -309,9 +310,6 @@ We demonstrated the capability of the novel Viable North Sea (ViNoS) agent-based
 To mitigate such a drastic reduction of fishing grounds, we explored ... and found that - at least in the model context, even a closure of the WSH area could be mitigated and a fisihery could be viable both economically and ecologically.
 
 # CRediT authorship contribution statement
-
-C. Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing.
-S. Örey: Conceptualization, Data curation, Writing – review & editing.
 
 <!--
 S. Hokamp: Conceptualization, Software, Methodology, Writing – review & editing.
