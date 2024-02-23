@@ -9,6 +9,9 @@ author:
   - name: Serra Örey
     affiliation: Hochschule Bremerhaven, Research Cluster Life Sciences, An der Karlstadt 8, 27568 Bremerhaven, Germany
     orcid: 0000-0003-3483-6036
+  - name: W. Nikolaus Probst
+    orcid: 0000-0002-0450-2222
+    affiliation: "Thünen Institut for Sea Fishery"
 #  - name: Jürgen Scheffran
 #    affil: 2
 #    orcid: 0000-0002-7171-3062
