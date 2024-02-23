@@ -24,8 +24,8 @@ readthedocs:
 # of the software package
 version:
 	sed -i 's/^version = .*/version = "'$(VERSION)'"/g' pyproject.toml
-	sed -i 's/^version: .*"/version: "'$(VERSION)'"/g' CITATION.cff
-	sed -i 's/^date-released: .*"/date-released: "'$(DATE)'"/g' CITATION.cff
+	sed -i 's/^version: .*/version: "'$(VERSION)'"/g' CITATION.cff
+	sed -i 's/^date-released: .*/date-released: "'$(DATE)'"/g' CITATION.cff
 	sed -i 's/^  "version":.*/  "version": "'$(VERSION)'",'/g codemeta.json
 	sed -i 's/^  "dateModified":.*/  "dateModified": "'$(DATE)'",'/g codemeta.json
 
