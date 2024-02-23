@@ -25,6 +25,7 @@ SRC = Lemmen2024_etal_icesjmarinescience.$(MEXT)
 
 ## Location of Pandoc support files.
 PREFIX = $(HOME)/.pandoc
+TEMPLATE = oup-template.tex
 
 PDF=$(SRC:.md=.pdf)
 PPTX=$(SRC:.md=.pptx)
@@ -54,14 +55,14 @@ txt:  $(TXT) $(SRC) Makefile
 %.epub:	%.md  %.bib Makefile
 	$(CMD) --to=epub -s -o $@ $<  # --epub-cover-image=cover-image.gif
 
-%.tex:	%.md  %.bib Makefile style
-	$(CMD) -s  --template=./comses-template.tex  -o $@ $<
+%.tex:	%.md  %.bib Makefile style $(TEMPLATE)
+	$(CMD) -s  --template=./$(TEMPLATE)  -o $@ $<
 
-%.pdf:	%.md  %.bib Makefile style
-	$(CMD) -s  --template=./comses-template.tex  -o $@ $<
+%.pdf:	%.md  %.bib Makefile style $(TEMPLATE)
+	$(CMD) -s  --template=./$(TEMPLATE)  -o $@ $<
 
-# %.pdf:	%.md Makefile ../templates/comses-template.tex  tex
-#	$(CMD) -s  --template=../templates/comses-template.tex  -o $@ $<
+# %.pdf:	%.md Makefile ../templates/oup-template.tex  tex
+#	$(CMD) -s  --template=../templates/oup-template.tex  -o $@ $<
 #	latexmk -pvc -pdf -e '$$pdflatex=q/xelatex %O -interaction=nonstopmode %S/' -f odd
 #	pdflatex odd
 
@@ -81,7 +82,7 @@ clean:
 	@rm -f $(EPUB) $(TXT)
 	@rm -f allbib.html allbib.pdf
 
-style: comses.cls
+style: ouparticle.cls
 
 bib: odd.bib mdpi-bst
 	pandoc allbib.tex -o allbib.html --citeproc --bibliography odd.bib

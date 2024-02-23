@@ -1,33 +1,19 @@
 ---
 title: "Evasive and adaptive strategies of German brown shrimp fisheries to area closures for offshore wind and marine protection"
 keywords: "NetLogo; Agent-based Model; ABM; North Sea; Fisheries; MuSSeL project; ODD; VIABLE; ViNoS"
-journal: comses
-csl-refs: true
-type: protocol
-classoption: moreauthors=true
-status: accept
 author:
   - name: Carsten Lemmen
     orcid: 0000-0003-3483-6036
-    affil: 1
-  #  - name: Sascha Hokamp
-  #    affil: 2
-  #    orcid: 0000-0002-2192-4013
+    affiliation: Helmholtz-Zentrum Hereon, Institute of Coastal Systems - Analysis and Modeling, Max-Planck-Str. 1, 21502 Geesthacht, Germany
+  #  - name: Sascha Hokamp #    affil: 2 #    orcid: 0000-0002-2192-4013
   - name: Serra Örey
-    affil: 3
+    affiliation: Hochschule Bremerhaven, Research Cluster Life Sciences, An der Karlstadt 8, 27568 Bremerhaven, Germany
     orcid: 0000-0003-3483-6036
 #  - name: Jürgen Scheffran
 #    affil: 2
 #    orcid: 0000-0002-7171-3062
 correspondence: C. Lemmen <carsten.lemmen@hereon.de>
-affiliation:
-  - address: Helmholtz-Zentrum Hereon, Institute of Coastal Systems - Analysis and Modeling, Max-Planck-Str. 1, 21502 Geesthacht, Germany
-    num: 1
-    email: carsten.lemmen@hereon.de
-  - address: Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Bundesstrasse 53, 20146 Hamburg, Germany
-    num: 2
-  - address: Hochschule Bremerhaven, Research Cluster Life Sciences, An der Karlstadt 8, 27568 Bremerhaven, Germany
-    num: 3
+#  - address: Universität Hamburg, Centre for Earth System Research and Sustainability (CEN), Bundesstrasse 53, 20146 Hamburg, Germany
 citation_author: Lemmen et al.
 year: 2024
 license: CC-BY-4.0
@@ -304,6 +290,13 @@ The brown shrimp fishery is a typical example of offering a unique regional prod
 Our scenarios show that OWF area closures do not impact the current fishery spatial pattern besides small shifts in fishing grounds. The largest change comes from the closure of MPA: Those more offshore (Amrumbank, Sylter Außenriff, Borkum Riffgrund) seem not to change fishery patterns at large: there is a spatial shift of fishery to areas outside the MPAs and along their fringes. A closure of the WSH, on the other hand, would be a major disruption of the current area exploited by shrimp fishers. On average, fishers have to travel about XXX km further on each trip, and the amount of shrimp caught in a single hauls is expected to decline by a factor XXX, leading to much longer fishfing trips to recover the same amount of catch.
 
 Other factors have been proposed to lead to shifts in fishgin pattersn: Some of the ecomonically important species in the North Sea show a northward habitat shift due to the climate change related warming of the water [@dulvy2008climate]; this suggests that also the fishing grounds may have to shift. Most likely, however, this does not affect shrimp. Moreover, fishers have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price, price fluctuations related to the oligopolic processing market, and the need for re-investing into their aging vessels [@Goti-Aralucea2021].
+
+<!--
+Wageningen2021: De gasolieprijs is van invloed op de kosten: gasoliekosten maakten in de periode 2010-2019 ongeveer 10 - 17% uit van de totale kosten (Zaalmink en Mol, 2020). In die periode was de gemiddelde gasolieprijs € 0.51 per liter.
+
+net gain: 50 k, 60k, 160k, 70k, 30k for small trawlers in years 2014-2018.
+seadays 80-120, catch per day 400-700 kg. net gain per seaday 400, 600, 1600, 700, 400 EUR in those years. Zeefstations Greetsiel, Büsum, Cuxhaven in DE.
+-->
 
 Outlook: other markets GB? othe rshelf seas?
 

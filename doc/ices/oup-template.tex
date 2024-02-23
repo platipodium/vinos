@@ -1,0 +1,102 @@
+\documentclass[12pt,halfline,a4paper]{ouparticle}
+
+%\usepackage{enumitem}
+%\providecommand{\tightlist}{%
+%  \setlength{\itemsep}{0pt}\setlength{\parskip}{4pt}}
+%\setlist[itemize]{leftmargin=*,labelsep=5.8mm}
+%\setlist[enumerate]{leftmargin=*,labelsep=4.9mm}
+
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{booktabs}
+
+\title{$title$}
+
+% Authors, for the paper (add full first names)
+\author{$for(author)$%
+\name{$author.name$}
+\address{$author.affiliation$}%
+%$if(author.orcid)$\href{https://orcid.org/$author.orcid$}{\orcidicon}$endif$
+$sep$ $endfor$}
+
+\begin{document}
+
+% Full title of the paper (Capitalized)
+
+
+
+%\author{%
+%\name{First Author}
+%\address{Institute or Organization, Department, City, State,\\
+%Zip Code, Country}
+%\email{e-mail address}
+%\and
+%\name{Second Author}
+%\address{Institute or Organization, Department, City, State,\\
+%Zip Code, Country}
+%\email{e-mail address}}
+
+\date{\today}
+
+% Abstract (Do not insert blank lines, i.e. \\)
+$if(abstract)$
+\abstract{$abstract$}
+$endif$
+
+% Keywords
+$if(keywords)$
+\keywords{$keywords$}
+$endif$
+
+\maketitle
+
+
+$body$
+
+$if(acknowledgement)$
+\begin{notes}[Acknowledgements]
+$acknowledgement$
+\end{notes}
+$endif$
+
+\begin{notes}[Acknowledgements]
+The authors would like to thank...
+\end{notes}
+
+\end{verbatim}
+
+$if(appendix)$
+\subsection{Appendix}
+\input{"$appendix$"}
+$endif$
+
+$if(abbreviations)$
+\abbreviations{The following abbreviations are used in this manuscript:\\
+
+\noindent
+\begin{tabular}{@{}ll}
+$for(abbreviations)$
+$abbreviations.short$ & $abbreviations.long$ \\
+$endfor$
+\end{tabular}}
+$endif$
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$if(authorcontributions)$
+\authorcontributions{$authorcontributions$}
+$endif$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$if(conflictsofinterest)$
+\conflictsofinterest{$conflictsofinterest$}
+$endif$
+
+
+$if(bibliography)$
+\reftitle{References}
+\externalbibliography{yes}
+\bibliography{$bibliography$}
+$endif$
+
+\end{document}
