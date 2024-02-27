@@ -377,11 +377,16 @@ to boat-land-port
   let sum-boat-gains sum boat-gains
   let sum-boat-priorities-gains sum n-values (number-of-gears) [i -> item i boat-gear-priorities * item i boat-gains]
 
-  carefully [
-    set boat-delta-priorities n-values (number-of-gears) [
-      i -> adaptation * (item i boat-gear-priorities) * (( item i boat-gains) - sum-boat-priorities-gains) / sum-boat-gains
-    ]
-  ][]
+  ; @todo the following seems to produce an overflew in some situations, despite wrapping it in carefully
+  ; we might need to check for unrealistically low sum-boat-gains
+  ;  ifelse-value boolean1 [ reporter1 ] [ elsereporter ]
+  if (sum-boat-gains >= 1) [
+    carefully [
+      set boat-delta-priorities n-values (number-of-gears) [
+        i -> adaptation * (item i boat-gear-priorities) * (( item i boat-gains) - sum-boat-priorities-gains) / sum-boat-gains
+      ]
+    ][]
+  ]
 
   set boat-gear-priorities n-values (number-of-gears) [i -> item i boat-gear-priorities + item i boat-delta-priorities]
 
