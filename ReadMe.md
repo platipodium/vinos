@@ -21,29 +21,26 @@ SPDX-License-Identifier: CC0-1.0
 
 Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German Small-scale Fisheries. As a Social-Ecological Systems (SES) model it focusses on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. Small-scale fisheries are an important part both of the cultural perception of the German North Sea coast and of its fishing industry. These fisheries are typically family-run operations that use smaller boats and traditional fishing methods to catch a variety of bottom-dwelling species, including plaice, sole, and brown shrimp.
 
-Fishers in the North Sea face area competition with other uses of the sea---long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF). German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water. And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet.
+Fishers in the North Sea face area competition with other uses of the sea---long practiced ones like shipping, gas exploration and sand extractions, and currently increasing ones like marine protection and offshore wind farming (OWF). German authorities have just released a new maritime spatial plan implementing the need for 30% of protection areas (of these 30% as no-use zones) demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045. Fisheries in the North Sea also have to adjust to the northward migration of their established resources following the climate heating of the water. And they have to re-evaluate their economic balance by figuring in the foreseeable rise in oil price and the need for re-investing into their aged fleet.
 
 ## Installation
 
-The simulation model is implemented in the NetLogo framework, a graphical simulator and programming environment developed for educational purposes. Please install NetLogo version 6.3 or later from https://ccl.northwestern.edu/netlogo/download.shtml. On
+The simulation model is implemented in NetLogo, a graphical simulator and programming environment developed for educational purposes. Please install NetLogo version 6.4 or later from https://ccl.northwestern.edu/netlogo/download.shtml. On
 Windows and macOS systems, double-clicking the NetLogo application or the model code [./netlogo/vinos.nlogo](./netlogo/vinos.nlogo) will open NetLogo's integrated development environment. On Linux, start NetLogo with the `netlogo-gui.sh` shell script provided by NetLogo.
-
-> If NetLogo gets stuck during startup on macOS with Apple Silicon, you might have run into a Java problem. See https://github.com/NetLogo/NetLogo/issues/2080, install an updated Java runtime, export `JAVA_HOME` and start NetLogo with the `netlogo-gui.sh` shell script.
 
 ## Using the model
 
-Upon opening the model, all data are loaded, variables are initialized with default values and the `Interface` tab of the IDE is shown, with a map shown in the `view` panel, and sliders and switches to change parameters. Upon clicking the `go` button, the model advances and the `view` as well as the line and bar plots are updated.
+Upon opening the model, all data are loaded, variables are initialized with default values and the `Interface` tab of the IDE is shown, with a North Sea map displayed in the world `view` panel, and sliders and switches to change parameters. Upon clicking the `go` button, the model advances and the `view` as well as the line and bar plots are updated.
 
-Different spatial results can be shown by selecting in the chooser (NetLogo's term for dropdown menus) other variables than bathymetry. We typically look at fishing effort. Different statistical results about the boats can be shown by selection in the chooser for boat properties. You need to hit the `update` button after changing a chooser's value.
+Different spatial results can be displayed in the `view` by selecting in the `chooser` (NetLogo's term for dropdown menus) `scene` other variables than bathymetry. We typically look at fishing effort `Effort MWh`. Different statistical results about the boats can be shown by selection in the bottom left `chooser` for boat properties. You need to hit the `update` button after changing a `chooser`'s value.
 
-Please refer to the `Info` tab in the graphical NetLogo model to learn quickly more about the model and it's mathematical implementation. There is a full documentation of the agent-based model in ODD format available in
-[./doc/odd/paper.md](./doc/odd/paper.md). In the [./doc](./doc) folder, there are also sources to open access presentations and other documentations of the model available.
+Please refer to the `Info` tab in the graphical NetLogo model to learn quickly more about the model and it's mathematical implementation. There is a full documentation of the agent-based model in ODD format available in [./doc/odd/odd.md](./doc/odd/odd.md). In the [./doc](./doc) folder, there are also sources to open access presentations and other documentations of the model.
 
 ## Evaluating a model simulation
 
-The typical evaluation of a NetLogo model is visual inspection, as its canonical use is for education or participatory modeling. So go explore the changes in the map and the line and bar plots as you change parameters (a rising oil price, perhaps?).
+The typical evaluation of a NetLogo model is visual inspection, as its canonical use is for education or participatory modeling. So go explore the changes in the `view` and the line and bar `plot`s as you change parameters (a rising diesel price, perhaps?).
 
-The model does write out geospatial data for later analysis with third-party GIS software in the directory [./netlogo/results/](./netlogo/results/). Currently, static maps for water depth, accessibility, and OWF fraction are written out, as well as weekly maps of fishing effort. The output format is ESRII ASCII `.asc` raster data. Fleet statistical data is written out as [./netlogo/results/total_avg.csv](./netlogo/results/total_avg.csv) comma-separated value tabular format.
+The model does write out geospatial data for later analysis with third-party GIS software in the directory [./netlogo/results/](./netlogo/results/). Currently, static maps for water depth, accessibility, and OWF fraction are written out, as well as weekly maps of fishing effort and other dynamic variables. The output format is ESRII ASCII `.asc` raster data. Fleet statistical data is written out as [./netlogo/results/total_avg.csv](./netlogo/results/total_avg.csv) comma-separated value tabular format.
 
 ## Data and supplementary routines
 
@@ -57,10 +54,7 @@ do so, you must acknowledge us. Please find the full license terms under [./LICE
 
 The results from model simulations using this software are the intellectual property of the person operating the model. They are free to choose any license, subject to the constraints imposed by the data used to produce these results. If any of your results critically depend on data (as in: are modifications of) that carries a strong copyleft (e.g. the Creative Commons Share-Alike license class), you have to publish your results under this license.
 
-Some data and utility routines were also contributed by the Thünen Institute, by Hochschule Bremerhaven,
-non-governmental organizations and government agencies; some are available under licenses different
-from Apache 2.0. Please refer to the license information available for each individual file in
-this project for details, and to the full terms of each license available in [./LICENSES/](./LICENSES).
+Some data and utility routines were also contributed by the Thünen Institute, by Hochschule Bremerhaven, non-governmental organizations and government agencies; some are available under licenses different from Apache 2.0. Please refer to the license information available for each individual file in this project for details, and to the full terms of each license available in [./LICENSES/](./LICENSES).
 You may use [REUSE.software](https://reuse.software) facilities to view all licenses.
 
 ## Funding
@@ -77,5 +71,5 @@ We appreciate your feedback, bug reports and improvement suggestions on our [iss
 Covenant [code of conduct](./doc/contributing/code_of_conduct.md) and our [contributor license agreement](./doc/contributing/contributing-license.md). The best way to contribute is by (1) creating a fork off our repository, (2) committing your changes on your fork and then (3) creating a pull request ("PR") to push your changes back to us.
 
 To file an issue or to contribute, you are asked to (1) authenticate with an existing identity and (2) to register on the HIFIS GitLab instance and sign in. When asked, click "Sign in with Helmholtz AAI". On the following page "Login to Helmholtz AAI OAuth2 Authorization Server", search for one of your existing authentication providers (this may be your university, company, ORCID, GitHub, or many others) and provide their login credentials for authorization.
-
 If you are not already registered on the HIFIS GitLab instance, a confirmation email will be sent to the primary email address registered with your authentication provider. After clicking the confirmation link, you will also be asked to provide a name on this Gitlab instance; this will be your nickname.
+Help on this one-time registration process is available from https://hifis.net/tutorial/2021/06/23/how-to-helmholtz-aai.html.
