@@ -355,7 +355,7 @@ end
 
 to-report solea
   let _correction-factor 15
-  let _resupply 0.2
+  let _resupply 1.0 / 365.25 ; annual replacement
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Sole" patch-prey-names
@@ -371,7 +371,7 @@ end
 
 to-report platessa
   let _correction-factor 5
-  let _resupply 0.2
+  let _resupply 1.0 / 365.25 ; annual replacement
 
   ifelse (is-list? patch-prey-names and is-list? patch-prey-biomasses)  [
     let _prey-index position "Plaice" patch-prey-names
@@ -396,10 +396,14 @@ to-report summer-weight
     * 360.0 / 365.25 ) * seasonal-weight-range / 2.0
 end
 
+; Observer procedure asking the patches to update their resources.  Depends on global availability
+; of prey data (currently for sole, plaice, shrimp).  As this is time-consuming, don't recalculate
+; if no boats are targeting this prey.
 to calc-fish
+  set patch-prey-names (list "Sole" "Plaice" "Shrimp") ; global variable (maximum data availabel)
+  set prey-names patch-prey-names
+  ;if any? boats with [boat-gear = "Sol"] []
   ask patches [
-    set prey-names (list "Sole" "Plaice" "Shrimp")
-    set patch-prey-names (list "Sole" "Plaice" "Shrimp")
     set patch-prey-biomasses (list solea platessa crangon)
   ]
 end
@@ -408,7 +412,7 @@ end
   ; calculate the values for each patch and every target species
   ;(solea, platessa and crangon), i.e. biomass cath in kg
 
-;  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) prey-names ]
+;  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-prey-name] of item igear boat-gears) prey-names ]
 
 ;  report n-values (number-of-gears) [ igear ->
 ;     (item igear catch-efficiency-boat) * (item (item igear ispecieslist) prey-biomasses)
@@ -494,7 +498,7 @@ end
 ; called by go each time step
 ; @todo expand to other gears, as this one
 to save-totals
-  let _boats boats with [boat-total-time-at-sea > 0 and ([gear-species] of item boat-current-gear-index boat-gears) =  "Shrimp"]
+  let _boats boats with [boat-total-time-at-sea > 0 and ([gear-prey-name] of item boat-current-gear-index boat-gears) =  "Shrimp"]
   let _count count _boats
   let _filename (word results-folder "total_avg_shrimp_" (time:get "year" start-date)
       "-"  (time:get "month" start-date) "-" (time:get "day" start-date) ".csv")

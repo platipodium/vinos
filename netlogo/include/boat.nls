@@ -598,7 +598,7 @@ end
 ; fishes in a straight line
 to boat-make-haul
   let _gear item boat-current-gear-index boat-gears
-  let _prey [gear-species] of _gear
+  let _prey [gear-prey-name] of _gear
   let _cluster boat-type
   let _power boat-engine
 
@@ -789,7 +789,7 @@ to-report boat-catch-species [haul-length]
   ;(sole, plaice and shrimp), i.e. biomass cath in KG
   ; @todo: negative values possible for patch-prey-biomasses
 
-  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-species] of item igear boat-gears) patch-prey-names ]
+  let ispecieslist n-values (number-of-gears) [igear -> position ([gear-prey-name] of item igear boat-gears) patch-prey-names ]
 
   report n-values (number-of-gears) [ igear ->
      (item igear catch-efficiency-boat)                              ; individual catch efficiency
@@ -860,7 +860,7 @@ end
 ; Boat procedure reporting the active prey, i.e. that caught with the highest
 ; priority gear
 to-report boat-prey
-  report [gear-species] of item boat-current-gear-index boat-gears
+  report [gear-prey-name] of item boat-current-gear-index boat-gears
 end
 
 ; Boat procedure returning fuel consumption in l h-1

@@ -7,7 +7,7 @@
 ; benchmarking, instead of using separate monitors
 to update-output
   clear-output
-  let _shrimpers boats with [[gear-species] of item boat-current-gear-index boat-gears = "Shrimp"
+  let _shrimpers boats with [[gear-prey-name] of item boat-current-gear-index boat-gears = "Shrimp"
     and boat-total-landings > 0 and boat-total-time-at-sea > 0]
 
   if not any? _shrimpers [stop]
