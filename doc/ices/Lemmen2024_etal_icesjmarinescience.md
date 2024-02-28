@@ -1,5 +1,5 @@
 ---
-title: "Evasive and adaptive strategies of German brown shrimp fisheries to area closures for offshore wind and marine protection"
+title: "Evasive and adaptive strategies of German brown shrimp fisheries to marine protection area scenarios"
 keywords: "NetLogo; Agent-based Model; ABM; North Sea; Fisheries; MuSSeL project; ODD; VIABLE; ViNoS"
 author:
   - name: Carsten Lemmen
@@ -11,7 +11,9 @@ author:
     orcid: 0000-0003-3483-6036
   - name: W. Nikolaus Probst
     orcid: 0000-0002-0450-2222
-    affiliation: "Thünen Institut for Sea Fishery"
+    affiliation: Thünen Institut for Sea Fishery, Herwigstraße 31, 27572 Bremerhaven, Germany
+#  - name: Thorsten Schulze
+#    affiliation: Thünen Institut for Sea Fishery, Herwigstraße 31, 27572 Bremerhaven, Germany
 #  - name: Jürgen Scheffran
 #    affil: 2
 #    orcid: 0000-0002-7171-3062
@@ -64,7 +66,7 @@ abbreviations:
 
 <!-- Cultural and economic value -->
 
-The German North Sea shrimp fishery is a traditional sector of near-coastal and local fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast. It's economic value is estimated at XXXX M€ annually, employing roughly XXXX people directly, and sustaining the livelihood of XXXX communities along the coast. Processing and distribution of shrimp employs another XXX people and ultimatle yupports up to XXXX people.
+The German North Sea shrimp fishery is a traditional sector of near-coastal fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast. While mostly local, brown shrimp is economically the fourth most important European fishery with 169 M€ in 2018; of this 90% landed in Germany, the Netherlands and Denmark (WGCRAN 2022). <!-- NUMBERS for GERMAN, there is an EU workforce document -->, employing roughly XXXX people directly, and sustaining the livelihood of XXXX communities along the coast. Processing and distribution of shrimp employs another XXX people and ultimatle yupports up to XXXX people .
 
 <!-- WGCRAN 2022
 The Brown Shrimp, Crangon crangon supports the fourth most valuable European fishery in the North Sea (EUR 169 million in 2018). The fishing fleets of Germany, the Netherlands and Denmark are responsible for over 90% of the yearly landings.-->
@@ -97,16 +99,17 @@ Therefore the current economic situation of the fishery is considered as
 
 -->
 
-The shrimper vessels are typically small near-coastal vessels with a gross weight of XXX tons, length between XXXX m and holding capacity of XXX kg shrimp. They are typically staffed by one up to three persons, and go on fishing trips between a few hours and a few days. The gears typically used by shrimper vessels is bottom-touching trawling gear, using a pair of beam trawls (ICES classification TBB) of each 4-10 m length. From the 20 ports of landing, the product is shipped to one of three processing plants, then sent overseas for peeling; small quantities are sold locally from the harbour unpeeled. One company (De Beer) controls the processing, shipping, and redistribution to the wholesale market.
+The shrimper vessels are typically small near-coastal vessels under 25 m in length with a gross weight of XXX tons, and holding capacity of XXX kg shrimp (find scaling REF). They are typically staffed by one up to three persons, and go on fishing trips between a few hours and a few days; the gears typically used by shrimper vessels is a light bottom trawling gear with bobbins, and deployed as a pair of beam trawls of maximum 10 m length (Goti-Aralucea). From the 20 ports of landing, the product is shipped to one of three processing plants, then sent overseas for peeling; small quantities are sold locally from the harbour unpeeled. Two large companies (monopsony), the Dutch Heiploeg and Klaas Puul controls the processing, shipping, and redistribution to the wholesale market. (op. cit)
 
 <!-- Environmental impact -->
 
-The shrimp fishery has long been under scrutiny from nature protection aspects because of its disturbance effect on the sea floor. CITATIONS
-No area of today's North Sea can be claimed to be free of such disturbance, and much of the ocean floor is disturbed several times per year. This has been known for long, in fact, when the Wadden Sea heritage area was established in 1991, the shrimp fishers were granted an exception for their use.
+The shrimp fishery has long been under scrutiny from nature protection because of its disturbance effect on the sea floor. Though lighter than other bottom trawl nets, a full shrimp net will cause seafloor disturbance (Rijnsdorp 2020), estimated to be on the same order as weather (Prins et al. 2020), but likely more detrimental to long-lived species (Perez-Rodrigues 2019), possibly even favorable for short-lived ones (REF). No area of today’s North Sea can be claimed to be free of such disturbance, and much of the ocean floor is disturbed several times per year. This has been known for long, in fact, when the Wadden Sea heritage area was established in 1991, the shrimp fishers were granted an exception for their use.
 
 In the North Sea, the German small-scale fishing fleet's biggest group are the shrimp beam trawlers. This small-scale fishing fleet is typically run by owner-operated family enterprises that uses boats smaller than 24 meters [@Döring2020]. These vessels' target species are mainly demersal (living near the bottom), and include plaice, sole, and brown shrimp [@Letschert2023].
 
-Fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extraction, and currently increasing ones like marine protection areas and offshore wind farms (OWF, @stelzenmuller2022plate). German authorities released a new maritime spatial plan in 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045 [@WindSeeG2023].
+All fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extraction, and currently increasing ones like marine protection areas and offshore wind farms (OWF, @stelzenmuller2022plate). German authorities released a new maritime spatial plan in 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045 [@WindSeeG2023].
+
+The shrimp fishery, with 90% of the effort in water < 20 m depth is less effected by offshore consturctions. Berkenhagen (2010) estimated that only 1.6% of shrimp fishing grounds overlap with OWF construction areas. Örey (manuscript submitted)
 
 <!-- Tulp 2016:
 Brown shrimp (Crangon crangon) fisheries are economically im- portant in northwestern Europe and especially in The Netherlands, Germany, and Denmark (ICES, 2014b). Between 2009 and 2013, the North Sea fishery for brown shrimp ranked 23rd in landings, but 6th in value, with an annual average of 109
@@ -159,8 +162,7 @@ After stock collapses, fuel crisis, and the economic crisis, and with
 the current and future effects of climate change, the COVID 19 crisis
 brings about a new scenario for which small-scale fisheries (SSF) do not
 seem to show the necessary preparedness [1,2].
-
->
+-->
 
 # Material and Methods
 
@@ -227,6 +229,12 @@ Scenarios were developed for the year 2020 (historic, actual area), the year 202
 | MPA35        | 2025     | Current regulation (all MPA closed)        |
 
 Scenario development for 2025 was guided by expert assessment from Stelzenmueller2024.
+
+<!--
+We might need other ideas.  Like close every other tidal flat. => every other grid cell. THat might really a great idea. ^
+Possibly federal states have different regulations?
+
+-->
 
 ## Experimental design
 
