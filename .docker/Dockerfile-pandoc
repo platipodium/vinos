@@ -8,7 +8,7 @@ FROM ubuntu:rolling
 LABEL description="Latex/pandoc/joss document generator based on Ubuntu"
 LABEL author="Carsten Lemmen <carsten.lemmen@hereon.de>"
 LABEL license="CC0-1.0"
-LABEL copyright="2023 Helmholtz-Zentrum hereon GmbH"
+LABEL copyright="2023-2024 Helmholtz-Zentrum hereon GmbH"
 
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
 
@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
    texlive-plain-generic texlive-fonts-recommended texlive-latex-extra \
    texlive-luatex texlive-fonts-extra fonts-hack fonts-open-sans \
    fonts-lmodern  citation-style-language-styles pandoc latexmk \
-   openssl ca-certificates
+   openssl ca-certificates texlive-science
 
 # For this docker, emulate the behaviour of openjournals/inara, but
 # create a bash entrypoint, not one running pandoc
