@@ -59,10 +59,12 @@ joss-inara:
     GIT_SHA: $CI_COMMIT_SHA
     JOURNAL: joss
   script:
-    - inara -o pdf,cff doc/joss/paper.md
+    - inara -o pdf,cff ./doc/joss/paper.md
+    - mv ./doc/joss/paper.pdf ./doc/joss/Lemmen2024_etal_jopensourcesoftware.pdf
+    - mv ./doc/joss/CITATION.cff ./doc/joss/Lemmen2024_etal_jopensourcesoftware.cff
   allow_failure: false
   artifacts:
     paths:
-      - ./doc/joss/paper.pdf
-      - ./doc/joss/CITATION.cff
+      - ./doc/joss/Lemmen2024_etal_jopensourcesoftware.pdf
+      - ./doc/joss/Lemmen2024_etal_jopensourcesoftware.cff
   needs: []
