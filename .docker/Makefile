@@ -26,16 +26,14 @@ jdk:
 	  docker build -f ./Dockerfile-jdk -t platipodium/jdk ..
 
 netlogo: jdk
-#	@for V in "6.2.2" "6.3.0" "6.4.0-beta1" ; do
-	@for V in "6.2.2" "6.3.0"  ; do \
+	@for V in "6.2.2" "6.3.0" "6.4.0" ; do \
 	  docker image inspect platipodium/netlogo:$$V  > /dev/null 2>&1 || \
 	    docker build -f ./Dockerfile-netlogo -t platipodium/netlogo:$$V \
 	    --build-arg NETLOGO_VERSION=$$V .. ;\
 	done
 
 vinos: netlogo
-#	@for V in "6.2.2" "6.3.0" "6.4.0-beta1" ; do
-	@for V in "6.2.2" "6.3.0" ; do  \
+	@for V in "6.2.2" "6.3.0" "6.4.0" ; do  \
 	  docker image inspect platipodium/vinos:$$V  > /dev/null 2>&1 ||  \
 		docker build -f ./Dockerfile-vinos -t platipodium/vinos:$$V  \
 		--build-arg NETLOGO_VERSION=$$V .. ;\
@@ -62,3 +60,18 @@ shell:
 	  -v /tmp/.X11-unix:/tmp/.X11-unix \
 	  -w /home/model \
 	  --net host -t platipodium/vinos:6.3.0 /bin/bash
+
+push: vinos netlogo jdk pandoc
+	docker login -u ${CI_REGISTRY_USER} -p ${CI_WRITE_REGISTRY_TOKEN} ${CI_REGISTRY} && \
+	@for V in jdk pandoc ; do  \
+	  IMAGEID=docker images -q platipodium/$$V && \
+	  docker tag ${IMAGEID} ${CI_REGISTRY}/mussel/netlogo-northsea-species/$$V:latest && \
+	  docker image push ${CI_REGISTRY}/mussel/netlogo-northsea-species/$$V:latest && \
+	done ; && \
+	@for V in netlogo vinos ; do  \
+	  for T in "6.2.2" "6.3.0" "6.4.0" ; do \
+	    IMAGEID=docker images -q platipodium/$$V:$$T && \
+	    docker tag ${IMAGEID} ${CI_REGISTRY}/mussel/netlogo-northsea-species/$$V:$$T && \
+	    docker image push ${CI_REGISTRY}/mussel/netlogo-northsea-species/$$V:$$T && \
+	  done ; && \
+	done

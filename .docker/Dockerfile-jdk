@@ -5,6 +5,11 @@
 FROM ubuntu:rolling
 ARG TARGETARCH
 
+LABEL description="ubuntu/jdk image"
+LABEL author="Carsten Lemmen <carsten.lemmen@hereon.de>"
+LABEL license="CC0-1.0"
+LABEL copyright="2023-2024 Helmholtz-Zentrum hereon GmbH"
+
 RUN apt update && apt install -y \
   curl vim xserver-xorg \
   default-jdk \
