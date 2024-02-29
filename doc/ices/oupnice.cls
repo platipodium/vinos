@@ -1,7 +1,9 @@
 % SPDX-FileCopyrightText: 2009 Oxford University Press
+% SPDX-FileCopyrightText: 2024 Helmholtz-Zentrum hereon GmbH
 % SPDX-License-Identifier: CC0-1.0
 %
-\ProvidesClass{ouparticle}[2009/12/09 v1.0]
+% !TEX root = Lemmen2024_etal_icesjmarinescience.tex
+\ProvidesClass{oupnice}[2024/02/29 v1.0]
 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 
@@ -17,22 +19,32 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions
 
-\LoadClass{article}
+\LoadClass{extarticle}
 
 \RequirePackage{amsmath,amssymb,amsfonts,verbatim,graphicx,setspace,endnotes}%%
 \RequirePackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
 \usepackage{xspace,amscd,rotating,latexsym,multicol,array,algorithm,subfigure}
 \usepackage[hyphens,obeyspaces]{url}
 
+\RequirePackage{fancyhdr}
+\RequirePackage{wallpaper}
+\RequirePackage{graphicx}
+\usepackage[sfdefault]{carlito}
+
+
+% Define page style with header on the first page
+\fancypagestyle{firstpage}{
+  \fancyhf{} % Clear header and footer
+  \fancyhead[L]{\huge ICES Journal of\\\Huge Marine Sciene}
+  \fancyhead[R]{\includegraphics[]{./assets/ices\_logo.pdf}}
+  \renewcommand{\headrulewidth}{0pt} % Remove header rule
+}
+
 \let\@abstract\relax
 \long\gdef\abstract#1{{\gdef\@abstract{%
-   \small%
-   \begin{center}%
-        {\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}%
-   \end{center}%
-   {\quotation%
-   \noindent#1%
-   \endquotation}%
+\small\raggedright%
+\noindent#1%
+%{\noindent\bfseries\abstractname\vspace{\z@}}%
 \par}}}
 
 \newcommand\keywordsname{Keywords}
@@ -88,7 +100,7 @@
   \let \footnote \thanks
   \null\vfil
   \vskip 60\p@
-  \begin{center}%
+  \begin{raggedright}%
     {\LARGE \@title \par}%
     \vskip 3em%
     {\large
@@ -98,7 +110,7 @@
       \end{tabular}\par}%
       \vskip 1.5em%
     {\large \@date \par}%
-  \end{center}\par
+  \end{raggedright}\par
   \@thanks
   \vfil\null
   \end{titlepage}%
@@ -133,7 +145,7 @@
       \global\@topnum\z@   % Prevents figures from going at top of page.
       \@maketitle
     \fi
-    \thispagestyle{plain}\@thanks
+    \thispagestyle{firstpage}\@thanks
   \endgroup
   \setcounter{footnote}{0}%
   \global\let\thanks\relax
@@ -152,14 +164,14 @@
   \newpage
   \null
   \vskip 2em%
-  {\leftskip\z@ plus 1fill\rightskip\leftskip
+  {%\leftskip\z@ plus 1fill\rightskip\leftskip
         \let \footnote \thanks
-        {\LARGE \noindent\@title \par}%
+            {\small \noindent Draft to be submitted to ICES Journal of Marine Science, version of \@date\par}%
+        {\Large \noindent Food for Thought\\[1ex]}%
+        {\LARGE \noindent\@title\par}%
     \vskip 1.5em%
-        {\large\lineskip .5em\noindent\@author\par}%
+        {\normalsize\lineskip .5em\noindent\@author\par}%
     \vskip 1em%
-    {\large \noindent\@date}%
-    \vskip 2em%
         \@abstract%
     \vskip0em%
         \noindent\@keywords
@@ -238,7 +250,7 @@
 \setlength\parskip{0\p@}
 \setlength\columnsep{12\p@}
 \setlength\columnseprule{0\p@}
-\pagestyle{plain}
+\pagestyle{fancy}
 \pagenumbering{arabic}
 \if@twoside
 \else
@@ -251,4 +263,9 @@
 \else
   \onecolumn
 \fi
+
+\AtBeginDocument{%
+\ThisULCornerWallPaper{1}{./assets/ices_waves.jpeg}%
+}
+
 \endinput
