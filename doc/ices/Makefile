@@ -1,7 +1,8 @@
 # SPDX-FileCopyrightText: 2024 Helmholtz-Zentrum hereon GmbH
 # SPDX-License-Identifier: CC-BY-4.0
-# SPDX-FieContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+# SPDX-FiLeContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 PANDOC=pandoc
+SOFFICE=/Applications/LibreOffice.app/Contents/MacOS/soffice
 
 ## Markdown extension (e.g. md, markdown, mdown).
 MEXT = md
@@ -12,6 +13,8 @@ MDFORMAT=--from=markdown+pipe_tables+simple_tables+multiline_tables+fenced_code_
 
 BIBCMD=--citeproc #--biblatex --bibliography $(BIB)
 #BIBCMD=
+# Cross reference options
+#CROSSREF = --filter pandoc-crossref -M figPrefix:"Figure" -M eqnPrefix:"Equation" -M tblPrefix:"Table"
 
 TOCCMD=--toc
 TOCCMD=
@@ -66,13 +69,20 @@ txt:  $(TXT) $(SRC) Makefile
 #	latexmk -pvc -pdf -e '$$pdflatex=q/xelatex %O -interaction=nonstopmode %S/' -f odd
 #	pdflatex odd
 
-%.docx:	%.md  %.bib Makefile
-	$(CMD)--to=docx -s -o $@ $<
+# %.docx:	%.md  %.bib Makefile
+#	$(CMD)--to=docx --reference-doc=Lemmen2024_etal_icesjmarinescience.docx -s -o $@ $<
 # --reference-doc= --filter pandoc-citeproc --bibliography
+# %.docx: %.tex
+#	$(CMD)  --from latex  -o $@ $<
 
-%.odt:	%.md  %.bib Makefile
-	$(CMD) --to=odt -s  -o $@ $<
-# --reference-doc= --filter pandoc-citeproc --bibliography
+#%.docx: %.odt Makefile
+#	$(SOFFICE) --headless --convert-to docx --outdir . $<
+
+%.docx: %.md Makefile ices-template.docx
+	$(CMD) --to=docx --reference-doc=ices-template.docx  -o $@ $<
+
+%.odt: %.md Makefile ices-template.odt
+	$(CMD) --to=odt --reference-doc=ices-template.odt  -o $@ $<
 
 clean:
 	@rm -f $(PDF) $(SRC:.md=.html) $(SRC:.md=.odt) $(SRC:.md=.docx)
