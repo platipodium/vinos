@@ -8,8 +8,8 @@ readthedocs:
   before_script:
     - apk add curl rsync
   script:
-    - rsync --ignore-errors ./netlogo/results/*png ./doc/mkdocs/assets/
-    - rsync --ignore-errors ./doc/odd/paper.md ./doc/mkdocs/odd.md
+    - compgen -G "./netlogo/results/*png" > /dev/null && rsync ./netlogo/results/*png ./doc/mkdocs/assets/
+    - rsync --ignore-errors ./doc/odd/odd.md ./doc/mkdocs/odd.md
     - 'curl -X POST -H "Authorization: Token ${RTD_TOKEN}" https://readthedocs.org/api/v3/projects/viable-north-sea/versions/latest/builds/'
   rules:
     # Only run the job on the default branch and not in forks.
@@ -31,7 +31,7 @@ rtd-maps:
   artifacts:
     paths:
       - "./netlogo/results/*png"
-      - "./doc/odd/paper.md"
+      - "./doc/odd/odd.md"
   needs: []
   allow_failure: true
   interruptible: true

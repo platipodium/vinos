@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
-ARG NETLOGO_VERSION=6.3.0
+ARG NETLOGO_VERSION=6.4.0
 FROM platipodium/netlogo:${NETLOGO_VERSION}
 
 ARG NETLOGO_VERSION
