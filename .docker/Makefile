@@ -46,17 +46,17 @@ run:
 	  -e DISPLAY=$(IP):0 \
 	  -v ${HOME}/.Xauthority:/home/model/.Xauthority \
 	  -v /tmp/.X11-unix:/tmp/.X11-unix \
-	  --net host -t platipodium/vinos:6.3.0
+	  --net host -t platipodium/vinos:6.4.0
 
 shell:
-	docker image inspect platipodium/vinos:6.3.0 > /dev/null 2>&1 && \
+	docker image inspect platipodium/vinos:6.4.0 > /dev/null 2>&1 && \
 	docker run --rm -i \
 	  -e DISPLAY=$(IP):0 \
 	  -v ${HOME}/.Xauthority:/home/model/.Xauthority \
 	  -v $(PWD):/home/model/local \
 	  -v /tmp/.X11-unix:/tmp/.X11-unix \
 	  -w /home/model \
-	  --net host -t platipodium/vinos:6.3.0 /bin/bash
+	  --net host -t platipodium/vinos:6.4.0 /bin/bash
 
 push: vinos netlogo jdk pandoc
 	docker login -u ${CI_REGISTRY_USER} -p ${CI_WRITE_REGISTRY_TOKEN} ${CI_REGISTRY} && \
