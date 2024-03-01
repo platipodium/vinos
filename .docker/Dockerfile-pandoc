@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
    texlive-plain-generic texlive-fonts-recommended texlive-latex-extra \
    texlive-luatex texlive-fonts-extra fonts-hack fonts-open-sans \
    fonts-lmodern  citation-style-language-styles pandoc latexmk \
-   openssl ca-certificates texlive-science wget
+   openssl ca-certificates texlive-science wget dpkg
 
 # Ubuntu distro contains a very outdated version of pandoc, so
 # we pull the deb file and install it (it is a standalone binary)
