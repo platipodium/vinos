@@ -16,11 +16,8 @@ default:
 
 pandoc:
 	@docker image inspect platipodium/pandoc  > /dev/null 2>&1 || \
-	  ( docker build -f ./Dockerfile-pandoc -t platipodium/pandoc .. && \
-	    docker login -u ${CI_REGISTRY_USER} -p ${CI_WRITE_REGISTRY_TOKEN} ${CI_REGISTRY} && \
-		IMAGEID=docker images -q platipodium/pandoc && \
-		docker tag ${IMAGEID} ${CI_REGISTRY}/mussel/netlogo-northsea-species/pandoc:latest && \
-		docker image push ${CI_REGISTRY}/mussel/netlogo-northsea-species/pandoc:latest )
+	  docker build -f ./Dockerfile-pandoc -t platipodium/pandoc ..
+
 jdk:
 	@docker image inspect platipodium/jdk  > /dev/null 2>&1 || \
 	  docker build -f ./Dockerfile-jdk -t platipodium/jdk ..
