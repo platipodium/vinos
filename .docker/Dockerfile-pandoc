@@ -20,14 +20,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # Ubuntu distro contains a very outdated version of pandoc, so
 # we pull the deb file and install it (it is a standalone binary)
-RUN arch=$(uname -m) && \
-  if [ "$arch" = "arm64" ]; then \
-    echo "Running on arm64 architecture"; \
-    wget -O pandoc.deb --no-check-certificate https://github.com/jgm/pandoc/releases/download/3.1.12.2/pandoc-3.1.12.2-1-arm64.deb ; \
-  else \
-    echo "Assume amd64 architecture"; \
-    wget -O pandoc.deb --no-check-certificate https://github.com/jgm/pandoc/releases/download/3.1.12.2/pandoc-3.1.12.2-1-amd64.deb ; \
-  fi
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
+    wget -q -O pandoc.deb --no-check-certificate  "https://github.com/jgm/pandoc/releases/download/3.1.12.2/pandoc-3.1.12.2-1-$arch.deb "
 RUN dpkg -i pandoc.deb
 
 # For this docker, emulate the behaviour of openjournals/inara, but
