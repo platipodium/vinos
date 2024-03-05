@@ -286,9 +286,13 @@ Fig XXX shows the fishing effort as observed by Global Fishery Watch (GFW, top) 
 
 The comparison of effort for the year 2020 shows that ViNoS is able to reproduce the spatial fishing pattern in the German Bight. Differences in offshore areas are due to flatfish activities, and differences beyond the state regulated area to non-German fishers, who are excluded from the National Park area.
 
+<div>
+
 | Access                                                           | Effort                                                           | Shrimp                                                           |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
-| ![alt text](./assets/closure_access.png){ width=33% height=30% } | ![alt text](./assets/closure_effort.png){ width=33% height=30% } | ![alt text](./assets/closure_shrimp.png){ width=33% height=30% } |
+| ![alt text](./assets/closure_access.png){ width=33% height=20% } | ![alt text](./assets/closure_effort.png){ width=33% height=20% } | ![alt text](./assets/closure_shrimp.png){ width=33% height=20% } |
+
+</div>
 
 Figure X shows the closure areas (only), the remaining fishery effort and the projected stock of shrimp.
 
