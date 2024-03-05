@@ -24,10 +24,8 @@ year: 2024
 license: CC-BY-4.0
 bibliography: Lemmen2024_etal_icesjmarinescience.bib
 SPDX-FileCopyrightText: 2024 Helmholtz-Zentrum hereon GmbH
-#SPDX-FileCopyrightText: 2023 Universität Hamburg
-#SPDX-FileCopyrightText: 2023 Hochschule Bremerhaven
 SPDX-License-Identifier: CC-BY-4.0
-abstract: "The German North Sea shrimp fishery is a traditional sector of near-coastal and local fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast.  Their fishing grounds traditionally overlap with the Wadden Sea World Heritage marine protected area (MPA) and - to a lesser extent - with areas that could be reserved for other uses in the recent and future Marine Spatial Plan.  The pressure to close these areas to fishery comes from both nature protectino, not the least the United Nations High Seas Treaty to protect 30% of the world's oceans, of which 1/3 should be no-use area, and from the national energy targets to provide up to 70 GW energy from OWF. We here explore different plausible scenarios of area closure for OWF and MPA to shrimp fishery, using the novel Viable North Sea (ViNoS) agent-based model.  We confirm previously formulated expectations of fishers that their mode of subsistence would be unsustainable given the many area closures, and we quantify foreseen economic losses.  At the same time, we are able to demonstrate the existence of adaptive strategies that could mitigate the impact of area closures lead to economically and ecologically viable shrimp fishery in the next two decades."
+abstract: "The German North Sea shrimp fishery is a traditional sector of near-coastal and local fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast.  Their fishing grounds traditionally overlap with the Wadden Sea World Heritage marine protected area (MPA) and - to a lesser extent - with areas that could be reserved for other uses in the recent and future Marine Spatial Plan.  The pressure to close these areas to fishery comes mainly from nature protection, not the least the United Nations High Seas Treaty to protect 30% of the world's oceans, of which 1/3 should be no-use areas. We here explore different plausible scenarios of area closure in MPAs to shrimp fishery, using the novel Viable North Sea (ViNoS) agent-based model.  We confirm previously formulated expectations of fishers that their mode of subsistence would be unsustainable given the extensive overlap of the foreseen area closures and traditional fishing grounds, and we quantify projected economic losses.  At the same time, we are able to demonstrate the existence of adaptive strategies that could mitigate the impact of area closures lead to economically and ecologically viable shrimp fishery in the next two decades."
 acknowledgement: "We thank Kai W. Wirtz, S. Hokamp, J. Scheffran for intensive discussions on the results of the model.  The development of the model was funded by the German Ministry of Education and Research through the KüNO project 'Multiple Stressors on North Sea Life' (MuSSeL) with grant number 03F0862A.  We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others."
 conflictsofinterests: "The authors declare that no conflict of interest has arisen from this work."
 authorcontributions: "C. Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing. S. Örey: Conceptualization, Data curation, Writing – review & editing. W.N. Probst: Data curation, Writing - review & editing"
@@ -66,7 +64,7 @@ abbreviations:
 
 <!-- Cultural and economic value -->
 
-The German North Sea shrimp fishery is a traditional sector of near-coastal fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast. While mostly local, brown shrimp is economically the fourth most important European fishery with 169 M€ in 2018; of this 90% landed in Germany, the Netherlands and Denmark (WGCRAN 2022). <!-- NUMBERS for GERMAN, there is an EU workforce document -->, employing roughly XXXX people directly, and sustaining the livelihood of XXXX communities along the coast. Processing and distribution of shrimp employs another XXX people and ultimatle yupports up to XXXX people .
+The German North Sea shrimp fishery is a traditional sector of near-coastal fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast. While mostly local, brown shrimp is economically the fourth most important European fishery with 169 M€ in 2018; of this 90% landed in Germany, the Netherlands and Denmark (WGCRAN 2022), <!-- NUMBERS for GERMAN, there is an EU workforce document --> employing roughly XXXX people directly, and sustaining the livelihood of XXXX communities along the coast. Processing and distribution of shrimp employs another XXX people and ultimatle yupports up to XXXX people .
 
 <!-- WGCRAN 2022
 The Brown Shrimp, Crangon crangon supports the fourth most valuable European fishery in the North Sea (EUR 169 million in 2018). The fishing fleets of Germany, the Netherlands and Denmark are responsible for over 90% of the yearly landings.-->
@@ -275,9 +273,24 @@ Decreasing the fleet size from 500 to 300 vessels is, on a fleet level, similar 
 
 # Results
 
-Fig 1 shows the fishing effort as observed by Global Fishery Watch (GFW) and as reported to EMODNEt. GFW effort is based on AIS data and therefore differs from the ICES-reported VMS-based data reported on EMODnet; also GFW effort is reporte in h a-1 spent fishing whereas VMS-data is weighted by vessel power and is reported in MWh a-1.
+<!-- Base simulation - model validation -->
+
+<div>
+
+| Observed                                                                                            | Simulated                                                                                                           |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| ![Observed effort 2020.\label{fig:validation}](./assets/gfw_effort.png){ width=48% height=10% }     | ![Simulated effort 2020.\label{fig:validation}](./assets/effort_h_0465_20201231-0000.png){ width=48% height=10% }   |
+| ![Observed effort 2020.\label{fig:validation}](./assets/emodnet_effort.png){ width=48% height=10% } | ![Simulated effort 2020.\label{fig:validation}](./assets/effort_mwh_0465_20201231-0000.png){ width=48% height=10% } |
+
+Fig XXX shows the fishing effort as observed by Global Fishery Watch (GFW, top) and as reported to EMODnet (bottom). GFW effort is based on AIS data and therefore differs from the ICES-reported VMS-based data reported on EMODnet; also GFW effort is reported in h a^-1^ spent fishing whereas VMS-data is weighted by vessel power and is reported in MWh a^-1^.
 
 The comparison of effort for the year 2020 shows that ViNoS is able to reproduce the spatial fishing pattern in the German Bight. Differences in offshore areas are due to flatfish activities, and differences beyond the state regulated area to non-German fishers, who are excluded from the National Park area.
+
+| Access                                                           | Effort                                                           | Shrimp                                                           |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| ![alt text](./assets/closure_access.png){ width=33% height=30% } | ![alt text](./assets/closure_effort.png){ width=33% height=30% } | ![alt text](./assets/closure_shrimp.png){ width=33% height=30% } |
+
+Figure X shows the closure areas (only), the remaining fishery effort and the projected stock of shrimp.
 
 # Discussion
 
