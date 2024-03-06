@@ -149,6 +149,8 @@ to setup-maps
     set patch-monthly-swept-area n-values 12 [ i -> 0]
   ]
 
+  gis:apply-raster (load-dataset "basins") basin-id
+
   update-owf
 
   ; add traffic data
@@ -333,6 +335,14 @@ to show-dataset [_dataset-name]
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Blues" n
+  ]
+
+  if _dataset-name = "Basin" [
+    ask water-patches [set temporary basin-id]
+    set _values sort [ temporary ] of water-patches
+    set _qt (list 0 10 20 30 40)
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Qualitative" "Pastel2" n
   ]
 
   if _dataset-name = "Suitability" [
