@@ -25,8 +25,8 @@ license: CC-BY-4.0
 bibliography: Lemmen2024_etal_icesjmarinescience.bib
 SPDX-FileCopyrightText: 2024 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: CC-BY-4.0
-abstract: "The German North Sea shrimp fishery is a traditional sector of near-coastal and local fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast.  Their fishing grounds traditionally overlap with the Wadden Sea World Heritage marine protected area (MPA) and - to a lesser extent - with areas that could be reserved for other uses in the recent and future Marine Spatial Plan.  The pressure to close these areas to fishery comes mainly from nature protection, not the least the United Nations High Seas Treaty to protect 30% of the world's oceans, of which 1/3 should be no-use areas. We here explore different plausible scenarios of area closure in MPAs to shrimp fishery, using the novel Viable North Sea (ViNoS) agent-based model.  We confirm previously formulated expectations of fishers that their mode of subsistence would be unsustainable given the extensive overlap of the foreseen area closures and traditional fishing grounds, and we quantify projected economic losses.  At the same time, we are able to demonstrate the existence of adaptive strategies that could mitigate the impact of area closures lead to economically and ecologically viable shrimp fishery in the next two decades."
-acknowledgement: "We thank Kai W. Wirtz, S. Hokamp, J. Scheffran for intensive discussions on the results of the model.  The development of the model was funded by the German Ministry of Education and Research through the KüNO project 'Multiple Stressors on North Sea Life' (MuSSeL) with grant number 03F0862A.  We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others."
+abstract: "The German North Sea shrimp fishery is a traditional sector of near-coastal and local fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast.  Their fishing grounds traditionally overlap with the Wadden Sea World Heritage marine protected area (MPA) and - to a lesser extent - with areas that could be reserved for other uses in the recent and future Marine Spatial Plan.  The pressure to close these areas to ground touching gear fishery comes mainly from nature protection, not the least the United Nations High Seas Treaty to protect 30% of the world's oceans, of which 1/3 should be no-use areas. We here explore different plausible scenarios of area closure in MPAs, using the novel Viable North Sea (ViNoS) agent-based model.  We confirm previously formulated expectations of fishers that their mode of subsistence would be unsustainable given the extensive overlap of the foreseen area closures and traditional fishing grounds, and we quantify projected economic losses.  At the same time, we are able to demonstrate the existence of adaptive strategies that could mitigate the impact of area closures lead to economically and ecologically viable shrimp fishery in the next two decades."
+acknowledgement: "We thank Kai W. Wirtz, S. Hokamp, J. Scheffran for intensive discussions on the results of the model.  The development of the model was funded by the German Ministry of Education and Research through the KüNO project 'Multiple Stressors on North Sea Life' (MuSSeL) with grant numbers 03F0862A, 03F0862C, 03F0862E.  We are grateful for the open source community that facilitated this research, amongst them the developers of and contributors to NetLogo, Python, R, pandoc, LaTeX, and many others."
 conflictsofinterests: "The authors declare that no conflict of interest has arisen from this work."
 authorcontributions: "C. Lemmen: Conceptualization, Methodology, Resources, Software, Formal analysis, Data curation, Project administration, Writing – original draft, Writing – review & editing. S. Örey: Conceptualization, Data curation, Writing – review & editing. W.N. Probst: Data curation, Writing - review & editing"
 abbreviations:
@@ -64,7 +64,7 @@ abbreviations:
 
 <!-- Cultural and economic value -->
 
-The German North Sea shrimp fishery is a traditional sector of near-coastal fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast. While mostly local, brown shrimp is economically the fourth most important European fishery with 169 M€ in 2018; of this 90% landed in Germany, the Netherlands and Denmark (WGCRAN 2022), <!-- NUMBERS for GERMAN, there is an EU workforce document --> employing roughly XXXX people directly, and sustaining the livelihood of XXXX communities along the coast. Processing and distribution of shrimp employs another XXX people and ultimatle yupports up to XXXX people .
+The German North Sea shrimp fishery is a traditional sector of near-coastal fishery encompassing roughly 200 boats distributed in 20 ports along the German East Frisian and North Frisian coast. While mostly local, brown shrimp is economically the fourth most important European fishery with 169 M€ in 2018; of this 90% landed in Germany, the Netherlands and Denmark (@ICES2023wgcran), <!-- NUMBERS for GERMAN, there is an EU workforce document --> employing roughly XXXX people directly, and sustaining the livelihood of XXXX communities along the coast. Processing and distribution of shrimp employs another XXX people and ultimatle yupports up to XXXX people .
 
 <!-- WGCRAN 2022
 The Brown Shrimp, Crangon crangon supports the fourth most valuable European fishery in the North Sea (EUR 169 million in 2018). The fishing fleets of Germany, the Netherlands and Denmark are responsible for over 90% of the yearly landings.-->
@@ -97,17 +97,17 @@ Therefore the current economic situation of the fishery is considered as
 
 -->
 
-The shrimper vessels are typically small near-coastal vessels under 25 m in length with a gross weight of XXX tons, and holding capacity of XXX kg shrimp (find scaling REF). They are typically staffed by one up to three persons, and go on fishing trips between a few hours and a few days; the gears typically used by shrimper vessels is a light bottom trawling gear with bobbins, and deployed as a pair of beam trawls of maximum 10 m length (Goti-Aralucea). From the 20 ports of landing, the product is shipped to one of three processing plants, then sent overseas for peeling; small quantities are sold locally from the harbour unpeeled. Two large companies (monopsony), the Dutch Heiploeg and Klaas Puul controls the processing, shipping, and redistribution to the wholesale market. (op. cit)
+The shrimper vessels are typically small near-coastal vessels under 25 m in length with a gross weight of XXX tons, and holding capacity of XXX kg shrimp (find scaling REF). They are typically staffed by one up to three persons, and go on fishing trips between a few hours and a few days; the gears typically used by shrimper vessels is a light bottom trawling gear with bobbins, and deployed as a pair of beam trawls of maximum 10 m length (@GotiAralucea2021). From the 20 ports of landing, the product is shipped to one of three processing plants, then sent overseas for peeling; small quantities are sold locally from the harbour unpeeled. Two large companies (monopsony), the Dutch Heiploeg and Klaas Puul controls the processing, shipping, and redistribution to the wholesale market (op. cit).
 
 <!-- Environmental impact -->
 
-The shrimp fishery has long been under scrutiny from nature protection because of its disturbance effect on the sea floor. Though lighter than other bottom trawl nets, a full shrimp net will cause seafloor disturbance (Rijnsdorp 2020), estimated to be on the same order as weather (Prins et al. 2020), but likely more detrimental to long-lived species (Perez-Rodrigues 2019), possibly even favorable for short-lived ones (REF). No area of today’s North Sea can be claimed to be free of such disturbance, and much of the ocean floor is disturbed several times per year. This has been known for long, in fact, when the Wadden Sea heritage area was established in 1991, the shrimp fishers were granted an exception for their use.
+The shrimp fishery has long been under scrutiny from nature protection because of its disturbance effect on the sea floor. Though lighter than other bottom trawl nets, a full shrimp net will cause seafloor disturbance (@Hiddink2017), estimated to be on the same order as weather (Prins et al. 2020), but likely more detrimental to long-lived species (Perez-Rodrigues 2019), possibly even favorable for short-lived ones (@Rijnsdorp2020). No area of today’s North Sea can be claimed to be free of such disturbance, and much of the ocean floor is disturbed several times per year. This has been known for long, in fact, when the Wadden Sea heritage area was established in 1991, the shrimp fishers were granted an exception for their use (REF).
 
 In the North Sea, the German small-scale fishing fleet's biggest group are the shrimp beam trawlers. This small-scale fishing fleet is typically run by owner-operated family enterprises that uses boats smaller than 24 meters [@Döring2020]. These vessels' target species are mainly demersal (living near the bottom), and include plaice, sole, and brown shrimp [@Letschert2023].
 
-All fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extraction, and currently increasing ones like marine protection areas and offshore wind farms (OWF, @stelzenmuller2022plate). German authorities released a new maritime spatial plan in 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045 [@WindSeeG2023].
+All fisheries in the North Sea face area competition with other uses of the sea -- long practiced ones like shipping, gas exploration and sand extraction, and currently increasing ones like marine protection areas and offshore wind farms (OWF, @sStelzenmueller2022). German authorities released a new maritime spatial plan in 2023 for implementing the need for 30% of protection areas demanded by the United Nations High Seas Treaty and aiming at up to 70 GW of offshore wind power generation by 2045 [@WindSeeG2023].
 
-The shrimp fishery, with 90% of the effort in water < 20 m depth is less effected by offshore consturctions. Berkenhagen (2010) estimated that only 1.6% of shrimp fishing grounds overlap with OWF construction areas. Örey (manuscript submitted)
+The shrimp fishery, with 90% of the effort in water < 20 m depth is less effected by offshore consturctions. @Berkenhagen2010 estimated that only 1.6% of shrimp fishing grounds overlap with OWF construction areas, a number confirmed recently by @Oerey2024 (manuscript submitted)
 
 <!-- Tulp 2016:
 Brown shrimp (Crangon crangon) fisheries are economically im- portant in northwestern Europe and especially in The Netherlands, Germany, and Denmark (ICES, 2014b). Between 2009 and 2013, the North Sea fishery for brown shrimp ranked 23rd in landings, but 6th in value, with an annual average of 109
@@ -146,14 +146,17 @@ Shrimp typically occur in high numbers at the edge of tidal channels, so also a 
 
 <!-- @todo  in theory the german EEZ allready is protected by about 30% https://www.bfn.de/nationale-meeresschutzgebiete#anchor-6205, hmm, in EEZ 8000/28500 km2 protected, i.e. 28%, (only german) -->
 
-In XXX, the United Nations High Seas Treaty was agreed upon, aiming at protecting 30% of the world's oceans, and declaring no-use zones in on third of those areas, effectively barring 10% of the world's oceans from any use. In 2023, this lead to new regulation in Germany regarding the protection levels of the already exsiting MPAs Borkum riffgrund and Sylter Außenriff. Within these, a partial closure to fishery activity - including shrimp fishing - was achieved. In addition, the XXXX commission discussed lifting the excpetion for Shrimp fishery within the Wadden Sea effective 2025. Though this plan was dismissed, it stirred unrest in the fishery community (XXXX). Less overlapping with the traditional shrimp fishery grounds are areas now (or in the future to be) reserved for offshore wind farming. The 70 GW energy production aim described in the National strategy XXX mostly claims offshore areas affecting other fisheries; only a small area south of Borkum Riffgrund is claimed for both OWF and brown shrimp fishery activity.
+In XXX, the United Nations High Seas Treaty was agreed upon, aiming at protecting 30% of the world's oceans, and declaring no-use zones in on third of those areas, effectively barring 10% of the world's oceans from any use. While already 28% (8000 out of 28500 km^2^) of the German exclusive economic zone (EEZ) is under some protection regulation, this lead in 2023 to new regulation in Germany increasing the protection levels of the existing coastal MPAs Borkum Riffgrund and Sylter Außenriff. Within these, a partial closure to fishery activity - including shrimp fishing - was achieved: Beam-trawling gear (TBB) was excluded in Borkum Riffgrund and the Amrumbank East part of Sylter Außenriff.
+In addition, the XXXX commission discussed lifting the exception for Shrimp fishery within the Wadden Sea effective 2025. Though this plan was dismissed, it stirred unrest in the fishery community (XXXX).
+
+Less overlapping with the traditional shrimp fishery grounds are areas now (or in the future to be) reserved for offshore wind farming. The 70 GW energy production aim described in the National strategy XXX mostly claims offshore areas affecting other fisheries; only a small area south of Borkum Riffgrund is claimed for both OWF and brown shrimp fishery activity.
 
 <!-- Berkenhagen 2010:
-The current approval procedure for wind farm proposals in the German EEZ only considers site specificonflict analysis between the wind farm and fisheries. Due to the relatively small spatial coverage of the sites potential opportunity losses to the fisheries are always considered as low or negligible. Cumulative effects on fisheries that will occur once all proposed wind farms are in place are not yet considered adequately. However, those cumulative effects will be quite substantial because, in particular, opportunities to catch such valuable species as flatfish will be considerably reduced.
+Cumulative effects are not yet considered adequately. However, those cumulative effects will be quite substantial because, in particular, opportunities to catch such valuable species as flatfish will be considerably reduced.
 1.6% of shrimp are cauth in OWF areas, 98.4% outside.
 -->
 
-In this study we apply for the first time the novel Viable North Sea (ViNoS) agent-based model of German small-scale fisheries. We establish that it is able to represent past and current spatial distribution and economic balance of the German brown shrimp fishery, and generate scenarios for areas claimed for OWF or MPA. We investigate the reaction of artificial fishers in the model context to these area closures, and evaluat its economic impact. We also explore potential adaptations in the fishery's behavior that mitigates area closures and helps to ensure a sustainable future fishery under new area constraints.
+In this study we apply for the first time the novel Viable North Sea (ViNoS) agent-based model of German small-scale fisheries (@Lemmen2024). We establish that it is able to represent past and current spatial distribution and economic balance of the German brown shrimp fishery, and generate scenarios for areas claimed for OWF or MPA. We investigate the reaction of artificial fishers in the model context to these area closures, and evaluat its economic impact. We also explore potential adaptations in the fishery's behavior that mitigates area closures and helps to ensure a sustainable future fishery under new area constraints.
 
 <!-- Goti-Aralucea 2021:
 After stock collapses, fuel crisis, and the economic crisis, and with
@@ -166,14 +169,7 @@ seem to show the necessary preparedness [1,2].
 
 Viable North Sea (ViNoS) is an Agent-based Model (ABM) of the German North Sea Small-scale Fisheries in a Social-Ecological Systems (SES) framework focussing on the adaptive behaviour of fishers facing regulatory, economic, and resource changes. The numerical model's Overview, Design concepts, and Details (ODD) have been published by @Lemmen2023; the ViNoS software itself is published as open source [@Lemmen2024].
 The purpose of this ABM is to provide an interactive simulation environment that describes spatial, temporal and structural adaptations of the fleet. It adaptively describes (1) where to fish and how far to go out to sea; and (2) how often to go out.
-Its scope s the German North sea small-scale fisheries. This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The currently simulated target species are the three most important ones: plaice, sole and brown shrimp.
-
-<div>
-<!-- Original picture is 22,26 x 14,89 cm -->
-
-![Primary and subsidiary agents of the ViNoS ABM.\label{fig:agents}](../../assets/agents.pdf){ width=75% height=30% }
-
-</div>
+Its scope is the German North sea small-scale fisheries. This encompasses some 300 vessels based in German ports along the North Sea coast and fishing in the German Bight, including but not restricted to Germany's exclusive economic zone (EEZ). The currently simulated target species are the three most important ones: plaice, sole and brown shrimp.
 
 ## Agents in ViNoS
 
@@ -182,7 +178,7 @@ Boats are located at ports, according to the empirical distribution of the Germa
 Ports, preys, and gears are immobile agents that are introduced to structure the model in object-oriented design and encapsulated their state variables and methods.
 Ports are the boats' favourite landing ports. Boats start their activity from a port and dock to unload at a port. They can stay in a port when deciding not to fish. Along the German North Sea coast, there are 54 ports for which boat and landing statistics are available. At the ports, the simulated landings are recorded.
 
-Boats and preys are connected via the _gears_ agent: The gear prescribes the geometric area that can be fished, the speed at which fishing can occur, and the prey that is caught. A gear can be installed, or changed, on a boat, subject to economic (investment cost) and physical (weight, size) constraints. The gear also determines the impact of the fishing activity on the environment, i.e. how much prey is removed and how much of the sea floor is swept as the beam size of the gear changes depending on the target species.
+Boats and preys are connected via the _gears_ agent: The gear prescribes the geometric area that can be fished, the speed at which fishing can occur, and the prey that is caught. A gear can be installed, or changed, on a boat, subject to economic (investment cost) and physical (weight, size) constraints. The gear also determines the impact of the fishing activity on the environment, i.e. how much prey is removed and how much of the sea floor is swept as the beam size of the gear changes depending on the target species. We here constrain the boats to using only the TBB (bottom-touching beam trawl) gear and to target shrimp only.
 
 The spatial domain is described by a grid, whose cells carry spatial information on the environment and record activity information. The domain itself is the German Bight including Germany's EEZ. It is represented geographically in the WGS84 datum and as equilateral cells in latitude and longitude, thus corresponding to the Concise Spatial QUery And REpresentation System (c-squares) on which much of the reported data is available. The model domain is bounded by the rectangle spanned by the coordinates (2° E; 53° N) and (10° E; 56° N); the resolution is 0.025 x 0.025 degree (1.5 arc minutes, or approximately 1.7 x 2.9 km). The resulting grid has a size of 320 columns x 120 rows.
 
@@ -191,9 +187,9 @@ Cells carry information on shrimp resources, and regulatory fishery closure area
 
 The temporal domain is multiple years and the temporal resolution is 1 day. With the progress of the calendar, surrogate weather is introduced that may influence a boat's decision to go on a fishing trip. Seasonal information is used to describe the annual variation of prey resources.
 
-To enable learning, boats implement a memory of best hauls, recording the amount caught and the cell location. This memory has size 20. After a training phase, boats may choose to steam preferentially to one of the best 10 past experienced locations to start fishing. Boats sense the resource availability of each cell, as well as global fuel prices and port-dependent market prices.
+To enable learning, boats implement a memory of best hauls, recording the amount caught and the cell location. This memory has size 20. After a training phase, boats may choose to steam preferentially to one of the best 10 past experienced locations to start fishing. Boats sense the changing resource availability of each cell, as well as global fuel prices and port-dependent market prices.
 
-Ports and boats are initialized from empirical statistics available for the year 2015. The resources are initialized from a species distribution model (SDM) based on stock assessments and environmental data for the period 2015-2020. Time is initialized with current wall clock time.
+Ports and boats are initialized from empirical statistics available for the year 2015. The resources are initialized from a species distribution model (SDM) based on stock assessments and environmental data for the period 2015-2020.
 
 | **Description**                                        | **Source**                                                                            |
 | ------------------------------------------------------ | ------------------------------------------------------------------------------------- |
@@ -214,25 +210,20 @@ Ports and boats are initialized from empirical statistics available for the year
 
 ## Scenario development
 
-Scenarios were developed for area closures with spatial information derived from the Marine Spatial Plan for German national waters, released by BSH in January, 2022 (BSH2022); the realization of closure areas for OWF was derived from the status information available at XXXX. With the federal state regulated areas, the National Park boundaries were obtained from the respecitve state agencies LLUR, NLWKN.
+Scenarios were developed for area closures with spatial information derived from the Marine Spatial Plan for German national waters, released by BSH in January, 2022 (@BSH2022); the realization of closure areas for OWF was derived from the status information available at XXXX. With the federal state regulated areas, the National Park boundaries were obtained from the respecitve state agencies LLUR, NLWKN.
 
-Scenarios were developed for the year 2020 (historic, actual area), the year 2025 (closure of Amrumbank, closure of National Park), and the year 2035 (closure of Sylt Außenriff, Borkum Riffgrund and National Park).
+Scenarios were developed for the year 2020 (historic, actual area), the year 2025 (closure of Amrumbank, closure of National Park), and the year 2030 with closure of entire Sylt Außenriff, Borkum Riffgrund and National Park areas, and additionally 2030 with closure of the Bird Directive areas.
 
-| **Scenario** | **Year** | **Description**                            |
-| ------------ | -------- | ------------------------------------------ |
-| Historic     | 2020     | Historic fishing grounds, no new closures  |
-| BAU25        | 2025     | Current regulation (Amrumbank closure)     |
-| MPA25        | 2025     | Current regulation (Amrumbank, WS closure) |
-| BAU35        | 2025     | Current regulation (Amrumbank closure)     |
-| MPA35        | 2025     | Current regulation (all MPA closed)        |
+| **Scenario** | **Year** | **Description**                                          |
+| ------------ | -------- | -------------------------------------------------------- |
+| Historic     | 2020     | Historic fishing grounds, no new closures                |
+| BAU25        | 2025     | Current regulation (Amrumbank, Borkum Riffgrund closure) |
+| WAD30        | 2030     | Wadden Sea closed                                        |
+| BIRD30       | 2030     | Wadden Sea/Bird area closed                              |
+| BASIN30      | 2030     | All closures, leave 70% of WS basins open                |
+| PATCH30      | 2030     | All closures, leave 70% of WS patches open               |
 
-Scenario development for 2025 was guided by expert assessment from Stelzenmueller2024.
-
-<!--
-We might need other ideas.  Like close every other tidal flat. => every other grid cell. THat might really a great idea. ^
-Possibly federal states have different regulations?
-
--->
+Scenario development for 2025 and 2035 was guided by expert assessment from Stelzenmueller2024.
 
 ## Experimental design
 
