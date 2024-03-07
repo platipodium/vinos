@@ -149,6 +149,8 @@ to setup-maps
     set patch-monthly-swept-area n-values 12 [ i -> 0]
   ]
 
+  gis:apply-raster (load-dataset "basins") basin-id
+
   update-owf
 
   ; add traffic data
@@ -333,6 +335,14 @@ to show-dataset [_dataset-name]
     set _qt (list 1 10 50 100 250 400 600  800 1000)
     set n (length _qt) - 1
     set _colors palette:scheme-colors "Sequential" "Blues" n
+  ]
+
+  if _dataset-name = "Basin" [
+    ask water-patches [set temporary basin-id]
+    set _values sort [ temporary ] of water-patches
+    set _qt (list 0 10 20 30 40)
+    set n (length _qt) - 1
+    set _colors palette:scheme-colors "Qualitative" "Pastel2" n
   ]
 
   if _dataset-name = "Suitability" [
@@ -553,8 +563,9 @@ to-report load-dataset [_dataset-name]
   if _dataset-name = "OWF" [ report gis:load-dataset "../data/emodnet/EMODnet_HA_Energy_WindFarms_pg_20230605.shp"]
   if _dataset-name = "SNS" [ report gis:load-dataset "../data/coastline/sns_waterbody.shp"]
   if _dataset-name = "3mile" [ report gis:load-dataset "../data/vliz/de_internal_waters_v3.shp"]
+  if _dataset-name = "basins" [ report gis:load-dataset "../data/ecotope/tidal_basins.shp"]
 
-  print (sentence "Invalid dataset name" _dataset-name ".  Valid are 'Natura2000', 'NP', 'ICES', 'Plaicebox', 'EEZ', 'OWF', 'SNS', '3mile' ")
+  print (sentence "Invalid dataset name" _dataset-name ".  Valid are 'Natura2000', 'NP-SH', 'NP-NS', 'ICES', 'Plaicebox', 'EEZ', 'OWF', 'SNS', '3mile', 'basins', 'Nephrops' ")
   report nobody
 end
 
@@ -569,11 +580,12 @@ to-report __test-load-dataset
   if load-dataset "OWF" = nobody [report false]
   if load-dataset "SNS" = nobody [report false]
   if load-dataset "3mile" = nobody [report false]
+  if load-dataset "basins" = nobody [report false]
   report true
 end
 
 to-report  __test-draw-dataset
-  foreach (list "Natura2000" "NP-NS" "NP-SH" "ICES" "EEZ" "Plaicebox" "OWF" "SNS" "Nephrops") [ i ->
+  foreach (list "Natura2000" "NP-NS" "NP-SH" "ICES" "EEZ" "Plaicebox" "OWF" "SNS" "Nephrops" "3mile" "basins") [ i ->
     draw-dataset i 5 + 10 * (random 14)
   ]
   report true
