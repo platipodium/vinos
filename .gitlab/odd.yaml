@@ -14,3 +14,4 @@ odd-paper:
       - doc/odd/odd.pdf
   needs: []
   stage: deploy
+  allow_failure: true

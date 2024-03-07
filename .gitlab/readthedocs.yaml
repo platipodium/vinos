@@ -35,4 +35,4 @@ rtd-maps:
   needs: []
   allow_failure: true
   interruptible: true
-  timeout: 20 min
+  timeout: 40 min
