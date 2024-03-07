@@ -1,0 +1,142 @@
+% SPDX-FileCopyrightText: 2024 Helmholtz-Zentrum hereon GmbH
+% SPDX-License-Identifier: CC0-1.0
+%
+\documentclass[11pt,halfline,a4paper]{oupnice}
+%\documentclass[12pt,halfline,a4paper]{ouparticle}
+
+\usepackage{enumitem}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{4pt}}
+\setlist[itemize]{leftmargin=*,labelsep=5.8mm}
+\setlist[enumerate]{leftmargin=*,labelsep=4.9mm}
+
+\usepackage{hyperref}
+\usepackage{calc}
+\usepackage{longtable}
+\usepackage{booktabs}
+
+
+$if(csl-refs)$
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+\begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+% allow citations to break across lines
+\let\@cite@ofmt\@firstofone
+% avoid brackets around text for \cite:
+\def\@biblabel#1{}
+\def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+{\begin{list}{}{%
+	\setlength{\itemindent}{0pt}
+	\setlength{\leftmargin}{0pt}
+	\setlength{\parsep}{0pt}
+	% turn on hanging indent if param 1 is 1
+	\ifodd #1
+	\setlength{\leftmargin}{\cslhangindent}
+	\setlength{\itemindent}{-1\cslhangindent}
+	\fi
+	% set entry spacing
+	\setlength{\itemsep}{#2\baselineskip}}}
+{\end{list}}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+$endif$
+
+\title{$title$}
+
+% Authors, for the paper (add full first names)
+\author{$for(author)$%
+\name{$author.name$}
+\address{$author.affiliation$}%
+%$if(author.orcid)$\href{https://orcid.org/$author.orcid$}{\orcidicon}$endif$
+$sep$ $endfor$}
+
+\begin{document}
+
+% Full title of the paper (Capitalized)
+
+
+
+%\author{%
+%\name{First Author}
+%\address{Institute or Organization, Department, City, State,\\
+%Zip Code, Country}
+%\email{e-mail address}
+%\and
+%\name{Second Author}
+%\address{Institute or Organization, Department, City, State,\\
+%Zip Code, Country}
+%\email{e-mail address}}
+
+\date{\today}
+
+% Abstract (Do not insert blank lines, i.e. \\)
+$if(abstract)$
+\abstract{$abstract$}
+$endif$
+
+% Keywords
+$if(keywords)$
+\keywords{$keywords$}
+$endif$
+
+
+
+\maketitle
+
+$body$
+
+$if(acknowledgement)$
+\begin{notes}[Acknowledgements]
+$acknowledgement$
+\end{notes}
+$endif$
+
+
+$if(appendix)$
+\subsection{Appendix}
+\input{"$appendix$"}
+$endif$
+
+$if(abbreviations)$
+\begin{notes}[Abbreviations]
+\noindent
+\begin{tabular}{@{}ll}
+$for(abbreviations)$
+$abbreviations.short$ & $abbreviations.long$ \\
+$endfor$
+\end{tabular}
+\end{notes}
+$endif$
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$if(authorcontributions)$
+\begin{notes}[CRediT authorship contribution statement]
+$authorcontributions$
+\end{notes}
+$endif$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$if(conflictsofinterest)$
+\begin{notes}[Conflicts of Interest]
+\conflictsofinterest{$conflictsofinterest$}
+\end{notes}
+$endif$
+
+$if(bibliography)$
+%\reftitle{References}
+%\externalbibliography{yes}
+\bibliography{$bibliography$}
+$endif$
+
+\end{document}

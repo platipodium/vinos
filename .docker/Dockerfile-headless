@@ -5,6 +5,11 @@
 
 FROM openjdk
 
+LABEL description="JDK with NetLogo headless"
+LABEL author="Carsten Lemmen <carsten.lemmen@hereon.de>"
+LABEL license="CC0-1.0"
+LABEL copyright="2023-2024 Helmholtz-Zentrum hereon GmbH"
+
 ARG NETLOGO_VERSION=6.3.0
 
 ENV LC_ALL=C.UTF-8 \

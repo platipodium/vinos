@@ -43,7 +43,7 @@ to ci-maps
   ;ci-run-year 2030
   ;draw-dataset "NP-SH" 1
   ;draw-dataset "NP-NS" 1
-  ;ci-run-year 2040
+  ci-run-year 2040
 
 end
 

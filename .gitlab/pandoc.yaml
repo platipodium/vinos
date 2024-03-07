@@ -29,7 +29,7 @@ build-pandoc-docker:
     - docker push ${CONTAINER_REGISTRY_IMAGE}
 
 test-pandoc-docker:
-  extends: .base-docker
+  extends: .base-pandoc-docker
   stage: deploy
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY

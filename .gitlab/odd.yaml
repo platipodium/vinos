@@ -8,10 +8,21 @@
 odd-paper:
   image: $CI_REGISTRY_IMAGE/pandoc:latest
   script:
-    - make -C doc/odd pdf
+    - make -C ./doc/odd pdf
+    - mv ./doc/odd/odd.pdf ./doc/odd/Lemmen2024_etal_comsesodd.pdf
   artifacts:
     paths:
-      - doc/odd/odd.pdf
+      - ./doc/odd/Lemmen2024_etal_comsesodd.pdf
+  needs: []
+  stage: deploy
+
+ices-paper:
+  image: $CI_REGISTRY_IMAGE/pandoc:latest
+  script:
+    - make -C doc/ices pdf
+  artifacts:
+    paths:
+      - doc/ices/Lemmen2024_etal_icesjmarinescience.pdf
   needs: []
   stage: deploy
   allow_failure: true

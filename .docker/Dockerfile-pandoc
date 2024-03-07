@@ -2,13 +2,12 @@
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
-
 FROM ubuntu:rolling
 
 LABEL description="Latex/pandoc/joss document generator based on Ubuntu"
 LABEL author="Carsten Lemmen <carsten.lemmen@hereon.de>"
 LABEL license="CC0-1.0"
-LABEL copyright="2023 Helmholtz-Zentrum hereon GmbH"
+LABEL copyright="2023-2024 Helmholtz-Zentrum hereon GmbH"
 
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
 
@@ -17,7 +16,14 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
    texlive-plain-generic texlive-fonts-recommended texlive-latex-extra \
    texlive-luatex texlive-fonts-extra fonts-hack fonts-open-sans \
    fonts-lmodern  citation-style-language-styles pandoc latexmk \
-   openssl ca-certificates
+   openssl ca-certificates texlive-science wget dpkg
+
+# Ubuntu distro contains a very outdated version of pandoc, so
+# we pull the deb file and install it (it is a standalone binary)
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
+    wget -q -O pandoc.deb --no-check-certificate  "https://github.com/jgm/pandoc/releases/download/3.1.6.2/pandoc-3.1.6.2-1-$arch.deb"
+RUN dpkg -i pandoc.deb
 
 # For this docker, emulate the behaviour of openjournals/inara, but
 # create a bash entrypoint, not one running pandoc
