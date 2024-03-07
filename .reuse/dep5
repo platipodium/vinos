@@ -82,3 +82,7 @@ License: CC0-1.0
 Files: .zenodo.json
 Copyright: 2023-2024 Helmholtz-Zentrum hereon GmbH
 License: CC0-1.0
+
+Files: data/ecotope/tidal_basins.*
+Copyright: 2023 Wageningen University & Research; Ecospace, Ecological Research and Environmental Informatics; Leibniz Institute for Baltic Sea Research
+License: CC-BY-4.0
