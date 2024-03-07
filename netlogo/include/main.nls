@@ -54,6 +54,8 @@ globals [
   fleet-landing-climatology        ; observational data from Temming et al. https://doi.org/10.3354/meps12325
 
   oil-price
+
+  basin-id ; basin ID according to the Trilateral Ecotop Map of the Wadden Sea
 ]
 
 patches-own [
@@ -459,6 +461,14 @@ to calc-accessibility
     ask patches gis:intersecting load-dataset "NP-SH" [ set accessible? false ]
     ask patches gis:intersecting load-dataset "NP-NS" [ set accessible? false ]
   ]
+
+  ; For scenario creation
+  ;let basin-patches patches gis:intersecting load-dataset "basins"
+  ;if closure-scenario = "WSHA 100%" [ ask basin-patches [ set accessible? false ]]
+  ;if closure-scenario = "WSHA 30% cells" [ ask n-of (count basin-patches / 30) basin-patches [ set accessible? false ]]
+  ;if closure-scenario = "WSHA 30% basins" [
+  ;]
+
 end
 
 

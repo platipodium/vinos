@@ -147,7 +147,7 @@ memory-size
 memory-size
 0
 50
-20.0
+50.0
 1
 1
 NIL
@@ -453,10 +453,10 @@ CSH = shrimp\nPLE = plaice\nSOL = sole\nTBB = beam trawl\nOTB = otter trawl
 1
 
 PLOT
-1147
-661
-1375
-781
+1015
+664
+1243
+784
 action
 NIL
 # action
@@ -470,20 +470,20 @@ true
 PENS
 
 CHOOSER
-1147
-611
-1298
-656
+1015
+614
+1166
+659
 action-chooser
 action-chooser
 "gain" "catch" "gear" "depth" "coast" "age"
 0
 
 BUTTON
-1301
-610
-1375
-656
+1169
+613
+1243
+659
 update
 plot-update-action-histogram
 NIL
@@ -508,20 +508,20 @@ show-values?
 -1000
 
 CHOOSER
-1144
-435
-1293
-480
+1012
+438
+1161
+483
 monthly-chooser
 monthly-chooser
 "Fleet land. t" "Fleet revenue k€" "Fleet effort h" "Fleet seadays" "Effort MWh" "Effort h"
 2
 
 PLOT
-1146
-485
-1374
-605
+1014
+488
+1242
+608
 Monthly statistics
 Month
 NIL
@@ -535,10 +535,10 @@ false
 PENS
 
 BUTTON
-1299
-436
-1373
-480
+1167
+439
+1241
+483
 update
 plot-update-month-histogram
 NIL
@@ -569,14 +569,24 @@ Shrimper fleet aggregated data (per vessel and year)
 1
 
 CHOOSER
-1000
-434
-1138
-479
+864
+439
+1002
+484
 output-frequency
 output-frequency
 "none" "daily" "weekly" "monthly" "yearly"
 2
+
+CHOOSER
+700
+439
+856
+484
+closure-scenario
+closure-scenario
+"none" "BAU" "WSHA 100%" "WSHA 30% cells" "WSHA 30% basins"
+0
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries
