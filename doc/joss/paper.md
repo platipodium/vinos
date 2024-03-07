@@ -32,8 +32,8 @@ affiliations:
     index: 2
   - name: Hochschule Bremerhaven, Research Cluster Life Sciences, Bremerhaven, Germany
     index: 3
-date: 4 Oct 2023
-year: 2023
+date: 7 March 2024
+year: 2024
 bibliography: paper.bib
 SPDX-FileCopyrightText: 2022-2024 Helmholtz-Zentrum hereon GmbH
 SPDX-License-Identifier: CC-BY-4.0
@@ -60,13 +60,13 @@ The intended audience of the ABM are marine researchers, educators and governmen
 
 # Key features of the ABM
 
-As a NetLogo implementation, the model comprises a (frontend) user `interface`, its basic `info` documentation, and the (backend) `code` in a single integrated development environment (IDE) provided by NetLogo [@Wilensky1999, version 6 required], a Java-based portable ABM and system dynamics simulation platform.
+As a NetLogo implementation, the model comprises a (frontend) user `Interface`, its basic `Info` documentation, and the (backend) `Code` in a single integrated development environment (IDE) provided by NetLogo [@Wilensky1999, version 6 required], a Java-based portable ABM and system dynamics simulation platform.
 
-The backend (`code`) features geospatial data access and integration of multiple georeferenced and tabular data sources, as well as integrating Web Mapping Services to describe the grid-based environmental context. This environmental context is dynamic in time, providing seasonal resource changes and dynamic area closures.
+The backend (`Code`) features geospatial data access and integration of multiple georeferenced and tabular data sources, as well as integrating Web Mapping Services to describe the grid-based environmental context. This environmental context is dynamic in time, providing seasonal resource changes and dynamic area closures.
 
 Agents are boats, the gear they use, the strategies they employ, and their prey. All agents are encapsulated in object-oriented design as NetLogo `breeds`. The agents' methods implement the decision rules of agents and the resulting interactions between them and with their gridded environment (`patches`). Key interactions are the movement rules of boats across the seascape, the harvesting of resources, and the cost-benefit analysis of a catch. Adaptation occurs at the level of changing priorities for fishing trips (i.e. gear selection and target species, time and distance preferences) towards increasing expected values of agents, according to the VIABLE model framework [@BenDor2019].
 
-The user `interface` provides an interactive environment, perusing all NetLogo's graphical features. Informational elements include a (georeferenced) map `view`, and several histograms and temporal scatter panels. Interactive elements include `switches` for toggling information on and off, `choosers` to toggle which information to show, `buttons` to control the simulation and `sliders` to adjust boundary conditions, such as the oil price.
+The user `Interface` provides an interactive environment, perusing all NetLogo's graphical features. Informational elements include a (georeferenced) map `view`, and several histograms and temporal scatter panels. Interactive elements include `switches` for toggling information on and off, `choosers` to toggle which information to show, `buttons` to control the simulation and `sliders` to adjust boundary conditions, such as the diesel price.
 
 # Notable programming and software development features
 
@@ -82,7 +82,7 @@ To date, most NetLogo models have not exploited continuous integration (CI) and 
 
 # Model documentation and license
 
-The model is documented in short form in the NetLogo IDE's `info` section. A full documentation follows the Overview, Design concepts, and Details [ODD, @Grimm2020] standard protocol for ABMs. This standard intends to facilitate model replication and declares, amongst others, a model's purpose, entitities, scales, processes and scheduling, and initial and boundary data. The ViNoS ODD is available in the repository as `doc/odd/paper.md`.
+The model is documented in short form in the NetLogo IDE's `Info` section. A full documentation follows the Overview, Design concepts, and Details [ODD, @Grimm2020] standard protocol for ABMs. This standard intends to facilitate model replication and declares, amongst others, a model's purpose, entitities, scales, processes and scheduling, and initial and boundary data. The ViNoS ODD is available in the repository as `doc/odd/odd.md`.
 Data from third parties are licensed under a multitude of open source licenses. The model, its results and own proprietary data are released under open source licenses, mostly Apache 2.0 and CC-by-SA 4.0. A comprehensive documentation of all licenses is provided via @FSF2023.
 
 # Acknowledgements
