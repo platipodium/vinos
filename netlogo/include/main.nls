@@ -463,8 +463,9 @@ to calc-accessibility
   ]
 
   ; For scenario creation
-  ;let basin-patches patches gis:intersecting load-dataset "basins"
+  ;let basin-patches patches gis:intersecting load-dataset "basin"
   if closure-scenario != "none" [
+    ask patches gis:intersecting load-dataset "Natura2000" [ set accessible? false ]
     let basin-patches patches gis:intersecting load-dataset "NP-SH"
     set basin-patches (patch-set basin-patches (patches gis:intersecting load-dataset "NP-NS"))
     if closure-scenario = "WSHA 100%" [ ask basin-patches [ set accessible? false ]]
