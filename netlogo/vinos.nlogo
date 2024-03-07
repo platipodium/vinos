@@ -76,7 +76,7 @@ CHOOSER
 scene
 scene
 "Shrimp" "Plaice" "Sole" "Effort h" "Effort MWh" "SAR" "Bathymetry" "Accessibility" "OWF" "Plaicebox" "Area" "Shore proximity" "Port proximity" "Depth" "Tide" "Action" "Traffic" "Catch" "GFW effort" "EMODnet effort"
-6
+0
 
 BUTTON
 83
@@ -576,7 +576,7 @@ CHOOSER
 output-frequency
 output-frequency
 "none" "daily" "weekly" "monthly" "yearly"
-2
+0
 
 CHOOSER
 700
@@ -586,7 +586,7 @@ CHOOSER
 closure-scenario
 closure-scenario
 "none" "BAU" "WSHA 100%" "WSHA 30% cells" "WSHA 30% basins"
-0
+4
 
 @#$#@#$#@
 # Viable North Sea (ViNoS) Agent-based Model of German Small-scale Fisheries

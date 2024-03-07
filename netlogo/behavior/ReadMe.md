@@ -11,29 +11,33 @@ in XML format.
 
 Variational experiments with wage and fuel costs
 
-- no-fuel-cost.xml
-- vary-diesel-wage.xml
-- vary-diesel.xml
-- vary-wage.xml
+- `no-fuel-cost.xml`
+- `vary-diesel-wage.xml`
+- `vary-diesel.xml`
+- `vary-wage.xml`
+
+Variational experiment with closures
+
+- `closures.xml`
 
 ## Continuous Integration (CI)
 
-default.xml
+`default.xml`
 : Simple experiment setting one? = false and output-frequency to weekly, to be used as a quick test for functionality of the behavior space output
 
-profile.xml
+`profile.xml`
 : Runs profiling
 
-reproducibility.xml
+`reproducibility.xml`
 : Runs reproducibility tests
 
-unit-tests.xml
+`unit-tests.xml`
 : Runs the unit tests for all NetLogo procedures
 
 ## Continuous Deployment (CD)
 
-effort-map.xml
+`effort-map.xml`
 : Creates the primary product, an effort map
 
-rtd-maps.xml
+`rtd-maps.xml`
 : Runs the simulation to produce ReadTheDocs maps

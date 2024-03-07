@@ -169,11 +169,13 @@ to update-basin
   let _properties gis:property-names _dataset
   let _features (list)
 
+  ask patches [set basin-id 0]
   foreach gis:feature-list-of _dataset [ f ->
     carefully [
       let _set patches gis:intersecting f
       let _v gis:property-value f "TIBA"
-      ;show (sentence count _set _v)
+      ;ask _set [ set pcolor _v]
+      ;show _set
       ask _set [set basin-id _v ]
     ][]
   ]

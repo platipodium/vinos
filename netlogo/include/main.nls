@@ -55,7 +55,6 @@ globals [
 
   oil-price
 
-  basin-id ; basin ID according to the Trilateral Ecotop Map of the Wadden Sea
 ]
 
 patches-own [
@@ -95,6 +94,14 @@ patches-own [
   patch-monthly-effort-hours
   patch-monthly-effort-mwatthours
   patch-monthly-swept-area
+
+  ; Annual diagnostic storage
+  patch-annual-effort-hours
+  patch-annual-effort-mwatthours
+  patch-annual-swept-area
+
+  basin-id ; basin ID according to the Trilateral Ecotop Map of the Wadden Sea
+
 ]
 
 ; ------------------------------------------------------------------------------------------
@@ -440,13 +447,18 @@ end
 to calc-accessibility
   setup-water-patches
 
-  ask patches [set plaice-box? false]
+  ask water-patches [set plaice-box? false]
   let _dataset load-dataset "Plaicebox"
-  ask patches gis:intersecting _dataset [ set plaice-box? true ]
+  ask water-patches gis:intersecting _dataset [ set plaice-box? true ]
 
   ; Boats are not allowed within OWF areas
   update-owf
   ask patches with [owf-fraction > 0.5] [set accessible? false]
+
+  ; German Boats are not allowed within foreign tidal basins
+  update-basin
+  ask water-patches with [basin-id > 0 and basin-id < 4]  [set accessible? false] ;  DK
+  ask water-patches with [basin-id > 30]  [set accessible? false] ; NL
 
   ; Fishery is restricted in MPAs from 1 May 2023.  This needs to be refined
   ; TBB and OTB are not allowed in Borkum riffgrund
@@ -470,8 +482,9 @@ to calc-accessibility
     set basin-patches (patch-set basin-patches (patches gis:intersecting load-dataset "NP-NS"))
     if closure-scenario = "WSHA 100%" [ ask basin-patches [ set accessible? false ]]
     if closure-scenario = "WSHA 30% cells" [ ask n-of (0.3 * count basin-patches) basin-patches [ set accessible? false ]]
-    ;if closure-scenario = "WSHA 30% basins" [
-    ;]
+    if closure-scenario = "WSHA 30% basins" [
+      ask basin-patches with [ basin-id mod 3 = 0] [ set accessible? false ]
+    ]
   ]
 
   ; update ports' start patches

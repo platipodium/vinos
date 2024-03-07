@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: 2024 Helmholtz-Zentrum hereon GmbH
+SPDX-License-Identifier: Apache-2.0
+SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
+-->
+<!DOCTYPE experiments SYSTEM "behaviorspace.dtd">
+<experiments>
+  <experiment name="closures" repetitions="1" sequentialRunOrder="false" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>ci-run-year year</go>
+    <postRun>save-dynamic-datasets</postRun>
+    <timeLimit steps="1"/>
+    <enumeratedValueSet variable="output-frequency">
+      <value value="&quot;none&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-boats?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-ports?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="owf?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="one?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sar?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="box?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="show-values?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="adaptation">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="memory-size">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="diesel-price">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="wage">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <subExperiment>
+      <enumeratedValueSet variable="year">
+        <value value="2020"/>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="closure-scenario">
+        <value value="&quot;none&quot;"/>
+      </enumeratedValueSet>
+    </subExperiment>
+    <subExperiment>
+      <enumeratedValueSet variable="year">
+        <value value="2025"/>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="closure-scenario">
+        <value value="&quot;BAU&quot;"/>
+      </enumeratedValueSet>
+    </subExperiment>
+    <subExperiment>
+      <enumeratedValueSet variable="year">
+        <value value="2030"/>
+      </enumeratedValueSet>
+      <enumeratedValueSet variable="closure-scenario">
+        <value value="&quot;WSHA 30% basins&quot;"/>
+        <value value="&quot;WSHA 100%&quot;"/>
+        <value value="&quot;WSHA 30% cells&quot;"/>
+      </enumeratedValueSet>
+    </subExperiment>
+  </experiment>
+</experiments>
