@@ -149,8 +149,6 @@ to setup-maps
     set patch-monthly-swept-area n-values 12 [ i -> 0]
   ]
 
-  gis:apply-raster (load-dataset "basins") basin-id
-
   update-owf
 
   ; add traffic data

@@ -464,10 +464,19 @@ to calc-accessibility
 
   ; For scenario creation
   ;let basin-patches patches gis:intersecting load-dataset "basins"
-  ;if closure-scenario = "WSHA 100%" [ ask basin-patches [ set accessible? false ]]
-  ;if closure-scenario = "WSHA 30% cells" [ ask n-of (count basin-patches / 30) basin-patches [ set accessible? false ]]
-  ;if closure-scenario = "WSHA 30% basins" [
-  ;]
+  if closure-scenario != "none" [
+    let basin-patches patches gis:intersecting load-dataset "NP-SH"
+    set basin-patches (patch-set basin-patches (patches gis:intersecting load-dataset "NP-NS"))
+    if closure-scenario = "WSHA 100%" [ ask basin-patches [ set accessible? false ]]
+    if closure-scenario = "WSHA 30% cells" [ ask n-of (0.3 * count basin-patches) basin-patches [ set accessible? false ]]
+    ;if closure-scenario = "WSHA 30% basins" [
+    ;]
+  ]
+
+  ; update ports' start patches
+  ask ports [
+    set port-start-patch min-one-of patches with [depth > navigable-depth and distance myself > 2 and accessible?] [distance myself]
+  ]
 
 end
 
