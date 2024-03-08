@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: CC0-1.0
 # SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 
-FROM ubuntu:rolling AS ubuntu+latex
+FROM ubuntu:rolling AS ubuntulatex
 
 LABEL description="Latex/pandoc/joss document generator based on Ubuntu"
 LABEL author="Carsten Lemmen <carsten.lemmen@hereon.de>"
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # change in handling CSLReferences
 ARG PANDOC_VERSION=3.1.6.2
 
-FROM ubuntu+latex
+FROM ubuntulatex
 
 # Ubuntu distro contains a very outdated version of pandoc, so
 # we pull the deb file and install it (it is a standalone binary)

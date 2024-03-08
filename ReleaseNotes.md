@@ -12,6 +12,7 @@ Version 1.3.2 is a maintenance release of our Viable North Sea (ViNoS) software.
 - added BehaviorSpace experiments for prices
 - added Trilateral Ecotopes of the Wadden Sea tidal basins
 - new closure experiments draft
+- CI pipeline enhancements
 
 # Release notes for version 1.3.1 - Feb 16, 2024
 
