@@ -15,8 +15,12 @@ default:
 	@echo Valid Makefile targets are  jdk, netlogo, vinos, run, and shell
 
 pandoc:
-	@docker image inspect platipodium/pandoc  > /dev/null 2>&1 || \
-	  docker build -f ./Dockerfile-pandoc -t platipodium/pandoc ..
+	@docker image inspect platipodium/pandoc:3.1.6.2  > /dev/null 2>&1 || \
+	  docker build -f ./Dockerfile-pandoc -t platipodium/pandoc \
+	  --build-arg PANDOC_VERSION=3.1.6.2 ..
+	@docker image inspect platipodium/pandoc:3.1.12.2  > /dev/null 2>&1 || \
+	  docker build -f ./Dockerfile-pandoc -t platipodium/pandoc \
+	  --build-arg PANDOC_VERSION=3.1.12.2 ..
 
 jdk:
 	@docker image inspect platipodium/jdk  > /dev/null 2>&1 || \
@@ -58,7 +62,7 @@ shell:
 	  -w /home/model \
 	  --net host -t platipodium/vinos:6.4.0 /bin/bash
 
-push: vinos netlogo jdk pandoc
+push: vinos netlogo jdk pandoc:3.1.6.2 pandoc:3.1.12.2
 	docker login -u ${CI_REGISTRY_USER} -p ${CI_WRITE_REGISTRY_TOKEN} ${CI_REGISTRY} && \
 	@for V in jdk pandoc ; do  \
 	  IMAGEID=docker images -q platipodium/$$V && \
