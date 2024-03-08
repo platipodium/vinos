@@ -1,5 +1,4 @@
 {
-  "imprint_publisher": "Zenodo",
   "upload_type": "software",
   "license": "Apache-2.0",
   "title": "Viable North Sea (ViNoS)",
@@ -48,55 +47,6 @@
       "name": "Mühlberger, Verena",
       "affiliation": "Universität Hamburg",
       "type": "ProjectMember"
-    }
-  ],
-  "related_identifiers": [
-    {
-      "identifier": "https://codebase.helmholtz.cloud/mussel/netlogo-northsea-species/-/tree/v1.2.2?ref_type=tags",
-      "relation": "isSupplementTo",
-      "resource_type": "software",
-      "scheme": "url"
-    },
-    {
-      "scheme": "url",
-      "identifier": "https://github.com/platipodium/vinos/tree/v1.2.2",
-      "resource_type": "software",
-      "relation": "isSupplementTo"
-    },
-    {
-      "scheme": "url",
-      "identifier": "https://helmholtz.software/software/vinos",
-      "resource_type": "software",
-      "relation": "isSupplementTo"
-    },
-    {
-      "scheme": "url",
-      "identifier": "https://www.comses.net/codebases/f654945f-8129-46a8-9c2d-f2a1b923f543",
-      "resource_type": "software",
-      "relation": "isSupplementTo"
-    },
-    {
-      "scheme": "doi",
-      "identifier": "zenodo.8430014",
-      "relation": "isNewVersionOf",
-      "resource_type": "software"
-    },
-    {
-      "identifier": "10.5281/zenodo.10069297",
-      "relation": "cites",
-      "resource_type": "dataset",
-      "scheme": "doi"
-    }
-  ],
-  "grants": [
-    {
-      "id": "04pz7b180::03F0862A"
-    },
-    {
-      "id": "04pz7b180::03F0862B"
-    },
-    {
-      "id": "04pz7b180::03F0862D"
     }
   ]
 }
