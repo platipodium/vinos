@@ -12,7 +12,10 @@
     - docker:dind
   stage: deploy
   variables:
-    CONTAINER_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE/pandoc
+    CONTAINER_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE/pandoc:${PANDOC_VERSION}
+  parallel:
+    matrix:
+      - PANDOC_VERSION: ["3.1.6.2", "3.1.12.2"]
   allow_failure: false
   interruptible: true
   rules:
@@ -25,6 +28,7 @@ build-pandoc-docker:
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
     - "docker build -t ${CONTAINER_REGISTRY_IMAGE}
+      --build-arg PANDOC_VERSION=${PANDOC_VERSION}
       -f .docker/Dockerfile-pandoc ."
     - docker push ${CONTAINER_REGISTRY_IMAGE}
 
