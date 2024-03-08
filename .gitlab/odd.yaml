@@ -6,7 +6,7 @@
 # SPDX-FileContributor Carsten Lemmen <carsten.lemmen@hereon.de
 
 odd-paper:
-  image: $CI_REGISTRY_IMAGE/pandoc:latest
+  image: $CI_REGISTRY_IMAGE/pandoc:3.1.12.2
   script:
     - make -C ./doc/odd pdf
     - mv ./doc/odd/odd.pdf ./doc/odd/Lemmen2024_etal_comsesodd.pdf
@@ -17,7 +17,7 @@ odd-paper:
   stage: deploy
 
 ices-paper:
-  image: $CI_REGISTRY_IMAGE/pandoc:latest
+  image: $CI_REGISTRY_IMAGE/pandoc:3.1.12.2
   script:
     - make -C doc/ices pdf
   artifacts:
