@@ -4,13 +4,14 @@ SPDX-License-Identifier: CC0-1.0
 SPDX-FileContributor: Carsten Lemmen <carsten.lemmen@hereon.de>
 -->
 
-# Release notes for version 1.3.2 - in development
+# Release notes for version 1.3.2 - Mar 8, 2024
 
 Version 1.3.2 is a maintenance release of our Viable North Sea (ViNoS) software.
 
 - added BehaviorSpace experiment for closures
 - added BehaviorSpace experiments for prices
 - added Trilateral Ecotopes of the Wadden Sea tidal basins
+- new closure experiments draft
 
 # Release notes for version 1.3.1 - Feb 16, 2024
 
