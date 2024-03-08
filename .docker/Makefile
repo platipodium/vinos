@@ -18,7 +18,7 @@ pandoc:
 	@docker image inspect platipodium/pandoc:3.1.6.2  > /dev/null 2>&1 || \
 	  docker build -f ./Dockerfile-pandoc -t platipodium/pandoc \
 	  --build-arg PANDOC_VERSION=3.1.6.2 ..
-	@docker image inspect platipodium/pandoc:3.1.12.2  > /dev/null 2>&1 || \
+	@docker image inspect platipodium/pandoc:3.1.12.2  > /dev/null 2>&1 || \#
 	  docker build -f ./Dockerfile-pandoc -t platipodium/pandoc \
 	  --build-arg PANDOC_VERSION=3.1.12.2 ..
 
@@ -62,12 +62,17 @@ shell:
 	  -w /home/model \
 	  --net host -t platipodium/vinos:6.4.0 /bin/bash
 
-push: vinos netlogo jdk pandoc:3.1.6.2 pandoc:3.1.12.2
+push: vinos netlogo jdk pandoc
 	docker login -u ${CI_REGISTRY_USER} -p ${CI_WRITE_REGISTRY_TOKEN} ${CI_REGISTRY} && \
-	@for V in jdk pandoc ; do  \
+	@for V in jdk ; do  \
 	  IMAGEID=docker images -q platipodium/$$V && \
 	  docker tag ${IMAGEID} ${CI_REGISTRY}/mussel/netlogo-northsea-species/$$V:latest && \
 	  docker image push ${CI_REGISTRY}/mussel/netlogo-northsea-species/$$V:latest && \
+	done ; && \
+	@for V in "pandoc:3.1.12.2" "pandoc:3.1.6.2"; do  \
+	  IMAGEID=docker images -q platipodium/$$V && \
+	  docker tag ${IMAGEID} ${CI_REGISTRY}/mussel/netlogo-northsea-species/$$V && \
+	  docker image push ${CI_REGISTRY}/mussel/netlogo-northsea-species/$$V && \
 	done ; && \
 	@for V in netlogo vinos ; do  \
 	  for T in "6.2.2" "6.3.0" "6.4.0" ; do \
